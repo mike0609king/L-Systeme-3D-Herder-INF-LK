@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<CONFIG>
+  <Compiler Value="P:\lazarus\fpc\2.6.2\bin\x86_64-win64\fpc.exe" Date="1114731730"/>
+  <Params Value=" -MDelphi -Scghi -O1 -g -gl -XX -WG -vewnhi &quot;-FiF:\LinAbb-Lazarus - Kopie2\Graphik&quot; &quot;-FiF:\LinAbb-Lazarus - Kopie2\ADTs&quot; &quot;-FuF:\LinAbb-Lazarus - Kopie2\Graphik&quot; &quot;-FuF:\LinAbb-Lazarus - Kopie2\Terme&quot; &quot;-FuF:\LinAbb-Lazarus - Kopie2\Objekt3DViewer\Formulare&quot; -FuP:\lazarus\components\lazcontrols\lib\x86_64-win64\win32 -FuP:\lazarus\lcl\units\x86_64-win64\win32 -FuP:\lazarus\lcl\units\x86_64-win64 -FuP:\lazarus\components\lazutils\lib\x86_64-win64 -FuP:\lazarus\packager\units\x86_64-win64 &quot;-FuF:\LinAbb-Lazarus - Kopie2\Objekt3DViewer\&quot; -l &quot;-FEF:\LinAbb-Lazarus - Kopie2\&quot; -oAbbildungen.exe -dLCL -dLCLwin32 Matrix3x3.lpr"/>
+</CONFIG>

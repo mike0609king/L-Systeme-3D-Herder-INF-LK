@@ -1,0 +1,645 @@
+object Form1: TForm1
+  Left = 0
+  Height = 451
+  Top = 0
+  Width = 514
+  Caption = 'Koordinatentransformation / Lineare Abbildungen /Affine Abbildungen / Perspektivische Abbildungen'
+  ClientHeight = 432
+  ClientWidth = 514
+  Color = clBtnFace
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  Menu = MainMenu1
+  OnCreate = FormCreate
+  LCLVersion = '1.0.8.0'
+  object GraphikPanel: TPanel
+    Left = 4
+    Height = 386
+    Top = 1
+    Width = 371
+    Caption = 'GraphikPanel'
+    ClientHeight = 386
+    ClientWidth = 371
+    TabOrder = 20
+    object PnPunktSpiegelung: TPanel
+      Left = 4
+      Height = 136
+      Top = 247
+      Width = 144
+      Anchors = [akLeft, akBottom]
+      ClientHeight = 136
+      ClientWidth = 144
+      TabOrder = 0
+      Visible = False
+      object RadioGroup1: TRadioGroup
+        Left = 11
+        Height = 65
+        Top = 24
+        Width = 117
+        AutoFill = True
+        Caption = 'Koordinatenursprung '
+        ChildSizing.LeftRightSpacing = 6
+        ChildSizing.TopBottomSpacing = 6
+        ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+        ChildSizing.EnlargeVertical = crsHomogenousChildResize
+        ChildSizing.ShrinkHorizontal = crsScaleChilds
+        ChildSizing.ShrinkVertical = crsScaleChilds
+        ChildSizing.Layout = cclLeftToRightThenTopToBottom
+        ChildSizing.ControlsPerLine = 1
+        ClientHeight = 47
+        ClientWidth = 113
+        ItemIndex = 0
+        Items.Strings = (
+          'des EigenKOS'
+          'des WeltKOS'
+        )
+        TabOrder = 0
+      end
+      object BtOK: TButton
+        Left = 17
+        Height = 25
+        Top = 96
+        Width = 111
+        Caption = 'Ausführen'
+        OnClick = BtOKClick
+        TabOrder = 1
+      end
+      object Label10: TLabel
+        Left = 31
+        Height = 14
+        Top = 48
+        Width = 97
+        Caption = 'Punktspiegelung am'
+        ParentColor = False
+      end
+      object Label7: TLabel
+        Left = 20
+        Height = 14
+        Top = 10
+        Width = 71
+        Caption = 'Spiegelung am'
+        ParentColor = False
+      end
+    end
+    object PnEbenenSpiegelung: TPanel
+      Left = 132
+      Height = 136
+      Top = 255
+      Width = 226
+      Anchors = [akBottom]
+      ClientHeight = 136
+      ClientWidth = 226
+      TabOrder = 1
+      Visible = False
+      OnClick = PnEbenenSpiegelungClick
+      OnGetDockCaption = PnEbenenSpiegelungGetDockCaption
+      object Label11: TLabel
+        Left = 9
+        Height = 14
+        Top = 8
+        Width = 104
+        Caption = 'Ebenenspiegelung an'
+        ParentColor = False
+      end
+      object RadioGroup2: TRadioGroup
+        Left = 9
+        Height = 77
+        Top = 24
+        Width = 103
+        AutoFill = True
+        ChildSizing.LeftRightSpacing = 6
+        ChildSizing.TopBottomSpacing = 6
+        ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+        ChildSizing.EnlargeVertical = crsHomogenousChildResize
+        ChildSizing.ShrinkHorizontal = crsScaleChilds
+        ChildSizing.ShrinkVertical = crsScaleChilds
+        ChildSizing.Layout = cclLeftToRightThenTopToBottom
+        ChildSizing.ControlsPerLine = 1
+        ClientHeight = 59
+        ClientWidth = 99
+        ItemIndex = 0
+        Items.Strings = (
+          'der x-y-Ebene'
+          'der x-z-Ebene'
+          'der y-z-Ebene'
+        )
+        OnSelectionChanged = RadioGroup2SelectionChanged
+        TabOrder = 0
+      end
+      object RadioGroup3: TRadioGroup
+        Left = 117
+        Height = 77
+        Top = 24
+        Width = 102
+        AutoFill = True
+        ChildSizing.LeftRightSpacing = 6
+        ChildSizing.TopBottomSpacing = 6
+        ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+        ChildSizing.EnlargeVertical = crsHomogenousChildResize
+        ChildSizing.ShrinkHorizontal = crsScaleChilds
+        ChildSizing.ShrinkVertical = crsScaleChilds
+        ChildSizing.Layout = cclLeftToRightThenTopToBottom
+        ChildSizing.ControlsPerLine = 1
+        ClientHeight = 59
+        ClientWidth = 98
+        ItemIndex = 1
+        Items.Strings = (
+          'des EigenKOS'
+          'des WeltKOS'
+        )
+        OnSelectionChanged = RadioGroup3SelectionChanged
+        TabOrder = 1
+      end
+      object Button3: TButton
+        Left = 9
+        Height = 26
+        Top = 105
+        Width = 210
+        Caption = 'Ausführen'
+        OnClick = Button3Click
+        TabOrder = 2
+      end
+    end
+  end
+  object Label1: TLabel
+    Left = 432
+    Height = 14
+    Top = 48
+    Width = 28
+    Anchors = [akTop, akRight]
+    Caption = 'Zoom'
+    ParentColor = False
+  end
+  object Label2: TLabel
+    Left = 384
+    Height = 14
+    Top = 71
+    Width = 102
+    Anchors = [akTop, akRight]
+    Caption = 'KameraVerschiebung'
+    ParentColor = False
+  end
+  object Label3: TLabel
+    Left = 384
+    Height = 14
+    Top = 158
+    Width = 128
+    Anchors = [akTop, akRight]
+    Caption = 'Kameraschwenk horizontal'
+    ParentColor = False
+  end
+  object Label4: TLabel
+    Left = 384
+    Height = 14
+    Top = 198
+    Width = 117
+    Anchors = [akTop, akRight]
+    Caption = 'Kameraschwenk vertikal'
+    ParentColor = False
+  end
+  object Label5: TLabel
+    Left = 384
+    Height = 14
+    Top = 238
+    Width = 107
+    Anchors = [akTop, akRight]
+    Caption = 'Kamera seitlich kippen'
+    ParentColor = False
+  end
+  object Label6: TLabel
+    Left = 385
+    Height = 14
+    Top = 280
+    Width = 116
+    Anchors = [akTop, akRight]
+    Caption = 'Kamera um Welt kreisen'
+    ParentColor = False
+  end
+  object Label8: TLabel
+    Left = 4
+    Height = 14
+    Top = 398
+    Width = 79
+    Anchors = [akLeft, akBottom]
+    Caption = 'Geschwindigkeit'
+    ParentColor = False
+  end
+  object BtPause: TButton
+    Left = 400
+    Height = 25
+    Top = 8
+    Width = 81
+    Anchors = [akTop, akRight]
+    Caption = 'Pause'
+    OnClick = BtPauseClick
+    TabOrder = 0
+  end
+  object BtZoomP: TButton
+    Left = 384
+    Height = 16
+    Top = 48
+    Width = 25
+    Anchors = [akTop, akRight]
+    Caption = '+'
+    OnMouseDown = Button2OnMouseDown
+    OnMouseUp = Button2OnMouseUp
+    TabOrder = 1
+  end
+  object BtZoomM: TButton
+    Left = 472
+    Height = 16
+    Top = 48
+    Width = 25
+    Anchors = [akTop, akRight]
+    Cancel = True
+    Caption = '-'
+    Default = True
+    OnMouseDown = Button3OnMouseDown
+    OnMouseUp = Button2OnMouseUp
+    TabOrder = 2
+  end
+  object BtLinksV: TButton
+    Left = 384
+    Height = 16
+    Top = 87
+    Width = 41
+    Anchors = [akTop, akRight]
+    Caption = 'links'
+    OnMouseDown = Button4OnMouseDown
+    OnMouseUp = Button2OnMouseUp
+    TabOrder = 3
+  end
+  object BtRechtsV: TButton
+    Left = 456
+    Height = 16
+    Top = 87
+    Width = 41
+    Anchors = [akTop, akRight]
+    Caption = 'rechts'
+    OnMouseDown = Button5OnMouseDown
+    OnMouseUp = Button2OnMouseUp
+    TabOrder = 4
+  end
+  object BtVorV: TButton
+    Left = 384
+    Height = 16
+    Top = 111
+    Width = 41
+    Anchors = [akTop, akRight]
+    Caption = 'vor'
+    OnMouseDown = Button6OnMouseDown
+    OnMouseUp = Button2OnMouseUp
+    TabOrder = 5
+  end
+  object BtZurueckV: TButton
+    Left = 456
+    Height = 16
+    Top = 111
+    Width = 41
+    Anchors = [akTop, akRight]
+    Caption = 'zurück'
+    OnMouseDown = Button7OnMouseDown
+    OnMouseUp = Button2OnMouseUp
+    TabOrder = 6
+  end
+  object BtHochV: TButton
+    Left = 384
+    Height = 16
+    Top = 134
+    Width = 41
+    Anchors = [akTop, akRight]
+    Caption = 'hoch'
+    OnMouseDown = Button8OnMouseDown
+    OnMouseUp = Button2OnMouseUp
+    TabOrder = 7
+  end
+  object BtRunterV: TButton
+    Left = 456
+    Height = 16
+    Top = 134
+    Width = 41
+    Anchors = [akTop, akRight]
+    Caption = 'runter'
+    OnMouseDown = Button9OnMouseDown
+    OnMouseUp = Button2OnMouseUp
+    TabOrder = 8
+  end
+  object BtLinksS: TButton
+    Left = 384
+    Height = 16
+    Top = 174
+    Width = 41
+    Anchors = [akTop, akRight]
+    Caption = 'links'
+    OnMouseDown = Button10OnMouseDown
+    OnMouseUp = Button2OnMouseUp
+    TabOrder = 9
+  end
+  object BtRechtsS: TButton
+    Left = 456
+    Height = 16
+    Top = 174
+    Width = 41
+    Anchors = [akTop, akRight]
+    Caption = 'rechts'
+    OnMouseDown = Button11OnMouseDown
+    OnMouseUp = Button2OnMouseUp
+    TabOrder = 10
+  end
+  object BtRunterS: TButton
+    Left = 384
+    Height = 16
+    Top = 215
+    Width = 41
+    Anchors = [akTop, akRight]
+    Caption = 'runter'
+    OnMouseDown = Button12OnMouseDown
+    OnMouseUp = Button2OnMouseUp
+    TabOrder = 11
+  end
+  object BtHochS: TButton
+    Left = 456
+    Height = 16
+    Top = 215
+    Width = 41
+    Anchors = [akTop, akRight]
+    Caption = 'hoch'
+    OnMouseDown = Button13OnMouseDown
+    OnMouseUp = Button2OnMouseUp
+    TabOrder = 12
+  end
+  object BtLinksK: TButton
+    Left = 384
+    Height = 16
+    Top = 255
+    Width = 41
+    Anchors = [akTop, akRight]
+    Caption = 'links'
+    OnMouseDown = Button14OnMouseDown
+    OnMouseUp = Button2OnMouseUp
+    TabOrder = 13
+  end
+  object BtRechtsK: TButton
+    Left = 456
+    Height = 16
+    Top = 255
+    Width = 41
+    Anchors = [akTop, akRight]
+    Caption = 'rechts'
+    OnMouseDown = Button15OnMouseDown
+    OnMouseUp = Button2OnMouseUp
+    TabOrder = 14
+  end
+  object BtLinksKreis: TButton
+    Left = 384
+    Height = 16
+    Top = 320
+    Width = 41
+    Anchors = [akTop, akRight]
+    Caption = 'links'
+    OnMouseDown = Button16OnMouseDown
+    OnMouseUp = Button2OnMouseUp
+    TabOrder = 15
+  end
+  object BtRechtsKreis: TButton
+    Left = 456
+    Height = 16
+    Top = 320
+    Width = 41
+    Anchors = [akTop, akRight]
+    Caption = 'rechts'
+    OnMouseDown = Button17OnMouseDown
+    OnMouseUp = Button2OnMouseUp
+    TabOrder = 16
+  end
+  object BtHochKreis: TButton
+    Left = 416
+    Height = 16
+    Top = 296
+    Width = 41
+    Anchors = [akTop, akRight]
+    Caption = 'hoch'
+    OnMouseDown = Button18OnMouseDown
+    OnMouseUp = Button2OnMouseUp
+    TabOrder = 17
+  end
+  object BtRunterKreis: TButton
+    Left = 416
+    Height = 16
+    Top = 344
+    Width = 41
+    Anchors = [akTop, akRight]
+    Caption = 'runter'
+    OnMouseDown = Button19OnMouseDown
+    OnMouseUp = Button2OnMouseUp
+    TabOrder = 18
+  end
+  object TrackBar1: TTrackBar
+    Left = 92
+    Height = 25
+    Top = 400
+    Width = 401
+    Max = 51
+    Min = 1
+    OnChange = TrackBar1Change
+    Position = 2
+    Anchors = [akLeft, akBottom]
+    TabOrder = 19
+  end
+  object PnRekTiefe: TPanel
+    Left = 8
+    Height = 80
+    Top = 304
+    Width = 96
+    Anchors = [akLeft, akBottom]
+    ClientHeight = 80
+    ClientWidth = 96
+    TabOrder = 21
+    Visible = False
+    object SpinEdit1: TSpinEdit
+      Left = 9
+      Height = 21
+      Top = 23
+      Width = 53
+      TabOrder = 0
+    end
+    object Label9: TLabel
+      Left = 9
+      Height = 14
+      Top = 3
+      Width = 77
+      Caption = 'Rekursionstiefe:'
+      ParentColor = False
+    end
+    object Button1: TButton
+      Left = 9
+      Height = 25
+      Top = 55
+      Width = 57
+      Caption = 'oK'
+      OnClick = Button1Click
+      TabOrder = 1
+    end
+  end
+  object BtKameraReset: TButton
+    Left = 385
+    Height = 18
+    Top = 369
+    Width = 113
+    Anchors = [akTop, akRight]
+    Caption = 'Kamera Reset'
+    OnClick = BtKameraResetClick
+    TabOrder = 22
+  end
+  object Timer1: TTimer
+    Interval = 100
+    OnTimer = Timer1Timer
+    left = 104
+    top = 48
+  end
+  object MainMenu1: TMainMenu
+    OnChange = MainMenu1Change
+    left = 40
+    top = 48
+    object MObjekt: TMenuItem
+      Caption = 'Objekt aussuchen'
+      OnClick = MObjektClick
+      object MklQuadrat: TMenuItem
+        Caption = 'kleines Quadrat'
+        OnClick = MklQuadratClick
+      end
+      object MgrQuadrat: TMenuItem
+        Caption = 'großes Quadrat'
+        OnClick = MgrQuadratClick
+      end
+      object MDreieck: TMenuItem
+        Caption = 'Dreieck'
+        OnClick = MDreieckClick
+      end
+      object MklWuerfel: TMenuItem
+        Caption = 'kleiner Würfel'
+        OnClick = MklWuerfelClick
+      end
+      object MgrWuerfel: TMenuItem
+        Caption = 'großer Würfel'
+        OnClick = MgrWuerfelClick
+      end
+      object MPyramide: TMenuItem
+        Caption = '&Pyramide'
+        OnClick = MPyramideClick
+      end
+      object MSierpinsky: TMenuItem
+        Caption = 'Sierpinsky'
+        object MDreieckS: TMenuItem
+          Caption = 'Dreieck'
+          OnClick = MDreieckSClick
+        end
+        object MTetraederS: TMenuItem
+          Caption = 'Tetraeder'
+          OnClick = MTetraederSClick
+        end
+      end
+    end
+    object MKoordinatensystem: TMenuItem
+      Caption = '&Koordinatensystem'
+      OnClick = MKoordinatensystemClick
+      object MWeltKOS: TMenuItem
+        AutoCheck = True
+        Caption = 'WeltKOS ein/aus'
+        OnClick = MWeltKOSClick
+      end
+      object MObjektKOS: TMenuItem
+        AutoCheck = True
+        Caption = 'ObjektKOS ein/aus'
+        OnClick = MObjektKOSClick
+      end
+    end
+    object MProjektion: TMenuItem
+      Caption = 'Projektion'
+      object MOrtho: TMenuItem
+        Caption = 'Orthogonalprojektion'
+        OnClick = MOrthoClick
+      end
+      object MZentral: TMenuItem
+        Caption = 'perspektivische Projektion'
+        OnClick = MZentralClick
+      end
+    end
+    object MAbbildung: TMenuItem
+      Caption = 'Abbildung'
+      object MGeomAbb: TMenuItem
+        Caption = 'geometrische Abbildung'
+        object MenuItem26: TMenuItem
+          Caption = 'Drehung'
+          OnClick = MenuItem26Click
+        end
+        object MenuItem27: TMenuItem
+          Caption = 'Streckung'
+          OnClick = MenuItem27Click
+        end
+        object MenuItem28: TMenuItem
+          Caption = 'Scherung'
+          OnClick = MenuItem28Click
+        end
+        object MenuItem29: TMenuItem
+          Caption = 'Verschiebung'
+          OnClick = MenuItem29Click
+        end
+        object MenuItem1: TMenuItem
+          Caption = 'Spiegelung'
+          object MenuItem2: TMenuItem
+            Caption = 'Punktspiegelung'
+            OnClick = MenuItem2Click
+          end
+          object MenuItem4: TMenuItem
+            Caption = 'Ebenenspiegelung'
+            OnClick = MenuItem4Click
+          end
+        end
+      end
+      object MMatrizen: TMenuItem
+        Caption = 'Abbildungsmatrix'
+        object MenuItem22: TMenuItem
+          Caption = ' 2x2 Ebene (ohne Verschiebung)'
+          OnClick = MenuItem22Click
+        end
+        object MenuItem23: TMenuItem
+          Caption = '2x3 Ebene (mit Verschiebung)'
+          OnClick = MenuItem23Click
+        end
+        object MenuItem24: TMenuItem
+          Caption = '3x3 Raum (ohne Verschiebung)'
+          OnClick = MenuItem24Click
+        end
+        object MenuItem30: TMenuItem
+          Caption = '3x4 Raum (mit Verschiebung)'
+          OnClick = MenuItem30Click
+        end
+        object MenuItem25: TMenuItem
+          Caption = '4x4 Raum (mit Verschiebung und Perspektive)'
+          OnClick = MenuItem25Click
+        end
+      end
+      object MZurueck: TMenuItem
+        Caption = 'Schritt zurück'
+        OnClick = MZurueckClick
+      end
+      object MInit: TMenuItem
+        Caption = 'Matrizen zurücksetzen'
+        OnClick = MInitClick
+      end
+    end
+    object MUmrechnung: TMenuItem
+      Caption = 'Umrechnungen'
+      object MkartToKugel: TMenuItem
+        Caption = 'kartesische Koordinaten nach Kugelkoordinaten'
+        OnClick = MkartToKugelClick
+      end
+      object MKugelToKart: TMenuItem
+        Caption = 'Kugelkoordinaten nach kartesische Koordinaten'
+        OnClick = MKugelToKartClick
+      end
+    end
+  end
+end

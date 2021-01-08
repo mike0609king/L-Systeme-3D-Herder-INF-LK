@@ -24,10 +24,10 @@ type TZeichenParameter = record
 end;
 
 type TGrammatik = record
-    Axiom: String;
-    //Regeln: TRegelDictionary;
+    axiom: String;
+    //regeln: TRegelDictionary;
 
-    Regeln: String; //testing
+    regeln: String; //testing
 end;
 
 // Die Entitaet, die sich auf dem Bildschirm herumbewegt,
@@ -43,6 +43,8 @@ type TTurtle = class
     public
         constructor Create(gram: TGrammatik; zeichenPara: TZeichenParameter);
 
+        property axiom: String read FGrammatik.axiom;
+        property regeln: String read FGrammatik.regeln
         property winkel: Real read FZeichenParameter.winkel write setzeWinkel;
         property rekursionsTiefe: Cardinal read FZeichenParameter.rekursionsTiefe write setzeRekursionsTiefe;
 

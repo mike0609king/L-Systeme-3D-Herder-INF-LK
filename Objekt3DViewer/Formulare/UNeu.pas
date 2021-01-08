@@ -178,7 +178,7 @@ var
   HauptForm: TForm1;
 
 implementation
-uses  uAnimation,uKamera, uKamObjektiv, uMatrizen, dglopenGL, uObjekt,
+uses  uAnimation,uKamera, uKamObjektiv, uMatrizen, dglopenGL, uTurtle,
       AMatrix,Rotation,Umrechnung, Umrechnung2,Streckung, Verschiebung, Scherung;
 {$R *.lfm}
 
@@ -418,7 +418,7 @@ end;
 
 procedure TForm1.MklQuadratClick(Sender: TObject);
 begin
-  uObjekt.objekt:=kq;
+  uTurtle.objekt:=kq;
 end;
 
 procedure TForm1.MenuItem30Click(Sender: TObject);
@@ -439,27 +439,27 @@ end;
 
 procedure TForm1.MgrQuadratClick(Sender: TObject);
 begin
-  uObjekt.objekt:=gq;
+  uTurtle.objekt:=gq;
 end;
 
 procedure TForm1.MDreieckClick(Sender: TObject);
 begin
-  uObjekt.objekt:=d;
+  uTurtle.objekt:=d;
 end;
 
 procedure TForm1.MklWuerfelClick(Sender: TObject);
 begin
-  uObjekt.objekt:=kw
+  uTurtle.objekt:=kw
 end;
 
 procedure TForm1.MgrWuerfelClick(Sender: TObject);
 begin
-  uObjekt.objekt:=gw
+  uTurtle.objekt:=gw
 end;
 
 procedure TForm1.MPyramideClick(Sender: TObject);
 begin
-  uObjekt.objekt:=p
+  uTurtle.objekt:=p
 end;
 
 procedure TForm1.PnEbenenSpiegelungClick(Sender: TObject);

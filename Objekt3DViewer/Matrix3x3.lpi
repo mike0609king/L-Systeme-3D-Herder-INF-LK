@@ -1,7 +1,7 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <CONFIG>
   <ProjectOptions>
-    <Version Value="9"/>
+    <Version Value="11"/>
     <PathDelim Value="\"/>
     <General>
       <Flags>
@@ -18,21 +18,17 @@
     <i18n>
       <EnableI18N LFM="False"/>
     </i18n>
-    <VersionInfo>
-      <StringTable ProductVersion=""/>
-    </VersionInfo>
     <BuildModes Count="1">
       <Item1 Name="Default" Default="True"/>
     </BuildModes>
     <PublishOptions>
       <Version Value="2"/>
-      <IncludeFileFilter Value="*.(pas|pp|inc|lfm|lpr|lrs|lpi|lpk|sh|xml)"/>
-      <ExcludeFileFilter Value="*.(bak|ppu|o|so);*~;backup"/>
     </PublishOptions>
     <RunParams>
-      <local>
-        <FormatVersion Value="1"/>
-      </local>
+      <FormatVersion Value="2"/>
+      <Modes Count="1">
+        <Mode0 Name="default"/>
+      </Modes>
     </RunParams>
     <RequiredPackages Count="2">
       <Item1>
@@ -42,7 +38,7 @@
         <PackageName Value="LCL"/>
       </Item2>
     </RequiredPackages>
-    <Units Count="30">
+    <Units Count="31">
       <Unit0>
         <Filename Value="Matrix3x3.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -53,57 +49,47 @@
         <ComponentName Value="Form1"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <UnitName Value="UNeu"/>
       </Unit1>
       <Unit2>
         <Filename Value="..\Graphik\uMatrizen.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="uMatrizen"/>
       </Unit2>
       <Unit3>
         <Filename Value="..\Graphik\uKamObjektiv.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="uKamObjektiv"/>
       </Unit3>
       <Unit4>
         <Filename Value="..\Graphik\uRenderer.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="uRenderer"/>
       </Unit4>
       <Unit5>
         <Filename Value="..\Graphik\uBeleuchtung.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="uBeleuchtung"/>
       </Unit5>
       <Unit6>
         <Filename Value="..\ADTs\uDatei.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="uDatei"/>
       </Unit6>
       <Unit7>
         <Filename Value="..\ADTs\uFolge.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="uFolge"/>
       </Unit7>
       <Unit8>
         <Filename Value="..\ADTs\uElement.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="uElement"/>
       </Unit8>
       <Unit9>
         <Filename Value="uAnimation.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="uAnimation"/>
       </Unit9>
       <Unit10>
         <Filename Value="uobjekt2.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="uobjekt2"/>
       </Unit10>
       <Unit11>
-        <Filename Value="uObjekt.pas"/>
+        <Filename Value="..\Turtle\uturtle.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="uObjekt"/>
+        <UnitName Value="uTurtle"/>
       </Unit11>
       <Unit12>
         <Filename Value="UNeu.lfm"/>
@@ -118,7 +104,6 @@
         <ComponentName Value="Form2"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <UnitName Value="AMatrix"/>
       </Unit13>
       <Unit14>
         <Filename Value="MMatrix.pas"/>
@@ -126,7 +111,6 @@
         <ComponentName Value="Form3"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <UnitName Value="MMatrix"/>
       </Unit14>
       <Unit15>
         <Filename Value="Rotation.pas"/>
@@ -134,7 +118,6 @@
         <ComponentName Value="Form4"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <UnitName Value="Rotation"/>
       </Unit15>
       <Unit16>
         <Filename Value="Umrechnung.pas"/>
@@ -142,7 +125,6 @@
         <ComponentName Value="Form5"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <UnitName Value="Umrechnung"/>
       </Unit16>
       <Unit17>
         <Filename Value="Umrechnung2.pas"/>
@@ -150,7 +132,6 @@
         <ComponentName Value="Form6"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <UnitName Value="Umrechnung2"/>
       </Unit17>
       <Unit18>
         <Filename Value="Streckung.pas"/>
@@ -158,7 +139,6 @@
         <ComponentName Value="Form7"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <UnitName Value="Streckung"/>
       </Unit18>
       <Unit19>
         <Filename Value="Verschiebung.pas"/>
@@ -166,7 +146,6 @@
         <ComponentName Value="Form8"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <UnitName Value="Verschiebung"/>
       </Unit19>
       <Unit20>
         <Filename Value="Scherung.pas"/>
@@ -174,7 +153,6 @@
         <ComponentName Value="Form9"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <UnitName Value="Scherung"/>
       </Unit20>
       <Unit21>
         <Filename Value="Formulare\AMatrix.lfm"/>
@@ -212,6 +190,10 @@
         <Filename Value="Formulare\UNeu.lfm"/>
         <IsPartOfProject Value="True"/>
       </Unit29>
+      <Unit30>
+        <Filename Value="..\Turtle\turtle.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit30>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -221,8 +203,8 @@
       <Filename Value="..\Abbildungen"/>
     </Target>
     <SearchPaths>
-      <IncludeFiles Value="..\Graphik;..\ADTs;$(ProjOutDir)"/>
-      <OtherUnitFiles Value="..\Graphik;..\Terme;Formulare"/>
+      <IncludeFiles Value="..\Graphik;..\ADTs;$(ProjOutDir);..\Turtle"/>
+      <OtherUnitFiles Value="..\Graphik;..\Terme;Formulare;..\Turtle"/>
       <UnitOutputDirectory Value="..\KompilerteUnits"/>
     </SearchPaths>
     <Parsing>
@@ -238,12 +220,6 @@
         </Win32>
       </Options>
     </Linking>
-    <Other>
-      <CompilerMessages>
-        <MsgFileName Value=""/>
-      </CompilerMessages>
-      <CompilerPath Value="$(CompPath)"/>
-    </Other>
   </CompilerOptions>
   <Debugging>
     <Exceptions Count="3">

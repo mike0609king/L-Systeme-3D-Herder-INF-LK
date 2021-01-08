@@ -12,7 +12,7 @@ procedure ozeichnen;
 
 implementation
 
-uses uObjekt,uBeleuchtung;
+uses uturtle,uBeleuchtung;
 VAR o:TObjekt;
 
 procedure ozeichnen;

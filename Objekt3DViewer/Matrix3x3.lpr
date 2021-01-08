@@ -18,7 +18,7 @@ uses
   uRenderer in '..\Graphik\uRenderer.pas',
   uBeleuchtung in '..\Graphik\uBeleuchtung.pas',
   uAnimation in 'uAnimation.pas',
-  uObjekt in 'uObjekt.pas';
+  uturtle in 'uObjekt.pas';
 
 //uOctree in '..\Octree\uOctree.pas';
 

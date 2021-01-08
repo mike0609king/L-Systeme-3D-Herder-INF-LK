@@ -4,7 +4,7 @@ object Form1: TForm1
   Top = 0
   Width = 514
   Caption = 'Koordinatentransformation / Lineare Abbildungen /Affine Abbildungen / Perspektivische Abbildungen'
-  ClientHeight = 432
+  ClientHeight = 431
   ClientWidth = 514
   Color = clBtnFace
   Font.Color = clWindowText
@@ -12,11 +12,11 @@ object Form1: TForm1
   Font.Name = 'MS Sans Serif'
   Menu = MainMenu1
   OnCreate = FormCreate
-  LCLVersion = '1.0.8.0'
+  LCLVersion = '2.0.0.4'
   object GraphikPanel: TPanel
-    Left = 4
+    Left = 24
     Height = 386
-    Top = 1
+    Top = 25
     Width = 371
     Caption = 'GraphikPanel'
     ClientHeight = 386
@@ -67,17 +67,17 @@ object Form1: TForm1
       end
       object Label10: TLabel
         Left = 31
-        Height = 14
+        Height = 13
         Top = 48
-        Width = 97
+        Width = 96
         Caption = 'Punktspiegelung am'
         ParentColor = False
       end
       object Label7: TLabel
         Left = 20
-        Height = 14
+        Height = 13
         Top = 10
-        Width = 71
+        Width = 70
         Caption = 'Spiegelung am'
         ParentColor = False
       end
@@ -96,9 +96,9 @@ object Form1: TForm1
       OnGetDockCaption = PnEbenenSpiegelungGetDockCaption
       object Label11: TLabel
         Left = 9
-        Height = 14
+        Height = 13
         Top = 8
-        Width = 104
+        Width = 103
         Caption = 'Ebenenspiegelung an'
         ParentColor = False
       end
@@ -163,64 +163,64 @@ object Form1: TForm1
     end
   end
   object Label1: TLabel
-    Left = 432
-    Height = 14
+    Left = 433
+    Height = 13
     Top = 48
-    Width = 28
+    Width = 27
     Anchors = [akTop, akRight]
     Caption = 'Zoom'
     ParentColor = False
   end
   object Label2: TLabel
-    Left = 384
-    Height = 14
+    Left = 385
+    Height = 13
     Top = 71
-    Width = 102
+    Width = 101
     Anchors = [akTop, akRight]
     Caption = 'KameraVerschiebung'
     ParentColor = False
   end
   object Label3: TLabel
-    Left = 384
-    Height = 14
+    Left = 385
+    Height = 13
     Top = 158
-    Width = 128
+    Width = 127
     Anchors = [akTop, akRight]
     Caption = 'Kameraschwenk horizontal'
     ParentColor = False
   end
   object Label4: TLabel
-    Left = 384
-    Height = 14
+    Left = 385
+    Height = 13
     Top = 198
-    Width = 117
+    Width = 116
     Anchors = [akTop, akRight]
     Caption = 'Kameraschwenk vertikal'
     ParentColor = False
   end
   object Label5: TLabel
-    Left = 384
-    Height = 14
+    Left = 385
+    Height = 13
     Top = 238
-    Width = 107
+    Width = 106
     Anchors = [akTop, akRight]
     Caption = 'Kamera seitlich kippen'
     ParentColor = False
   end
   object Label6: TLabel
-    Left = 385
-    Height = 14
+    Left = 386
+    Height = 13
     Top = 280
-    Width = 116
+    Width = 115
     Anchors = [akTop, akRight]
     Caption = 'Kamera um Welt kreisen'
     ParentColor = False
   end
   object Label8: TLabel
     Left = 4
-    Height = 14
+    Height = 13
     Top = 398
-    Width = 79
+    Width = 78
     Anchors = [akLeft, akBottom]
     Caption = 'Geschwindigkeit'
     ParentColor = False
@@ -438,7 +438,7 @@ object Form1: TForm1
   object TrackBar1: TTrackBar
     Left = 92
     Height = 25
-    Top = 400
+    Top = 399
     Width = 401
     Max = 51
     Min = 1
@@ -450,7 +450,7 @@ object Form1: TForm1
   object PnRekTiefe: TPanel
     Left = 8
     Height = 80
-    Top = 304
+    Top = 303
     Width = 96
     Anchors = [akLeft, akBottom]
     ClientHeight = 80
@@ -466,9 +466,9 @@ object Form1: TForm1
     end
     object Label9: TLabel
       Left = 9
-      Height = 14
+      Height = 13
       Top = 3
-      Width = 77
+      Width = 76
       Caption = 'Rekursionstiefe:'
       ParentColor = False
     end

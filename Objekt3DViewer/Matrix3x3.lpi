@@ -38,7 +38,7 @@
         <PackageName Value="LCL"/>
       </Item2>
     </RequiredPackages>
-    <Units Count="31">
+    <Units Count="33">
       <Unit0>
         <Filename Value="Matrix3x3.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -194,6 +194,16 @@
         <Filename Value="..\Turtle\turtle.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit30>
+      <Unit31>
+        <Filename Value="..\Turtle\ugrammatik.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uGrammatik"/>
+      </Unit31>
+      <Unit32>
+        <Filename Value="..\Turtle\ustringentwickler.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uStringEntwickler"/>
+      </Unit32>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

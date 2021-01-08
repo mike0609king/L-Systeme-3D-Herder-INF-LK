@@ -5,29 +5,20 @@ unit uTurtle;
 interface
 
 uses
-  Classes, SysUtils, fgl;
+  Classes, SysUtils, fgl, uGrammatik, uStringEntwickler;
 
 type TObjekte = (kw,gw,p,kq,gq,d);
 
-type TRegelDictionary = TFPGMap<Char,String>;
-
 type TPunkt3D = record
-    sx,sy,sz:Real
+    x,y,z:Real;
 end;
 
 type TZeichenParameter = record
      //zeichenart:TZeichenart;
      winkel: Real;
      rekursionsTiefe: Cardinal;
-     //startPunkt: TPunkt3D;
-     //zufaelligkeiten: Real;
-end;
-
-type TGrammatik = record
-    axiom: String;
-    //regeln: TRegelDictionary;
-
-    regeln: String; //testing
+     startPunkt: TPunkt3D;
+     procedure setzeStartPunkt(x,y,z: Real);
 end;
 
 // Die Entitaet, die sich auf dem Bildschirm herumbewegt,
@@ -36,17 +27,23 @@ type TTurtle = class
     private
         FGrammatik: TGrammatik;
         FZeichenParameter: TZeichenParameter;
+        FStringEntwickler: TStringEntwickler;
 
         // setter-Funktionen
         procedure setzeWinkel(const phi: Real);
         procedure setzeRekursionsTiefe(const tiefe: Cardinal);
     public
         constructor Create(gram: TGrammatik; zeichenPara: TZeichenParameter);
+		destructor Destroy; override;
 
+        // properties
+        //// FGrammatik
         property axiom: String read FGrammatik.axiom;
-        property regeln: String read FGrammatik.regeln
+        property regeln: TRegelDictionary read FGrammatik.regeln;
+        //// FZeichenParameter
         property winkel: Real read FZeichenParameter.winkel write setzeWinkel;
         property rekursionsTiefe: Cardinal read FZeichenParameter.rekursionsTiefe write setzeRekursionsTiefe;
+        property startPunkt: TPunkt3D read FZeichenParameter.startPunkt;
 
         procedure zeichnen;
 end;
@@ -54,28 +51,32 @@ end;
 VAR ersetzung: String;
     objekt: TObjekte;
 
-{
-procedure init (sx,sy,sz,bx,by,bz:Real);
-procedure Schritt (l:Real;Spur:BOOLEAN);
-procedure X_Rot (a:Real);
-procedure Y_Rot (a:Real);
-procedure Z_Rot (a:Real);
-procedure kehrt;
-procedure Push;
-procedure Pop;
-}
-
 implementation
 
 uses uMatrizen,dglOpenGL;
+
+procedure TZeichenParameter.setzeStartPunkt(x,y,z: Real);
+begin
+    startPunkt.x := x;
+    startPunkt.y := y;
+    startPunkt.z := z;
+end;
 
 constructor TTurtle.Create(gram: TGrammatik; zeichenPara: TZeichenParameter);
 begin
     FGrammatik := gram;
     FZeichenParameter := zeichenPara;
+    FStringEntwickler := TStringEntwickler.Create(gram);
 end;
 
+destructor TTurtle.Destroy;
+begin
+    // to be done
+end;
+
+//////////////////////////////////////////////////////////
 // setter-Funktionen
+//////////////////////////////////////////////////////////
 procedure TTurtle.setzeWinkel(const phi: Real);
 begin
     FZeichenParameter.winkel := phi;
@@ -86,15 +87,18 @@ begin
     FZeichenParameter.rekursionsTiefe := tiefe;
 end;
 
-
-// Parameter: Startpunkt der Turtle und (Bufferwert?)
-procedure init (sx,sy,sz,bx,by,bz:Real);
+// Parameter: Startpunkt der Turtle
+procedure init (sx,sy,sz:Real);
 begin
   glMatrixMode(GL_ModelView);
   glClearColor (0,0,0,0);
   ObjKOSInitialisieren;
   ObjInEigenKOSVerschieben(sx,sy,sz);
 end;
+
+//////////////////////////////////////////////////////////
+// Bewegung der Turtle
+//////////////////////////////////////////////////////////
 
 procedure Schritt (l:Real;Spur:BOOLEAN);
 begin
@@ -103,6 +107,7 @@ begin
     glMatrixMode(GL_ModelView);
     UebergangsmatrixObjekt_Kamera_Laden;
     glColor3f(1,1,1);
+    glLineWidth(0.01);
     glBegin(GL_LINES);
        glVertex3f(0,0,0);glVertex3f(0,l,0);
     glEnd;
@@ -151,6 +156,7 @@ begin
     glMatrixMode(GL_ModelView);
     UebergangsmatrixObjekt_Kamera_Laden;
     glColor3f(0,1,0);
+    glLineWidth(10);
     glBegin(GL_LINES);
        glVertex3f(0,0,0);glVertex3f(0,l,0);
     glEnd;
@@ -161,21 +167,14 @@ end;
 
 procedure TTurtle.zeichnen;
 VAR hs:String;
-   // m: Anzahl der zeichenbaren Buchstaben
+   // m: Laenge der Linien
    // n: Anzahl der uebrigen Rekursionen
    procedure rekErsetzung (m,n:CARDINAL;s:String);
    begin
       WHILE s<>'' DO
       begin
         CASE s[1] of
-          'F':IF n=0 THEN schritt (1/m,TRUE)
-              ELSE
-              BEGIN
-                 //delete (hs,1,1);
-                 //Push;
-                 rekErsetzung(m,n-1,ersetzung);
-                 //Pop
-              end;
+          'F': schritt (1/m,TRUE);
           'f':schritt (1/m,FALSE);
           '+':Z_Rot (FZeichenParameter.winkel);
           '-':Z_Rot (-FZeichenParameter.winkel);
@@ -187,22 +186,14 @@ VAR hs:String;
           ']':Pop;
           'B':Blatt(1/m,True);
         end;
-        delete (s,1,1);
+        delete(s,1,1);
       end;
    end;
 begin
-  hs:=FGrammatik.axiom;
-  ersetzung := FGrammatik.regeln;
-  init (0,0,0,0,0,0);
-  rekErsetzung (20,FZeichenParameter.rekursionsTiefe,hs);
+  init(FZeichenParameter.startPunkt.x,FZeichenParameter.startPunkt.y,FZeichenParameter.startPunkt.z);
+  FStringEntwickler.entwickeln(FZeichenParameter.rekursionsTiefe);
+  rekErsetzung (50,FZeichenParameter.rekursionsTiefe,FStringEntwickler.entwickelterString);
 end;
 
-// testing
-begin
-  {
-  hs:='F';
-  ersetzung:='F&[+F&&FB]&&F[-^^/^-FB]F';
-  phi:=47.5;
-  }
 end.
 

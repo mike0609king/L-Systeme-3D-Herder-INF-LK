@@ -12,7 +12,7 @@ procedure ozeichnen;
 
 implementation
 
-uses uTurtle,uBeleuchtung;
+uses uTurtle, uGrammatik, uBeleuchtung;
 VAR o: TTurtle;
     gram: TGrammatik;
     zeichenPara: TZeichenParameter;
@@ -24,10 +24,16 @@ begin
 end;
 
 begin
+    {
     gram.axiom := 'F';
     gram.regeln := 'F&[+F&&FB]&&F[-^^/^-FB]F'; // noch nicht ganz fertig
+    }
+    gram.axiom := 'F';
+    gram.regeln := TRegelDictionary.Create;
+    gram.regeln.add('F','F&[+F&&FB]&&F[-^^/^-FB]F');
     zeichenPara.winkel := 47.5;
     zeichenPara.rekursionsTiefe := 4;
+    zeichenPara.setzeStartPunkt(0,0,0);
     o := TTurtle.create(gram, zeichenPara);
 end.
 

@@ -12,8 +12,10 @@ procedure ozeichnen;
 
 implementation
 
-uses uturtle,uBeleuchtung;
-VAR o:TObjekt;
+uses uTurtle,uBeleuchtung;
+VAR o: TTurtle;
+    gram: TGrammatik;
+    zeichenPara: TZeichenParameter;
 
 procedure ozeichnen;
 begin
@@ -22,6 +24,10 @@ begin
 end;
 
 begin
-   o:=TObjekt.create;
+    gram.axiom := 'F';
+    gram.regeln := 'F&[+F&&FB]&&F[-^^/^-FB]F'; // noch nicht ganz fertig
+    zeichenPara.winkel := 47.5;
+    zeichenPara.rekursionsTiefe := 4;
+    o := TTurtle.create(gram, zeichenPara);
 end.
 

@@ -1,40 +1,91 @@
 unit uTurtle;
 
-{$mode delphi}
+{$mode delphi}{$H+}
 
 interface
 
 uses
-  Classes, SysUtils;
+  Classes, SysUtils, fgl;
 
-TYPE TObjekte = (kw,gw,p,kq,gq,d);
-TYPE TObjekt = class
-     procedure zeichnen;
-end;
-TYPE zeichen = record
-     //Zeichenart:TZeichenart;
-     Winkel:Real;
-     RekursionsTiefe:Cardinal;
-     //Zufaelligkeiten:Real;
+type TObjekte = (kw,gw,p,kq,gq,d);
+
+type TRegelDictionary = TFPGMap<Char,String>;
+
+type TPunkt3D = record
+    sx,sy,sz:Real
 end;
 
-VAR ts,ersetzung:String;
-    phi:REAL;
-VAR objekt:TObjekte;
+type TZeichenParameter = record
+     //zeichenart:TZeichenart;
+     winkel: Real;
+     rekursionsTiefe: Cardinal;
+     //startPunkt: TPunkt3D;
+     //zufaelligkeiten: Real;
+end;
 
-{procedure init (sx,sy,sz,bx,by,bz:Real);
+type TGrammatik = record
+    Axiom: String;
+    //Regeln: TRegelDictionary;
+
+    Regeln: String; //testing
+end;
+
+// Die Entitaet, die sich auf dem Bildschirm herumbewegt,
+// um den L-Baum zu zeichnen
+type TTurtle = class
+    private
+        FGrammatik: TGrammatik;
+        FZeichenParameter: TZeichenParameter;
+
+        // setter-Funktionen
+        procedure setzeWinkel(const phi: Real);
+        procedure setzeRekursionsTiefe(const tiefe: Cardinal);
+    public
+        constructor Create(gram: TGrammatik; zeichenPara: TZeichenParameter);
+
+        property winkel: Real read FZeichenParameter.winkel write setzeWinkel;
+        property rekursionsTiefe: Cardinal read FZeichenParameter.rekursionsTiefe write setzeRekursionsTiefe;
+
+        procedure zeichnen;
+end;
+
+VAR ersetzung: String;
+    objekt: TObjekte;
+
+{
+procedure init (sx,sy,sz,bx,by,bz:Real);
 procedure Schritt (l:Real;Spur:BOOLEAN);
 procedure X_Rot (a:Real);
 procedure Y_Rot (a:Real);
 procedure Z_Rot (a:Real);
 procedure kehrt;
 procedure Push;
-procedure Pop;}
+procedure Pop;
+}
 
 implementation
 
 uses uMatrizen,dglOpenGL;
 
+constructor TTurtle.Create(gram: TGrammatik; zeichenPara: TZeichenParameter);
+begin
+    FGrammatik := gram;
+    FZeichenParameter := zeichenPara;
+end;
+
+// setter-Funktionen
+procedure TTurtle.setzeWinkel(const phi: Real);
+begin
+    FZeichenParameter.winkel := phi;
+end;
+
+procedure TTurtle.setzeRekursionsTiefe(const tiefe: Cardinal);
+begin
+    FZeichenParameter.rekursionsTiefe := tiefe;
+end;
+
+
+// Parameter: Startpunkt der Turtle und (Bufferwert?)
 procedure init (sx,sy,sz,bx,by,bz:Real);
 begin
   glMatrixMode(GL_ModelView);
@@ -45,7 +96,7 @@ end;
 
 procedure Schritt (l:Real;Spur:BOOLEAN);
 begin
-  IF Spur Then
+  if Spur then
   begin
     glMatrixMode(GL_ModelView);
     UebergangsmatrixObjekt_Kamera_Laden;
@@ -105,8 +156,11 @@ begin
   ObjInEigenKOSVerschieben(0,l,0)
 end;
 
-procedure TObjekt.zeichnen;
+
+procedure TTurtle.zeichnen;
 VAR hs:String;
+   // m: Anzahl der zeichenbaren Buchstaben
+   // n: Anzahl der uebrigen Rekursionen
    procedure rekErsetzung (m,n:CARDINAL;s:String);
    begin
       WHILE s<>'' DO
@@ -121,12 +175,12 @@ VAR hs:String;
                  //Pop
               end;
           'f':schritt (1/m,FALSE);
-          '+':Z_Rot (phi);
-          '-':Z_Rot (-phi);
-          '&':Y_Rot (phi);
-          '^':Y_Rot (-phi);
-          '/':X_Rot (phi);
-          '\':X_Rot (-phi);
+          '+':Z_Rot (FZeichenParameter.winkel);
+          '-':Z_Rot (-FZeichenParameter.winkel);
+          '&':Y_Rot (FZeichenParameter.winkel);
+          '^':Y_Rot (-FZeichenParameter.winkel);
+          '/':X_Rot (FZeichenParameter.winkel);
+          '\':X_Rot (-FZeichenParameter.winkel);
           '[':Push;
           ']':Pop;
           'B':Blatt(1/m,True);
@@ -135,13 +189,18 @@ VAR hs:String;
       end;
    end;
 begin
+  hs:=FGrammatik.axiom;
+  ersetzung := FGrammatik.regeln;
   init (0,0,0,0,0,0);
-  hs:=ts;
-  rekErsetzung (20,4,hs);
+  rekErsetzung (20,FZeichenParameter.rekursionsTiefe,hs);
 end;
+
+// testing
 begin
-  ts:='F';
+  {
+  hs:='F';
   ersetzung:='F&[+F&&FB]&&F[-^^/^-FB]F';
   phi:=47.5;
+  }
 end.
 

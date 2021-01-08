@@ -34,7 +34,7 @@ type TTurtle = class
         procedure setzeRekursionsTiefe(const tiefe: Cardinal);
     public
         constructor Create(gram: TGrammatik; zeichenPara: TZeichenParameter);
-		destructor Destroy; override;
+        destructor Destroy; override;
 
         // properties
         //// FGrammatik
@@ -44,6 +44,9 @@ type TTurtle = class
         property winkel: Real read FZeichenParameter.winkel write setzeWinkel;
         property rekursionsTiefe: Cardinal read FZeichenParameter.rekursionsTiefe write setzeRekursionsTiefe;
         property startPunkt: TPunkt3D read FZeichenParameter.startPunkt;
+
+        // setter-Funktionen
+        procedure setzeStartPunkt(const x,y,z: Real);
 
         procedure zeichnen;
 end;
@@ -85,6 +88,11 @@ end;
 procedure TTurtle.setzeRekursionsTiefe(const tiefe: Cardinal);
 begin
     FZeichenParameter.rekursionsTiefe := tiefe;
+end;
+
+procedure TTurtle.setzeStartPunkt(const x,y,z: Real);
+begin
+    FZeichenParameter.setzeStartPunkt(x,y,z);
 end;
 
 // Parameter: Startpunkt der Turtle

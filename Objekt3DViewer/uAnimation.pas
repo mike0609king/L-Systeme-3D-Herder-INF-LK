@@ -24,10 +24,6 @@ begin
 end;
 
 begin
-    {
-    gram.axiom := 'F';
-    gram.regeln := 'F&[+F&&FB]&&F[-^^/^-FB]F'; // noch nicht ganz fertig
-    }
     gram.axiom := 'F';
     gram.regeln := TRegelDictionary.Create;
     gram.regeln.add('F','F&[+F&&FB]&&F[-^^/^-FB]F');

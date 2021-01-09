@@ -1,4 +1,4 @@
-unit UNeu;
+unit uForm;
 
 {$MODE Delphi}
 
@@ -18,10 +18,9 @@ type
     BtKameraReset: TButton;
     Label1: TLabel;
     MainMenu1: TMainMenu;
-    MklQuadrat: TMenuItem;
-    MgrQuadrat: TMenuItem;
-    MDreieck: TMenuItem;
     GraphikPanel: TPanel;
+    Grammatik: TMenuItem;
+    Parameter: TMenuItem;
     Timer1: TTimer;
     BtLinksV: TButton;
     BtRechtsV: TButton;
@@ -46,29 +45,13 @@ type
     BtRunterKreis: TButton;
     TrackBar1: TTrackBar;
     Label8: TLabel;
-    procedure Button1Click(Sender: TObject);
-    procedure Button3Click(Sender: TObject);
     procedure BtKameraResetClick(Sender: TObject);
-    procedure FormShortCut(var Msg: TLMKey; var Handled: Boolean);
-    procedure MenuItem2Click(Sender: TObject);
-    procedure MenuItem4Click(Sender: TObject);
-    procedure MenuItem27Click(Sender: TObject);
-    procedure MenuItem28Click(Sender: TObject);
-    procedure MenuItem29Click(Sender: TObject);
-    procedure MDreieckSClick(Sender: TObject);
+    procedure GrammatikClick(Sender: TObject);
+    procedure ParameterClick(Sender: TObject);
     procedure MOrthoClick(Sender: TObject);
-    procedure MTetraederSClick(Sender: TObject);
     procedure MZentralClick(Sender: TObject);
     procedure MKoordinatensystemClick(Sender: TObject);
     procedure MWeltKOSClick(Sender: TObject);
-    procedure MenuItem17Click(Sender: TObject);
-    procedure MZurueckClick(Sender: TObject);
-    procedure MInitClick(Sender: TObject);
-    procedure MObjektClick(Sender: TObject);
-    procedure MObjektKOSClick(Sender: TObject);
-    procedure RadioGroup2Click(Sender: TObject);
-    procedure RadioGroup2SelectionChanged(Sender: TObject);
-    procedure RadioGroup3SelectionChanged(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -93,9 +76,6 @@ type
     procedure Button18OnMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure Button19OnMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure TrackBar1Change(Sender: TObject);
-    procedure BtFormMClick(Sender: TObject);
-   // procedure kartToKugel;
-   // procedure BtUmrechnenClick(Sender: TObject);
     procedure BtXRotClick(Sender: TObject);
     procedure BtYRotClick(Sender: TObject);
     procedure BtZRotClick(Sender: TObject);
@@ -110,8 +90,7 @@ var
   HauptForm: TForm1;
 
 implementation
-uses  uAnimation,uKamera, uKamObjektiv, uMatrizen, dglopenGL, uTurtle,
-      AMatrix,Rotation,Umrechnung, Umrechnung2,Streckung, Verschiebung, Scherung;
+uses  uAnimation,uKamera, uKamObjektiv, uMatrizen;
 {$R *.lfm}
 
 procedure TForm1.FormCreate(Sender: TObject);
@@ -135,6 +114,15 @@ end;
 procedure TForm1.FormDestroy(Sender: TObject);
 begin
   Kameradestroy(GraphikPanel);
+end;
+procedure TForm1.GrammatikClick(Sender: TObject);
+begin
+
+end;
+
+procedure TForm1.ParameterClick(Sender: TObject);
+begin
+
 end;
 
 
@@ -178,9 +166,6 @@ begin
    Timer1.Interval:=1;
    aktiv(r)
 end;
-
-
-
 procedure TForm1.MOrthoClick(Sender: TObject);
 begin
    uKamObjektiv.aktObjektiv:=Orthogonal;
@@ -190,57 +175,11 @@ begin
 
 end;
 
-
-procedure TForm1.MenuItem27Click(Sender: TObject);
-begin
-  FormStreck.Visible:=True
-end;
-
-procedure TForm1.MenuItem28Click(Sender: TObject);
-begin
-  FormScher.Visible:=TRUE
-end;
-
-procedure TForm1.MenuItem29Click(Sender: TObject);
-begin
-   FormVer.Visible:=TRUE
-end;
-
-procedure TForm1.MDreieckSClick(Sender: TObject);
-begin
-  PnRekTiefe.Visible:=True;
-  //uObjekt.objekt:=sd
-end;
-
-procedure TForm1.FormShortCut(var Msg: TLMKey; var Handled: Boolean);
-begin
-
-end;
-
-procedure TForm1.Button1Click(Sender: TObject);
-begin
-  //RekTiefe:=SpinEdit1.Value;
-  PnRekTiefe.Visible:=FALSE
-end;
-
-procedure TForm1.BtOKClick(Sender: TObject);
-begin
-  IF RadioGroup1.ItemIndex=0 THEN FormAMatrix.BtMxAClick(self)
-  ELSE FormAMatrix.BtAxMClick(self);
-  PnPunktSpiegelung.Visible:=FALSE
-end;
-
-procedure TForm1.Button3Click(Sender: TObject);
-begin
-  RadioGroup2SelectionChanged(self);
-  FormAMatrix.BtAxMClick(self);
-  PnEbenenSpiegelung.Visible:=FALSE
-end;
-
 procedure TForm1.BtKameraResetClick(Sender: TObject);
 begin
   KameraInit(GraphikPanel);
 end;
+
 
 procedure TForm1.MZentralClick(Sender: TObject);
 begin
@@ -260,179 +199,6 @@ begin
     //uObjekt.WeltKOSein:=NOT WeltKOSein;
 
 end;
-
-procedure TForm1.MenuItem17Click(Sender: TObject);
-begin
-end;
-
-procedure TForm1.MZurueckClick(Sender: TObject);
-begin
-   FormAMatrix.Schritt_zurueck;
-end;
-
-procedure TForm1.MInitClick(Sender: TObject);
-begin
-  FormAMatrix.BtInitClick(self)
-end;
-
-procedure TForm1.MObjektClick(Sender: TObject);
-begin
-
-end;
-
-procedure TForm1.MObjektKOSClick(Sender: TObject);
-begin
-  //uObjekt.ObjektKOSein:= NOT ObjektKOSein;
-
-end;
-
-procedure TForm1.MenuItem21Click(Sender: TObject);
-begin
-end;
-
-procedure TForm1.MenuItem22Click(Sender: TObject);
-begin
-   FormAMatrix.Azxsinit(2,2);
-   FormAMatrix.Visible:=TRUE;
-end;
-
-procedure TForm1.MenuItem23Click(Sender: TObject);
-begin
-   FormAMatrix.Azxsinit(2,3);
-   FormAMatrix.Visible:=TRUE;
-
-end;
-
-procedure TForm1.MenuItem24Click(Sender: TObject);
-begin
-   FormAMatrix.Azxsinit(3,3);
-   FormAMatrix.Visible:=TRUE;
-end;
-
-procedure TForm1.MenuItem25Click(Sender: TObject);
-begin
-   FormAMatrix.Azxsinit(4,4);
-   FormAMatrix.Visible:=TRUE;
-end;
-
-procedure TForm1.MenuItem26Click(Sender: TObject);
-begin
-   FormRot.Visible:=True;
-end;
-
-procedure TForm1.MklQuadratClick(Sender: TObject);
-begin
-  uTurtle.objekt:=kq;
-end;
-
-procedure TForm1.MenuItem30Click(Sender: TObject);
-begin
-   FormAMatrix.Azxsinit(3,4);
-   FormAMatrix.Visible:=TRUE;
-end;
-
-procedure TForm1.MkartToKugelClick(Sender: TObject);
-begin
-  FormKart2Kugel.Visible:=TRUE
-end;
-
-procedure TForm1.MKugelToKartClick(Sender: TObject);
-begin
-  FormKugel2Kart.Visible:=TRUE
-end;
-
-procedure TForm1.MgrQuadratClick(Sender: TObject);
-begin
-  uTurtle.objekt:=gq;
-end;
-
-procedure TForm1.MDreieckClick(Sender: TObject);
-begin
-  uTurtle.objekt:=d;
-end;
-
-procedure TForm1.MklWuerfelClick(Sender: TObject);
-begin
-  uTurtle.objekt:=kw
-end;
-
-procedure TForm1.MgrWuerfelClick(Sender: TObject);
-begin
-  uTurtle.objekt:=gw
-end;
-
-procedure TForm1.MPyramideClick(Sender: TObject);
-begin
-  uTurtle.objekt:=p
-end;
-
-procedure TForm1.PnEbenenSpiegelungClick(Sender: TObject);
-begin
-  RadioGroup2SelectionChanged(self)
-end;
-
-procedure TForm1.PnEbenenSpiegelungGetDockCaption(Sender: TObject; AControl: TControl;
-  var ACaption: String);
-begin
-
-end;
-
-procedure TForm1.RadioGroup2Click(Sender: TObject);
-begin
-
-end;
-
-
-
-procedure TForm1.RadioGroup2SelectionChanged(Sender: TObject);
-VAR vx,vy,vz,vs:TVektor;
-    f:Real;
-VAR temp:MatrixPaar;
-VAR phi:Real;
-
-begin
-  WITH FormAMatrix DO
-  begin
-    EdAInit;
-    IF RadioGroup3.ItemIndex=1 THEN
-    Begin
-      CASE RadioGroup2.ItemIndex OF
-        0: A33.Text:='-1';
-        1: A22.Text:='-1';
-        2: A11.Text:='-1';
-     end;
-    end
-    else
-    begin
-      vx.x:=OMatrix.o[Mat_x].x;vx.y:=OMatrix.o[Mat_X].y;vx.z:=OMatrix.o[Mat_X].z;
-      vy.x:=OMatrix.o[Mat_Y].x;vy.y:=OMatrix.o[Mat_Y].y;vy.z:=OMatrix.o[Mat_Y].z;
-      vz.x:=OMatrix.o[Mat_Z].x;vz.y:=OMatrix.o[Mat_Z].y;vz.z:=OMatrix.o[Mat_Z].z;
-      phi:=180;
-      glMatrixMode(GL_ModelView);
-      glLoadIdentity;
-      glGetFloatV(GL_MODELVIEW_MATRIX,@temp.o);
-      temp.o[Mat_X].x:=-1;temp.o[Mat_Y].y:=-1;temp.o[Mat_Z].z:=-1;
-      WITH OMatrix.o[Mat_Pos] DO glTranslatef(x,y,z);
-      Case RadioGroup2.ItemIndex Of
-        0: Kreuzprodukt(vx,vy,vs);
-        1: KreuzProdukt(vx,vz,vs);
-        2: KreuzProdukt(vy,vz,vs);
-      end;
-      glRotatef(phi,vs.x,vs.y,vs.z);
-      glMultMatrixf(@temp.o);
-      //Punktspiegelung;
-      With OMatrix.o[Mat_Pos] Do glTranslatef(-x,-y,-z);
-      glGetFloatV(GL_MODELVIEW_MATRIX,@temp.o);
-      EdFelderBesetzen(A,temp);
-    end;
-  end;
-end;
-
-procedure TForm1.RadioGroup3SelectionChanged(Sender: TObject);
-begin
-  RadioGroup2SelectionChanged(self)
-end;
-
 
 procedure TForm1.Button4OnMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
@@ -546,17 +312,9 @@ begin
    Timer1.Enabled:=True;
 end;
 
-
-
 procedure TForm1.TrackBar1Change(Sender: TObject);
 begin
    v:=TrackBar1.Position
-end;
-
-
-procedure TForm1.BtFormMClick(Sender: TObject);
-begin
-   FormAMatrix.Visible:=TRUE;
 end;
 
 procedure TForm1.BtXRotClick(Sender: TObject);

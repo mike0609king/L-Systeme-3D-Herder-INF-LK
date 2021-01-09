@@ -1,10 +1,10 @@
 object Form1: TForm1
-  Left = 547
+  Left = 882
   Height = 451
-  Top = 346
+  Top = 212
   Width = 514
   Caption = 'Koordinatentransformation / Lineare Abbildungen /Affine Abbildungen / Perspektivische Abbildungen'
-  ClientHeight = 431
+  ClientHeight = 451
   ClientWidth = 514
   Color = clBtnFace
   Font.Color = clWindowText
@@ -14,9 +14,9 @@ object Form1: TForm1
   OnCreate = FormCreate
   LCLVersion = '2.0.10.0'
   object GraphikPanel: TPanel
-    Left = 24
+    Left = 4
     Height = 386
-    Top = 25
+    Top = 1
     Width = 371
     Caption = 'GraphikPanel'
     TabOrder = 20
@@ -78,7 +78,7 @@ object Form1: TForm1
   object Label8: TLabel
     Left = 4
     Height = 13
-    Top = 398
+    Top = 418
     Width = 78
     Anchors = [akLeft, akBottom]
     Caption = 'Geschwindigkeit'
@@ -297,7 +297,7 @@ object Form1: TForm1
   object TrackBar1: TTrackBar
     Left = 92
     Height = 25
-    Top = 399
+    Top = 419
     Width = 401
     Max = 51
     Min = 1
@@ -325,12 +325,5 @@ object Form1: TForm1
   object MainMenu1: TMainMenu
     Left = 40
     Top = 48
-    object MenuItem1: TMenuItem
-      Caption = 'MenuItem1'
-      object MenuItem2: TMenuItem
-        Caption = 'MenuItem2'
-        OnClick = MenuItem2Click
-      end
-    end
   end
 end

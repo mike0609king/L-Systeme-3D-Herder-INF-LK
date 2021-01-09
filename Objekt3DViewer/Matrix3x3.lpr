@@ -4,7 +4,8 @@ program Matrix3x3;
 
 uses
   Forms, Interfaces,
-  UNeu in 'Formulare\UNeu.pas' {HauptForm},
+  //UNeu in 'Formulare\UNeu.pas' {HauptForm},
+  uForm in 'Formulare\uFrom.pas' {HauptForm},
   AMatrix in 'Formulare\AMatrix.pas' {FormAMatrix},
   MMatrix in 'Formulare\MMatrix.pas' {FormMMatrix},
   Rotation in 'Formulare\Rotation.pas' {FormRot},

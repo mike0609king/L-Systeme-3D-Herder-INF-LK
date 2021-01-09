@@ -5,27 +5,26 @@ Bevor man L-Systeme implementiert sollte man sich zuerst einmal belesen. Hierzu 
 [Dokument](https://www.yumpu.com/de/document/read/18849596/l-systeme-und-andere-kunstliche-pflanzen) sehr zu empfehlen.
 
 ## Frontend
-Das Frontend ist nach dem Ausfuehren und ausprobieren des Programms relativ selbst erklaerend.
+Das Frontend ist nach dem Ausführen und ausprobieren des Programms relativ selbst erklärend.
 
 ## Backend
 Hier werden die wesentlichen Strukturen des Backend beschrieben.
 
 ### Grammatik-Struktur (TGrammatik)
-Diese Klasse speichert unsere definition der Grammatik, welche folgendermassen aufgebaut ist:
+Diese Klasse speichert unsere Definition der Grammatik, welche folgendermassen aufgebaut ist:
 
     record: Grammatik
       axiom: String;
       regeln: TFPGMap<Char,String>;
 
-Noch zu ergaenzen:
-  - wenn man Zufaelligkeiten reinbringen will, muss man den Datentyp des Wertes umdefinieren
-    - eine Liste aus Wahrscheinlichkeit und Produktion waere denkbar
+Noch zu ergänzen:
+  - wenn man Zufälligkeiten reinbringen will, muss man den Datentyp des Wertes umdefinieren
+    - eine Liste aus Wahrscheinlichkeit und Produktion wäre denkbar
 
-### Turtle-Stuktur (TTurtle)
-// Alle Parameter hier duerfen von dem Nutzer geaendert werden
-Die Turtle-Klasse ist dafuer verantwortlich das L-System ueberhaupt zu Zeichnen. Diese wird mit einer Grammatik 
-und mehreren "zeichen Parametern" initialisiert. Die Grammatik ist waerend der Lebenszeit der Turtle nicht 
-veraenderbar, die "zeichen Parameter" jedoch schon. Grober aufbau der zeichen Parameter:
+### Turtle-Struktur (TTurtle)
+Die Turtle-Klasse ist dafür verantwortlich das L-System überhaupt zu Zeichnen. Diese wird mit einer Grammatik 
+und mehreren "Zeichen Parametern" initialisiert. Die Grammatik ist während der Lebenszeit der Turtle nicht 
+veränderbar, die "Zeichen Parameter" jedoch schon. Grober Aufbau der Zeichen Parameter:
 
     record: ZeichenParameter
       winkel: Real;
@@ -33,7 +32,7 @@ veraenderbar, die "zeichen Parameter" jedoch schon. Grober aufbau der zeichen Pa
       startPunkt: TPunk3D;
       Zeichenart: TZeichenart; // wird erst spaeter eingefuegt
 
-Die Turtle-Klasse sieht fuer grob folgendermassen aus:
+Die Turtle-Klasse sieht für grob folgendermassen aus:
 
     class: Turtle
       Feld: Grammatik (read only);
@@ -44,25 +43,34 @@ Die Turtle-Klasse sieht fuer grob folgendermassen aus:
         Parameter 2: Zeichenparameter;
       procedure: zeichnen;
 
-Noch zu ergaenzen:
-  - verschiedene "Zeichenstile" moeglich machen (verschiedene Farben...)
+Noch zu ergänzen:
+  - verschiedene "Zeichenstile" möglich machen (verschiedene Farben...)
 
 ### Entwickeln der Strings (TStringEntwickler)
-Das entwickeln der Strings wird von dem "StringEndwickler" gehandhabt. Diese wird mit einer Grammatik initialisiert, 
-welche waehrend der Laufzeit der initialisierten Instanz nicht geaendert werden kann. Beim Entwickeln des Strings kann man 
-als Parameter die Rekursions Tiefe angeben:
+Das Entwickeln der Strings wird von dem "StringEndwickler" gehandhabt. Diese wird mit einer Grammatik initialisiert, 
+welche während der Laufzeit der initialisierten Instanz nicht geändert werden kann. Beim Entwickeln des Strings kann man 
+als Parameter die Rekursionstiefe angeben:
 
     class: StringEntwickler
       Feld: Grammatik (read only);
       Feld: String (Endwickelter String);
       constructor: Create;
         Parameter 1: Grammatik;
-      entwickeln: entwickeln;
+      procedure: entwickeln;
         Parameter 1: Cardinal (rekursionsTiefe);
 
-Noch zu ergaenzen:
-  - Zufaelligkeit
-    - Ueberlegung: Bewaeltigen mit dem bilden der Praefixsummen von Wahrscheinlichkeitswerten. Diese werden kann mit binaerer Suche Abgefragt.
+Noch zu ergänzen:
+  - Zufälligkeit
+    - Überlegung: Bewältigen mit dem bilden der Präfixsummen von Wahrscheinlichkeitswerten. Diese werden dann mit binärer Suche Abgefragt.
   - (vllt) Optimierungen
     - der Algorithmus kann mit dynamischer Programmierung optimiert werden
-    - Ueberlegung: Unter Verwendung von bit-Magie und dynamischer Programmierung koennte eventuell sogar eine logarithmische Laufzeit erzielen. (Ist eine Ueberlegung wert)
+    - Überlegung: Unter Verwendung von Bit-Magie und dynamischer Programmierung könnte eventuell sogar eine logarithmische Laufzeit erzielt werden. (Ist eine Ueberlegung wert)
+
+### Grafisch dargestellt
+```mermaid
+graph TD
+    A[TGrammatik] -->|initialisiert| B[TTurtle]
+    B --> |gibt weiter an| C[TStringEntwickler]
+    D[TZeichenParameter] --> |parametrisiert/initialisiert| B
+    C --> |gezeichnet von| B
+```

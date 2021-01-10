@@ -3,8 +3,8 @@ object Form1: TForm1
   Height = 451
   Top = 212
   Width = 514
-  Caption = 'Koordinatentransformation / Lineare Abbildungen /Affine Abbildungen / Perspektivische Abbildungen'
-  ClientHeight = 451
+  Caption = 'L-Systeme in 3D'
+  ClientHeight = 431
   ClientWidth = 514
   Color = clBtnFace
   Font.Color = clWindowText
@@ -78,7 +78,7 @@ object Form1: TForm1
   object Label8: TLabel
     Left = 4
     Height = 13
-    Top = 418
+    Top = 398
     Width = 78
     Anchors = [akLeft, akBottom]
     Caption = 'Geschwindigkeit'
@@ -297,7 +297,7 @@ object Form1: TForm1
   object TrackBar1: TTrackBar
     Left = 92
     Height = 25
-    Top = 419
+    Top = 399
     Width = 401
     Max = 51
     Min = 1
@@ -325,5 +325,13 @@ object Form1: TForm1
   object MainMenu1: TMainMenu
     Left = 40
     Top = 48
+    object Grammatik: TMenuItem
+      Caption = 'Grammatik'
+      OnClick = GrammatikClick
+    end
+    object Parameter: TMenuItem
+      Caption = 'Parameter'
+      OnClick = ParameterClick
+    end
   end
 end

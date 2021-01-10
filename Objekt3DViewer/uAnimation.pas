@@ -24,6 +24,7 @@ begin
 end;
 
 begin
+    //Standard Turtel
     gram.axiom := 'F';
     gram.regeln := TRegelDictionary.Create;
     gram.regeln.add('F','F&[+F&&FB]&&F[-^^/^-FB]F');

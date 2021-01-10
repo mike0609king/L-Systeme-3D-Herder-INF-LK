@@ -70,3 +70,4 @@ Noch zu ergänzen:
 Folgende features sollen noch hinzugefuegt werden
   - mehr als ein Turtle gleichzeitig (Unterschiedliche Grammatiken) !!! (TurtleManager)
   - einige Standart Turtles 
+  - Performence verbessern (-> GPU verwenden) ??

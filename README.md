@@ -60,6 +60,9 @@ als Parameter die Rekursionstiefe angeben:
         Parameter 1: Cardinal (rekursionsTiefe);
 
 Noch zu ergänzen:
+  - mehr als ein Turtle gleichzeitig (Unterschiedliche Grammatiken) (Performence?!)
+  - einige Standart Turtles 
+  - Mehrere Regeln pro Grammatik?
   - Zufälligkeit
     - Überlegung: Bewältigen mit dem bilden der Präfixsummen von Wahrscheinlichkeitswerten. Diese werden dann mit binärer Suche Abgefragt.
   - (vllt) Optimierungen

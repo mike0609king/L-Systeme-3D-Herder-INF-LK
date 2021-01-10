@@ -105,7 +105,7 @@ begin
   v:=TrackBar1.Position;
   //uObjekt.objekt:=n;
   KameraInit(GraphikPanel);
-  KameraStart(uAnimation.ozeichnen);
+  KameraStart(uAnimation.ozeichnen); //sollte anders gemacht werden damit auf das Turtle objekt zugegriffen werden kann
   Timer1.Enabled:=FALSE;
   ObjKOSinitialisieren;
  // kartToKugel;
@@ -122,7 +122,7 @@ end;
 
 procedure TForm1.ParameterClick(Sender: TObject);
 begin
-
+  //Anbindung an uParameter
 end;
 
 

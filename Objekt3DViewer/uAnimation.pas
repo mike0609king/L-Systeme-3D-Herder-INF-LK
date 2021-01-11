@@ -12,10 +12,11 @@ procedure ozeichnen;
 
 implementation
 
-uses uTurtle, uGrammatik, uBeleuchtung;
+uses uTurtle, uGrammatik, uBeleuchtung, uZeichnerBase;
 VAR o: TTurtle;
     gram: TGrammatik;
     zeichenPara: TZeichenParameter;
+    zeichnerBase: TZeichnerBase;
 
 procedure ozeichnen;
 begin
@@ -30,6 +31,7 @@ begin
     zeichenPara.winkel := 47.5;
     zeichenPara.rekursionsTiefe := 4;
     zeichenPara.setzeStartPunkt(0,0,0);
-    o := TTurtle.create(gram, zeichenPara);
+    zeichnerBase := TZeichnerBase.Create(zeichenPara);
+    o := TTurtle.create(gram, zeichnerBase);
 end.
 

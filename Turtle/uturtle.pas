@@ -5,35 +5,23 @@ unit uTurtle;
 interface
 
 uses
-  Classes, SysUtils, fgl, uGrammatik, uStringEntwickler;
+  Classes, SysUtils, fgl, uGrammatik, uStringEntwickler, uZeichnerBase;
 
 type TObjekte = (kw,gw,p,kq,gq,d);
-
-type TPunkt3D = record
-    x,y,z:Real;
-end;
-
-type TZeichenParameter = record
-     //zeichenart:TZeichenart;
-     winkel: Real;
-     rekursionsTiefe: Cardinal;
-     startPunkt: TPunkt3D;
-     procedure setzeStartPunkt(x,y,z: Real);
-end;
 
 // Die Entitaet, die sich auf dem Bildschirm herumbewegt,
 // um den L-Baum zu zeichnen
 type TTurtle = class
     private
         FGrammatik: TGrammatik;
-        FZeichenParameter: TZeichenParameter;
+        FZeichner: TZeichnerBase; // poly...
         FStringEntwickler: TStringEntwickler;
 
         // setter-Funktionen
         procedure setzeWinkel(const phi: Real);
         procedure setzeRekursionsTiefe(const tiefe: Cardinal);
     public
-        constructor Create(gram: TGrammatik; zeichenPara: TZeichenParameter);
+        constructor Create(gram: TGrammatik; zeichner: TZeichnerBase);
         destructor Destroy; override;
 
         // properties
@@ -41,9 +29,9 @@ type TTurtle = class
         property axiom: String read FGrammatik.axiom;
         property regeln: TRegelDictionary read FGrammatik.regeln;
         //// FZeichenParameter
-        property winkel: Real read FZeichenParameter.winkel write setzeWinkel;
-        property rekursionsTiefe: Cardinal read FZeichenParameter.rekursionsTiefe write setzeRekursionsTiefe;
-        property startPunkt: TPunkt3D read FZeichenParameter.startPunkt;
+        //property winkel: Real read FZeichner.winkel write setzeWinkel;
+        //property rekursionsTiefe: Cardinal read FZeichner.rekursionsTiefe write setzeRekursionsTiefe;
+        //property startPunkt: TPunkt3D read FZeichner.startPunkt;
 
         // setter-Funktionen
         procedure setzeStartPunkt(const x,y,z: Real);
@@ -58,17 +46,10 @@ implementation
 
 uses uMatrizen,dglOpenGL;
 
-procedure TZeichenParameter.setzeStartPunkt(x,y,z: Real);
-begin
-    startPunkt.x := x;
-    startPunkt.y := y;
-    startPunkt.z := z;
-end;
-
-constructor TTurtle.Create(gram: TGrammatik; zeichenPara: TZeichenParameter);
+constructor TTurtle.Create(gram: TGrammatik; zeichner: TZeichnerBase);
 begin
     FGrammatik := gram;
-    FZeichenParameter := zeichenPara;
+    FZeichner := zeichner;
     FStringEntwickler := TStringEntwickler.Create(gram);
 end;
 
@@ -82,17 +63,17 @@ end;
 //////////////////////////////////////////////////////////
 procedure TTurtle.setzeWinkel(const phi: Real);
 begin
-    FZeichenParameter.winkel := phi;
+    FZeichner.winkel := phi;
 end;
 
 procedure TTurtle.setzeRekursionsTiefe(const tiefe: Cardinal);
 begin
-    FZeichenParameter.rekursionsTiefe := tiefe;
+    FZeichner.rekursionsTiefe := tiefe;
 end;
 
 procedure TTurtle.setzeStartPunkt(const x,y,z: Real);
 begin
-    FZeichenParameter.setzeStartPunkt(x,y,z);
+    FZeichner.setzeStartPunkt(x,y,z);
 end;
 
 // Parameter: Startpunkt der Turtle
@@ -104,11 +85,12 @@ begin
   ObjInEigenKOSVerschieben(sx,sy,sz);
 end;
 
+{
 //////////////////////////////////////////////////////////
 // Bewegung der Turtle
 //////////////////////////////////////////////////////////
 
-procedure Schritt (l:Real;Spur:BOOLEAN);
+procedure Schritt(l:Real;Spur:BOOLEAN);
 begin
   if Spur then
   begin
@@ -123,24 +105,24 @@ begin
   ObjInEigenKOSVerschieben(0,l,0)
 end;
 
-procedure X_Rot (a:Real);
+procedure X_Rot(a:Real);
 begin
   ObjUmEigenKOSDrehen(a,0,0,0,1,0,0);
 end;
 
-procedure Y_Rot (a:Real);
+procedure Y_Rot(a:Real);
 begin
-  ObjUmEigenKOSDrehen (a,0,0,0,0,1,0)
+  ObjUmEigenKOSDrehen(a,0,0,0,0,1,0)
 end;
 
-procedure Z_Rot (a:Real);
+procedure Z_Rot(a:Real);
 begin
-  ObjUmEigenKOSDrehen (a,0,0,0,0,0,1)
+  ObjUmEigenKOSDrehen(a,0,0,0,0,0,1)
 end;
 
 procedure kehrt;
 begin
-  ObjUmEigenKOSDrehen (180,0,0,0,0,0,1)
+  ObjUmEigenKOSDrehen(180,0,0,0,0,0,1)
 end;
 
 procedure Push;
@@ -157,7 +139,7 @@ begin
   glGetFloatv(GL_MODELVIEW_MATRIX,@OMatrix.o);
 end;
 
-procedure Blatt (l:Real;Spur:BOOLEAN);
+procedure Blatt(l:Real;Spur:BOOLEAN);
 begin
   IF Spur Then
   begin
@@ -171,10 +153,11 @@ begin
   end;
   ObjInEigenKOSVerschieben(0,l,0)
 end;
-
+}
 
 procedure TTurtle.zeichnen;
-VAR hs:String;
+VAR i: Cardinal;
+{
    // m: Laenge der Linien
    // n: Anzahl der uebrigen Rekursionen
    procedure rekErsetzung (m,n:CARDINAL;s:String);
@@ -197,10 +180,15 @@ VAR hs:String;
         delete(s,1,1);
       end;
    end;
+}
 begin
-  init(FZeichenParameter.startPunkt.x,FZeichenParameter.startPunkt.y,FZeichenParameter.startPunkt.z);
-  FStringEntwickler.entwickeln(FZeichenParameter.rekursionsTiefe);
-  rekErsetzung (50,FZeichenParameter.rekursionsTiefe,FStringEntwickler.entwickelterString);
+  init(FZeichner.startPunkt.x,FZeichner.startPunkt.y,FZeichner.startPunkt.z);
+  FStringEntwickler.entwickeln(FZeichner.rekursionsTiefe);
+  //rekErsetzung(50,FZeichenParameter.rekursionsTiefe,FStringEntwickler.entwickelterString);
+  for i := 1 to length(FStringEntwickler.entwickelterString) do
+  begin
+      FZeichner.zeichneBuchstabe(FStringEntwickler.entwickelterString[i]);
+  end;
 end;
 
 end.

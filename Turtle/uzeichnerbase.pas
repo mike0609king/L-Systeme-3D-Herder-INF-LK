@@ -7,7 +7,6 @@ interface
 uses
   Classes, SysUtils, fgl;
 
-
 type TPunkt3D = record
     x,y,z:Real;
 end;
@@ -22,10 +21,10 @@ end;
 type TProc = procedure of object;
 type TVersandTabelle = {specialize} TFPGMap<char, TProc>;
 type TZeichnerBase = class
-    private
+    protected
         FVersandTabelle: TVersandTabelle;
         FZeichenParameter: TZeichenParameter;
-
+    private
         // Bewegungen
         procedure aktionSchrittMitLinie;
         procedure aktionSchrittOhneLinie;

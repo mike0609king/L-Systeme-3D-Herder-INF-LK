@@ -20,6 +20,11 @@ type TTurtle = class
         // setter-Funktionen
         procedure setzeWinkel(const phi: Real);
         procedure setzeRekursionsTiefe(const tiefe: Cardinal);
+
+        // getter-Funktionen (die normale read Routine funktioniert hier nicht)
+        function gibRekursionsTiefe : Cardinal;
+        function gibWinkel : Real;
+        function gibStartPunkt : TPunkt3D;
     public
         constructor Create(gram: TGrammatik; zeichner: TZeichnerBase);
         destructor Destroy; override;
@@ -28,19 +33,18 @@ type TTurtle = class
         //// FGrammatik
         property axiom: String read FGrammatik.axiom;
         property regeln: TRegelDictionary read FGrammatik.regeln;
-        //// FZeichenParameter
-        //property winkel: Real read FZeichner.winkel write setzeWinkel;
-        //property rekursionsTiefe: Cardinal read FZeichner.rekursionsTiefe write setzeRekursionsTiefe;
-        //property startPunkt: TPunkt3D read FZeichner.startPunkt;
+        //// FZeichner
+        property winkel: Real read gibWinkel write setzeWinkel;
+        property rekursionsTiefe: Cardinal read gibRekursionsTiefe write setzeRekursionsTiefe;
+        property startPunkt: TPunkt3D read gibStartPunkt;
 
-        // setter-Funktionen
+        // setter-Funktionen (public)
         procedure setzeStartPunkt(const x,y,z: Real);
 
         procedure zeichnen;
 end;
 
-VAR ersetzung: String;
-    objekt: TObjekte;
+VAR objekt: TObjekte;
 
 implementation
 
@@ -85,106 +89,31 @@ begin
   ObjInEigenKOSVerschieben(sx,sy,sz);
 end;
 
-{
 //////////////////////////////////////////////////////////
-// Bewegung der Turtle
+// getter-Funktionen
 //////////////////////////////////////////////////////////
-
-procedure Schritt(l:Real;Spur:BOOLEAN);
+function TTurtle.gibRekursionsTiefe : Cardinal;
 begin
-  if Spur then
-  begin
-    glMatrixMode(GL_ModelView);
-    UebergangsmatrixObjekt_Kamera_Laden;
-    glColor3f(1,1,1);
-    glLineWidth(0.01);
-    glBegin(GL_LINES);
-       glVertex3f(0,0,0);glVertex3f(0,l,0);
-    glEnd;
-  end;
-  ObjInEigenKOSVerschieben(0,l,0)
+    result := FZeichner.rekursionsTiefe;
 end;
 
-procedure X_Rot(a:Real);
+function TTurtle.gibWinkel : Real;
 begin
-  ObjUmEigenKOSDrehen(a,0,0,0,1,0,0);
+    result := FZeichner.winkel;
 end;
 
-procedure Y_Rot(a:Real);
+function TTurtle.gibStartPunkt : TPunkt3D;
 begin
-  ObjUmEigenKOSDrehen(a,0,0,0,0,1,0)
+    result := FZeichner.startPunkt;
 end;
 
-procedure Z_Rot(a:Real);
-begin
-  ObjUmEigenKOSDrehen(a,0,0,0,0,0,1)
-end;
 
-procedure kehrt;
-begin
-  ObjUmEigenKOSDrehen(180,0,0,0,0,0,1)
-end;
-
-procedure Push;
-begin
-  glMatrixMode(GL_MODELVIEW_MATRIX);
-  glLoadMatrixf(@OMatrix.o);
-  glPushMatrix;
-end;
-
-procedure Pop;
-begin
-  glMatrixMode(GL_MODELVIEW_MATRIX);
-  glPopMatrix;
-  glGetFloatv(GL_MODELVIEW_MATRIX,@OMatrix.o);
-end;
-
-procedure Blatt(l:Real;Spur:BOOLEAN);
-begin
-  IF Spur Then
-  begin
-    glMatrixMode(GL_ModelView);
-    UebergangsmatrixObjekt_Kamera_Laden;
-    glColor3f(0,1,0);
-    glLineWidth(10);
-    glBegin(GL_LINES);
-       glVertex3f(0,0,0);glVertex3f(0,l,0);
-    glEnd;
-  end;
-  ObjInEigenKOSVerschieben(0,l,0)
-end;
-}
-
+// zeichner
 procedure TTurtle.zeichnen;
 VAR i: Cardinal;
-{
-   // m: Laenge der Linien
-   // n: Anzahl der uebrigen Rekursionen
-   procedure rekErsetzung (m,n:CARDINAL;s:String);
-   begin
-      WHILE s<>'' DO
-      begin
-        CASE s[1] of
-          'F': schritt (1/m,TRUE);
-          'f':schritt (1/m,FALSE);
-          '+':Z_Rot (FZeichenParameter.winkel);
-          '-':Z_Rot (-FZeichenParameter.winkel);
-          '&':Y_Rot (FZeichenParameter.winkel);
-          '^':Y_Rot (-FZeichenParameter.winkel);
-          '/':X_Rot (FZeichenParameter.winkel);
-          '\':X_Rot (-FZeichenParameter.winkel);
-          '[':Push;
-          ']':Pop;
-          'B':Blatt(1/m,True);
-        end;
-        delete(s,1,1);
-      end;
-   end;
-}
 begin
   init(FZeichner.startPunkt.x,FZeichner.startPunkt.y,FZeichner.startPunkt.z);
   FStringEntwickler.entwickeln(FZeichner.rekursionsTiefe);
-  //rekErsetzung(50,FZeichenParameter.rekursionsTiefe,FStringEntwickler.entwickelterString);
   for i := 1 to length(FStringEntwickler.entwickelterString) do
   begin
       FZeichner.zeichneBuchstabe(FStringEntwickler.entwickelterString[i]);

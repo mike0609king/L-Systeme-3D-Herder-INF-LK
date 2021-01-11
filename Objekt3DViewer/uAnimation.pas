@@ -16,7 +16,6 @@ uses uTurtle, uGrammatik, uBeleuchtung, uZeichnerBase;
 VAR o: TTurtle;
     gram: TGrammatik;
     zeichenPara: TZeichenParameter;
-    zeichnerBase: TZeichnerBase;
 
 procedure ozeichnen;
 begin
@@ -29,9 +28,8 @@ begin
     gram.regeln := TRegelDictionary.Create;
     gram.regeln.add('F','F&[+F&&FB]&&F[-^^/^-FB]F');
     zeichenPara.winkel := 47.5;
-    zeichenPara.rekursionsTiefe := 4;
+    zeichenPara.rekursionsTiefe := 5;
     zeichenPara.setzeStartPunkt(0,0,0);
-    zeichnerBase := TZeichnerBase.Create(zeichenPara);
-    o := TTurtle.create(gram, zeichnerBase);
+    o := TTurtle.create(gram, TZeichnerBase.Create(zeichenPara));
 end.
 

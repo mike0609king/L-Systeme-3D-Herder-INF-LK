@@ -12,8 +12,9 @@ procedure ozeichnen;
 
 implementation
 
-uses uTurtle, uGrammatik, uBeleuchtung, uZeichnerBase, uZeichnerGruenesBlatt;
-VAR o: TTurtle;
+uses uTurtle, uGrammatik, uBeleuchtung, uZeichnerBase, uZeichnerGruenesBlatt, uTurtleManager;
+VAR o: TTurtleManager;
+    turtle: TTurtle;
     gram: TGrammatik;
     zeichenPara: TZeichenParameter;
 
@@ -24,12 +25,20 @@ begin
 end;
 
 begin
+    o := TTurtleManager.Create;
+
     gram.axiom := 'F';
     gram.regeln := TRegelDictionary.Create;
     gram.regeln.add('F','F&[+F&&FB]&&F[-^^/^-FB]F');
     zeichenPara.winkel := 47.5;
     zeichenPara.rekursionsTiefe := 5;
+
     zeichenPara.setzeStartPunkt(0,0,0);
-    o := TTurtle.create(gram, TZeichnerGruenesBlatt.Create(zeichenPara));
+    turtle := TTurtle.Create(gram, TZeichnerBase.Create(zeichenPara));
+    o.addTurtle(turtle);
+
+    zeichenPara.setzeStartPunkt(2,0,0);
+    turtle := TTurtle.Create(gram, TZeichnerGruenesBlatt.Create(zeichenPara));
+    o.addTurtle(turtle)
 end.
 

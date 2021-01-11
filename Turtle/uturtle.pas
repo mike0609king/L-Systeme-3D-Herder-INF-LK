@@ -81,10 +81,10 @@ begin
 end;
 
 // Parameter: Startpunkt der Turtle
-procedure init (sx,sy,sz:Real);
+procedure init(sx,sy,sz:Real);
 begin
   glMatrixMode(GL_ModelView);
-  glClearColor (0,0,0,0);
+  //glClearColor(0,0,0,0) 
   ObjKOSInitialisieren;
   ObjInEigenKOSVerschieben(sx,sy,sz);
 end;

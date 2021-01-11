@@ -199,8 +199,6 @@ begin
     FVersandTabelle.add('\',aktionBSlash);
     FVersandTabelle.add('[',aktionPush);
     FVersandTabelle.add(']',aktionPop);
-
-    //FVersandTabelle.add('B',aktionBlatt);
 end;
 
 end.

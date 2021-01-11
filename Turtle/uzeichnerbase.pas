@@ -19,7 +19,7 @@ type TZeichenParameter = record
 end;
 
 type TProc = procedure of object;
-type TVersandTabelle = {specialize} TFPGMap<char, TProc>;
+type TVersandTabelle = TFPGMap<char, TProc>;
 type TZeichnerBase = class
     protected
         FVersandTabelle: TVersandTabelle;
@@ -36,8 +36,6 @@ type TZeichnerBase = class
         procedure aktionBSlash;
         procedure aktionPush;
         procedure aktionPop;
-
-        //procedure aktionBlatt;
 
         // setter-funktionen
         procedure setzeWinkel(const phi: Real);
@@ -186,29 +184,6 @@ begin
   glPopMatrix;
   glGetFloatv(GL_MODELVIEW_MATRIX,@OMatrix.o);
 end;
-
-{
-// soll danach raus (mit abstraktion loesen...)
-procedure Blatt(l:Real;Spur:BOOLEAN);
-begin
-  IF Spur Then
-  begin
-    glMatrixMode(GL_ModelView);
-    UebergangsmatrixObjekt_Kamera_Laden;
-    glColor3f(0,1,0);
-    glLineWidth(10);
-    glBegin(GL_LINES);
-       glVertex3f(0,0,0);glVertex3f(0,l,0);
-    glEnd;
-  end;
-  ObjInEigenKOSVerschieben(0,l,0)
-end;
-
-procedure TZeichnerBase.aktionBlatt;
-begin
-    Blatt(1/50,true);
-end;
-}
 
 constructor TZeichnerBase.Create(zeichenPara: TZeichenParameter);
 begin

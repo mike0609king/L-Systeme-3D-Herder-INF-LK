@@ -65,3 +65,9 @@ Noch zu ergänzen:
   - (vllt) Optimierungen
     - der Algorithmus kann mit dynamischer Programmierung optimiert werden
     - Überlegung: Unter Verwendung von Bit-Magie und dynamischer Programmierung könnte eventuell sogar eine logarithmische Laufzeit erzielt werden. (Ist eine Ueberlegung wert)
+    
+# Zu Ergänzen
+Folgende features sollen noch hinzugefuegt werden
+  - mehr als ein Turtle gleichzeitig (Unterschiedliche Grammatiken) !!! (TurtleManager)
+  - einige Standart Turtles 
+  - Performence verbessern (-> GPU verwenden) ??

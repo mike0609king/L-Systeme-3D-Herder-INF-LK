@@ -37,7 +37,7 @@ type TZeichnerBase = class
         procedure aktionPush;
         procedure aktionPop;
 
-        procedure aktionBlatt;
+        //procedure aktionBlatt;
 
         // setter-funktionen
         procedure setzeWinkel(const phi: Real);
@@ -187,6 +187,7 @@ begin
   glGetFloatv(GL_MODELVIEW_MATRIX,@OMatrix.o);
 end;
 
+{
 // soll danach raus (mit abstraktion loesen...)
 procedure Blatt(l:Real;Spur:BOOLEAN);
 begin
@@ -207,6 +208,7 @@ procedure TZeichnerBase.aktionBlatt;
 begin
     Blatt(1/50,true);
 end;
+}
 
 constructor TZeichnerBase.Create(zeichenPara: TZeichenParameter);
 begin
@@ -223,7 +225,7 @@ begin
     FVersandTabelle.add('[',aktionPush);
     FVersandTabelle.add(']',aktionPop);
 
-    FVersandTabelle.add('B',aktionBlatt);
+    //FVersandTabelle.add('B',aktionBlatt);
 end;
 
 end.

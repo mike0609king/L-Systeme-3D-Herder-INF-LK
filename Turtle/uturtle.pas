@@ -17,9 +17,12 @@ type TTurtle = class
         FZeichner: TZeichnerBase; // poly...
         FStringEntwickler: TStringEntwickler;
 
+        FVisible: Boolean;
+
         // setter-Funktionen
         procedure setzeWinkel(const phi: Real);
         procedure setzeRekursionsTiefe(const tiefe: Cardinal);
+        procedure setzeVisible(const vis: Boolean);
 
         // getter-Funktionen (die normale read Routine funktioniert hier nicht)
         function gibRekursionsTiefe : Cardinal;
@@ -37,6 +40,8 @@ type TTurtle = class
         property winkel: Real read gibWinkel write setzeWinkel;
         property rekursionsTiefe: Cardinal read gibRekursionsTiefe write setzeRekursionsTiefe;
         property startPunkt: TPunkt3D read gibStartPunkt;
+        //// 
+        property visible: Boolean read FVisible write setzeVisible;
 
         // setter-Funktionen (public)
         procedure setzeStartPunkt(const x,y,z: Real);
@@ -55,6 +60,7 @@ begin
     FGrammatik := gram;
     FZeichner := zeichner;
     FStringEntwickler := TStringEntwickler.Create(gram);
+    FVisible := true;
 end;
 
 destructor TTurtle.Destroy;
@@ -78,6 +84,11 @@ end;
 procedure TTurtle.setzeStartPunkt(const x,y,z: Real);
 begin
     FZeichner.setzeStartPunkt(x,y,z);
+end;
+
+procedure TTurtle.setzeVisible(const vis: Boolean);
+begin
+    FVisible := vis;
 end;
 
 // Parameter: Startpunkt der Turtle

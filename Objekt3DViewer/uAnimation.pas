@@ -39,6 +39,7 @@ begin
 
     zeichenPara.setzeStartPunkt(2,0,0);
     turtle := TTurtle.Create(gram, TZeichnerGruenesBlatt.Create(zeichenPara));
-    o.addTurtle(turtle)
+    o.addTurtle(turtle);
+    o.setzeSichtbarkeit(1,false);
 end.
 

@@ -27,9 +27,9 @@ end;
 begin
     o := TTurtleManager.Create;
 
+    gram := TGrammatik.Create;
     gram.axiom := 'F';
-    gram.regeln := TRegelDictionary.Create;
-    gram.regeln.add('F','F&[+F&&FB]&&F[-^^/^-FB]F');
+    gram.addRegel('F','F&[+F&&FB]&&F[-^^/^-FB]F');
     zeichenPara.winkel := 47.5;
     zeichenPara.rekursionsTiefe := 5;
 

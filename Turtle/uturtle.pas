@@ -60,6 +60,7 @@ begin
     FGrammatik := gram;
     FZeichner := zeichner;
     FStringEntwickler := TStringEntwickler.Create(gram);
+    FStringEntwickler.entwickeln(FZeichner.rekursionsTiefe);
     FVisible := true;
 end;
 
@@ -79,6 +80,7 @@ end;
 procedure TTurtle.setzeRekursionsTiefe(const tiefe: Cardinal);
 begin
     FZeichner.rekursionsTiefe := tiefe;
+    FStringEntwickler.entwickeln(FZeichner.rekursionsTiefe);
 end;
 
 procedure TTurtle.setzeStartPunkt(const x,y,z: Real);
@@ -124,7 +126,6 @@ procedure TTurtle.zeichnen;
 VAR i: Cardinal;
 begin
   init(FZeichner.startPunkt.x,FZeichner.startPunkt.y,FZeichner.startPunkt.z);
-  FStringEntwickler.entwickeln(FZeichner.rekursionsTiefe);
   for i := 1 to length(FStringEntwickler.entwickelterString) do
   begin
       FZeichner.zeichneBuchstabe(FStringEntwickler.entwickelterString[i]);

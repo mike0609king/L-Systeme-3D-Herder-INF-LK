@@ -204,17 +204,6 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="uStringEntwickler"/>
       </Unit32>
-<<<<<<< Updated upstream
-=======
-      <Unit33>
-        <Filename Value="Formulare\ugrammatiken.pas"/>
-        <IsPartOfProject Value="True"/>
-        <ComponentName Value="uGrammatiken"/>
-        <HasResources Value="True"/>
-        <ResourceBaseClass Value="Form"/>
-        <UnitName Value="UGrammatiken"/>
-      </Unit33>
->>>>>>> Stashed changes
     </Units>
   </ProjectOptions>
   <CompilerOptions>

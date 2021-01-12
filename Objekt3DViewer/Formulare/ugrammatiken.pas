@@ -58,11 +58,7 @@ end;
 
 procedure TuGrammatiken.Button2Click(Sender: TObject);
 begin
-  TFPGList.create;
-  While n-1>= Memo1.Lines.Count do
-  Begin
-  TFPGList.Add(Memo1.Lines[n]
-  end;
+  GrammatikString:=Memo1.Lines[n]++;Memo1.Lines[n+1];
 end;
 
 procedure TuGrammatiken.Edit1Change(Sender: TObject);

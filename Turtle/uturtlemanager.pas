@@ -17,6 +17,7 @@ type TTurtleManager = class
         constructor Create;
         procedure addTurtle(turtle: TTurtle);
         procedure zeichnen;
+        procedure setzeSichtbarkeit(idx: Cardinal; visibility: Boolean);
 
         // property
         property turtleListe: TTurtleListe read FTurtleListe;
@@ -38,6 +39,12 @@ begin
     inc(FAnzahlElemente);
 end;
 
+procedure TTurtleManager.setzeSichtbarkeit(idx: Cardinal; visibility: Boolean);
+begin
+    // check valid index
+    if (idx >= 0) and (idx < FAnzahlElemente) then FTurtleListe[idx].visible := visibility;
+end;
+
 procedure TTurtleManager.zeichnen;
 var i: Cardinal;
 begin
@@ -45,10 +52,10 @@ begin
     glClearColor(0,0,0,0);
     for i := 0 to FAnzahlElemente - 1 do
     begin
+        if not FTurtleListe[i].visible then continue;
         FTurtleListe[i].zeichnen;
     end;
 end;
 
 end.
-
 

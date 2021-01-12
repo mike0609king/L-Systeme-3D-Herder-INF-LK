@@ -1,0 +1,106 @@
+object uGrammatiken: TuGrammatiken
+  Left = 852
+  Height = 418
+  Top = 404
+  Width = 505
+  Caption = 'Grammatiken'
+  ClientHeight = 418
+  ClientWidth = 505
+  LCLVersion = '2.0.10.0'
+  object Memo1: TMemo
+    Left = 16
+    Height = 250
+    Top = 12
+    Width = 250
+    Lines.Strings = (
+      'Memo1'
+    )
+    OnChange = Memo1Change
+    TabOrder = 0
+  end
+  object Edit1: TEdit
+    Left = 364
+    Height = 23
+    Top = 16
+    Width = 108
+    NumbersOnly = True
+    OnChange = Edit1Change
+    TabOrder = 1
+  end
+  object Anzahl: TLabel
+    Left = 272
+    Height = 15
+    Top = 16
+    Width = 39
+    Caption = 'Anzahl:'
+    ParentColor = False
+    OnClick = AnzahlClick
+  end
+  object Button1: TButton
+    Left = 392
+    Height = 25
+    Top = 237
+    Width = 80
+    Caption = 'Einfügen'
+    OnClick = Button1Click
+    TabOrder = 2
+  end
+  object Label1: TLabel
+    Left = 272
+    Height = 15
+    Top = 48
+    Width = 83
+    Caption = 'Rekursionstiefe:'
+    ParentColor = False
+  end
+  object Label2: TLabel
+    Left = 272
+    Height = 15
+    Top = 80
+    Width = 39
+    Caption = 'Winkel:'
+    ParentColor = False
+  end
+  object Edit2: TEdit
+    Left = 364
+    Height = 23
+    Top = 48
+    Width = 108
+    NumbersOnly = True
+    OnChange = Edit2Change
+    TabOrder = 3
+  end
+  object Edit3: TEdit
+    Left = 364
+    Height = 23
+    Top = 80
+    Width = 108
+    NumbersOnly = True
+    OnChange = Edit3Change
+    TabOrder = 4
+  end
+  object Label3: TLabel
+    Left = 272
+    Height = 15
+    Top = 112
+    Width = 59
+    Caption = 'Zeichenart:'
+    ParentColor = False
+  end
+  object Label4: TLabel
+    Left = 272
+    Height = 15
+    Top = 176
+    Width = 35
+    Caption = 'Name:'
+    ParentColor = False
+  end
+  object Edit4: TEdit
+    Left = 364
+    Height = 23
+    Top = 176
+    Width = 108
+    OnChange = Edit4Change
+    TabOrder = 5
+  end
+end

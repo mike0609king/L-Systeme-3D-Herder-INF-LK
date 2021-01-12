@@ -89,6 +89,7 @@ type
 var
   HauptForm: TForm1;
 
+
 implementation
 uses  uAnimation,uKamera, uKamObjektiv, uMatrizen;
 {$R *.lfm}
@@ -105,7 +106,8 @@ begin
   v:=TrackBar1.Position;
   //uObjekt.objekt:=n;
   KameraInit(GraphikPanel);
-  KameraStart(uAnimation.ozeichnen); //sollte anders gemacht werden damit auf das Turtle objekt zugegriffen werden kann
+  KameraStart(uAnimation.ozeichnen); //sollte anders gemacht werden damit auf das Turtle objekt zugegriffen werden kann-> nur zu test zwecken
+
   Timer1.Enabled:=FALSE;
   ObjKOSinitialisieren;
  // kartToKugel;

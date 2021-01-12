@@ -1,7 +1,7 @@
 object TForm_Parameter: TTForm_Parameter
-  Left = 1315
+  Left = 3017
   Height = 241
-  Top = 472
+  Top = 531
   Width = 397
   Caption = 'Parameter'
   ClientHeight = 241

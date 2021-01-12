@@ -1,7 +1,7 @@
 object Form1: TForm1
-  Left = 882
+  Left = 2462
   Height = 451
-  Top = 212
+  Top = 379
   Width = 514
   Caption = 'L-Systeme in 3D'
   ClientHeight = 431
@@ -326,7 +326,7 @@ object Form1: TForm1
     Left = 40
     Top = 48
     object Grammatik: TMenuItem
-      Caption = 'Grammatik'
+      Caption = 'Grammatiken'
       OnClick = GrammatikClick
     end
     object Parameter: TMenuItem

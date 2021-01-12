@@ -38,7 +38,7 @@
         <PackageName Value="LCL"/>
       </Item2>
     </RequiredPackages>
-    <Units Count="33">
+    <Units Count="34">
       <Unit0>
         <Filename Value="Matrix3x3.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -204,6 +204,14 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="uStringEntwickler"/>
       </Unit32>
+      <Unit33>
+        <Filename Value="Formulare\ueditor_grammatiken.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="Form10"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="uEditor_Grammatiken"/>
+      </Unit33>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

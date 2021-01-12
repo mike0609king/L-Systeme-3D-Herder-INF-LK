@@ -29,7 +29,9 @@ begin
 
     gram := TGrammatik.Create;
     gram.axiom := 'F';
-    gram.addRegel('F','F&[+F&&FB]&&F[-^^/^-FB]F');
+    gram.addRegel('F','F&[+F&&FB]&&F[-^^/^-FB]F',18);
+    gram.addRegel('F','B',2);
+    gram.addRegel('F','F&[+F&&F]&&F[-^^/^-F]F',80);
     zeichenPara.winkel := 47.5;
     zeichenPara.rekursionsTiefe := 5;
 
@@ -40,6 +42,10 @@ begin
     zeichenPara.setzeStartPunkt(2,0,0);
     turtle := TTurtle.Create(gram, TZeichnerGruenesBlatt.Create(zeichenPara));
     o.addTurtle(turtle);
-    o.setzeSichtbarkeit(1,false);
+
+    zeichenPara.setzeStartPunkt(-2,0,0);
+    turtle := TTurtle.Create(gram, TZeichnerGruenesBlatt.Create(zeichenPara));
+    o.addTurtle(turtle);
+    //o.setzeSichtbarkeit(1,false);
 end.
 

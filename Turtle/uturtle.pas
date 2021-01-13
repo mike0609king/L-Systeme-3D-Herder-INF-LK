@@ -17,12 +17,14 @@ type TTurtle = class
         FZeichner: TZeichnerBase; // poly...
         FStringEntwickler: TStringEntwickler;
 
+        FName: String;
         FVisible: Boolean;
 
         // setter-Funktionen
         procedure setzeWinkel(const phi: Real);
         procedure setzeRekursionsTiefe(const tiefe: Cardinal);
         procedure setzeVisible(const vis: Boolean);
+        procedure setzeName(const name: String);
 
         // getter-Funktionen (die normale read Routine funktioniert hier nicht)
         function gibRekursionsTiefe : Cardinal;
@@ -42,6 +44,7 @@ type TTurtle = class
         property startPunkt: TPunkt3D read gibStartPunkt;
         //// 
         property visible: Boolean read FVisible write setzeVisible;
+        property name: String read FName write setzeName;
 
         // setter-Funktionen (public)
         procedure setzeStartPunkt(const x,y,z: Real);
@@ -91,6 +94,11 @@ end;
 procedure TTurtle.setzeVisible(const vis: Boolean);
 begin
     FVisible := vis;
+end;
+
+procedure TTurtle.setzeName(const name: String);
+begin
+    FName := name;
 end;
 
 // Parameter: Startpunkt der Turtle

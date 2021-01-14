@@ -46,16 +46,24 @@ implementation
 {$R *.lfm}
 
 { TForm10 }
+procedure TForm10.FormCreate(Sender: TObject);
+begin
 
+end;
 procedure TForm10.BT_updateClick(Sender: TObject);
-VAR i,anzahl:CARDINAL;
+VAR i,anzahl:CARDINAL; str,name,sichtbarkeit,Winkel,Rek_tiefe:string;
 begin
   CheckListBox1.clear
-  anzahl:=o.anzahlElemente;
+  anzahl:=o.Count-1;
   for i:=0 to anzahl do               //aufpassen indexe
       begin
-           str:='Turtel'+strtoint(i)+':'+o[i].name    //Die weiteren Eigenschaften der Turtel hinzufügen: sichtbarkeit, Koordinaten??, Parameter, name
-           CheckListBox1.AddItem(str,NIL)
+           str:='Turtel'+strtoint(i);
+           name:=o[i].name;   //Die weiteren Eigenschaften der Turtel hinzufügen: sichtbarkeit, Koordinaten??, Parameter, name
+           if o[i].visible then sichtbarkeit:='Sichtbar'
+           else sichtbarkeit:='Unsichtbar';
+           Winkel:=inttostr(o[i].gibWinkel);
+           Rek_tiefe:=inttostr(o[i].gibRekursionsTiefe);
+           CheckListBox1.AddItem(str,name,sichtbarkeit,Winkel,Rek_tiefe);   //Aktuelle anzhal von Spalten 5
       end;
 end;
 
@@ -63,11 +71,6 @@ procedure TForm10.BT_alle_unmarkierenClick(Sender: TObject);
 VAR i:CARDINAL;
 begin
   for i := 0 to CheckListBox1.Count-1 do CheckListBox1.Checked[I] := False;
-end;
-
-procedure TForm10.FormCreate(Sender: TObject);
-begin
-
 end;
 
 procedure TForm10.BT_AlleClick(Sender: TObject);
@@ -79,14 +82,13 @@ procedure TForm10.BT_bearbeitenClick(Sender: TObject);
 VAR liste:TList;
 begin
     //Parameterform aufrufen
-    liste:= gib_markierte_nr
+    liste:= gib_markierte_nr;
 end;
 
 procedure TForm10.BT_entfernenClick(Sender: TObject); //dringt testen
-VAR hl:TListe;i,a:CARDINAL;
+VAR i,a:CARDINAL;
 begin
-   hl:=gibmarkierte_nr
-   a:=0
+   a:=0;
    for i := 0 to CheckListBox1.Count -1 do
        begin
             if CheckListBox1.Checked[i] then
@@ -96,7 +98,7 @@ begin
                  inc(a)
             end;
        end;
-   BT_updateClick(self)
+   BT_updateClick(self);
 end;
 procedure TForm10.BT_FertigClick(Sender: TObject);
 begin
@@ -104,9 +106,8 @@ begin
 end;
 
 procedure TForm10.BT_sichtbarkeitClick(Sender: TObject);
-VAR hl:TListe;i:CARDINAL;
+VAR i:CARDINAL;
 begin
-   hl:=gibmarkierte_nr
    for i := 0 to CheckListBox1.Count -1 do
        begin
             if CheckListBox1.Checked[i] then
@@ -117,9 +118,8 @@ begin
 end;
 
 procedure TForm10.BT_unsichtbar_machenClick(Sender: TObject);
-VAR hl:TListe;i:CARDINAL;
+VAR i:CARDINAL;
 begin
-   hl:=gibmarkierte_nr
    for i := 0 to CheckListBox1.Count -1 do
        begin
             if CheckListBox1.Checked[i] then
@@ -127,13 +127,13 @@ begin
                  o.setzeSichtbarkeit(i,false)
             end;
        end;
-   BT_updateClick(self)
+   BT_updateClick(self) ;
 end;
 function TForm10.gib_markierte_nr();
 VAR hl:TList;i,h:CARDINAL;
 begin
-   hl.Create()
-   h:=0
+   hl.Create();
+   h:=0;
    for i := 0 to CheckListBox1.Count -1 do
        begin
        if CheckListBox1.Checked[i] then
@@ -142,7 +142,7 @@ begin
             INC(h)
        end;
        end;
-   result:=hl
+   result:=hl;
 end;
 end.
 

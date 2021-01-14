@@ -53,7 +53,7 @@ als Parameter die Rekursionstiefe angeben:
 
     class: StringEntwickler
       Feld: Grammatik (read only);
-      Feld: String (Endwickelter String);
+      Feld: String (Entwickelter String);
       constructor: Create;
         Parameter 1: Grammatik;
       procedure: entwickeln;
@@ -68,6 +68,6 @@ Noch zu ergänzen:
     
 # Zu Ergänzen
 Folgende features sollen noch hinzugefuegt werden
-  - mehr als ein Turtle gleichzeitig (Unterschiedliche Grammatiken) !!! (TurtleManager)
-  - einige Standart Turtles 
+  - Baum als Datei einlesen und speichern koennen
+    - andere Einstellungen wie die Zeichenart, Winkel, rekursions Tiefe sollen auch gespeichert werden
   - Performence verbessern (-> GPU verwenden) ??

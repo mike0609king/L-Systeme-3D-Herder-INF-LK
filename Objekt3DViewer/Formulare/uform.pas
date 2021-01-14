@@ -88,6 +88,7 @@ type
 
 var
   HauptForm: TForm1;
+  o: TTurtleManager;
 
 
 implementation

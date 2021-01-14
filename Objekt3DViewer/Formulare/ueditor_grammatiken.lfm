@@ -7,21 +7,20 @@ object Form10: TForm10
   ClientHeight = 355
   ClientWidth = 445
   OnCreate = FormCreate
-  LCLVersion = '2.0.10.0'
-  Visible = True
+  LCLVersion = '2.0.0.4'
   object BT_entfernen: TButton
-    Left = 59
+    Left = 272
     Height = 25
-    Top = 173
+    Top = 248
     Width = 75
     Caption = 'entfernen'
     OnClick = BT_entfernenClick
     TabOrder = 0
   end
   object BT_bearbeiten: TButton
-    Left = 144
+    Left = 59
     Height = 25
-    Top = 173
+    Top = 176
     Width = 123
     Caption = 'Parameter bearbeiten'
     OnClick = BT_bearbeitenClick
@@ -30,16 +29,16 @@ object Form10: TForm10
   object BT_sichtbarkeit: TButton
     Left = 280
     Height = 25
-    Top = 173
+    Top = 208
     Width = 75
     Caption = 'Sichtbar'
     OnClick = BT_sichtbarkeitClick
     TabOrder = 2
   end
   object BT_update: TButton
-    Left = 59
+    Left = 56
     Height = 25
-    Top = 248
+    Top = 312
     Width = 75
     Caption = 'BT_update'
     OnClick = BT_updateClick
@@ -58,26 +57,35 @@ object Form10: TForm10
     Left = 59
     Height = 160
     Top = 8
-    Width = 285
+    Width = 357
     ItemHeight = 0
     TabOrder = 5
   end
   object BT_Fertig: TButton
-    Left = 168
+    Left = 208
     Height = 25
-    Top = 208
+    Top = 304
     Width = 75
     Caption = 'Fertig'
     OnClick = BT_FertigClick
     TabOrder = 6
   end
-  object BT_unmarkiere: TButton
-    Left = 152
+  object BT_alle_unmarkieren: TButton
+    Left = 59
     Height = 25
-    Top = 256
+    Top = 248
     Width = 160
     Caption = 'Alle markierungen enfernen '
-    OnClick = BT_unmarkiereClick
+    OnClick = BT_alle_unmarkierenClick
     TabOrder = 7
+  end
+  object BT_unsichtbar_machen: TButton
+    Left = 280
+    Height = 25
+    Top = 176
+    Width = 123
+    Caption = 'Unsichtbar machen '
+    OnClick = BT_unsichtbar_machenClick
+    TabOrder = 8
   end
 end

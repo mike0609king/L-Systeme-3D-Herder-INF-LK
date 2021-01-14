@@ -1,5 +1,5 @@
 unit uAnimation;
-
+ //Testbereich
 {$MODE Delphi}
 
 {Bisher noch eine riesengroße Baustelle. Wer darf wen bewegen????

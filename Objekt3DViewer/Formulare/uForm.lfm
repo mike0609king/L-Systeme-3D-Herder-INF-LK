@@ -325,13 +325,13 @@ object Form1: TForm1
   object MainMenu1: TMainMenu
     left = 40
     top = 48
-    object Grammatik: TMenuItem
-      Caption = 'Grammatiken'
-      OnClick = GrammatikClick
+    object hinzufuegen: TMenuItem
+      Caption = 'Turtels hinzufügen'
+      OnClick = hinzufuegenClick
     end
-    object Parameter: TMenuItem
-      Caption = 'Parameter'
-      OnClick = ParameterClick
+    object bearbeiten: TMenuItem
+      Caption = 'Turtels bearbeiten'
+      OnClick = bearbeitenClick
     end
   end
 end

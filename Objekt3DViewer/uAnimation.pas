@@ -12,8 +12,8 @@ procedure ozeichnen;
 
 implementation
 
-uses uTurtle, uGrammatik, uBeleuchtung, uZeichnerBase, uZeichnerGruenesBlatt, uTurtleManager;
-VAR o: TTurtleManager;
+uses uTurtle, uGrammatik, uBeleuchtung, uZeichnerBase, uZeichnerGruenesBlatt, uTurtleManager,uForm;
+VAR //o: TTurtleManager;
     turtle: TTurtle;
     gram: TGrammatik;
     zeichenPara: TZeichenParameter;
@@ -21,10 +21,12 @@ VAR o: TTurtleManager;
 procedure ozeichnen;
 begin
    //LichtAn(FALSE);
-   o.zeichnen;
+   Hauptform.o.zeichnen;
 end;
 
 begin
+    //befindet sich jetzt in uForm.standardturtel
+    (*
     o := TTurtleManager.Create;
 
     // So wird die Grammatik erstellt
@@ -64,6 +66,6 @@ begin
     // modifizieren der rekursions Tiefe und Winkel der Turtle an index 0
     o.gibTurtle(0, turtle);
     turtle.rekursionsTiefe := 4;
-    turtle.winkel := 15;
+    turtle.winkel := 15;    *)
 end.
 

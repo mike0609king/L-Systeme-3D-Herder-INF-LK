@@ -6,7 +6,8 @@ interface
 
 uses
   Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs,ExtCtrls, StdCtrls, ComCtrls, Menus, LMessages, Spin;
+  Dialogs,ExtCtrls, StdCtrls, ComCtrls, Menus, LMessages, Spin,uTurtleManager,uTurtle,
+  uGrammatik, uBeleuchtung, uZeichnerBase, uZeichnerGruenesBlatt,uEditor_Grammatiken;
 type
 
   { TForm1 }
@@ -19,8 +20,8 @@ type
     Label1: TLabel;
     MainMenu1: TMainMenu;
     GraphikPanel: TPanel;
-    Grammatik: TMenuItem;
-    Parameter: TMenuItem;
+    hinzufuegen: TMenuItem;
+    bearbeiten: TMenuItem;
     Timer1: TTimer;
     BtLinksV: TButton;
     BtRechtsV: TButton;
@@ -46,8 +47,8 @@ type
     TrackBar1: TTrackBar;
     Label8: TLabel;
     procedure BtKameraResetClick(Sender: TObject);
-    procedure GrammatikClick(Sender: TObject);
-    procedure ParameterClick(Sender: TObject);
+    procedure hinzufuegenClick(Sender: TObject);
+    procedure bearbeitenClick(Sender: TObject);
     procedure MOrthoClick(Sender: TObject);
     procedure MZentralClick(Sender: TObject);
     procedure MKoordinatensystemClick(Sender: TObject);
@@ -79,16 +80,18 @@ type
     procedure BtXRotClick(Sender: TObject);
     procedure BtYRotClick(Sender: TObject);
     procedure BtZRotClick(Sender: TObject);
+    procedure zeichnen();
   private    { Private-Deklarationen }
     aktiv:procedure (r:Real);
     r:Real;
     v:CARDINAL;
+    procedure standardturtel();
   public    { Public-Deklarationen }
+    o:TTurtleManager;
   end;
 
 var
   HauptForm: TForm1;
-  o: TTurtleManager;
 
 
 implementation
@@ -107,28 +110,78 @@ begin
   v:=TrackBar1.Position;
   //uObjekt.objekt:=n;
   KameraInit(GraphikPanel);
+  standardturtel;
   KameraStart(uAnimation.ozeichnen); //sollte anders gemacht werden damit auf das Turtle objekt zugegriffen werden kann-> nur zu test zwecken
 
   Timer1.Enabled:=FALSE;
   ObjKOSinitialisieren;
  // kartToKugel;
 end;
+procedure TForm1.zeichnen();
+begin
+  KameraStart(uAnimation.ozeichnen);
+end;
+procedure TForm1.standardturtel();
+VAR //o: TTurtleManager;
+    turtle: TTurtle;
+    gram: TGrammatik;
+    zeichenPara: TZeichenParameter;
+begin
+    o := TTurtleManager.Create;
+    // So wird die hinzufuegen erstellt
+    gram := TGrammatik.Create;                          // initialisieren der hinzufuegen-Klass
+    gram.axiom := 'F';                                  // axiom einstellen
+    gram.addRegel('F','F&[+F&&FB]&&F[-^^/^-FB]F',18);   // 18%ige Chance fuer diese Einsetzung
+    gram.addRegel('F','B',2.01);                        // 2.01%ige Chance fuer diese Einsetzung
+    gram.addRegel('F','F&[+F&&F]&&F[-^^/^-F]F',79.99);  // 79.99%ige Chance fuer diese Einsetzung
+    //gram.addRegel('F','F&[+F&&F]&&F[-^^/^-F]F');      // 100%ige Chance fuer diese Einsetzung
+
+    // einistellen vom winkel und der rekursionsTiefe
+    zeichenPara.winkel := 47.5;
+    zeichenPara.rekursionsTiefe := 5;
+
+    // erster Baum (index 0)
+    zeichenPara.setzeStartPunkt(0,0,0);
+    turtle := TTurtle.Create(gram, TZeichnerBase.Create(zeichenPara));
+    o.addTurtle(turtle);
+    //o.setzeSichtbarkeit(0,false);  // setzten der Sichtbarkeit der Turtle
+
+    // zweiter Baum (index 1)
+    zeichenPara.setzeStartPunkt(2,0,0);
+    turtle := TTurtle.Create(gram, TZeichnerGruenesBlatt.Create(zeichenPara));
+    o.addTurtle(turtle);
+    //o.setzeSichtbarkeit(1,false);  // setzten der Sichtbarkeit der Turtle
+
+    // dritter Baum (index 2)
+    zeichenPara.setzeStartPunkt(-2,0,0);
+    turtle := TTurtle.Create(gram, TZeichnerGruenesBlatt.Create(zeichenPara));
+    o.addTurtle(turtle);
+    //o.setzeSichtbarkeit(2,false);  // setzten der Sichtbarkeit der Turtle
+
+    // beides das gleiche (entfernt beide die Turtle an index 2)
+    // o.entferneTurtle(turtle);
+    // o.entferneTurtleAn(2);
+
+    // modifizieren der rekursions Tiefe und Winkel der Turtle an index 0
+    o.gibTurtle(0, turtle);
+    turtle.rekursionsTiefe := 4;
+    turtle.winkel := 15;
+end;
 
 procedure TForm1.FormDestroy(Sender: TObject);
 begin
   Kameradestroy(GraphikPanel);
 end;
-procedure TForm1.GrammatikClick(Sender: TObject);
+procedure TForm1.hinzufuegenClick(Sender: TObject);
 begin
 
 end;
 
-procedure TForm1.ParameterClick(Sender: TObject);
+procedure TForm1.bearbeitenClick(Sender: TObject);
 begin
-  //Anbindung an uParameter
+   EditorForm.BT_updateClick(self);
+   EditorForm.Show;
 end;
-
-
 
 procedure TForm1.BtPauseClick(Sender: TObject);
 begin

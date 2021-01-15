@@ -1,0 +1,184 @@
+object Form2: TForm2
+  Left = 236
+  Height = 303
+  Top = 159
+  Width = 304
+  Caption = 'Abbildungsmatrix A'
+  ClientHeight = 303
+  ClientWidth = 304
+  OnCreate = FormCreate
+  LCLVersion = '2.0.0.4'
+  object A11: TEdit
+    Left = 24
+    Height = 23
+    Top = 16
+    Width = 50
+    TabOrder = 0
+    Text = '1'
+  end
+  object A12: TEdit
+    Left = 96
+    Height = 23
+    Top = 16
+    Width = 50
+    TabOrder = 1
+    Text = '0'
+  end
+  object A13: TEdit
+    Left = 169
+    Height = 23
+    Top = 16
+    Width = 50
+    TabOrder = 2
+    Text = '0'
+  end
+  object A21: TEdit
+    Left = 24
+    Height = 23
+    Top = 52
+    Width = 50
+    TabOrder = 3
+    Text = '0'
+  end
+  object A22: TEdit
+    Left = 96
+    Height = 23
+    Top = 52
+    Width = 50
+    TabOrder = 4
+    Text = '1'
+  end
+  object A23: TEdit
+    Left = 169
+    Height = 23
+    Top = 52
+    Width = 50
+    TabOrder = 5
+    Text = '0'
+  end
+  object A31: TEdit
+    Left = 24
+    Height = 23
+    Top = 89
+    Width = 50
+    TabOrder = 6
+    Text = '0'
+  end
+  object A32: TEdit
+    Left = 96
+    Height = 23
+    Top = 89
+    Width = 50
+    TabOrder = 7
+    Text = '0'
+  end
+  object A33: TEdit
+    Left = 169
+    Height = 23
+    Top = 89
+    Width = 50
+    TabOrder = 8
+    Text = '1'
+  end
+  object BtAxM: TButton
+    Left = 24
+    Height = 28
+    Top = 163
+    Width = 110
+    Caption = 'AxM'
+    OnClick = BtAxMClick
+    TabOrder = 9
+  end
+  object A14: TEdit
+    Left = 242
+    Height = 23
+    Top = 16
+    Width = 50
+    TabOrder = 10
+    Text = '0'
+  end
+  object A24: TEdit
+    Left = 242
+    Height = 23
+    Top = 52
+    Width = 50
+    TabOrder = 11
+    Text = '0'
+  end
+  object A34: TEdit
+    Left = 242
+    Height = 23
+    Top = 89
+    Width = 50
+    TabOrder = 12
+    Text = '0'
+  end
+  object A41: TEdit
+    Left = 24
+    Height = 23
+    Top = 125
+    Width = 50
+    TabOrder = 13
+    Text = '0'
+  end
+  object A42: TEdit
+    Left = 96
+    Height = 23
+    Top = 125
+    Width = 50
+    TabOrder = 14
+    Text = '0'
+  end
+  object A43: TEdit
+    Left = 169
+    Height = 23
+    Top = 125
+    Width = 50
+    TabOrder = 15
+    Text = '0'
+  end
+  object A44: TEdit
+    Left = 242
+    Height = 23
+    Top = 125
+    Width = 50
+    TabOrder = 16
+    Text = '1'
+  end
+  object BtMxA: TButton
+    Left = 182
+    Height = 28
+    Top = 163
+    Width = 110
+    Caption = 'MxA'
+    OnClick = BtMxAClick
+    TabOrder = 17
+  end
+  object BtZurueck: TButton
+    Left = 24
+    Height = 28
+    Top = 200
+    Width = 268
+    Caption = 'Schritt zurück'
+    OnClick = BtZurueckClick
+    TabOrder = 18
+  end
+  object BtInit: TButton
+    Left = 24
+    Height = 28
+    Top = 232
+    Width = 268
+    Caption = 'Matrizen zurücksetzen'
+    OnClick = BtInitClick
+    TabOrder = 19
+  end
+  object BtMAnAus: TButton
+    Left = 24
+    Height = 28
+    Top = 264
+    Width = 267
+    Caption = 'Modellmatrix anzeigen?'
+    OnClick = BtMAnAusClick
+    TabOrder = 20
+  end
+end

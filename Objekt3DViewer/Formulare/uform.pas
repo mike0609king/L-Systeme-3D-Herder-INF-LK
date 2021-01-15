@@ -81,6 +81,7 @@ type
     procedure BtYRotClick(Sender: TObject);
     procedure BtZRotClick(Sender: TObject);
     procedure zeichnen();
+
   private    { Private-Deklarationen }
     aktiv:procedure (r:Real);
     r:Real;

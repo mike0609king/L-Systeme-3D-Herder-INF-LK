@@ -5,7 +5,7 @@ unit UGrammatiken;
 interface
 
 uses
-  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, Menus, uAnimation, fgl;
+  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, Menus, uAnimation, fgl, uform, form1, uTurtleManager;
 type
 
   { TuGrammatiken }
@@ -29,6 +29,7 @@ type
     procedure Edit2Change(Sender: TObject);
     procedure Edit3Change(Sender: TObject);
     procedure Edit4Change(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
     procedure Memo1Change(Sender: TObject);
   private
 
@@ -51,21 +52,24 @@ begin
 end;
 
 procedure TuGrammatiken.Button1Click(Sender: TObject);
+var n:CARDINAL;
+    MemoLine: TStringArray;
 begin
-  if SaveDialog1.Execute then
-    Memo1.Lines.SaveToFile(SaveDialog1.FileName);
+  gram.create;
+  n:=0;
+  S:=copy(Memo1.Lines[1],1,pos('->',Memo1.Lines[1])-1)
+  gram.axiom:= S;
+  While n-1>= Memo1.Lines.Count do
+  begin
+  S:=copy(Memo1.Lines[n],1,pos('->',Memo1.Lines[n])-1)
+  R:=copy(Memo1.Lines[n],1,pos('->',Memo1.Lines[n])
+  gram.addRegel(S,R,18)
+  INC(n);
+  end;
 end;
 
 procedure TuGrammatiken.Button2Click(Sender: TObject);
-var n:CARDINAL;
 begin
-  n:=0;
-  TFPGList.create;
-  While n-1>= Memo1.Lines.Count do
-  Begin
-  TFPGList.Add(Memo1.Lines[n];
-  INC(n);
-  end;
 end;
 
 procedure TuGrammatiken.Edit1Change(Sender: TObject);
@@ -86,6 +90,11 @@ end;
 procedure TuGrammatiken.Edit4Change(Sender: TObject);
 begin
   NameGrammatik:=Edit4.Text;
+end;
+
+procedure TuGrammatiken.FormCreate(Sender: TObject);
+begin
+
 end;
 
 procedure TuGrammatiken.Memo1Change(Sender: TObject);

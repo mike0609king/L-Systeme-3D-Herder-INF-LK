@@ -38,7 +38,7 @@
         <PackageName Value="LCL"/>
       </Item2>
     </RequiredPackages>
-    <Units Count="36">
+    <Units Count="37">
       <Unit0>
         <Filename Value="Matrix3x3.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -218,6 +218,11 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="uTurtleManager"/>
       </Unit35>
+      <Unit36>
+        <Filename Value="..\Turtle\uzeichnerinit.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uZeichnerInit"/>
+      </Unit36>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

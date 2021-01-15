@@ -43,13 +43,13 @@ begin
 
     // erster Baum (index 0)
     // zeichenPara.setzeStartPunkt(0,0,0);
-    turtle := TTurtle.Create(gram, TZeichnerBase.Create(zeichenPara));
+    turtle := TTurtle.Create(gram, TZeichnerGruenesBlatt.Create(zeichenPara));
     o.addTurtle(turtle);
     //o.setzeSichtbarkeit(0,false);  // setzten der Sichtbarkeit der Turtle
 
     // zweiter Baum (index 1)
     zeichenPara.setzeStartPunkt(2,0,0);
-    turtle := TTurtle.Create(gram, TZeichnerGruenesBlatt.Create(zeichenPara));
+    turtle := TTurtle.Create(gram, TZeichnerBase.Create(zeichenPara));
     o.addTurtle(turtle);
     //o.setzeSichtbarkeit(1,false);  // setzten der Sichtbarkeit der Turtle
 

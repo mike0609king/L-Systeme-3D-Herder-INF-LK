@@ -42,6 +42,7 @@ end;
 constructor TZeichnerGruenesBlatt.Create(zeichenPara: TZeichenParameter);
 begin
     inherited;
+    FName := 'ZeichnerGruenesBlatt';
     FVersandTabelle.AddOrSetData('B',aktionBlatt);
 end;
 

@@ -5,7 +5,9 @@ unit uTurtle;
 interface
 
 uses
-  Classes, SysUtils, fgl, uGrammatik, uStringEntwickler, uZeichnerBase, fpjson, jsonparser, jsonConf;
+  Classes, SysUtils, fgl, uGrammatik, uStringEntwickler, uZeichnerBase, 
+  fpjson, jsonparser, jsonConf,
+  uZeichnerInit;
 
 type TObjekte = (kw,gw,p,kq,gq,d);
 
@@ -77,6 +79,8 @@ var conf: TJSONConfig;
     regelnLinkeSeite, regelnRechteSeite: TStringList;
     regelnLinkeSeiteIdx, regelnRechteSeiteIdx: Cardinal;
     zeichenPara: TZeichenParameter;
+    zeichnerInit: TZeichnerInit;
+    zeichenArt: String;
 begin
     FGrammatik := TGrammatik.Create;
     conf:= TJSONConfig.Create(nil);
@@ -86,6 +90,8 @@ begin
         conf.filename:= datei;
         FName := AnsiString(conf.getValue('name', ''));
         FVisible := conf.getValue('visible', true);
+
+        zeichenArt := AnsiString(conf.getValue('Zeichen Art', ''));
 
         zeichenPara.winkel := conf.getValue(
             'Zeichen Parameter/winkel', 45
@@ -124,13 +130,12 @@ begin
                 );
             end;
         end;
-        conf.Filename := datei;
     finally
         conf.Free;
     end;
-    //FZeichner := zeichner;
     FStringEntwickler := TStringEntwickler.Create(FGrammatik);
-    FZeichner := TZeichnerBase.Create(zeichenPara);
+    zeichnerinit := TZeichnerInit.Create;
+    FZeichner := zeichnerinit.initialisiere(zeichenArt, zeichenPara);
     FStringEntwickler.entwickeln(FZeichner.rekursionsTiefe);
 end;
 
@@ -222,8 +227,8 @@ begin
 
         conf.setValue('name', UnicodeString(FName));
         conf.setValue('visible', FVisible);
-
-        conf.setValue('Grammatik/axiom', UnicodeString(FGrammatik.axiom));
+        
+        conf.setValue('Zeichen Art', FZeichner.name);
 
         conf.setValue('Zeichen Parameter/winkel', FZeichner.winkel);
         conf.setValue('Zeichen Parameter/rekursions Tiefe', FZeichner.rekursionsTiefe);
@@ -231,6 +236,7 @@ begin
         conf.setValue('Zeichen Parameter/startPunkt/y', FZeichner.startPunkt.y);
         conf.setValue('Zeichen Parameter/startPunkt/z', FZeichner.startPunkt.z);
         
+        conf.setValue('Grammatik/axiom', UnicodeString(FGrammatik.axiom));
         for regelIdx := 0 to FGrammatik.regeln.Count - 1 do
         begin
             tmp_path := 'Grammatik/regeln/' + FGrammatik.regeln.keys[regelIdx] + '/Regel ';

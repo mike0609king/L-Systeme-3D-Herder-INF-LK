@@ -31,8 +31,8 @@ type TTurtle = class
         function gibWinkel : Real;
         function gibStartPunkt : TPunkt3D;
     public
-        constructor Create(gram: TGrammatik; zeichner: TZeichnerBase);// overload;
-        //constructor Create(datei: String); overload;
+        constructor Create(gram: TGrammatik; zeichner: TZeichnerBase); overload;
+        constructor Create(datei: String); overload;
         destructor Destroy; override;
 
         // properties
@@ -66,32 +66,83 @@ begin
     FZeichner := zeichner;
     FStringEntwickler := TStringEntwickler.Create(gram);
     FStringEntwickler.entwickeln(FZeichner.rekursionsTiefe);
+    FName := '';
     FVisible := true;
 end;
-{
+
 constructor TTurtle.Create(datei: String);
-var
-  conf: TJSONConfig;
+var conf: TJSONConfig;
+    tmp_pfad, tmp_produktion: String;
+    tmp_zufaelligkeit: Real;
+    regelnLinkeSeite, regelnRechteSeite: TStringList;
+    regelnLinkeSeiteIdx, regelnRechteSeiteIdx: Cardinal;
+    zeichenPara: TZeichenParameter;
 begin
-  c:= TJSONConfig.Create(Nil);
-  try
-    c.Filename:= GetCurrentDir+'\test.json';
-    writeLn(c.GetValue('test', test));
-    writeLn(c.GetValue('test4', s));
-    writeLn(c.GetValue('testK', test));
-    writeLn(c.GetValue('testD', test));
-  finally
-    c.Free;
-  end;
+    FGrammatik := TGrammatik.Create;
+    conf:= TJSONConfig.Create(nil);
+    regelnRechteSeite := TStringList.Create;
+    regelnLinkeSeite := TStringList.Create;
+    try
+        conf.filename:= datei;
+        FName := AnsiString(conf.getValue('name', ''));
+        FVisible := conf.getValue('visible', true);
+
+        zeichenPara.winkel := conf.getValue(
+            'Zeichen Parameter/winkel', 45
+        );
+        zeichenPara.rekursionsTiefe := conf.getValue(
+            'Zeichen Parameter/rekursions Tiefe', 0
+        );
+        zeichenPara.setzeStartPunkt(
+            conf.getValue('Zeichen Parameter/startPunkt/x', 0),
+            conf.getValue('Zeichen Parameter/startPunkt/y', 0),
+            conf.getValue('Zeichen Parameter/startPunkt/z', 0)
+        );
+
+        FGrammatik.axiom := AnsiString(conf.getValue('Grammatik/axiom', ''));
+        // if axiom = '' then // exception
+
+        conf.EnumSubKeys(UnicodeString('Grammatik/regeln/'),regelnLinkeSeite);
+        for regelnLinkeSeiteIdx := 0 to regelnLinkeSeite.Count - 1 do
+        begin
+            tmp_pfad := 'Grammatik/regeln/' + regelnLinkeSeite[regelnLinkeSeiteIdx];
+            conf.EnumSubKeys(UnicodeString(tmp_pfad), regelnRechteSeite);
+            for regelnRechteSeiteIdx := 0 to regelnRechteSeite.Count - 1 do
+            begin
+                tmp_produktion := AnsiString(conf.getValue(
+                    UnicodeString(tmp_pfad + '/' + regelnRechteSeite[regelnRechteSeiteIdx] + '/produktion'), 
+                    ''
+                ));
+                tmp_zufaelligkeit := conf.getValue(
+                    UnicodeString(tmp_pfad + '/' + regelnRechteSeite[regelnRechteSeiteIdx] + '/zufaelligkeit'), 
+                    0.0
+                );
+                FGrammatik.addRegel(
+                    regelnLinkeSeite[regelnLinkeSeiteIdx][1], // es wird nur ein Buchstabe akzeptiert
+                    tmp_produktion,
+                    tmp_zufaelligkeit
+                );
+            end;
+        end;
+        conf.Filename := datei;
+    finally
+        conf.Free;
+    end;
+    //FZeichner := zeichner;
+    FStringEntwickler := TStringEntwickler.Create(FGrammatik);
+    FZeichner := TZeichnerBase.Create(zeichenPara);
+    FStringEntwickler.entwickeln(FZeichner.rekursionsTiefe);
 end;
-}
+
 destructor TTurtle.Destroy;
 begin
     // to be done
 end;
+
 //////////////////////////////////////////////////////////
 // setter-Funktionen
 //////////////////////////////////////////////////////////
+
 procedure TTurtle.setzeWinkel(const phi: Real);
 begin
     FZeichner.winkel := phi;
@@ -169,20 +220,29 @@ begin
         DeleteFile(datei);
         conf.Filename:= datei;
 
-        conf.SetValue('Grammatik/axiom', FGrammatik.axiom);
+        conf.setValue('name', UnicodeString(FName));
+        conf.setValue('visible', FVisible);
+
+        conf.setValue('Grammatik/axiom', UnicodeString(FGrammatik.axiom));
+
+        conf.setValue('Zeichen Parameter/winkel', FZeichner.winkel);
+        conf.setValue('Zeichen Parameter/rekursions Tiefe', FZeichner.rekursionsTiefe);
+        conf.setValue('Zeichen Parameter/startPunkt/x', FZeichner.startPunkt.x);
+        conf.setValue('Zeichen Parameter/startPunkt/y', FZeichner.startPunkt.y);
+        conf.setValue('Zeichen Parameter/startPunkt/z', FZeichner.startPunkt.z);
         
         for regelIdx := 0 to FGrammatik.regeln.Count - 1 do
         begin
             tmp_path := 'Grammatik/regeln/' + FGrammatik.regeln.keys[regelIdx] + '/Regel ';
             for produktionIdx := 0 to (FGrammatik.regeln.data[regelIdx]).Count - 1 do
             begin
-                conf.SetValue(
-                    tmp_path + IntToStr(produktionIdx+1) + '/produktion',
-                    FGrammatik.regeln.data[regelIdx][produktionIdx].produktion
+                conf.setValue(
+                    UnicodeString(tmp_path + IntToStr(produktionIdx+1) + '/produktion'),
+                    UnicodeString(FGrammatik.regeln.data[regelIdx][produktionIdx].produktion)
                 );
 
-                conf.SetValue(
-                    tmp_path + IntToStr(produktionIdx+1) + '/zufaelligkeit',
+                conf.setValue(
+                    UnicodeString(tmp_path + IntToStr(produktionIdx+1) + '/zufaelligkeit'),
                     FGrammatik.regeln.data[regelIdx][produktionIdx].zufaelligkeit
                 );
             end;

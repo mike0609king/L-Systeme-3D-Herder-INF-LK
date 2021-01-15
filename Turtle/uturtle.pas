@@ -5,7 +5,7 @@ unit uTurtle;
 interface
 
 uses
-  Classes, SysUtils, fgl, uGrammatik, uStringEntwickler, uZeichnerBase;
+  Classes, SysUtils, fgl, uGrammatik, uStringEntwickler, uZeichnerBase, fpjson, jsonparser, jsonConf;
 
 type TObjekte = (kw,gw,p,kq,gq,d);
 
@@ -31,7 +31,8 @@ type TTurtle = class
         function gibWinkel : Real;
         function gibStartPunkt : TPunkt3D;
     public
-        constructor Create(gram: TGrammatik; zeichner: TZeichnerBase);
+        constructor Create(gram: TGrammatik; zeichner: TZeichnerBase);// overload;
+        //constructor Create(datei: String); overload;
         destructor Destroy; override;
 
         // properties
@@ -50,6 +51,7 @@ type TTurtle = class
         procedure setzeStartPunkt(const x,y,z: Real);
 
         procedure zeichnen;
+        procedure speichern(datei: String);
 end;
 
 VAR objekt: TObjekte;
@@ -66,12 +68,27 @@ begin
     FStringEntwickler.entwickeln(FZeichner.rekursionsTiefe);
     FVisible := true;
 end;
-
+{
+constructor TTurtle.Create(datei: String);
+var
+  conf: TJSONConfig;
+begin
+  c:= TJSONConfig.Create(Nil);
+  try
+    c.Filename:= GetCurrentDir+'\test.json';
+    writeLn(c.GetValue('test', test));
+    writeLn(c.GetValue('test4', s));
+    writeLn(c.GetValue('testK', test));
+    writeLn(c.GetValue('testD', test));
+  finally
+    c.Free;
+  end;
+end;
+}
 destructor TTurtle.Destroy;
 begin
     // to be done
 end;
-
 //////////////////////////////////////////////////////////
 // setter-Funktionen
 //////////////////////////////////////////////////////////
@@ -140,5 +157,39 @@ begin
   end;
 end;
 
-end.
 
+// speichern
+procedure TTurtle.speichern(datei: String);
+var regelIdx, produktionIdx: Cardinal;
+    conf: TJSONConfig;
+    tmp_path: String;
+begin
+  conf:= TJSONConfig.Create(Nil);
+    try
+        DeleteFile(datei);
+        conf.Filename:= datei;
+
+        conf.SetValue('Grammatik/axiom', FGrammatik.axiom);
+        
+        for regelIdx := 0 to FGrammatik.regeln.Count - 1 do
+        begin
+            tmp_path := 'Grammatik/regeln/' + FGrammatik.regeln.keys[regelIdx] + '/Regel ';
+            for produktionIdx := 0 to (FGrammatik.regeln.data[regelIdx]).Count - 1 do
+            begin
+                conf.SetValue(
+                    tmp_path + IntToStr(produktionIdx+1) + '/produktion',
+                    FGrammatik.regeln.data[regelIdx][produktionIdx].produktion
+                );
+
+                conf.SetValue(
+                    tmp_path + IntToStr(produktionIdx+1) + '/zufaelligkeit',
+                    FGrammatik.regeln.data[regelIdx][produktionIdx].zufaelligkeit
+                );
+            end;
+        end;
+    finally
+        conf.Free;
+  end;
+end;
+
+end.

@@ -12,7 +12,8 @@ procedure ozeichnen;
 
 implementation
 
-uses uTurtle, uGrammatik, uBeleuchtung, uZeichnerBase, uZeichnerGruenesBlatt, uTurtleManager;
+uses uTurtle, uGrammatik, uBeleuchtung, uZeichnerBase, uZeichnerGruenesBlatt, uTurtleManager,
+sysUtils; // testing
 VAR o: TTurtleManager;
     turtle: TTurtle;
     gram: TGrammatik;
@@ -34,6 +35,7 @@ begin
     gram.addRegel('F','B',2.01);                        // 2.01%ige Chance fuer diese Einsetzung
     gram.addRegel('F','F&[+F&&F]&&F[-^^/^-F]F',79.99);  // 79.99%ige Chance fuer diese Einsetzung
     //gram.addRegel('F','F&[+F&&F]&&F[-^^/^-F]F');      // 100%ige Chance fuer diese Einsetzung
+    gram.addRegel('G', 'GGF--[]');
 
     // einistellen vom winkel und der rekursionsTiefe
     zeichenPara.winkel := 47.5;
@@ -65,5 +67,5 @@ begin
     o.gibTurtle(0, turtle);
     turtle.rekursionsTiefe := 4;
     turtle.winkel := 15;
+    turtle.speichern(GetCurrentDir+'\test.json');
 end.
-

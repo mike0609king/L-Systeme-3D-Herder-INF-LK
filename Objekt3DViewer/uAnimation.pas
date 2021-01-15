@@ -12,7 +12,8 @@ procedure ozeichnen;
 
 implementation
 
-uses uTurtle, uGrammatik, uBeleuchtung, uZeichnerBase, uZeichnerGruenesBlatt, uTurtleManager;
+uses uTurtle, uGrammatik, uBeleuchtung, uZeichnerBase, uZeichnerGruenesBlatt, uTurtleManager,
+sysUtils; // testing
 VAR o: TTurtleManager;
     turtle: TTurtle;
     gram: TGrammatik;
@@ -34,20 +35,21 @@ begin
     gram.addRegel('F','B',2.01);                        // 2.01%ige Chance fuer diese Einsetzung
     gram.addRegel('F','F&[+F&&F]&&F[-^^/^-F]F',79.99);  // 79.99%ige Chance fuer diese Einsetzung
     //gram.addRegel('F','F&[+F&&F]&&F[-^^/^-F]F');      // 100%ige Chance fuer diese Einsetzung
+    gram.addRegel('G', 'GGF--[]');                      // 100%ige Chance fuer diese Einsetzung
 
     // einistellen vom winkel und der rekursionsTiefe
     zeichenPara.winkel := 47.5;
     zeichenPara.rekursionsTiefe := 5;
 
     // erster Baum (index 0)
-    zeichenPara.setzeStartPunkt(0,0,0);
-    turtle := TTurtle.Create(gram, TZeichnerBase.Create(zeichenPara));
+    // zeichenPara.setzeStartPunkt(0,0,0);
+    turtle := TTurtle.Create(gram, TZeichnerGruenesBlatt.Create(zeichenPara));
     o.addTurtle(turtle);
     //o.setzeSichtbarkeit(0,false);  // setzten der Sichtbarkeit der Turtle
 
     // zweiter Baum (index 1)
     zeichenPara.setzeStartPunkt(2,0,0);
-    turtle := TTurtle.Create(gram, TZeichnerGruenesBlatt.Create(zeichenPara));
+    turtle := TTurtle.Create(gram, TZeichnerBase.Create(zeichenPara));
     o.addTurtle(turtle);
     //o.setzeSichtbarkeit(1,false);  // setzten der Sichtbarkeit der Turtle
 
@@ -65,5 +67,12 @@ begin
     o.gibTurtle(0, turtle);
     turtle.rekursionsTiefe := 4;
     turtle.winkel := 15;
-end.
+    turtle.speichern(GetCurrentDir+'\test.json');
 
+    // laden und modifizieren der hochgeladenen Turtle
+    turtle := TTurtle.Create(GetCurrentDir+'\test.json');
+    turtle.rekursionsTiefe := 5;
+    turtle.setzeStartPunkt(2,0,2);
+    o.addTurtle(turtle);
+
+end.

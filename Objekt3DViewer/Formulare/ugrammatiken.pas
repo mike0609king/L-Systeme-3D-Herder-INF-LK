@@ -5,7 +5,7 @@ unit UGrammatiken;
 interface
 
 uses
-  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, Menus, uAnimation, fgl, uform, form1, uTurtleManager;
+  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, Menus, uAnimation, fgl,uTurtleManager,ugrammatik;
 type
 
   { TuGrammatiken }
@@ -38,10 +38,10 @@ type
   end;
 
 var
-  uGrammatiken: TuGrammatiken;
+  aGrammatiken: TuGrammatiken;
 
 implementation
-
+uses uform;
 {$R *.lfm}
 
 { TuGrammatiken }
@@ -54,16 +54,18 @@ end;
 procedure TuGrammatiken.Button1Click(Sender: TObject);
 var n:CARDINAL;
     MemoLine: TStringArray;
+    gram:TGrammatik;
+    S,R:String;
 begin
   gram.create;
   n:=0;
-  S:=copy(Memo1.Lines[1],1,pos('->',Memo1.Lines[1])-1)
+  S:=copy(Memo1.Lines[1],1,pos('->',Memo1.Lines[1])-1);
   gram.axiom:= S;
   While n-1>= Memo1.Lines.Count do
   begin
-  S:=copy(Memo1.Lines[n],1,pos('->',Memo1.Lines[n])-1)
-  R:=copy(Memo1.Lines[n],1,pos('->',Memo1.Lines[n])
-  gram.addRegel(S,R,18)
+  S:=copy(Memo1.Lines[n],1,pos('->',Memo1.Lines[n])-1);
+  R:=copy(Memo1.Lines[n],1,pos('->',Memo1.Lines[n]);
+  gram.addRegel(S,R,18);
   INC(n);
   end;
 end;

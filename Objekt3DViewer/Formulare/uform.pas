@@ -7,7 +7,7 @@ interface
 uses
   Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs,ExtCtrls, StdCtrls, ComCtrls, Menus, LMessages, Spin,uTurtleManager,uTurtle,
-  uGrammatik, uBeleuchtung, uZeichnerBase, uZeichnerGruenesBlatt,uEditor_Grammatiken;
+  uGrammatik, uBeleuchtung, uZeichnerBase, uZeichnerGruenesBlatt,uEditor_Grammatiken,uGrammatiken;
 type
 
   { TForm1 }
@@ -174,7 +174,7 @@ begin
 end;
 procedure TForm1.hinzufuegenClick(Sender: TObject);
 begin
-
+   aGrammatiken.Show;
 end;
 
 procedure TForm1.bearbeitenClick(Sender: TObject);

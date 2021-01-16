@@ -8,7 +8,8 @@ uses
   uForm in 'Formulare\uFrom.pas' {HauptForm},
   uEditor_Grammatiken in 'Formulare\uEditor_Grammatiken.pas' {EditorForm},
   uParameter in 'Formulare\uParameter' {Form_Parameter},
-(*  AMatrix in 'Formulare\AMatrix.pas' {FormAMatrix},
+  ugrammatiken in 'Formulare\ugrammatiken' {uGrammatiken},
+  (*  AMatrix in 'Formulare\AMatrix.pas' {FormAMatrix},
   MMatrix in 'Formulare\MMatrix.pas' {FormMMatrix},
   Rotation in 'Formulare\Rotation.pas' {FormRot},
   Umrechnung in 'Formulare\Umrechnung.pas' {FormKart2Kugel},
@@ -30,6 +31,7 @@ begin
   Application.CreateForm(TForm1, HauptForm);
   Application.CreateForm(TForm10, EditorForm);
   Application.CreateForm(TForm_Parameter, Form_Parameter);
+  Application.CreateForm(ugrammatiken, aGrammatiken);
   (*Application.CreateForm(TForm3, FormMMatrix);
   Application.CreateForm(TForm2, FormAMatrix);
   Application.CreateForm(TForm4, FormRot);

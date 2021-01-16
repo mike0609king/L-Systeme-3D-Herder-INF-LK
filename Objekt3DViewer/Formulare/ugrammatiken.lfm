@@ -1,13 +1,13 @@
 object uGrammatiken: TuGrammatiken
-  Left = 1927
+  Left = 2665
   Height = 418
-  Top = 451
+  Top = 529
   Width = 505
   Caption = 'Grammatiken'
   ClientHeight = 418
   ClientWidth = 505
   OnCreate = FormCreate
-  LCLVersion = '2.0.10.0'
+  LCLVersion = '2.0.0.4'
   object Memo1: TMemo
     Left = 16
     Height = 250

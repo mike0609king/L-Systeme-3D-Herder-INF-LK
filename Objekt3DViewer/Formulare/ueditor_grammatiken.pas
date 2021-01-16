@@ -83,9 +83,9 @@ begin
 end;
 
 procedure TForm10.BT_bearbeitenClick(Sender: TObject);
-VAR liste:TList;
 begin
     //Parameterform aufrufen
+    Form_Parameter.BT_updateClick(self);
     Form_Parameter.Show;
 end;
 

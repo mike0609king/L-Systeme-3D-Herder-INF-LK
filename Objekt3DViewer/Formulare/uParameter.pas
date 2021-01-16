@@ -11,7 +11,7 @@ type
 
   { TForm_Parameter }
 
-  TForm_Parameter = class(TForm)
+  TForm_Parameter = class(TForm)              //funktionert nicht
     BT_Bestaetigen: TButton;
     BT_update: TButton;
     ED_Winkel: TEdit;
@@ -39,8 +39,6 @@ uses uEditor_Grammatiken,uForm;
 {$R *.lfm}
 
 { TForm_Parameter }
-
-
 
 procedure TForm_Parameter.FormCreate(Sender: TObject);
 begin

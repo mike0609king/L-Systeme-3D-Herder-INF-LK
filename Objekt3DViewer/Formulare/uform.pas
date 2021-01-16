@@ -112,8 +112,7 @@ begin
   //uObjekt.objekt:=n;
   KameraInit(GraphikPanel);
   standardturtel;
-  KameraStart(uAnimation.ozeichnen); //sollte anders gemacht werden damit auf das Turtle objekt zugegriffen werden kann-> nur zu test zwecken
-
+  KameraStart(uAnimation.ozeichnen);
   Timer1.Enabled:=FALSE;
   ObjKOSinitialisieren;
  // kartToKugel;

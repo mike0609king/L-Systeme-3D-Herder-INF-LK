@@ -1,11 +1,11 @@
 object TForm_Parameter: TTForm_Parameter
-  Left = 813
+  Left = 2308
   Height = 241
-  Top = 499
+  Top = 513
   Width = 397
   Caption = 'Parameter'
-  ClientHeight = 241
-  ClientWidth = 397
+  ClientHeight = 0
+  ClientWidth = 0
   OnCreate = FormCreate
   LCLVersion = '2.0.0.4'
   object Label1: TLabel

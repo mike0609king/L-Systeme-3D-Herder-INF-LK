@@ -38,7 +38,7 @@
         <PackageName Value="LCL"/>
       </Item2>
     </RequiredPackages>
-    <Units Count="37">
+    <Units Count="39">
       <Unit0>
         <Filename Value="Matrix3x3.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -227,6 +227,17 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="uZeichnerBase"/>
       </Unit36>
+      <Unit37>
+        <Filename Value="Formulare\uParameter.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="TForm_Parameter"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+      </Unit37>
+      <Unit38>
+        <Filename Value="Formulare\uParameter.lfm"/>
+        <IsPartOfProject Value="True"/>
+      </Unit38>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

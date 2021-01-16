@@ -6,7 +6,8 @@ uses
   Forms, Interfaces,
   //UNeu in 'Formulare\UNeu.pas' {HauptForm},
   uForm in 'Formulare\uFrom.pas' {HauptForm},
-  //uParameter in 'Formulare\uParameter' {FormParameter},
+  uEditor_Grammatiken in 'Formulare\uEditor_Grammatiken.pas' {EditorForm},
+  uParameter in 'Formulare\uParameter' {Form_Parameter},
 (*  AMatrix in 'Formulare\AMatrix.pas' {FormAMatrix},
   MMatrix in 'Formulare\MMatrix.pas' {FormMMatrix},
   Rotation in 'Formulare\Rotation.pas' {FormRot},
@@ -27,7 +28,8 @@ uses
 begin
   Application.Initialize;
   Application.CreateForm(TForm1, HauptForm);
-  //Application.CreateForm(TTForm_Parameter, FormParameter);
+  Application.CreateForm(TForm10, EditorForm);
+  Application.CreateForm(TForm_Parameter, Form_Parameter);
   (*Application.CreateForm(TForm3, FormMMatrix);
   Application.CreateForm(TForm2, FormAMatrix);
   Application.CreateForm(TForm4, FormRot);

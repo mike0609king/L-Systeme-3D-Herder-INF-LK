@@ -1,13 +1,13 @@
 object TForm_Parameter: TTForm_Parameter
-  Left = 1315
+  Left = 813
   Height = 241
-  Top = 472
+  Top = 499
   Width = 397
   Caption = 'Parameter'
   ClientHeight = 241
   ClientWidth = 397
   OnCreate = FormCreate
-  LCLVersion = '2.0.10.0'
+  LCLVersion = '2.0.0.4'
   object Label1: TLabel
     Left = 8
     Height = 15
@@ -57,35 +57,6 @@ object TForm_Parameter: TTForm_Parameter
     Top = 88
     Width = 70
     Caption = 'Winkelgröße:'
-    ParentColor = False
-  end
-  object Label3: TLabel
-    Left = 224
-    Height = 15
-    Top = 16
-    Width = 103
-    Caption = 'Aktuelle Parameter:'
-    ParentColor = False
-  end
-  object Label4: TLabel
-    Left = 224
-    Height = 1
-    Top = 48
-    Width = 1
-    ParentColor = False
-  end
-  object Label5: TLabel
-    Left = 224
-    Height = 1
-    Top = 88
-    Width = 1
-    ParentColor = False
-  end
-  object Label6: TLabel
-    Left = 224
-    Height = 1
-    Top = 136
-    Width = 1
     ParentColor = False
   end
 end

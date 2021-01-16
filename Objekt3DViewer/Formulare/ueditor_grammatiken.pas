@@ -1,12 +1,12 @@
 unit uEditor_Grammatiken;
-
+//funktioniert noch nicht
 {$mode delphi}
 
 interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, StdCtrls,
-  CheckLst,uTurtle;
+  CheckLst,uTurtle,uParameter;
 
 type
 
@@ -32,8 +32,7 @@ type
     procedure BT_alle_unmarkierenClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
   private
-    turtle:TTurtle; //hilfsvariable
-   // function gib_markierte_nr():TList;
+    //function gib_markierte_nr():TList;
   public
 
   end;
@@ -52,13 +51,13 @@ begin
   //CheckListBox1:=TCheckListBox.Create();
 end;
 procedure TForm10.BT_updateClick(Sender: TObject);
-VAR i,h,anzahl:CARDINAL;str,name,sichtbarkeit,Winkel,Rek_tiefe:string;
+VAR i,h,anzahl:CARDINAL;str,name,sichtbarkeit,Winkel,Rek_tiefe:string; turtle:TTurtle;
 begin
-  //CheckListBox1.clear;
+  CheckListBox1.clear;
   anzahl:=(HauptForm.o.turtleListe.Count)-1;
   for i:=0 to anzahl do               //aufpassen indexe
       begin
-           Hauptform.o.gibTurtle(i,turtle);
+           turtle:=HauptForm.o.turtleListe[i];
            str:='Turtel'+inttostr(i);
            name:=turtle.name;   //Die weiteren Eigenschaften der Turtel hinzufügen: sichtbarkeit, Koordinaten??, Parameter, name
            if turtle.visible then sichtbarkeit:='Sichtbar'
@@ -78,15 +77,16 @@ begin
 end;
 
 procedure TForm10.BT_AlleClick(Sender: TObject);
+VAR i:CARDINAL;
 begin
-    CheckListBox1.SelectAll;
+  for i := 0 to CheckListBox1.Count-1 do CheckListBox1.Checked[i] := True;
 end;
 
 procedure TForm10.BT_bearbeitenClick(Sender: TObject);
 VAR liste:TList;
 begin
     //Parameterform aufrufen
-    //liste:= gib_markierte_nr;
+    Form_Parameter.Show;
 end;
 
 procedure TForm10.BT_entfernenClick(Sender: TObject); //dringt testen
@@ -144,11 +144,11 @@ function TForm10.gib_markierte_nr():TList;
          begin
          if CheckListBox1.Checked[i] then
          begin
-              hl.Insert(h,i)
-              INC(h)
+              hl.Insert(h,i);
+              INC(h);
          end;
          end;
      result:=hl;
-  end;    *)
+  end; *)
 end.
 

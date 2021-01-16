@@ -5,13 +5,13 @@ unit uParameter;
 interface
 
 uses
-  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, Menus;
+  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, Menus,uTurtleManager;
 
 type
 
-  { TTForm_Parameter }
+  { TForm_Parameter }
 
-  TTForm_Parameter = class(TForm)
+  TForm_Parameter = class(TForm)
     BT_Bestaetigen: TButton;
     BT_update: TButton;
     ED_Winkel: TEdit;
@@ -23,7 +23,7 @@ type
     Label5: TLabel;
     Label6: TLabel;
     procedure BT_BestaetigenClick(Sender: TObject);
-    procedure BT_updateClick(Sender: TObject;Rekursionstiefe,Winkel:String); //soll immer "klickt" werden wenn es gestartet wird.
+    procedure BT_updateClick(Sender: TObject); //soll immer "klickt" werden wenn es gestartet wird.
     procedure FormCreate(Sender: TObject);
   private
 
@@ -32,37 +32,47 @@ type
   end;
 
 var
-  TForm_Parameter: TTForm_Parameter;
+  Form_Parameter: TForm_Parameter;
 
 implementation
-
+uses uEditor_Grammatiken,uForm;
 {$R *.lfm}
 
 { TForm_Parameter }
 
 
 
-procedure TTForm_Parameter.FormCreate(Sender: TObject);
+procedure TForm_Parameter.FormCreate(Sender: TObject);
 begin
 
 end;
 
-procedure TTForm_Parameter.BT_BestaetigenClick(Sender: TObject);
-VAR Rekursionstiefe,Winkel:Real;
+procedure TForm_Parameter.BT_BestaetigenClick(Sender: TObject);
+VAR Winkel:Real;Rekursionstiefe,i:CARDINAL;
 begin
   //aus lesen der neuen Parameter
   Rekursionstiefe:=strtoint(ED_Rek_tiefe.Text);
-  Winkel:=strtoint(ED_Winkel.Text);
+  Winkel:=strtofloat(ED_Winkel.Text);
   //Überprüfen ob die Parameter sinvoll sind?
+
   //Übergeben der neuen Parameter.
+  for i:=0 to (EditorForm.CheckListBox1.Count-1) do                     //lösung
+      begin
+           if EditorForm.CheckListBox1.Checked[i] then
+           begin
+             HauptForm.o.turtleListe[i].winkel:=Winkel;
+             HauptForm.o.turtleListe[i].rekursionsTiefe:=Rekursionstiefe;
+           end;
+      end;
   //Form wieder unsichtbar machen.
+  Visible:=False;
+  //Hauptform.zeichnen;              //kopie zurück übergeben
 end;
 
-procedure TTForm_Parameter.BT_updateClick(Sender: TObject;Rekursionstiefe,Winkel:String);
+procedure TForm_Parameter.BT_updateClick(Sender: TObject);
 begin
-  //Aktuelle Parameter einstellen.
-  Label4.Caption:=Rekursionstiefe;
-  Label5.Caption:=Winkel;
+   //kopie übergeben?
+
 
 end;
 

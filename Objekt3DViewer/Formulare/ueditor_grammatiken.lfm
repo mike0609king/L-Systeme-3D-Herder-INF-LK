@@ -43,6 +43,7 @@ object Form10: TForm10
     Caption = 'BT_update'
     OnClick = BT_updateClick
     TabOrder = 3
+    Visible = False
   end
   object BT_Alle: TButton
     Left = 59

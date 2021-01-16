@@ -13,11 +13,11 @@ procedure ozeichnen;
 implementation
 
 uses uTurtle, uGrammatik, uBeleuchtung, uZeichnerBase, uZeichnerGruenesBlatt, uTurtleManager,uForm;
-VAR //o: TTurtleManager;
-    turtle: TTurtle;
+VAR  o: TTurtleManager;
+   (* turtle: TTurtle;
     gram: TGrammatik;
     zeichenPara: TZeichenParameter;
-
+                                         *)
 procedure ozeichnen;
 begin
    //LichtAn(FALSE);

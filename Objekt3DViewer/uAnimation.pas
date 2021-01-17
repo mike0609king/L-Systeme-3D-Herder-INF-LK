@@ -12,12 +12,13 @@ procedure ozeichnen;
 
 implementation
 
-uses uTurtle, uGrammatik, uBeleuchtung, uZeichnerBase, uZeichnerGruenesBlatt, uTurtleManager,
+uses uTurtle, uGrammatik, uBeleuchtung, uZeichnerInit, uTurtleManager, uZeichnerBase,
 sysUtils; // testing
 VAR o: TTurtleManager;
     turtle: TTurtle;
     gram: TGrammatik;
     zeichenPara: TZeichenParameter;
+    zeichnerInit: TZeichnerInit;
 
 procedure ozeichnen;
 begin
@@ -27,6 +28,7 @@ end;
 
 begin
     o := TTurtleManager.Create;
+    zeichnerInit := TZeichnerInit.Create;
 
     // So wird die Grammatik erstellt
     gram := TGrammatik.Create;                          // initialisieren der Grammatik-Klass
@@ -34,7 +36,7 @@ begin
     gram.addRegel('F','F&[+F&&FB]&&F[-^^/^-FB]F',18);   // 18%ige Chance fuer diese Einsetzung
     gram.addRegel('F','B',2.01);                        // 2.01%ige Chance fuer diese Einsetzung
     gram.addRegel('F','F&[+F&&F]&&F[-^^/^-F]F',79.99);  // 79.99%ige Chance fuer diese Einsetzung
-    //gram.addRegel('F','F&[+F&&F]&&F[-^^/^-F]F');      // 100%ige Chance fuer diese Einsetzung
+    //gram.addRegel('F','F&[+F&&FB]&&F[-^^/^-FB]F');      // 100%ige Chance fuer diese Einsetzung
     gram.addRegel('G', 'GGF--[]');                      // 100%ige Chance fuer diese Einsetzung
 
     // einistellen vom winkel und der rekursionsTiefe
@@ -43,19 +45,20 @@ begin
 
     // erster Baum (index 0)
     // zeichenPara.setzeStartPunkt(0,0,0);
-    turtle := TTurtle.Create(gram, TZeichnerGruenesBlatt.Create(zeichenPara));
+    turtle := TTurtle.Create(gram, TZeichnerBase.Create(zeichenPara));
     o.addTurtle(turtle);
     //o.setzeSichtbarkeit(0,false);  // setzten der Sichtbarkeit der Turtle
 
     // zweiter Baum (index 1)
     zeichenPara.setzeStartPunkt(2,0,0);
-    turtle := TTurtle.Create(gram, TZeichnerBase.Create(zeichenPara));
+    turtle := TTurtle.Create(gram, zeichnerInit.initialisiere('ZeichnerGruenesBlatt',zeichenPara));
     o.addTurtle(turtle);
     //o.setzeSichtbarkeit(1,false);  // setzten der Sichtbarkeit der Turtle
 
     // dritter Baum (index 2)
     zeichenPara.setzeStartPunkt(-2,0,0);
-    turtle := TTurtle.Create(gram, TZeichnerGruenesBlatt.Create(zeichenPara));
+    turtle := TTurtle.Create(gram, zeichnerInit.initialisiere(
+        zeichnerInit.gibZeichnerListe[1],zeichenPara));
     o.addTurtle(turtle);
     //o.setzeSichtbarkeit(2,false);  // setzten der Sichtbarkeit der Turtle
 

@@ -12,7 +12,7 @@ object Form1: TForm1
   Font.Name = 'MS Sans Serif'
   Menu = MainMenu1
   OnCreate = FormCreate
-  LCLVersion = '2.0.10.0'
+  LCLVersion = '2.0.0.4'
   object GraphikPanel: TPanel
     Left = 4
     Height = 386
@@ -319,23 +319,15 @@ object Form1: TForm1
   object Timer1: TTimer
     Interval = 100
     OnTimer = Timer1Timer
-    Left = 104
-    Top = 48
+    left = 104
+    top = 48
   end
   object MainMenu1: TMainMenu
-<<<<<<< HEAD
     left = 40
     top = 48
     object hinzufuegen: TMenuItem
       Caption = 'Turtels hinzufügen'
       OnClick = hinzufuegenClick
-=======
-    Left = 40
-    Top = 48
-    object Grammatik: TMenuItem
-      Caption = 'Grammatiken'
-      OnClick = GrammatikClick
->>>>>>> parent of 9c3a191... UGrammatiken weiterarbeit
     end
     object bearbeiten: TMenuItem
       Caption = 'Turtels bearbeiten'

@@ -1,23 +1,13 @@
 object uGrammatiken: TuGrammatiken
-<<<<<<< HEAD
   Left = 2665
   Height = 418
   Top = 529
-=======
-  Left = 839
-  Height = 418
-  Top = 391
->>>>>>> parent of 9c3a191... UGrammatiken weiterarbeit
   Width = 505
   Caption = 'Grammatiken'
   ClientHeight = 418
   ClientWidth = 505
-<<<<<<< HEAD
   OnCreate = FormCreate
   LCLVersion = '2.0.0.4'
-=======
-  LCLVersion = '2.0.10.0'
->>>>>>> parent of 9c3a191... UGrammatiken weiterarbeit
   object Memo1: TMemo
     Left = 16
     Height = 250

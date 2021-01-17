@@ -68,6 +68,8 @@ begin
   gram.addRegel(S,R,18);
   INC(n);
   end;
+  //
+  Visible:=False;
 end;
 
 procedure TuGrammatiken.Button2Click(Sender: TObject);

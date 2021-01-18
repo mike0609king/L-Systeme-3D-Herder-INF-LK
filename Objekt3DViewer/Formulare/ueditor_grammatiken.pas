@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, StdCtrls,
-  CheckLst,uTurtle,uParameter;
+  CheckLst, ComCtrls,uTurtle,uParameter;
 
 type
 
@@ -22,6 +22,9 @@ type
     BT_alle_unmarkieren: TButton;
     BT_unsichtbar_machen: TButton;
     CheckListBox1: TCheckListBox;
+    ED_abstand: TEdit;
+    Label1: TLabel;
+    UpDown1: TUpDown;
     procedure BT_AlleClick(Sender: TObject);
     procedure BT_bearbeitenClick(Sender: TObject);
     procedure BT_entfernenClick(Sender: TObject);
@@ -55,6 +58,7 @@ VAR i,h,anzahl:CARDINAL;str,name,sichtbarkeit,Winkel,Rek_tiefe:string; turtle:TT
 begin
   CheckListBox1.clear;
   anzahl:=(HauptForm.o.turtleListe.Count)-1;
+  //abstand
   for i:=0 to anzahl do               //aufpassen indexe
       begin
            turtle:=HauptForm.o.turtleListe[i];
@@ -69,6 +73,7 @@ begin
            //Problem
       end;
 end;
+//abstand ändern
 
 procedure TForm10.BT_alle_unmarkierenClick(Sender: TObject);
 VAR i:CARDINAL;
@@ -89,7 +94,7 @@ begin
     Form_Parameter.Show;
 end;
 
-procedure TForm10.BT_entfernenClick(Sender: TObject); //dringt testen
+procedure TForm10.BT_entfernenClick(Sender: TObject);
 VAR i,a:CARDINAL;
 begin
    a:=0;

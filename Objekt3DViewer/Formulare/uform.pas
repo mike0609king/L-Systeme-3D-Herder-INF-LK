@@ -89,6 +89,8 @@ type
     procedure standardturtel();
   public    { Public-Deklarationen }
     o:TTurtleManager;
+    abstand_x,akt_x,akt_y,akt_z:REAL;
+    procedure update_startkoords();
   end;
 
 var
@@ -111,12 +113,22 @@ begin
   v:=TrackBar1.Position;
   //uObjekt.objekt:=n;
   KameraInit(GraphikPanel);
+  abstand_x:=2;
+  akt_x:=0;
+  akt_y:=0;
+  akt_z:=0;
   standardturtel;
   KameraStart(uAnimation.ozeichnen);
   Timer1.Enabled:=FALSE;
   ObjKOSinitialisieren;
  // kartToKugel;
 end;
+procedure TForm1.update_startkoords();
+begin
+   //erweiterung für mehr dimensionen möglich
+   akt_x:=akt_x+abstand_x;
+end;
+
 procedure TForm1.zeichnen();
 begin
   KameraStart(uAnimation.ozeichnen);

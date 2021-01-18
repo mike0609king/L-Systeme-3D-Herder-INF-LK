@@ -5,7 +5,7 @@ unit UGrammatiken;
 interface
 
 uses
-  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, Menus, uAnimation, fgl,uTurtleManager,ugrammatik;
+  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, Menus, uAnimation, fgl,uTurtleManager,ugrammatik,uTurtle;
 type
 
   { TuGrammatiken }
@@ -41,7 +41,7 @@ var
   aGrammatiken: TuGrammatiken;
 
 implementation
-uses uform;
+uses uform,uZeichnerBase;
 {$R *.lfm}
 
 { TuGrammatiken }
@@ -50,25 +50,39 @@ procedure TuGrammatiken.AnzahlClick(Sender: TObject);
 begin
 
 end;
-
+//zeichenstyle fehlt noch
 procedure TuGrammatiken.Button1Click(Sender: TObject);
-var n:CARDINAL;
-    MemoLine: TStringArray;
-    gram:TGrammatik;
-    S,R:String;
+var i,n,anzahl:CARDINAL;MemoLine: TStringArray;
+    gram:TGrammatik;R:String;L,S:Char;
+    Turtel:TTurtle;zeichenPara: TZeichenParameter;
 begin
-  gram.create;
+  gram:=gram.create;
   n:=0;
   S:=copy(Memo1.Lines[1],1,pos('->',Memo1.Lines[1])-1);
   gram.axiom:= S;
   While n-1>= Memo1.Lines.Count do
-  begin
-  S:=copy(Memo1.Lines[n],1,pos('->',Memo1.Lines[n])-1);
-  R:=copy(Memo1.Lines[n],1,pos('->',Memo1.Lines[n]);
-  gram.addRegel(S,R,18);
-  INC(n);
-  end;
+    begin
+    L:=copy(Memo1.Lines[n],1,pos('->',Memo1.Lines[n])-1);            //ändern
+    R:=copy(Memo1.Lines[n],1,pos('->',Memo1.Lines[n]));
+    //wahrscheinlichkeit
+
+    gram.addRegel(L,R);
+    INC(n);
+    end;
   //
+  zeichenPara.rekursionsTiefe:= strtoint(Edit2.Text);
+  zeichenPara.winkel:=strtofloat(Edit3.Text);
+  NameGrammatik:=Edit4.Text;
+  anzahl:= strtoint(Edit1.Text)-1;
+  //erstellen der Turtels
+  for i:=0 to anzahl do
+  begin
+       zeichenPara.setzeStartPunkt(Hauptform.akt_x,Haupform.akt_y,Haupform.akt_z);
+       turtle:=TTurtle.Create(gram, TZeichnerBase.Create(zeichenPara));
+       turtle.name:=NameGrammatik;
+       Hauptform.update_startkoords();
+       Hauptform.o.addTurtle(turtle);
+  end;
   Visible:=False;
 end;
 
@@ -78,22 +92,22 @@ end;
 
 procedure TuGrammatiken.Edit1Change(Sender: TObject);
 begin
-  Anzahl:= Edit1.Text;
+
 end;
 
 procedure TuGrammatiken.Edit2Change(Sender: TObject);
 begin
-  zeichenPara.rekursionsTiefe:= Edit2.Text;
+
 end;
 
 procedure TuGrammatiken.Edit3Change(Sender: TObject);
 begin
-  zeichenPara.winkel:=Edit3.Text;
+
 end;
 
 procedure TuGrammatiken.Edit4Change(Sender: TObject);
 begin
-  NameGrammatik:=Edit4.Text;
+
 end;
 
 procedure TuGrammatiken.FormCreate(Sender: TObject);

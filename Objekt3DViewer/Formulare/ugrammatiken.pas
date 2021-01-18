@@ -41,7 +41,7 @@ var
   aGrammatiken: TuGrammatiken;
 
 implementation
-uses uform,uZeichnerBase;
+uses uForm,uZeichnerBase;
 {$R *.lfm}
 
 { TuGrammatiken }
@@ -53,20 +53,18 @@ end;
 //zeichenstyle fehlt noch
 procedure TuGrammatiken.Button1Click(Sender: TObject);
 var i,n,anzahl:CARDINAL;MemoLine: TStringArray;
-    gram:TGrammatik;R:String;L,S:Char;
-    Turtel:TTurtle;zeichenPara: TZeichenParameter;
+    gram:TGrammatik;L,NameGrammatik,S:String;
+    Turtle:TTurtle;zeichenPara: TZeichenParameter;
 begin
   gram:=gram.create;
   n:=0;
-  S:=copy(Memo1.Lines[1],1,pos('->',Memo1.Lines[1])-1);
-  gram.axiom:= S;
+  S:=Memo1.Lines[1];
+  gram.axiom:= S[1];
   While n-1>= Memo1.Lines.Count do
     begin
-    L:=copy(Memo1.Lines[n],1,pos('->',Memo1.Lines[n])-1);            //ändern
-    R:=copy(Memo1.Lines[n],1,pos('->',Memo1.Lines[n]));
+    L:=Memo1.Lines[n];
     //wahrscheinlichkeit
-
-    gram.addRegel(L,R);
+    gram.addRegel(L[1],L[4..100]);
     INC(n);
     end;
   //
@@ -77,11 +75,11 @@ begin
   //erstellen der Turtels
   for i:=0 to anzahl do
   begin
-       zeichenPara.setzeStartPunkt(Hauptform.akt_x,Haupform.akt_y,Haupform.akt_z);
-       turtle:=TTurtle.Create(gram, TZeichnerBase.Create(zeichenPara));
-       turtle.name:=NameGrammatik;
+       zeichenPara.setzeStartPunkt(Hauptform.akt_x,Hauptform.akt_y,Hauptform.akt_z);
+       Turtle:=TTurtle.Create(gram, TZeichnerBase.Create(zeichenPara));
+       Turtle.name:=NameGrammatik;
        Hauptform.update_startkoords();
-       Hauptform.o.addTurtle(turtle);
+       Hauptform.o.addTurtle(Turtle);
   end;
   Visible:=False;
 end;

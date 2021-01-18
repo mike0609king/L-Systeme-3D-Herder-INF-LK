@@ -31,7 +31,7 @@ begin
   Application.CreateForm(TForm1, HauptForm);
   Application.CreateForm(TForm10, EditorForm);
   Application.CreateForm(TForm_Parameter, Form_Parameter);
-  Application.CreateForm(ugrammatiken, aGrammatiken);
+  Application.CreateForm(TuGrammatiken, aGrammatiken);
   (*Application.CreateForm(TForm3, FormMMatrix);
   Application.CreateForm(TForm2, FormAMatrix);
   Application.CreateForm(TForm4, FormRot);

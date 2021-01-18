@@ -35,6 +35,7 @@ type
     procedure BT_alle_unmarkierenClick(Sender: TObject);
     procedure ED_abstandChange(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure UpDown1Click(Sender: TObject; Button: TUDBtnType);
   private
     //function gib_markierte_nr():TList;
   public
@@ -54,12 +55,19 @@ procedure TForm10.FormCreate(Sender: TObject);
 begin
   //CheckListBox1:=TCheckListBox.Create();
 end;
+
+procedure TForm10.UpDown1Click(Sender: TObject; Button: TUDBtnType);
+begin
+   //an ED_abstand anbinden
+end;
+
 procedure TForm10.BT_updateClick(Sender: TObject);
 VAR i,h,anzahl:CARDINAL;str,name,sichtbarkeit,Winkel,Rek_tiefe:string; turtle:TTurtle;
 begin
   CheckListBox1.clear;
   anzahl:=(HauptForm.o.turtleListe.Count)-1;
   //abstand
+  ED_abstand.Text:=floattostr(Hauptform.abstand_x);
   for i:=0 to anzahl do               //aufpassen indexe
       begin
            turtle:=HauptForm.o.turtleListe[i];
@@ -83,10 +91,14 @@ end;
 
 procedure TForm10.ED_abstandChange(Sender: TObject);
 VAR x_abstand:REAL;
+    str:String;
 begin
-   x_abstand:= strtofloat(ED_abstand.Text);
-   Hauptform.abstand_aendern(x_abstand);
-
+   str:=ED_abstand.Text;
+   if not (str='') then
+   begin
+     x_abstand:= strtofloat(ED_abstand.Text);
+     Hauptform.abstand_aendern(x_abstand);
+   end;
 end;
 
 procedure TForm10.BT_AlleClick(Sender: TObject);

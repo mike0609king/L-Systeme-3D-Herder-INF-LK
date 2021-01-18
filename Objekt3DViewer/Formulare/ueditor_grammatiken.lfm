@@ -104,6 +104,7 @@ object Form10: TForm10
     Top = 344
     Width = 17
     Min = 0
+    OnClick = UpDown1Click
     Position = 0
     TabOrder = 10
   end

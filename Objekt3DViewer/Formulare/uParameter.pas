@@ -39,7 +39,7 @@ uses uEditor_Grammatiken,uForm;
 {$R *.lfm}
 
 { TForm_Parameter }
-
+//Zeichenarten fehlen noch
 procedure TForm_Parameter.FormCreate(Sender: TObject);
 begin
 
@@ -64,7 +64,7 @@ begin
       end;
   //Form wieder unsichtbar machen.
   Visible:=False;
-  //Hauptform.zeichnen;              //kopie zurück übergeben
+  //Hauptform.zeichnen;              //kopie zurück übergeben??
 end;
 
 procedure TForm_Parameter.BT_updateClick(Sender: TObject);

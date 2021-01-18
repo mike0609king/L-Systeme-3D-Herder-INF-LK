@@ -56,9 +56,9 @@ var i,n,anzahl:CARDINAL;MemoLine: TStringArray;
     gram:TGrammatik;L,NameGrammatik,S:String;
     Turtle:TTurtle;zeichenPara: TZeichenParameter;
 begin
-  gram:=gram.create;
+  gram:=TGrammatik.Create;
   n:=0;
-  S:=Memo1.Lines[1];
+  S:=Memo1.Lines[0];
   gram.axiom:= S[1];
   While n-1>= Memo1.Lines.Count do
     begin

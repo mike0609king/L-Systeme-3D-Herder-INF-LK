@@ -14,11 +14,11 @@ implementation
 
 uses uTurtle, uGrammatik, uBeleuchtung, uZeichnerInit, uTurtleManager, uZeichnerBase,
 sysUtils,uForm; // testing
-VAR (*o: TTurtleManager;
+{VAR (*o: TTurtleManager;
     turtle: TTurtle;
     gram: TGrammatik;
     zeichenPara: TZeichenParameter;
-    zeichnerInit: TZeichnerInit;   *)
+    zeichnerInit: TZeichnerInit;   *)   }
 
 procedure ozeichnen;
 begin

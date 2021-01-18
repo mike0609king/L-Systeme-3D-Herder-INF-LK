@@ -91,6 +91,7 @@ type
     o:TTurtleManager;
     abstand_x,akt_x,akt_y,akt_z:REAL;
     procedure update_startkoords();
+    procedure abstand_aendern(x_abstand:REAL);
   end;
 
 var
@@ -123,6 +124,21 @@ begin
   ObjKOSinitialisieren;
  // kartToKugel;
 end;
+procedure TForm1.abstand_aendern(x_abstand:REAL);
+VAR i:CARDINAL;
+begin
+  abstand_x:=x_abstand;
+  akt_x:=0;
+  akt_y:=0;
+  akt_z:=0;
+  for i:=0 to (o.turtleListe.Count)-1 do
+      begin
+       o.turtleListe[i].setzeStartPunkt(akt_x,akt_y,akt_z);
+       update_startkoords();
+      end;
+  zeichnen();
+end;
+
 procedure TForm1.update_startkoords();
 begin
    //erweiterung für mehr dimensionen möglich

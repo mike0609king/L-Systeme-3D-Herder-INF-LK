@@ -95,8 +95,8 @@ object Form10: TForm10
     Top = 352
     Width = 80
     NumbersOnly = True
+    OnChange = ED_abstandChange
     TabOrder = 9
-    Text = 'ED_abstand'
   end
   object UpDown1: TUpDown
     Left = 392
@@ -108,11 +108,11 @@ object Form10: TForm10
     TabOrder = 10
   end
   object Label1: TLabel
-    Left = 136
+    Left = 128
     Height = 15
     Top = 360
-    Width = 159
-    Caption = 'Abstand zwischen den Turtels:'
+    Width = 171
+    Caption = 'X_Abstand zwischen den Turtels:'
     ParentColor = False
   end
 end

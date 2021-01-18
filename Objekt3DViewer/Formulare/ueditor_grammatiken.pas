@@ -33,6 +33,7 @@ type
     procedure BT_unsichtbar_machenClick(Sender: TObject);
     procedure BT_updateClick(Sender: TObject);
     procedure BT_alle_unmarkierenClick(Sender: TObject);
+    procedure ED_abstandChange(Sender: TObject);
     procedure FormCreate(Sender: TObject);
   private
     //function gib_markierte_nr():TList;
@@ -73,12 +74,19 @@ begin
            //Problem
       end;
 end;
-//abstand ändern
 
 procedure TForm10.BT_alle_unmarkierenClick(Sender: TObject);
 VAR i:CARDINAL;
 begin
   for i := 0 to CheckListBox1.Count-1 do CheckListBox1.Checked[i] := False;
+end;
+
+procedure TForm10.ED_abstandChange(Sender: TObject);
+VAR x_abstand:REAL;
+begin
+   x_abstand:= strtofloat(ED_abstand.Text);
+   Hauptform.abstand_aendern(x_abstand);
+
 end;
 
 procedure TForm10.BT_AlleClick(Sender: TObject);

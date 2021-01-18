@@ -1,0 +1,52 @@
+object Parameter_Form: TParameter_Form
+  Left = 1371
+  Height = 240
+  Top = 508
+  Width = 320
+  Caption = 'Parameter bearbeiten'
+  ClientHeight = 240
+  ClientWidth = 320
+  LCLVersion = '2.0.0.4'
+  object Label1: TLabel
+    Left = 56
+    Height = 15
+    Top = 38
+    Width = 42
+    Caption = 'Winkel: '
+    ParentColor = False
+  end
+  object Label2: TLabel
+    Left = 56
+    Height = 15
+    Top = 72
+    Width = 83
+    Caption = 'Rekursionstiefe:'
+    ParentColor = False
+  end
+  object BT_Bestaetigen: TButton
+    Left = 150
+    Height = 25
+    Top = 152
+    Width = 75
+    Caption = 'Bestätigen'
+    OnClick = BT_BestaetigenClick
+    TabOrder = 0
+  end
+  object ED_Winkel: TEdit
+    Left = 144
+    Height = 23
+    Top = 32
+    Width = 80
+    NumbersOnly = True
+    OnChange = ED_WinkelChange
+    TabOrder = 1
+  end
+  object ED_Rek_tiefe: TEdit
+    Left = 145
+    Height = 23
+    Top = 64
+    Width = 80
+    OnChange = ED_Rek_tiefeChange
+    TabOrder = 2
+  end
+end

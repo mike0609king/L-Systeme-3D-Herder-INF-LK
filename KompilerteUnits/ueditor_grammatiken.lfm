@@ -1,11 +1,11 @@
 object Form10: TForm10
-  Left = 2808
+  Left = 380
   Height = 480
-  Top = 336
-  Width = 643
+  Top = 440
+  Width = 1144
   Caption = 'Grammatik_Editor'
   ClientHeight = 480
-  ClientWidth = 643
+  ClientWidth = 1144
   OnCreate = FormCreate
   LCLVersion = '2.0.0.4'
   object BT_entfernen: TButton
@@ -54,14 +54,6 @@ object Form10: TForm10
     OnClick = BT_AlleClick
     TabOrder = 4
   end
-  object CheckListBox1: TCheckListBox
-    Left = 59
-    Height = 160
-    Top = 8
-    Width = 357
-    ItemHeight = 0
-    TabOrder = 5
-  end
   object BT_Fertig: TButton
     Left = 59
     Height = 25
@@ -69,7 +61,7 @@ object Form10: TForm10
     Width = 75
     Caption = 'Fertig'
     OnClick = BT_FertigClick
-    TabOrder = 6
+    TabOrder = 5
   end
   object BT_alle_unmarkieren: TButton
     Left = 59
@@ -78,7 +70,7 @@ object Form10: TForm10
     Width = 160
     Caption = 'Alle markierungen enfernen '
     OnClick = BT_alle_unmarkierenClick
-    TabOrder = 7
+    TabOrder = 6
   end
   object BT_unsichtbar_machen: TButton
     Left = 280
@@ -87,7 +79,7 @@ object Form10: TForm10
     Width = 123
     Caption = 'Unsichtbar machen '
     OnClick = BT_unsichtbar_machenClick
-    TabOrder = 8
+    TabOrder = 7
   end
   object ED_abstand: TEdit
     Left = 304
@@ -96,7 +88,7 @@ object Form10: TForm10
     Width = 80
     NumbersOnly = True
     OnChange = ED_abstandChange
-    TabOrder = 9
+    TabOrder = 8
   end
   object UpDown1: TUpDown
     Left = 392
@@ -104,8 +96,9 @@ object Form10: TForm10
     Top = 344
     Width = 17
     Min = 0
+    OnClick = UpDown1Click
     Position = 0
-    TabOrder = 10
+    TabOrder = 9
   end
   object Label1: TLabel
     Left = 128
@@ -114,5 +107,38 @@ object Form10: TForm10
     Width = 171
     Caption = 'X_Abstand zwischen den Turtels:'
     ParentColor = False
+  end
+  object ListView1: TListView
+    Left = 59
+    Height = 158
+    Top = 8
+    Width = 557
+    Checkboxes = True
+    Columns = <    
+      item
+        Width = 59
+      end    
+      item
+        Caption = 'Turtlenummer'
+        Width = 91
+      end    
+      item
+        Caption = 'Grammatikname'
+        Width = 104
+      end    
+      item
+        Caption = 'Sichtbarkeit'
+        Width = 77
+      end    
+      item
+        Caption = 'Winkel'
+        Width = 51
+      end    
+      item
+        Caption = 'Rekursionstiefe'
+        Width = 95
+      end>
+    TabOrder = 10
+    ViewStyle = vsReport
   end
 end

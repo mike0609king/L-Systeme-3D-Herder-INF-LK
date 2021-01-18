@@ -7,8 +7,8 @@ uses
   //UNeu in 'Formulare\UNeu.pas' {HauptForm},
   uForm in 'Formulare\uFrom.pas' {HauptForm},
   uEditor_Grammatiken in 'Formulare\uEditor_Grammatiken.pas' {EditorForm},
-  uParameter in 'Formulare\uParameter' {Form_Parameter},
-  ugrammatiken in 'Formulare\ugrammatiken' {uGrammatiken},
+  ugrammatiken in 'Formulare\ugrammatiken.pas' {uGrammatiken},
+  uparameter_Form in  'Formulare\uparameter_Form.pas' {Parameter_Form},
   (*  AMatrix in 'Formulare\AMatrix.pas' {FormAMatrix},
   MMatrix in 'Formulare\MMatrix.pas' {FormMMatrix},
   Rotation in 'Formulare\Rotation.pas' {FormRot},
@@ -30,8 +30,8 @@ begin
   Application.Initialize;
   Application.CreateForm(TForm1, HauptForm);
   Application.CreateForm(TForm10, EditorForm);
-  Application.CreateForm(TForm_Parameter, Form_Parameter);
   Application.CreateForm(TuGrammatiken, aGrammatiken);
+  Application.CreateForm(TParameter_Form, Parameter_Form);
   (*Application.CreateForm(TForm3, FormMMatrix);
   Application.CreateForm(TForm2, FormAMatrix);
   Application.CreateForm(TForm4, FormRot);

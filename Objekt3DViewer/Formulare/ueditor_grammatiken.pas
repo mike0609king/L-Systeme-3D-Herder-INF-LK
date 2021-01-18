@@ -21,9 +21,9 @@ type
     BT_Alle: TButton;
     BT_alle_unmarkieren: TButton;
     BT_unsichtbar_machen: TButton;
-    CheckListBox1: TCheckListBox;
     ED_abstand: TEdit;
     Label1: TLabel;
+    ListView1: TListView;
     UpDown1: TUpDown;
     procedure BT_AlleClick(Sender: TObject);
     procedure BT_bearbeitenClick(Sender: TObject);
@@ -46,7 +46,7 @@ var
   EditorForm: TForm10;
 
 implementation
-uses uForm;
+uses uForm,uParameter_Form;
 
 {$R *.lfm}
 
@@ -54,22 +54,36 @@ uses uForm;
 procedure TForm10.FormCreate(Sender: TObject);
 begin
   //CheckListBox1:=TCheckListBox.Create();
-end;
 
+
+end;
 procedure TForm10.UpDown1Click(Sender: TObject; Button: TUDBtnType);
+VAR i:REAL;
 begin
    //an ED_abstand anbinden
+   if button = btNext then
+   begin
+        i:=strtofloat(ED_abstand.Text)+1;
+        ED_abstand.Text:=floattostr(i);
+   end
+   else
+   begin
+        i:=strtofloat(ED_abstand.Text)-1;
+        ED_abstand.Text:=floattostr(i);
+   end;
 end;
 
 procedure TForm10.BT_updateClick(Sender: TObject);
-VAR i,h,anzahl:CARDINAL;str,name,sichtbarkeit,Winkel,Rek_tiefe:string; turtle:TTurtle;
+VAR i,anzahl:CARDINAL;str,name,sichtbarkeit,Winkel,Rek_tiefe:string; turtle:TTurtle; Item1: TListItem;
 begin
-  CheckListBox1.clear;
+  ListView1.clear;
   anzahl:=(HauptForm.o.turtleListe.Count)-1;
   //abstand
   ED_abstand.Text:=floattostr(Hauptform.abstand_x);
   for i:=0 to anzahl do               //aufpassen indexe
       begin
+           Item1 := ListView1.Items.Add;
+           Item1.Caption := '';
            turtle:=HauptForm.o.turtleListe[i];
            str:='Turtel'+inttostr(i);
            name:=turtle.name;   //Die weiteren Eigenschaften der Turtel hinzufügen: sichtbarkeit, Koordinaten??, Parameter, name
@@ -77,16 +91,19 @@ begin
            else sichtbarkeit:='Unsichtbar';
            Winkel:=floattostr(turtle.winkel);
            Rek_tiefe:=inttostr(turtle.rekursionsTiefe);
-           CheckListBox1.AddItem(str,NIL);   //Aktuelle anzhal von Spalten 5
-           //CheckListBox1.Items.Add(str ^I name ^I sichtbarkeit ^I Winkel ^I Rek_tiefe)
-           //Problem
+           Item1.SubItems.Add(str);
+           Item1.SubItems.Add(name);
+           Item1.SubItems.Add(sichtbarkeit);
+           Item1.SubItems.Add(Winkel);
+           Item1.SubItems.Add(Rek_tiefe);
+           //Aktuelle anzhal von Spalten 5
       end;
 end;
 
 procedure TForm10.BT_alle_unmarkierenClick(Sender: TObject);
 VAR i:CARDINAL;
 begin
-  for i := 0 to CheckListBox1.Count-1 do CheckListBox1.Checked[i] := False;
+  for i := 0 to ListView1.Items.Count-1 do ListView1.Items[i].Checked := False;
 end;
 
 procedure TForm10.ED_abstandChange(Sender: TObject);
@@ -104,23 +121,22 @@ end;
 procedure TForm10.BT_AlleClick(Sender: TObject);
 VAR i:CARDINAL;
 begin
-  for i := 0 to CheckListBox1.Count-1 do CheckListBox1.Checked[i] := True;
+  for i := 0 to ListView1.Items.Count-1 do ListView1.Items[i].Checked := True;
 end;
 
 procedure TForm10.BT_bearbeitenClick(Sender: TObject);
 begin
     //Parameterform aufrufen
-    Form_Parameter.BT_updateClick(self);
-    Form_Parameter.Show;
+    Parameter_Form.Show;
 end;
 
 procedure TForm10.BT_entfernenClick(Sender: TObject);
 VAR i,a:CARDINAL;
 begin
    a:=0;
-   for i := 0 to CheckListBox1.Count -1 do
+   for i := 0 to ListView1.Items.Count -1 do
        begin
-            if CheckListBox1.Checked[i] then
+            if ListView1.Items[i].Checked then
             begin
                  HauptForm.o.setzeSichtbarkeit(i-a,true);
                  HauptForm.o.entferneTurtleAn(i-a) ;
@@ -138,21 +154,22 @@ end;
 procedure TForm10.BT_sichtbarkeitClick(Sender: TObject);
 VAR i:CARDINAL;
 begin
-   for i := 0 to CheckListBox1.Count -1 do
+   for i := 0 to ListView1.Items.Count -1 do
        begin
-            if CheckListBox1.Checked[i] then
+            if ListView1.Items[i].Checked then
             begin
                  Hauptform.o.setzeSichtbarkeit(i,true)
             end;
        end;
+   BT_updateClick(self);
 end;
 
 procedure TForm10.BT_unsichtbar_machenClick(Sender: TObject);
 VAR i:CARDINAL;
 begin
-   for i := 0 to CheckListBox1.Count -1 do
+   for i := 0 to ListView1.Items.Count -1 do
        begin
-            if CheckListBox1.Checked[i] then
+            if ListView1.Items[i].Checked then
             begin
                  HauptForm.o.setzeSichtbarkeit(i,false)
             end;

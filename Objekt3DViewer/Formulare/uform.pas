@@ -7,7 +7,7 @@ interface
 uses
   Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs,ExtCtrls, StdCtrls, ComCtrls, Menus, LMessages, Spin,uTurtleManager,uTurtle,
-  uGrammatik, uBeleuchtung, uZeichnerBase, uZeichnerGruenesBlatt,uEditor_Grammatiken,uGrammatiken;
+  uGrammatik, uBeleuchtung, uZeichnerBase, uZeichnerGruenesBlatt,uEditor_Grammatiken; {uGrammatiken}
 type
 
   { TForm1 }
@@ -98,7 +98,7 @@ var
 
 
 implementation
-uses  uAnimation,uKamera, uKamObjektiv, uMatrizen;
+uses  uAnimation,uKamera, uKamObjektiv, uMatrizen, uGrammatiken;
 {$R *.lfm}
 
 procedure TForm1.FormCreate(Sender: TObject);

@@ -87,8 +87,9 @@
         <IsPartOfProject Value="True"/>
       </Unit10>
       <Unit11>
-        <Filename Value="..\Turtle\uTurtle.pas"/>
+        <Filename Value="..\Turtle\uturtle.pas"/>
         <IsPartOfProject Value="True"/>
+        <UnitName Value="uTurtle"/>
       </Unit11>
       <Unit12>
         <Filename Value="UNeu.lfm"/>

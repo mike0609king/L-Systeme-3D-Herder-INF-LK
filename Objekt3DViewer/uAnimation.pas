@@ -13,12 +13,12 @@ procedure ozeichnen;
 implementation
 
 uses uTurtle, uGrammatik, uBeleuchtung, uZeichnerInit, uTurtleManager, uZeichnerBase,
-sysUtils; // testing
-VAR o: TTurtleManager;
+sysUtils,uForm; // testing
+VAR (*o: TTurtleManager;
     turtle: TTurtle;
     gram: TGrammatik;
     zeichenPara: TZeichenParameter;
-    zeichnerInit: TZeichnerInit;
+    zeichnerInit: TZeichnerInit;   *)
 
 procedure ozeichnen;
 begin
@@ -78,6 +78,6 @@ begin
     turtle := TTurtle.Create(GetCurrentDir+'\test.json');
     turtle.rekursionsTiefe := 5;
     turtle.setzeStartPunkt(2,0,2);
-    o.addTurtle(turtle);
+    o.addTurtle(turtle);  *)
 
 end.

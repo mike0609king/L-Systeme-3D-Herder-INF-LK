@@ -38,7 +38,7 @@
         <PackageName Value="LCL"/>
       </Item2>
     </RequiredPackages>
-    <Units Count="42">
+    <Units Count="41">
       <Unit0>
         <Filename Value="Matrix3x3.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -87,8 +87,9 @@
         <IsPartOfProject Value="True"/>
       </Unit10>
       <Unit11>
-        <Filename Value="..\Turtle\uTurtle.pas"/>
+        <Filename Value="..\Turtle\uturtle.pas"/>
         <IsPartOfProject Value="True"/>
+        <UnitName Value="uTurtle"/>
       </Unit11>
       <Unit12>
         <Filename Value="UNeu.lfm"/>
@@ -249,11 +250,6 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="UGrammatiken"/>
       </Unit40>
-      <Unit41>
-        <Filename Value="..\Turtle\uzeichnerinit.pas"/>
-        <IsPartOfProject Value="True"/>
-        <UnitName Value="uZeichnerInit"/>
-      </Unit41>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

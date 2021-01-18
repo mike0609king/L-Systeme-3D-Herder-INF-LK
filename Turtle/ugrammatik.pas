@@ -5,7 +5,7 @@ unit uGrammatik;
 interface
 
 uses
-  Classes, SysUtils,fgl, fpjson, jsonparser, jsonConf;
+  Classes, SysUtils,fgl;
 
 // zu einem record machen (wegen operator error nicht moeglich) !!!!!!
 type TRegelProduktionsseite = class

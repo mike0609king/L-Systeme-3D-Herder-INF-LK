@@ -59,7 +59,7 @@ begin
     Hauptform.zeichnen();
   end;
 end;
-
+//zeichenart hinzufügen
 procedure TParameter_Form.ED_Rek_tiefeChange(Sender: TObject);
 VAR rek_tiefe,i:CARDINAL; str:string;
 begin

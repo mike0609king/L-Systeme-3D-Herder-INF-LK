@@ -74,7 +74,7 @@ begin
 end;
 
 procedure TForm10.BT_updateClick(Sender: TObject);
-VAR i,anzahl:CARDINAL;str,name,sichtbarkeit,Winkel,Rek_tiefe:string; turtle:TTurtle; Item1: TListItem;
+VAR i,anzahl:CARDINAL;str,name,sichtbarkeit,Winkel,Rek_tiefe,Zeichenart:string; turtle:TTurtle; Item1: TListItem;
 begin
   ListView1.clear;
   anzahl:=(HauptForm.o.turtleListe.Count)-1;
@@ -91,11 +91,13 @@ begin
            else sichtbarkeit:='Unsichtbar';
            Winkel:=floattostr(turtle.winkel);
            Rek_tiefe:=inttostr(turtle.rekursionsTiefe);
+           //Zeichenart:=turtle.zeichenart;  //
            Item1.SubItems.Add(str);
            Item1.SubItems.Add(name);
            Item1.SubItems.Add(sichtbarkeit);
            Item1.SubItems.Add(Winkel);
            Item1.SubItems.Add(Rek_tiefe);
+           //Item1.SubItems.Add(Zeichenart);
            //Aktuelle anzhal von Spalten 5
       end;
 end;

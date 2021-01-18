@@ -22,6 +22,7 @@ type TProc = procedure of object;
 type TVersandTabelle = TFPGMap<char, TProc>;
 type TZeichnerBase = class
     protected
+        FName: String;
         FVersandTabelle: TVersandTabelle;
         FZeichenParameter: TZeichenParameter;
     private
@@ -51,6 +52,7 @@ type TZeichnerBase = class
         property winkel: Real read FZeichenParameter.winkel write setzeWinkel;
         property rekursionsTiefe: Cardinal read FZeichenParameter.rekursionsTiefe write setzeRekursionsTiefe;
         property startPunkt: TPunkt3D read FZeichenParameter.startPunkt;
+        property name: String read FName;
 end;
 
 implementation
@@ -187,6 +189,7 @@ end;
 
 constructor TZeichnerBase.Create(zeichenPara: TZeichenParameter);
 begin
+    FName := 'ZeichnerBase';
     FZeichenParameter := zeichenPara;
     FVersandTabelle := TVersandTabelle.Create;
     FVersandTabelle.add('F',aktionSchrittMitLinie);

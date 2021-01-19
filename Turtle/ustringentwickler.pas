@@ -99,14 +99,8 @@ procedure TStringEntwickler.entwickeln(rekursionsTiefe: Cardinal);
     begin
         for i := 1 to length(s) do
         begin
-            if (tiefe <> 0) and (gibEinzusetzendenString(s[i],data)) then
-            begin
-                entw(tiefe-1, data);
-            end
-            else
-            begin
-                FEntwickelterString += s[i];
-            end;
+            if (tiefe <> 0) and (gibEinzusetzendenString(s[i],data)) then entw(tiefe-1, data)
+            else FEntwickelterString += s[i];
         end;
     end;
 begin

@@ -178,7 +178,6 @@ end;
 procedure init(sx,sy,sz:Real);
 begin
   glMatrixMode(GL_ModelView);
-  //glClearColor(0,0,0,0) 
   ObjKOSInitialisieren;
   ObjInEigenKOSVerschieben(sx,sy,sz);
 end;
@@ -208,9 +207,7 @@ VAR i: Cardinal;
 begin
   init(FZeichner.startPunkt.x,FZeichner.startPunkt.y,FZeichner.startPunkt.z);
   for i := 1 to length(FStringEntwickler.entwickelterString) do
-  begin
       FZeichner.zeichneBuchstabe(FStringEntwickler.entwickelterString[i]);
-  end;
 end;
 
 
@@ -228,7 +225,7 @@ begin
         conf.setValue('name', UnicodeString(FName));
         conf.setValue('visible', FVisible);
         
-        conf.setValue('Zeichen Art', FZeichner.name);
+        conf.setValue('Zeichen Art', UnicodeString(FZeichner.name));
 
         conf.setValue('Zeichen Parameter/winkel', FZeichner.winkel);
         conf.setValue('Zeichen Parameter/rekursions Tiefe', FZeichner.rekursionsTiefe);

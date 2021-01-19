@@ -1,16 +1,18 @@
 object uGrammatiken: TuGrammatiken
-  Left = 2989
-  Height = 418
-  Top = 509
+  Left = 1950
+  Height = 421
+  Top = 639
   Width = 505
   Caption = 'Grammatiken'
-  ClientHeight = 418
-  ClientWidth = 505
+  ClientHeight = 0
+  ClientWidth = 0
+  DoubleBuffered = False
   OnCreate = FormCreate
+  ParentDoubleBuffered = False
   LCLVersion = '2.0.0.4'
   object Memo1: TMemo
     Left = 16
-    Height = 250
+    Height = 292
     Top = 12
     Width = 250
     Lines.Strings = (
@@ -38,10 +40,10 @@ object uGrammatiken: TuGrammatiken
     OnClick = AnzahlClick
   end
   object Button1: TButton
-    Left = 392
+    Left = 364
     Height = 25
-    Top = 237
-    Width = 80
+    Top = 279
+    Width = 108
     Caption = 'Einfügen'
     OnClick = Button1Click
     TabOrder = 2
@@ -103,5 +105,23 @@ object uGrammatiken: TuGrammatiken
     Width = 108
     OnChange = Edit4Change
     TabOrder = 5
+  end
+  object Button2: TButton
+    Left = 104
+    Height = 25
+    Top = 312
+    Width = 75
+    Caption = 'Speichern'
+    OnClick = Button2Click
+    TabOrder = 6
+  end
+  object Button3: TButton
+    Left = 16
+    Height = 25
+    Top = 312
+    Width = 75
+    Caption = 'Laden'
+    OnClick = Button3Click
+    TabOrder = 7
   end
 end

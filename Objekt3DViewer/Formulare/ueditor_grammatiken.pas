@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, StdCtrls,
-  CheckLst, ComCtrls,uTurtle,uParameter;
+  CheckLst, ComCtrls,uTurtle;
 
 type
 

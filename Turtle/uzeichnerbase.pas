@@ -41,11 +41,13 @@ type TZeichnerBase = class
         // setter-funktionen
         procedure setzeWinkel(const phi: Real);
         procedure setzeRekursionsTiefe(const tiefe: Cardinal);
+
     public
         constructor Create(zeichenPara: TZeichenParameter); virtual;
         procedure zeichneBuchstabe(c: char); virtual;
 
         procedure setzeStartPunkt(x,y,z: Real);
+        function gibZeichenParameter : TZeichenParameter;
 
         // properties
         //// FZeichenParameter
@@ -80,11 +82,17 @@ begin
     FZeichenParameter.setzeStartPunkt(x,y,z);
 end;
 
+function TZeichnerBase.gibZeichenParameter : TZeichenParameter;
+begin
+    result := FZeichenParameter;
+end;
+
 procedure TZeichnerBase.zeichneBuchstabe(c: char);
 var tmp: TProc;
 begin
     if FVersandTabelle.tryGetData(c,tmp) then tmp;
 end;
+
 
 //////////////////////////////////////////////////////////
 // Bewegung der Turtle

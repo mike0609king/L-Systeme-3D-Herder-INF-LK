@@ -58,7 +58,7 @@ begin
     // dritter Baum (index 2)
     zeichenPara.setzeStartPunkt(-2,0,0);
     turtle := TTurtle.Create(gram, zeichnerInit.initialisiere(
-        zeichnerInit.gibZeichnerListe[1],zeichenPara));
+        zeichnerInit.gibZeichnerListe[0],zeichenPara));
     o.addTurtle(turtle);
     //o.setzeSichtbarkeit(2,false);  // setzten der Sichtbarkeit der Turtle
 
@@ -70,6 +70,8 @@ begin
     o.gibTurtle(0, turtle);
     turtle.rekursionsTiefe := 4;
     turtle.winkel := 15;
+
+    turtle.setzeZeichnerName(zeichnerInit.gibZeichnerListe[1]);
     turtle.speichern(GetCurrentDir+'\test.json');
 
     // laden und modifizieren der hochgeladenen Turtle

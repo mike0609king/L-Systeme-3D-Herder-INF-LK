@@ -32,6 +32,7 @@ type TTurtle = class
         function gibRekursionsTiefe : Cardinal;
         function gibWinkel : Real;
         function gibStartPunkt : TPunkt3D;
+        function gibZeichnerName : String;
     public
         constructor Create(gram: TGrammatik; zeichner: TZeichnerBase); overload;
         constructor Create(datei: String); overload;
@@ -42,6 +43,7 @@ type TTurtle = class
         property axiom: String read FGrammatik.axiom;
         property regeln: TRegelDictionary read FGrammatik.regeln;
         //// FZeichner
+        property zeichnerName: String read gibZeichnerName; 
         property winkel: Real read gibWinkel write setzeWinkel;
         property rekursionsTiefe: Cardinal read gibRekursionsTiefe write setzeRekursionsTiefe;
         property startPunkt: TPunkt3D read gibStartPunkt;
@@ -51,6 +53,7 @@ type TTurtle = class
 
         // setter-Funktionen (public)
         procedure setzeStartPunkt(const x,y,z: Real);
+        procedure setzeZeichnerName(const neuerName: String);
 
         procedure zeichnen;
         procedure speichern(datei: String);
@@ -164,6 +167,13 @@ begin
     FZeichner.setzeStartPunkt(x,y,z);
 end;
 
+procedure TTurtle.setzeZeichnerName(const neuerName: String);
+var zeichnerInit: TZeichnerInit;
+begin
+    zeichnerInit := TZeichnerInit.Create;
+    FZeichner := zeichnerInit.initialisiere(neuerName, FZeichner.gibZeichenParameter);
+end;
+
 procedure TTurtle.setzeVisible(const vis: Boolean);
 begin
     FVisible := vis;
@@ -200,6 +210,10 @@ begin
     result := FZeichner.startPunkt;
 end;
 
+function TTurtle.gibZeichnerName : String;
+begin
+    result := FZeichner.name;
+end;
 
 // zeichner
 procedure TTurtle.zeichnen;

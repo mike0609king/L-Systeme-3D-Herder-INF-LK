@@ -191,7 +191,6 @@ begin
     // o.entferneTurtleAn(2);
 
     // modifizieren der rekursions Tiefe und Winkel der Turtle an index 0
-    o.gibTurtle(0, turtle);
     turtle.rekursionsTiefe := 4;
     turtle.winkel := 15;
 end;

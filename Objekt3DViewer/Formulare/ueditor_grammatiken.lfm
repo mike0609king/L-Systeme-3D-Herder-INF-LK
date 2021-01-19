@@ -9,10 +9,10 @@ object Form10: TForm10
   OnCreate = FormCreate
   LCLVersion = '2.0.0.4'
   object BT_entfernen: TButton
-    Left = 280
+    Left = 320
     Height = 25
     Top = 248
-    Width = 75
+    Width = 123
     Caption = 'entfernen'
     OnClick = BT_entfernenClick
     TabOrder = 0
@@ -21,17 +21,17 @@ object Form10: TForm10
     Left = 59
     Height = 25
     Top = 176
-    Width = 123
+    Width = 160
     Caption = 'Parameter bearbeiten'
     OnClick = BT_bearbeitenClick
     TabOrder = 1
   end
   object BT_sichtbarkeit: TButton
-    Left = 280
+    Left = 320
     Height = 25
     Top = 208
-    Width = 75
-    Caption = 'Sichtbar'
+    Width = 123
+    Caption = 'Sichtbar machen'
     OnClick = BT_sichtbarkeitClick
     TabOrder = 2
   end
@@ -49,7 +49,7 @@ object Form10: TForm10
     Left = 59
     Height = 25
     Top = 208
-    Width = 78
+    Width = 160
     Caption = 'Alle markieren'
     OnClick = BT_AlleClick
     TabOrder = 4
@@ -57,7 +57,7 @@ object Form10: TForm10
   object BT_Fertig: TButton
     Left = 59
     Height = 25
-    Top = 282
+    Top = 352
     Width = 75
     Caption = 'Fertig'
     OnClick = BT_FertigClick
@@ -73,7 +73,7 @@ object Form10: TForm10
     TabOrder = 6
   end
   object BT_unsichtbar_machen: TButton
-    Left = 280
+    Left = 320
     Height = 25
     Top = 176
     Width = 123
@@ -82,18 +82,18 @@ object Form10: TForm10
     TabOrder = 7
   end
   object ED_abstand: TEdit
-    Left = 304
+    Left = 235
     Height = 23
-    Top = 352
+    Top = 296
     Width = 80
     NumbersOnly = True
     OnChange = ED_abstandChange
     TabOrder = 8
   end
   object UpDown1: TUpDown
-    Left = 392
+    Left = 323
     Height = 31
-    Top = 344
+    Top = 288
     Width = 17
     Min = 0
     OnClick = UpDown1Click
@@ -101,9 +101,9 @@ object Form10: TForm10
     TabOrder = 9
   end
   object Label1: TLabel
-    Left = 128
+    Left = 59
     Height = 15
-    Top = 360
+    Top = 304
     Width = 171
     Caption = 'X_Abstand zwischen den Turtels:'
     ParentColor = False

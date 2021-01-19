@@ -1,11 +1,12 @@
 object Parameter_Form: TParameter_Form
-  Left = 1381
+  Left = 2627
   Height = 240
-  Top = 576
+  Top = 544
   Width = 320
   Caption = 'Parameter bearbeiten'
   ClientHeight = 240
   ClientWidth = 320
+  OnCreate = FormCreate
   LCLVersion = '2.0.0.4'
   object Label1: TLabel
     Left = 56
@@ -24,9 +25,9 @@ object Parameter_Form: TParameter_Form
     ParentColor = False
   end
   object BT_Bestaetigen: TButton
-    Left = 150
+    Left = 152
     Height = 25
-    Top = 152
+    Top = 192
     Width = 75
     Caption = 'Bestätigen'
     OnClick = BT_BestaetigenClick
@@ -36,17 +37,34 @@ object Parameter_Form: TParameter_Form
     Left = 144
     Height = 23
     Top = 32
-    Width = 80
+    Width = 101
     NumbersOnly = True
     OnChange = ED_WinkelChange
     TabOrder = 1
   end
   object ED_Rek_tiefe: TEdit
-    Left = 145
+    Left = 144
     Height = 23
     Top = 64
-    Width = 80
+    Width = 101
     OnChange = ED_Rek_tiefeChange
     TabOrder = 2
+  end
+  object CheckListBox1: TCheckListBox
+    Left = 145
+    Height = 80
+    Top = 104
+    Width = 100
+    ItemHeight = 0
+    OnItemClick = CheckListBox1ItemClick
+    TabOrder = 3
+  end
+  object Label3: TLabel
+    Left = 56
+    Height = 15
+    Top = 110
+    Width = 59
+    Caption = 'Zeichenart:'
+    ParentColor = False
   end
 end

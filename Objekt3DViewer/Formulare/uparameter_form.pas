@@ -5,7 +5,8 @@ unit uparameter_form;
 interface
 
 uses
-  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, Menus;
+  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, Menus,
+  CheckLst;
 
 type
 
@@ -13,24 +14,26 @@ type
 
   TParameter_Form = class(TForm)
     BT_Bestaetigen: TButton;
+    CheckListBox1: TCheckListBox;
     ED_Winkel: TEdit;
     ED_Rek_tiefe: TEdit;
     Label1: TLabel;
     Label2: TLabel;
+    Label3: TLabel;
     procedure BT_BestaetigenClick(Sender: TObject);
+    procedure CheckListBox1ItemClick(Sender: TObject; Index: integer);
     procedure ED_Rek_tiefeChange(Sender: TObject);
     procedure ED_WinkelChange(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
   private
-
   public
-
   end;
 
 var
   Parameter_Form: TParameter_Form;
 
 implementation
-uses uEditor_Grammatiken,uForm;
+uses uEditor_Grammatiken,uForm, uzeichnerinit;
 
 {$R *.lfm}
 
@@ -41,7 +44,20 @@ begin
   ED_WinkelChange(self);
   ED_Rek_tiefeChange(self);
   Hauptform.zeichnen();
+  Visible:=False;
 
+end;
+
+procedure TParameter_Form.CheckListBox1ItemClick(Sender: TObject; Index: integer);
+var
+I : integer;
+begin
+    if (Sender as TCheckListBox).Checked[Index] then begin
+        for I := 0 to CheckListBox1.Count -1 do
+            CheckListBox1.Checked[I] := False;
+        CheckListBox1.Checked[Index] := True;
+        //zeichenart der markierten turtels ändern
+    end;
 end;
 //exceptions handeling
 //werte überprüfen
@@ -57,8 +73,25 @@ begin
          if EditorForm.ListView1.Items[i].Checked then Hauptform.o.turtleListe[i].winkel:=winkel;
     end;
     Hauptform.zeichnen();
+    EditorForm.BT_updateClick(self);
   end;
 end;
+
+procedure TParameter_Form.FormCreate(Sender: TObject);
+VAR zeichnerInit: TZeichnerInit; baumListe: TStringList;  i: Cardinal;
+begin
+  //zeichenarten laden
+  zeichnerInit := TZeichnerInit.Create;
+  baumListe := zeichnerInit.gibZeichnerListe;
+  // durch die Liste iterieren
+  for i := 0 to baumListe.Count - 1 do
+  begin
+         // baumListe[i] in ComboBox packen
+       CheckListBox1.AddItem(baumListe[i],NIL);
+  end;
+  for i := 0 to CheckListBox1.Count-1 do CheckListBox1.Checked[i] := False;
+end;
+
 //zeichenart hinzufügen
 procedure TParameter_Form.ED_Rek_tiefeChange(Sender: TObject);
 VAR rek_tiefe,i:CARDINAL; str:string;
@@ -72,6 +105,7 @@ begin
            if EditorForm.ListView1.Items[i].Checked then Hauptform.o.turtleListe[i].rekursionsTiefe:=rek_tiefe;
       end;
       Hauptform.zeichnen();
+      EditorForm.BT_updateClick(self);
     end;
 end;
 end.

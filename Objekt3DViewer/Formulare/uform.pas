@@ -17,6 +17,9 @@ type
     BtZoomP: TButton;
     BtZoomM: TButton;
     BtKameraReset: TButton;
+    Button1: TButton;
+    BT_Zurueck: TButton;
+    BT_weiter: TButton;
     Label1: TLabel;
     MainMenu1: TMainMenu;
     GraphikPanel: TPanel;
@@ -47,6 +50,8 @@ type
     TrackBar1: TTrackBar;
     Label8: TLabel;
     procedure BtKameraResetClick(Sender: TObject);
+    procedure BT_weiterClick(Sender: TObject);
+    procedure BT_ZurueckClick(Sender: TObject);
     procedure hinzufuegenClick(Sender: TObject);
     procedure bearbeitenClick(Sender: TObject);
     procedure MOrthoClick(Sender: TObject);
@@ -85,6 +90,8 @@ type
   private    { Private-Deklarationen }
     aktiv:procedure (r:Real);
     r:Real;
+    liste_z:TList; //liste letzen der instanzen von o
+    liste_w:TList; //liste letzen der instanzen von o die zurückgesetzt wurden
     v:CARDINAL;
     procedure standardturtel();
   public    { Public-Deklarationen }
@@ -104,6 +111,8 @@ uses  uAnimation,uKamera, uKamObjektiv, uMatrizen, uGrammatiken;
 
 procedure TForm1.FormCreate(Sender: TObject);
 begin
+  liste_z:=TList.Create();
+  liste_w:=TList.Create();
   width:=screen.width-310;
   height:=screen.Height-200;
   GraphikPanel.Height:=height-50;
@@ -261,6 +270,16 @@ end;
 procedure TForm1.BtKameraResetClick(Sender: TObject);
 begin
   KameraInit(GraphikPanel);
+end;
+//Alle interaktionen mit o überarbeiten
+procedure TForm1.BT_weiterClick(Sender: TObject);  //weiter bt nur sichtbar wenn sinvoll
+begin
+  //stellt die letzte zurückgenommene änderung wieder her
+end;
+
+procedure TForm1.BT_ZurueckClick(Sender: TObject);
+begin
+  //nimmt letzte änderung am object o zurück. Maximal 20 mal.
 end;
 
 

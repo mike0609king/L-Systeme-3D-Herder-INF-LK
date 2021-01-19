@@ -94,6 +94,7 @@ begin
        Hauptform.zeichnen();
   end;
   Visible:=False;
+  Hauptform.zeichnen();
 end;
 
 procedure TuGrammatiken.Button2Click(Sender: TObject);

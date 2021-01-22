@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, StdCtrls,
-  CheckLst, ComCtrls,uTurtle;
+  CheckLst, ComCtrls, Menus,uTurtle;
 
 type
 
@@ -91,13 +91,13 @@ begin
            else sichtbarkeit:='Unsichtbar';
            Winkel:=floattostr(turtle.winkel);
            Rek_tiefe:=inttostr(turtle.rekursionsTiefe);
-           //Zeichenart:=turtle.zeichnerName;  //
+           Zeichenart:=turtle.zeichnerName;  //
            Item1.SubItems.Add(str);
            Item1.SubItems.Add(name);
            Item1.SubItems.Add(sichtbarkeit);
            Item1.SubItems.Add(Winkel);
            Item1.SubItems.Add(Rek_tiefe);
-           //Item1.SubItems.Add(Zeichenart);
+           Item1.SubItems.Add(Zeichenart);
            //Aktuelle anzhal von Spalten 5
       end;
 end;

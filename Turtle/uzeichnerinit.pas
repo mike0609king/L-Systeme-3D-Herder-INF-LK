@@ -17,8 +17,12 @@ type TZeichnerInit = class
         FVersandTabelleZeichner: TVersandTabelleZeichner;
     public
         constructor Create;
+        { Aufgabe: Die 'zeichnerArt' spezifiziert den Namen der Zeichenart, welche genutzt wird. 
+          Diese Funktion gibt dann die Instanz von dieser Zeichenart zurueck.}
         function initialisiere(zeichnerArt: String; zeichenPara: TZeichenParameter) : TZeichnerBase;
 
+        { Aufgabe: Gibt eine Liste von Zeichenartnamen zurueck. Diese koennen dann als 
+          Eingabe in die initialisiere-Methode benutzt werden. }
         function gibZeichnerListe : TStringList;
 end;
 
@@ -54,9 +58,7 @@ var stringListe: TStringList;
 begin
     stringListe := TStringList.Create;
     for i := 0 to FVersandTabelleZeichner.Count - 1 do
-    begin
         stringListe.add(FVersandTabelleZeichner.keys[i]);
-    end;
     result := stringListe;
 end;
 

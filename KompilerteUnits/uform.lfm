@@ -1,7 +1,7 @@
 object Form1: TForm1
-  Left = 2163
+  Left = 2078
   Height = 451
-  Top = 174
+  Top = 331
   Width = 812
   Caption = 'L-Systeme in 3D'
   ClientHeight = 431
@@ -317,26 +317,36 @@ object Form1: TForm1
     TabOrder = 21
   end
   object Button1: TButton
-    Left = 513
+    AnchorSideLeft.Control = TrackBar1
+    Left = 92
     Height = 25
     Top = 975
     Width = 75
+    Anchors = [akTop, akLeft, akBottom]
     TabOrder = 22
+    Visible = False
   end
   object BT_Zurueck: TButton
-    Left = 512
+    AnchorSideLeft.Control = TrackBar1
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideRight.Control = BT_weiter
+    Left = 493
     Height = 25
-    Top = 400
-    Width = 75
+    Top = 408
+    Width = 93
+    Anchors = [akLeft]
     Caption = 'Zurücknehmen'
     OnClick = BT_ZurueckClick
     TabOrder = 23
   end
   object BT_weiter: TButton
-    Left = 608
+    AnchorSideLeft.Control = BT_Zurueck
+    AnchorSideLeft.Side = asrBottom
+    Left = 586
     Height = 25
-    Top = 399
+    Top = 408
     Width = 75
+    Anchors = [akLeft]
     Caption = 'Weiter'
     OnClick = BT_weiterClick
     TabOrder = 24

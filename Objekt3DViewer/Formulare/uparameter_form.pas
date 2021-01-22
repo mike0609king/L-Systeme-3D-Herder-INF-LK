@@ -26,6 +26,7 @@ type
     procedure ED_WinkelChange(Sender: TObject);
     procedure FormCreate(Sender: TObject);
   private
+    baumListe: TStringList;
   public
   end;
 
@@ -50,13 +51,17 @@ end;
 
 procedure TParameter_Form.CheckListBox1ItemClick(Sender: TObject; Index: integer);
 var
-I : integer;
+I,h : integer;
 begin
     if (Sender as TCheckListBox).Checked[Index] then begin
         for I := 0 to CheckListBox1.Count -1 do
             CheckListBox1.Checked[I] := False;
         CheckListBox1.Checked[Index] := True;
         //zeichenart der markierten turtels ändern
+        for h:=0 to EditorForm.ListView1.Items.Count-1 do
+        begin
+             if EditorForm.ListView1.Items[h].Checked then Hauptform.o.turtleListe[h].setzeZeichnerName(baumListe[Index])
+        end;
     end;
 end;
 //exceptions handeling
@@ -78,7 +83,7 @@ begin
 end;
 
 procedure TParameter_Form.FormCreate(Sender: TObject);
-VAR zeichnerInit: TZeichnerInit; baumListe: TStringList;  i: Cardinal;
+VAR zeichnerInit: TZeichnerInit;   i: Cardinal;
 begin
   //zeichenarten laden
   zeichnerInit := TZeichnerInit.Create;
@@ -92,7 +97,7 @@ begin
   for i := 0 to CheckListBox1.Count-1 do CheckListBox1.Checked[i] := False;
 end;
 
-//zeichenart hinzufügen
+
 procedure TParameter_Form.ED_Rek_tiefeChange(Sender: TObject);
 VAR rek_tiefe,i:CARDINAL; str:string;
 begin

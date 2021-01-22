@@ -91,7 +91,7 @@ begin
            else sichtbarkeit:='Unsichtbar';
            Winkel:=floattostr(turtle.winkel);
            Rek_tiefe:=inttostr(turtle.rekursionsTiefe);
-           //Zeichenart:=turtle.zeichenart;  //
+           //Zeichenart:=turtle.zeichnerName;  //
            Item1.SubItems.Add(str);
            Item1.SubItems.Add(name);
            Item1.SubItems.Add(sichtbarkeit);

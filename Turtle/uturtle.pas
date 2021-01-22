@@ -21,12 +21,14 @@ type TTurtle = class
 
         FName: String;
         FVisible: Boolean;
+        FMaximaleStringLaenge: Cardinal;
 
         // setter-Funktionen
         procedure setzeWinkel(const phi: Real);
         procedure setzeRekursionsTiefe(const tiefe: Cardinal);
         procedure setzeVisible(const vis: Boolean);
         procedure setzeName(const name: String);
+        procedure setzeMaximaleStringLaenge(const mxStringLaenge: Cardinal);
 
         // getter-Funktionen (die normale read Routine funktioniert hier nicht)
         function gibRekursionsTiefe : Cardinal;
@@ -50,12 +52,17 @@ type TTurtle = class
         //// 
         property visible: Boolean read FVisible write setzeVisible;
         property name: String read FName write setzeName;
+        property maximaleStringLaenge: Cardinal read FMaximaleStringLaenge write setzeMaximaleStringLaenge;
 
         // setter-Funktionen (public)
         procedure setzeStartPunkt(const x,y,z: Real);
         procedure setzeZeichnerName(const neuerName: String);
 
-        procedure zeichnen;
+        { Aufgabe: Zeichenen des Strings, der in dem Stringentwickler ist. Sollte der String eine bestimmte laenge
+          ueberschritten haben, so wird dieser String nicht gezeichnet.
+          Rueckgabe: Wenn der String gezeichet wurde, so wird wahr zurueckgegeben. Wenn der String nicht gezeichnet
+          wurde, so wird falsch zurueckgegeben. }
+        function zeichnen : Boolean;
         procedure speichern(datei: String);
 end;
 
@@ -71,6 +78,7 @@ begin
     FZeichner := zeichner;
     FStringEntwickler := TStringEntwickler.Create(gram);
     FStringEntwickler.entwickeln(FZeichner.rekursionsTiefe);
+    FMaximaleStringLaenge := 100000;
     FName := '';
     FVisible := true;
 end;
@@ -93,6 +101,7 @@ begin
         conf.filename:= datei;
         FName := AnsiString(conf.getValue('name', ''));
         FVisible := conf.getValue('visible', true);
+        FMaximaleStringLaenge := conf.getValue('Maximale Stringlaenge',0);
 
         zeichenArt := AnsiString(conf.getValue('Zeichen Art', ''));
 
@@ -184,6 +193,11 @@ begin
     FName := name;
 end;
 
+procedure TTurtle.setzeMaximaleStringLaenge(const mxStringLaenge: Cardinal);
+begin
+    FMaximaleStringLaenge := mxStringLaenge;
+end;
+
 // Parameter: Startpunkt der Turtle
 procedure init(sx,sy,sz:Real);
 begin
@@ -216,12 +230,14 @@ begin
 end;
 
 // zeichner
-procedure TTurtle.zeichnen;
+function TTurtle.zeichnen : Boolean;
 VAR i: Cardinal;
 begin
-  init(FZeichner.startPunkt.x,FZeichner.startPunkt.y,FZeichner.startPunkt.z);
-  for i := 1 to length(FStringEntwickler.entwickelterString) do
-      FZeichner.zeichneBuchstabe(FStringEntwickler.entwickelterString[i]);
+    if length(FStringEntwickler.entwickelterString) > FMaximaleStringLaenge then exit(false);
+    init(FZeichner.startPunkt.x,FZeichner.startPunkt.y,FZeichner.startPunkt.z);
+    for i := 1 to length(FStringEntwickler.entwickelterString) do
+        FZeichner.zeichneBuchstabe(FStringEntwickler.entwickelterString[i]);
+    result := true;
 end;
 
 
@@ -238,6 +254,7 @@ begin
 
         conf.setValue('name', UnicodeString(FName));
         conf.setValue('visible', FVisible);
+        conf.setValue('Maximale Stringlaenge', FMaximaleStringLaenge);
         
         conf.setValue('Zeichen Art', UnicodeString(FZeichner.name));
 
@@ -270,3 +287,4 @@ begin
 end;
 
 end.
+

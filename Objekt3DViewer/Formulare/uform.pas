@@ -111,18 +111,20 @@ uses  uAnimation,uKamera, uKamObjektiv, uMatrizen, uGrammatiken;
 
 procedure TForm1.FormCreate(Sender: TObject);
 begin
-  liste_z:=TList.Create();
-  liste_w:=TList.Create();
   width:=screen.width-310;
   height:=screen.Height-200;
   GraphikPanel.Height:=height-50;
   GraphikPanel.Width:=width-150;
-  Trackbar1.width:=width-100;
+  Trackbar1.width:=width-300;
   Trackbar1.top:=height-25;
+  BT_Zurueck.top:=height-25;
+  BT_weiter.top:=height-25;
   Label8.Top:=height-25;
   v:=TrackBar1.Position;
   //uObjekt.objekt:=n;
   KameraInit(GraphikPanel);
+  liste_z:=TList.Create();
+  liste_w:=TList.Create();
   abstand_x:=2;
   akt_x:=0;
   akt_y:=0;

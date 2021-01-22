@@ -60,23 +60,38 @@ var i,n,anzahl:CARDINAL;
     Lc:Char;
     W:REAL;
     Turtle:TTurtle;zeichenPara: TZeichenParameter;
-    p,s: Integer;
+    p,s,q: Integer;
 begin
   gram:=TGrammatik.Create;
   n:=0;
-  p:=pos('->',Memo1.Lines[0]);
-  gram.axiom:= copy(Memo1.Lines[0],1,p-1);
-  While n<= Memo1.Lines.Count do
+  p:=pos('>',Memo1.Lines[0]);
+  gram.axiom:= copy(Memo1.Lines[0],1,p-2);
+  While n<= Memo1.Lines.Count-1 do
     begin
-    p:=pos('->',Memo1.Lines[n]);
     s:=pos(',',Memo1.Lines[n]);
-    L:=copy(Memo1.Lines[n],1,p-1);//linke Seite des '->'
+    If s=0 then
+    begin
+    p:=pos('>',Memo1.Lines[n]);
+    L:=copy(Memo1.Lines[n],1,p-2);//linke Seite des '->'
     Lc:=L[1]; //StrToChar
-    R:=copy(Memo1.Lines[n],1,p-1);//rechte Seite des '->'
-    delete(R,1,s-2);              //,aber hinter dem Komma
-    W:=strtofloat(copy(Memo1.Lines[n],1,s-2));//wahrscheinlichkeit
-    gram.addRegel(Lc,R,W);
+    R:=copy(Memo1.Lines[n],p+1,p+100);//rechte Seite des '->'
+    gram.addRegel(Lc,R);//Regel ohne Wahrscheinlichkeit hinzufügen
+    INC(n)
+    end
+    else
+    begin
+    p:=pos('>',Memo1.Lines[n]);
+    L:=copy(Memo1.Lines[n],1,p-2);//linke Seite des '->'
+    Lc:=L[1]; //StrToChar
+    R:=copy(Memo1.Lines[n],p+1,s-1);//rechte Seite des '->'
+    q:=pos(',',R);
+    If not q=0 then
+    delete(R,q,q+10)
+    else
+    W:=strtofloat(copy(Memo1.Lines[n],s+1,s+10));//wahrscheinlichkeit
+    gram.addRegel(Lc,R,W);//Regel mit Wahrscheinlichkeit hinzufügen
     INC(n);
+    end
     end;
   //
   zeichenPara.rekursionsTiefe:= strtoint(Edit2.Text);

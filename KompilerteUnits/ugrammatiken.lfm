@@ -4,8 +4,8 @@ object uGrammatiken: TuGrammatiken
   Top = 639
   Width = 505
   Caption = 'Grammatiken'
-  ClientHeight = 0
-  ClientWidth = 0
+  ClientHeight = 421
+  ClientWidth = 505
   DoubleBuffered = False
   OnCreate = FormCreate
   ParentDoubleBuffered = False

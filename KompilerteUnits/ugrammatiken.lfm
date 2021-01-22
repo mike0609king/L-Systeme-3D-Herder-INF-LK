@@ -1,7 +1,7 @@
 object uGrammatiken: TuGrammatiken
-  Left = 1950
+  Left = 736
   Height = 421
-  Top = 639
+  Top = 401
   Width = 505
   Caption = 'Grammatiken'
   ClientHeight = 421
@@ -85,7 +85,7 @@ object uGrammatiken: TuGrammatiken
   object Label3: TLabel
     Left = 272
     Height = 15
-    Top = 112
+    Top = 152
     Width = 59
     Caption = 'Zeichenart:'
     ParentColor = False
@@ -93,7 +93,7 @@ object uGrammatiken: TuGrammatiken
   object Label4: TLabel
     Left = 272
     Height = 15
-    Top = 176
+    Top = 112
     Width = 35
     Caption = 'Name:'
     ParentColor = False
@@ -101,7 +101,7 @@ object uGrammatiken: TuGrammatiken
   object Edit4: TEdit
     Left = 364
     Height = 23
-    Top = 176
+    Top = 112
     Width = 108
     OnChange = Edit4Change
     TabOrder = 5
@@ -123,5 +123,13 @@ object uGrammatiken: TuGrammatiken
     Caption = 'Laden'
     OnClick = Button3Click
     TabOrder = 7
+  end
+  object CheckListBox1: TCheckListBox
+    Left = 364
+    Height = 104
+    Top = 152
+    Width = 108
+    ItemHeight = 0
+    TabOrder = 8
   end
 end

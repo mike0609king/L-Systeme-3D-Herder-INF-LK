@@ -75,6 +75,8 @@ end;
 
 procedure TForm10.BT_updateClick(Sender: TObject);
 VAR i,anzahl:CARDINAL;str,name,sichtbarkeit,Winkel,Rek_tiefe,Zeichenart:string; turtle:TTurtle; Item1: TListItem;
+//sollte überarbeitet werden
+//nicht immer neu aufbauen sondern updaten
 begin
   ListView1.clear;
   anzahl:=(HauptForm.o.turtleListe.Count)-1;
@@ -130,6 +132,7 @@ procedure TForm10.BT_bearbeitenClick(Sender: TObject);
 begin
     //Parameterform aufrufen
     Parameter_Form.Show;
+    Parameter_Form.BT_resetClick;
 end;
 
 procedure TForm10.BT_entfernenClick(Sender: TObject);

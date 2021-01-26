@@ -1,7 +1,7 @@
 object Parameter_Form: TParameter_Form
-  Left = 2627
+  Left = 1053
   Height = 240
-  Top = 544
+  Top = 388
   Width = 320
   Caption = 'Parameter bearbeiten'
   ClientHeight = 240
@@ -66,5 +66,15 @@ object Parameter_Form: TParameter_Form
     Width = 59
     Caption = 'Zeichenart:'
     ParentColor = False
+  end
+  object BT_reset: TButton
+    Left = 40
+    Height = 25
+    Top = 192
+    Width = 75
+    Caption = 'BT_reset'
+    OnClick = BT_resetClick
+    TabOrder = 4
+    Visible = False
   end
 end

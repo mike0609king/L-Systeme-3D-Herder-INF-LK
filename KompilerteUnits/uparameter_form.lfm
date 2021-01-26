@@ -1,7 +1,7 @@
 object Parameter_Form: TParameter_Form
-  Left = 2627
+  Left = 2954
   Height = 240
-  Top = 544
+  Top = 526
   Width = 320
   Caption = 'Parameter bearbeiten'
   ClientHeight = 240

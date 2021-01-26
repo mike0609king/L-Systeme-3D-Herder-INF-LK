@@ -1,12 +1,13 @@
 object uGrammatiken: TuGrammatiken
-  Left = 736
+  Left = 1115
   Height = 421
-  Top = 401
+  Top = 265
   Width = 505
   Caption = 'Grammatiken'
-  ClientHeight = 421
+  ClientHeight = 401
   ClientWidth = 505
   DoubleBuffered = False
+  Menu = MainMenu1
   OnCreate = FormCreate
   ParentDoubleBuffered = False
   LCLVersion = '2.0.0.4'
@@ -106,30 +107,39 @@ object uGrammatiken: TuGrammatiken
     OnChange = Edit4Change
     TabOrder = 5
   end
-  object Button2: TButton
-    Left = 104
-    Height = 25
-    Top = 312
-    Width = 75
-    Caption = 'Speichern'
-    OnClick = Button2Click
-    TabOrder = 6
-  end
-  object Button3: TButton
-    Left = 16
-    Height = 25
-    Top = 312
-    Width = 75
-    Caption = 'Laden'
-    OnClick = Button3Click
-    TabOrder = 7
-  end
   object CheckListBox1: TCheckListBox
     Left = 364
     Height = 104
     Top = 152
     Width = 108
     ItemHeight = 0
-    TabOrder = 8
+    TabOrder = 6
+  end
+  object OpenDialog1: TOpenDialog
+    left = 16
+    top = 312
+  end
+  object SaveDialog1: TSaveDialog
+    left = 72
+    top = 312
+  end
+  object MainMenu1: TMainMenu
+    left = 144
+    top = 312
+    object MenuItem1: TMenuItem
+      Caption = 'Datei'
+      OnClick = MenuItem1Click
+      object MenuItem2: TMenuItem
+        Caption = 'Öffnen'
+        OnClick = MenuItem2Click
+      end
+      object MenuItem3: TMenuItem
+        Caption = 'Speichern unter'
+        OnClick = MenuItem3Click
+      end
+      object MenuItem4: TMenuItem
+        Caption = 'Beenden'
+      end
+    end
   end
 end

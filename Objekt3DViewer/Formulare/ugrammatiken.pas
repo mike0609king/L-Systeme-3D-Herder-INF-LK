@@ -13,7 +13,6 @@ type
 
   TuGrammatiken = class(TForm)
     Button1: TButton;
-    Button2: TButton;
     Button3: TButton;
     CheckListBox1: TCheckListBox;
     Edit1: TEdit;
@@ -25,11 +24,16 @@ type
     Label2: TLabel;
     Label3: TLabel;
     Label4: TLabel;
+    MainMenu1: TMainMenu;
     Memo1: TMemo;
+    MenuItem1: TMenuItem;
+    MenuItem2: TMenuItem;
+    MenuItem3: TMenuItem;
+    MenuItem4: TMenuItem;
+    OpenDialog1: TOpenDialog;
+    SaveDialog1: TSaveDialog;
     procedure AnzahlClick(Sender: TObject);
     procedure Button1Click(Sender: TObject);
-    procedure Button2Click(Sender: TObject);
-    procedure Button3Click(Sender: TObject);
     procedure CheckGroup1ItemClick(Sender: TObject; Index: integer);
     procedure Edit1Change(Sender: TObject);
     procedure Edit2Change(Sender: TObject);
@@ -37,6 +41,9 @@ type
     procedure Edit4Change(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure Memo1Change(Sender: TObject);
+    procedure MenuItem1Click(Sender: TObject);
+    procedure MenuItem2Click(Sender: TObject);
+    procedure MenuItem3Click(Sender: TObject);
   private
     function gib_markierte_nr():CARDINAL;
   public
@@ -64,7 +71,6 @@ begin
      if CheckListBox1.Checked[i] then result:=i;
    end;
 end;
-
 
 procedure TuGrammatiken.Button1Click(Sender: TObject);
 var i,n,nr,anzahl:CARDINAL;
@@ -125,51 +131,6 @@ begin
   Visible:=False;
   Hauptform.zeichnen();
 end;
-procedure TuGrammatiken.Button2Click(Sender: TObject);
-var turtle: TTurtle;
-    datei: String;
-begin
-  turtle.speichern(datei);
-end;
-
-procedure TuGrammatiken.Button3Click(Sender: TObject);
-var i,n,anzahl:CARDINAL;MemoLine: TStringArray;
-    gram:TGrammatik;L,R,NameGrammatik:String;
-    W:REAL;
-    zeichenPara: TZeichenParameter;
-    p,s:Integer;
-    Lc:Char;
-    turtle: TTurtle;
-    datei: String;
-    begin
-      gram:=TGrammatik.Create;
-      n:=0;
-      p:=pos('->',Memo1.Lines[0]);
-      gram.axiom:= copy(Memo1.Lines[0],1,p-1);
-      While n-1>= Memo1.Lines.Count do
-        begin
-        p:=pos('->',Memo1.Lines[n]);
-        s:=pos(',',Memo1.Lines[n]);
-        L:=copy(Memo1.Lines[n],1,p-1);//linke Seite des ->
-        Lc:=L[1];
-        R:=copy(Memo1.Lines[n],1,p-2);//rechte Seite des ->
-        delete(R,1,s-2); //,aber hinter dem Komma
-        W:=strtofloat(copy(Memo1.Lines[n],1,s-2));//wahrscheinlichkeit
-        gram.addRegel(Lc,R,W);
-        INC(n);
-        end;
-  //
-  zeichenPara.rekursionsTiefe:= strtoint(Edit2.Text);
-  zeichenPara.winkel:=strtofloat(Edit3.Text);
-  NameGrammatik:=Edit4.Text;
-  anzahl:= strtoint(Edit1.Text)-1;
-   //speichern des Turtels
-  for i:=0 to anzahl do
-  begin
-       zeichenPara.setzeStartPunkt(Hauptform.akt_x,Hauptform.akt_y,Hauptform.akt_z);
-       turtle:= TTurtle.Create(datei);
-  end;
-end;
 
 procedure TuGrammatiken.CheckGroup1ItemClick(Sender: TObject; Index: integer);
 var i : integer;
@@ -224,6 +185,103 @@ begin
 
 end;
 
+procedure TuGrammatiken.MenuItem1Click(Sender: TObject);
+begin
 
+end;
+
+procedure TuGrammatiken.MenuItem2Click(Sender: TObject);
+var turtle: TTurtle;
+    baumListe: TStringList;
+    Baum:String;
+    i:Cardinal;
+    zeichnerInit: TZeichnerInit;
+    Grammatik:TStringList;
+    g:string;
+begin
+  OpenDialog1.Filter:='Json-Dateien (*.json)|*.json';
+  if OpenDialog1.Execute then
+  begin
+    zeichnerInit := TZeichnerInit.Create;
+    baumListe := zeichnerInit.gibZeichnerListe;
+    turtle := TTurtle.Create(OpenDialog1.FileName);       //Turtle laden
+    Edit2.Text:=inttostr(turtle.rekursionsTiefe);
+    Edit3.Text:=floattostr(turtle.winkel);
+    Edit4.Text:=turtle.name;
+    Baum:=turtle.zeichnerName;
+    For i:=0 to baumListe.Count - 1 do
+    begin
+      if Baum=baumListe[i] then CheckListBox1.Checked[i] := true;
+    end;
+    //Grammiken laden
+    Grammatik:= TStringList.Create;
+    Grammatik.LoadFromFile(OpenDialog1.Filename);
+  end
+  else
+  begin
+  end;
+end;
+
+procedure TuGrammatiken.MenuItem3Click(Sender: TObject);
+  var turtle: TTurtle;
+      n,nr,anzahl:CARDINAL;
+      gram:TGrammatik;R,L,NameGrammatik:String;
+      Lc:Char;
+      W:REAL;
+      zeichenPara: TZeichenParameter;
+      p,s,q: Integer; zeichnerInit:TzeichnerInit;
+  begin
+       SaveDialog1.Filter:='Json-Dateien (*.json)|*.json';
+       If SaveDialog1.Execute then
+       begin
+       zeichnerInit := TZeichnerInit.Create;
+       gram:=TGrammatik.Create;
+       n:=0;
+       p:=pos('>',Memo1.Lines[0]);
+       gram.axiom:= copy(Memo1.Lines[0],1,p-2);
+       While n<= Memo1.Lines.Count-1 do
+       begin
+        s:=pos(',',Memo1.Lines[n]);
+        If s=0 then
+        begin
+          p:=pos('>',Memo1.Lines[n]);
+          L:=copy(Memo1.Lines[n],1,p-2);//linke Seite des '->'
+          Lc:=L[1]; //StrToChar
+          R:=copy(Memo1.Lines[n],p+1,p+100);//rechte Seite des '->'
+          gram.addRegel(Lc,R);//Regel ohne Wahrscheinlichkeit hinzufügen
+          INC(n)
+        end
+           else
+           begin
+            p:=pos('>',Memo1.Lines[n]);
+            L:=copy(Memo1.Lines[n],1,p-2);//linke Seite des '->'
+            Lc:=L[1]; //StrToChar
+            R:=copy(Memo1.Lines[n],p+1,s-1);//rechte Seite des '->'
+            q:=pos(',',R);
+          If not q=0 then
+          delete(R,q,q+10)
+          else
+            W:=strtofloat(copy(Memo1.Lines[n],s+1,s+10));//wahrscheinlichkeit
+            gram.addRegel(Lc,R,W);//Regel mit Wahrscheinlichkeit hinzufügen
+            INC(n);
+        end
+      end;
+    //
+    zeichenPara.rekursionsTiefe:= strtoint(Edit2.Text);
+    zeichenPara.winkel:=strtofloat(Edit3.Text);
+    NameGrammatik:=Edit4.Text;
+    anzahl:= strtoint(Edit1.Text)-1;
+    nr:=gib_markierte_nr();
+         begin
+           zeichenPara.setzeStartPunkt(Hauptform.akt_x,Hauptform.akt_y,Hauptform.akt_z);
+           turtle:=TTurtle.Create(gram,zeichnerInit.initialisiere(zeichnerInit.gibZeichnerListe[nr],zeichenPara));
+           turtle.name:=NameGrammatik;
+           turtle.speichern(SaveDialog1.FileName);
+         end;
+       end
+  else
+  begin
+  end;
+  end;
 end.
 

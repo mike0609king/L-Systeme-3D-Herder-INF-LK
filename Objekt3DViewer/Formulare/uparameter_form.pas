@@ -14,6 +14,7 @@ type
 
   TParameter_Form = class(TForm)
     BT_Bestaetigen: TButton;
+    BT_reset: TButton;
     CheckListBox1: TCheckListBox;
     ED_Winkel: TEdit;
     ED_Rek_tiefe: TEdit;
@@ -21,6 +22,7 @@ type
     Label2: TLabel;
     Label3: TLabel;
     procedure BT_BestaetigenClick(Sender: TObject);
+    procedure BT_resetClick(Sender: TObject);
     procedure CheckListBox1ItemClick(Sender: TObject; Index: integer);
     procedure ED_Rek_tiefeChange(Sender: TObject);
     procedure ED_WinkelChange(Sender: TObject);
@@ -49,6 +51,14 @@ begin
 
 end;
 
+procedure TParameter_Form.BT_resetClick(Sender: TObject);
+VAR i:CARDINAl;
+begin
+  ED_Winkel:='';
+  ED_Rek_tiefe:='';
+  for i:= 0 to CheckListBox1.Count -1 do CheckListBox1.Checked[I] := False;
+end;
+
 procedure TParameter_Form.CheckListBox1ItemClick(Sender: TObject; Index: integer);
 var
 I,h : integer;
@@ -62,6 +72,8 @@ begin
         begin
              if EditorForm.ListView1.Items[h].Checked then Hauptform.o.turtleListe[h].setzeZeichnerName(baumListe[Index])
         end;
+        EditorForm.BT_updateClick(self);
+        Hauptform.zeichnen();
     end;
 end;
 //exceptions handeling

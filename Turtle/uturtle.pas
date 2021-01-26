@@ -151,9 +151,13 @@ begin
     FStringEntwickler.entwickeln(FZeichner.rekursionsTiefe);
 end;
 
+
+//?destructor hoffentlich richtig
 destructor TTurtle.Destroy;
 begin
-    // to be done
+    FreeAndNil(regelnRechteSeite);
+    FreeAndNil(regelnLinkeSeite);
+    //! to do ...
 end;
 
 //////////////////////////////////////////////////////////

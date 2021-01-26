@@ -32,7 +32,7 @@ type TStringEntwickler = class
         property entwickelterString: String read FEntwickelterString;
 
         constructor Create(gram: TGrammatik);
-        //destructor Destroy; override;
+        destructor Destroy; override;
 
         { Aufgabe: Entwickelt den String gemaess der gegebenen Grammatik bis zur
           rekursions Tiefe, die angegeben wurde.}
@@ -48,6 +48,14 @@ begin
     FEntwickelterString := '';
     // es werden vier stellen nach dem Komma beruecksichtigt
     maximalerZufallsraum := 100 * 10000; 
+end;
+
+//destructor
+destructor TStringEntwickler.Destroy;
+begin
+    FreeAndNil(FEntwickelterString);
+    FreeAndNil(maximalerZufallsraum);
+    FreeAndNil(FGrammatik)    //vllt auch FGrammatik :=NIL //?
 end;
 
 function TStringEntwickler.convertiereRealZuCardinal(wert: Real) : Cardinal;

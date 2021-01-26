@@ -44,6 +44,9 @@ type TZeichnerBase = class
 
     public
         constructor Create(zeichenPara: TZeichenParameter); virtual;
+
+        destructor Destroy; override;
+
         procedure zeichneBuchstabe(c: char); virtual;
 
         procedure setzeStartPunkt(x,y,z: Real);
@@ -210,6 +213,13 @@ begin
     FVersandTabelle.add('\',aktionBSlash);
     FVersandTabelle.add('[',aktionPush);
     FVersandTabelle.add(']',aktionPop);
+end;
+
+destructor TZeichnerBase.Destroy;
+begin
+    FreeAndNil(FName);
+    FreeAndNil(FZeichenParameter);
+    FreeAndNil(FVersandTabelle)
 end;
 
 end.

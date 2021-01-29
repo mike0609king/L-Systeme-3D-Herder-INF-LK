@@ -6,14 +6,14 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, Menus,
-  ExtCtrls, CheckLst, uAnimation, fgl, uTurtleManager, ugrammatik, uTurtle;
+  ExtCtrls, CheckLst, uAnimation, fgl, uTurtleManager, ugrammatik, uTurtle, fpjson, jsonparser, jsonConf;
 type
 
   { TuGrammatiken }
 
   TuGrammatiken = class(TForm)
     Button1: TButton;
-    Button3: TButton;
+    Button2: TButton;
     CheckListBox1: TCheckListBox;
     Edit1: TEdit;
     Anzahl: TLabel;
@@ -34,6 +34,7 @@ type
     SaveDialog1: TSaveDialog;
     procedure AnzahlClick(Sender: TObject);
     procedure Button1Click(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
     procedure CheckGroup1ItemClick(Sender: TObject; Index: integer);
     procedure Edit1Change(Sender: TObject);
     procedure Edit2Change(Sender: TObject);
@@ -72,7 +73,7 @@ begin
    end;
 end;
 
-procedure TuGrammatiken.Button1Click(Sender: TObject);
+procedure TuGrammatiken.Button1Click(Sender: TObject); //Turtle erstellen
 var i,n,nr,anzahl:CARDINAL;
     gram:TGrammatik;R,L,NameGrammatik:String;
     Lc:Char;
@@ -126,10 +127,23 @@ begin
        Turtle.name:=NameGrammatik;
        Hauptform.update_startkoords();
        Hauptform.o.addTurtle(Turtle);
-       Hauptform.zeichnen();
   end;
   Visible:=False;
   Hauptform.zeichnen();
+end;
+
+procedure TuGrammatiken.Button2Click(Sender: TObject); //Alles leeren
+var n:CARDINAL;
+    i : integer;
+begin
+  For n:=0 to Memo1.Lines.Count-1 do
+  Begin
+  Memo1.Lines[n]:='';
+  end;
+  for i := 0 to ComponentCount - 1 do
+  if Components[i] is TEdit then
+    TEdit(Components[i]).Clear;
+  for i := 0 to CheckListBox1.Count -1 do CheckListBox1.Checked[I] := False;
 end;
 
 procedure TuGrammatiken.CheckGroup1ItemClick(Sender: TObject; Index: integer);
@@ -190,21 +204,22 @@ begin
 
 end;
 
-procedure TuGrammatiken.MenuItem2Click(Sender: TObject);
+procedure TuGrammatiken.MenuItem2Click(Sender: TObject); //Turtle laden
 var turtle: TTurtle;
     baumListe: TStringList;
     Baum:String;
     i:Cardinal;
     zeichnerInit: TZeichnerInit;
-    Grammatik:TStringList;
-    g:string;
+    regelIdx:Cardinal;
+    produktionIdx:Cardinal;
+    tmp_path:Char;
 begin
   OpenDialog1.Filter:='Json-Dateien (*.json)|*.json';
   if OpenDialog1.Execute then
   begin
     zeichnerInit := TZeichnerInit.Create;
     baumListe := zeichnerInit.gibZeichnerListe;
-    turtle := TTurtle.Create(OpenDialog1.FileName);       //Turtle laden
+    turtle := TTurtle.Create(OpenDialog1.FileName);
     Edit2.Text:=inttostr(turtle.rekursionsTiefe);
     Edit3.Text:=floattostr(turtle.winkel);
     Edit4.Text:=turtle.name;
@@ -214,15 +229,21 @@ begin
       if Baum=baumListe[i] then CheckListBox1.Checked[i] := true;
     end;
     //Grammiken laden
-    Grammatik:= TStringList.Create;
-    Grammatik.LoadFromFile(OpenDialog1.Filename);
+    for regelIdx := 0 to FGrammatik.regeln.Count - 1 do
+    begin
+    for produktionIdx := 0 to (FGrammatik.regeln.data[regelIdx]).Count - 1 do
+    begin
+    tmp_path := 'Grammatik/regeln/' + FGrammatik.regeln.keys[regelIdx] + '/Regel ';
+    // Code :)
+    end;
+    end;
   end
   else
   begin
   end;
 end;
 
-procedure TuGrammatiken.MenuItem3Click(Sender: TObject);
+procedure TuGrammatiken.MenuItem3Click(Sender: TObject); //Turtle speichern
   var turtle: TTurtle;
       n,nr,anzahl:CARDINAL;
       gram:TGrammatik;R,L,NameGrammatik:String;

@@ -1,7 +1,7 @@
 object uGrammatiken: TuGrammatiken
-  Left = 1115
+  Left = 717
   Height = 421
-  Top = 265
+  Top = 195
   Width = 505
   Caption = 'Grammatiken'
   ClientHeight = 401
@@ -114,6 +114,15 @@ object uGrammatiken: TuGrammatiken
     Width = 108
     ItemHeight = 0
     TabOrder = 6
+  end
+  object Button2: TButton
+    Left = 272
+    Height = 25
+    Top = 279
+    Width = 88
+    Caption = 'Leeren'
+    OnClick = Button2Click
+    TabOrder = 7
   end
   object OpenDialog1: TOpenDialog
     left = 16

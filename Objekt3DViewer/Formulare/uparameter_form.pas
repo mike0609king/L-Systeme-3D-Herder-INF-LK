@@ -72,7 +72,7 @@ begin
         begin
              if EditorForm.ListView1.Items[h].Checked then Hauptform.o.turtleListe[h].setzeZeichnerName(baumListe[Index])
         end;
-        EditorForm.BT_updateClick(self);
+        EditorForm.BT_updateClick(1);
         Hauptform.zeichnen();
     end;
 end;
@@ -90,7 +90,7 @@ begin
          if EditorForm.ListView1.Items[i].Checked then Hauptform.o.turtleListe[i].winkel:=winkel;
     end;
     Hauptform.zeichnen();
-    EditorForm.BT_updateClick(self);
+    EditorForm.BT_updateClick(1);
   end;
 end;
 
@@ -122,7 +122,7 @@ begin
            if EditorForm.ListView1.Items[i].Checked then Hauptform.o.turtleListe[i].rekursionsTiefe:=rek_tiefe;
       end;
       Hauptform.zeichnen();
-      EditorForm.BT_updateClick(self);
+      EditorForm.BT_updateClick(1);
     end;
 end;
 end.

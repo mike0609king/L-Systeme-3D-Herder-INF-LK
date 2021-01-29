@@ -4,8 +4,8 @@ object Form10: TForm10
   Top = 440
   Width = 1144
   Caption = 'Grammatik_Editor'
-  ClientHeight = 480
-  ClientWidth = 1144
+  ClientHeight = 0
+  ClientWidth = 0
   OnCreate = FormCreate
   LCLVersion = '2.0.0.4'
   object BT_entfernen: TButton
@@ -35,16 +35,6 @@ object Form10: TForm10
     OnClick = BT_sichtbarkeitClick
     TabOrder = 2
   end
-  object BT_update: TButton
-    Left = 32
-    Height = 25
-    Top = 432
-    Width = 75
-    Caption = 'BT_update'
-    OnClick = BT_updateClick
-    TabOrder = 3
-    Visible = False
-  end
   object BT_Alle: TButton
     Left = 59
     Height = 25
@@ -52,7 +42,7 @@ object Form10: TForm10
     Width = 160
     Caption = 'Alle markieren'
     OnClick = BT_AlleClick
-    TabOrder = 4
+    TabOrder = 3
   end
   object BT_Fertig: TButton
     Left = 59
@@ -61,7 +51,7 @@ object Form10: TForm10
     Width = 75
     Caption = 'Fertig'
     OnClick = BT_FertigClick
-    TabOrder = 5
+    TabOrder = 4
   end
   object BT_alle_unmarkieren: TButton
     Left = 59
@@ -70,7 +60,7 @@ object Form10: TForm10
     Width = 160
     Caption = 'Alle markierungen enfernen '
     OnClick = BT_alle_unmarkierenClick
-    TabOrder = 6
+    TabOrder = 5
   end
   object BT_unsichtbar_machen: TButton
     Left = 320
@@ -79,7 +69,7 @@ object Form10: TForm10
     Width = 123
     Caption = 'Unsichtbar machen '
     OnClick = BT_unsichtbar_machenClick
-    TabOrder = 7
+    TabOrder = 6
   end
   object ED_abstand: TEdit
     Left = 235
@@ -88,7 +78,7 @@ object Form10: TForm10
     Width = 80
     NumbersOnly = True
     OnChange = ED_abstandChange
-    TabOrder = 8
+    TabOrder = 7
   end
   object UpDown1: TUpDown
     Left = 323
@@ -98,7 +88,7 @@ object Form10: TForm10
     Min = 0
     OnClick = UpDown1Click
     Position = 0
-    TabOrder = 9
+    TabOrder = 8
   end
   object Label1: TLabel
     Left = 59
@@ -143,7 +133,7 @@ object Form10: TForm10
         Caption = 'Zeichenart'
         Width = 71
       end>
-    TabOrder = 10
+    TabOrder = 9
     ViewStyle = vsReport
   end
 end

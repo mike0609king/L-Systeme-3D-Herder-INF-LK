@@ -316,16 +316,6 @@ object Form1: TForm1
     OnClick = BtKameraResetClick
     TabOrder = 21
   end
-  object Button1: TButton
-    AnchorSideLeft.Control = TrackBar1
-    Left = 92
-    Height = 25
-    Top = 975
-    Width = 75
-    Anchors = [akTop, akLeft, akBottom]
-    TabOrder = 22
-    Visible = False
-  end
   object BT_Zurueck: TButton
     AnchorSideLeft.Control = TrackBar1
     AnchorSideLeft.Side = asrBottom
@@ -337,7 +327,7 @@ object Form1: TForm1
     Anchors = [akLeft]
     Caption = 'Zurücknehmen'
     OnClick = BT_ZurueckClick
-    TabOrder = 23
+    TabOrder = 22
   end
   object BT_weiter: TButton
     AnchorSideLeft.Control = BT_Zurueck
@@ -349,7 +339,7 @@ object Form1: TForm1
     Anchors = [akLeft]
     Caption = 'Weiter'
     OnClick = BT_weiterClick
-    TabOrder = 24
+    TabOrder = 23
   end
   object Timer1: TTimer
     Interval = 100

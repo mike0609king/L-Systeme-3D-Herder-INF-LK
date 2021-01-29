@@ -17,7 +17,6 @@ type
     BtZoomP: TButton;
     BtZoomM: TButton;
     BtKameraReset: TButton;
-    Button1: TButton;
     BT_Zurueck: TButton;
     BT_weiter: TButton;
     Label1: TLabel;
@@ -94,11 +93,14 @@ type
     liste_w:TList; //liste letzen der instanzen von o die zurückgesetzt wurden
     v:CARDINAL;
     procedure standardturtel();
+    procedure update_sichtbarkeit_bt();
   public    { Public-Deklarationen }
     o:TTurtleManager;
+    max_gespeicherte_manager:CARDINAL;
     abstand_x,akt_x,akt_y,akt_z:REAL;
     procedure update_startkoords();
     procedure abstand_aendern(x_abstand:REAL);
+    procedure push_neue_instanz(turtelmanager:TTurtleManager);
   end;
 
 var
@@ -126,6 +128,7 @@ begin
   liste_z:=TList.Create();
   liste_w:=TList.Create();
   abstand_x:=2;
+  max_gespeicherte_manager:=20; //muss getestet werden
   akt_x:=0;
   akt_y:=0;
   akt_z:=0;
@@ -134,6 +137,61 @@ begin
   Timer1.Enabled:=FALSE;
   ObjKOSinitialisieren;
  // kartToKugel;
+end;
+//Alle interaktionen mit o überarbeiten
+
+procedure TForm1.BT_weiterClick(Sender: TObject);  //weiter bt nur sichtbar wenn sinvoll
+VAR nr:CARDINAL;hlob:TTurtleManager;
+begin
+  //stellt die letzte zurückgenommene änderung wieder her
+  //achtung nimmt das ganze objekt
+  //änderungen die dazwischen passiert sind...
+  (*
+  nr:=liste_w.Count-1;//letzte nr
+  liste_z.add(o.copy());
+  hlob:=TTurtleManager.Create;
+  hlob:=liste_w[nr];
+  liste_w.Delete(nr);
+  o:=hlob;
+  update_sichtbarkeit_bt();     *)
+end;
+procedure TForm1.update_sichtbarkeit_bt();
+VAR nr:CARDINAL;
+begin
+   if liste_z.Count=0 then BT_Zurueck.Visible:=False
+   else BT_Zurueck.Visible:=True;
+   if liste_w.Count=0 then BT_Weiter.Visible:=False
+   else BT_Weiter.Visible:=True;
+end;
+
+procedure TForm1.BT_ZurueckClick(Sender: TObject); //darf nicht eingeblendet sein, wenn nicht möglich
+VAR nr:CARDINAL;hlob:TTurtleManager;
+begin
+  //nimmt letzte änderung am object o zurück. Maximal 20 mal.
+  (*
+  nr:=liste_z.Count-1;//letzte nr
+  liste_w.add(o.copy());
+  hlob:=TTurtleManager.Create;
+  hlob:=liste_z[nr];
+  liste_z.Delete(nr);
+  o:=hlob;
+  update_sichtbarkeit_bt(); *)
+end;
+procedure TForm1.push_neue_instanz(turtelmanager:TTurtleManager);
+VAR nr:CARDINAL;
+begin
+  (*
+  nr:=liste_z.Count;
+  //soll weiter noch verfügbar sein? oder muss sich gemerkt werden ob es sinn macht? ->erstmal nicht
+  //liste_w zerstörern
+  if nr==max_gespeicherte_manager then
+  begin
+     liste_z[nr].distroy; //alte Instanze löschen
+     liste_z.Delete(nr);
+  end;
+  liste_z.add(turtelmanager.copy());
+  BT_Zurueck.Visible:=True;
+  update_sichtbarkeit_bt();      *)
 end;
 procedure TForm1.abstand_aendern(x_abstand:REAL);
 VAR i:CARDINAL;
@@ -217,7 +275,7 @@ end;
 
 procedure TForm1.bearbeitenClick(Sender: TObject);
 begin
-   EditorForm.BT_updateClick(self);
+   EditorForm.BT_updateClick();
    EditorForm.Show;
 end;
 
@@ -272,16 +330,6 @@ end;
 procedure TForm1.BtKameraResetClick(Sender: TObject);
 begin
   KameraInit(GraphikPanel);
-end;
-//Alle interaktionen mit o überarbeiten
-procedure TForm1.BT_weiterClick(Sender: TObject);  //weiter bt nur sichtbar wenn sinvoll
-begin
-  //stellt die letzte zurückgenommene änderung wieder her
-end;
-
-procedure TForm1.BT_ZurueckClick(Sender: TObject);
-begin
-  //nimmt letzte änderung am object o zurück. Maximal 20 mal.
 end;
 
 

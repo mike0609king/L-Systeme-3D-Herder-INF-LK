@@ -132,7 +132,7 @@ procedure TForm10.BT_bearbeitenClick(Sender: TObject);
 begin
     //Parameterform aufrufen
     Parameter_Form.Show;
-    Parameter_Form.BT_resetClick;
+    Parameter_Form.BT_resetClick(self);
 end;
 
 procedure TForm10.BT_entfernenClick(Sender: TObject);

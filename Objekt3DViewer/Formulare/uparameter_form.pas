@@ -54,8 +54,8 @@ end;
 procedure TParameter_Form.BT_resetClick(Sender: TObject);
 VAR i:CARDINAl;
 begin
-  ED_Winkel:='';
-  ED_Rek_tiefe:='';
+  ED_Winkel.text:='';
+  ED_Rek_tiefe.text:='';
   for i:= 0 to CheckListBox1.Count -1 do CheckListBox1.Checked[I] := False;
 end;
 

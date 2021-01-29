@@ -1,7 +1,6 @@
 unit uStringEntwickler;
 
-{$mode delphi}{$H+}
-
+{$H+}
 interface
 
 uses
@@ -31,12 +30,14 @@ type TStringEntwickler = class
         property regeln: TRegelDictionary read FGrammatik.regeln;
         property entwickelterString: String read FEntwickelterString;
 
-        constructor Create(gram: TGrammatik);
+        constructor Create(gram: TGrammatik); overload;
+        constructor Create(gram: TGrammatik; entwickelterString: String); overload; // review!!
         //destructor Destroy; override;
 
         { Aufgabe: Entwickelt den String gemaess der gegebenen Grammatik bis zur
           rekursions Tiefe, die angegeben wurde.}
         procedure entwickeln(rekursionsTiefe: Cardinal);
+        function copy : TStringEntwickler;
 end;
 
 implementation
@@ -46,6 +47,15 @@ begin
     randomize;
     FGrammatik := gram;
     FEntwickelterString := '';
+    // es werden vier stellen nach dem Komma beruecksichtigt
+    maximalerZufallsraum := 100 * 10000; 
+end;
+
+constructor TStringEntwickler.Create(gram: TGrammatik; entwickelterString: String);
+begin
+    randomize;
+    FGrammatik := gram;
+    FEntwickelterString := entwickelterString;
     // es werden vier stellen nach dem Komma beruecksichtigt
     maximalerZufallsraum := 100 * 10000; 
 end;
@@ -106,6 +116,20 @@ procedure TStringEntwickler.entwickeln(rekursionsTiefe: Cardinal);
 begin
     FEntwickelterString := '';
     entw(rekursionsTiefe,FGrammatik.axiom);
+end;
+
+function TStringEntwickler.copy : TStringEntwickler;
+var tmp_string: String;
+begin
+    tmp_string := system.Copy(
+        FEntwickelterString,
+        1,
+        length(FEntwickelterString)
+    );
+    result := TStringEntwickler.Create(
+        FGrammatik.copy,
+        tmp_string
+        );
 end;
 
 end.

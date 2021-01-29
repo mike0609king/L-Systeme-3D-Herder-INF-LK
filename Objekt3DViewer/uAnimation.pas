@@ -15,7 +15,7 @@ implementation
 uses uTurtle, uGrammatik, uBeleuchtung, uZeichnerInit, uTurtleManager, uZeichnerBase,
 sysUtils; // testing
 VAR o: TTurtleManager;
-    turtle: TTurtle;
+    turtle,turtle1: TTurtle;
     gram: TGrammatik;
     zeichenPara: TZeichenParameter;
     zeichnerInit: TZeichnerInit;
@@ -47,41 +47,42 @@ begin
     // zeichenPara.setzeStartPunkt(0,0,0);
     turtle := TTurtle.Create(gram, TZeichnerBase.Create(zeichenPara));
     o.addTurtle(turtle);
-    //o.setzeSichtbarkeit(0,false);  // setzten der Sichtbarkeit der Turtle
+    o.setzeSichtbarkeit(0,false);  // setzten der Sichtbarkeit der Turtle
 
     // zweiter Baum (index 1)
     zeichenPara.setzeStartPunkt(2,0,0);
     turtle := TTurtle.Create(gram, zeichnerInit.initialisiere('ZeichnerGruenesBlatt',zeichenPara));
     o.addTurtle(turtle);
-    //o.setzeSichtbarkeit(1,false);  // setzten der Sichtbarkeit der Turtle
+    o.setzeSichtbarkeit(1,false);  // setzten der Sichtbarkeit der Turtle
 
     // dritter Baum (index 2)
-    zeichenPara.setzeStartPunkt(-2,0,0);
+    zeichenPara.setzeStartPunkt(5,0,0);
     turtle := TTurtle.Create(gram, zeichnerInit.initialisiere(
         zeichnerInit.gibZeichnerListe[0],zeichenPara));
     o.addTurtle(turtle);
-    //o.setzeSichtbarkeit(2,false);  // setzten der Sichtbarkeit der Turtle
+    o.setzeSichtbarkeit(2,false);  // setzten der Sichtbarkeit der Turtle
+
+    // vierter Baum (index 3)
+    o.gibTurtle(1, turtle);
+    o.setzeSichtbarkeit(1,true);  // setzten der Sichtbarkeit der Turtle
+    turtle1 := turtle.copy;
+    turtle1.setzeStartPunkt(-4,0,0);
+    o.addTurtle(turtle1);
+    o.setzeSichtbarkeit(3,true);  // setzten der Sichtbarkeit der Turtle
+
+    // die Strings sind wirklich gleich
+    if o.turtleListe[1].zuZeichnenderString = o.turtleListe[3].zuZeichnenderString then
+    begin
+        o.setzeSichtbarkeit(2,true);  // setzten der Sichtbarkeit der Turtle
+    end;
+    
 
     // beides das gleiche (entfernt beide die Turtle an index 2)
     // o.entferneTurtle(turtle);
     // o.entferneTurtleAn(2);
 
-    // modifizieren der rekursions Tiefe und Winkel der Turtle an index 0
-    o.gibTurtle(0, turtle);
-    turtle.rekursionsTiefe := 6;
-    turtle.winkel := 15;
-
     // aendern der maximalenStringLaenge, damit die turtle mit Rekursionstiefe
     // 6 gezeichnet werden kann
     turtle.maximaleStringLaenge := turtle.maximaleStringLaenge*2;
-
-    turtle.setzeZeichnerName(zeichnerInit.gibZeichnerListe[1]);
-    turtle.speichern(GetCurrentDir+'\test.json');
-
-    // laden und modifizieren der hochgeladenen Turtle
-    turtle := TTurtle.Create(GetCurrentDir+'\test.json');
-    turtle.rekursionsTiefe := 5;
-    turtle.setzeStartPunkt(2,0,2);
-    o.addTurtle(turtle);
 
 end.

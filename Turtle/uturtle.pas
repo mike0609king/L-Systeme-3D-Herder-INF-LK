@@ -35,8 +35,10 @@ type TTurtle = class
         function gibWinkel : Real;
         function gibStartPunkt : TPunkt3D;
         function gibZeichnerName : String;
+        function gibEntwickelterString : String;
     public
         constructor Create(gram: TGrammatik; zeichner: TZeichnerBase); overload;
+        constructor Create(gram: TGrammatik; zeichner: TZeichnerBase; stringEntwickler: TStringEntwickler); overload;
         constructor Create(datei: String); overload;
         destructor Destroy; override;
 
@@ -54,6 +56,8 @@ type TTurtle = class
         property name: String read FName write setzeName;
         property maximaleStringLaenge: Cardinal read FMaximaleStringLaenge write setzeMaximaleStringLaenge;
 
+        property zuZeichnenderString: String read gibEntwickelterString;
+
         // setter-Funktionen (public)
         procedure setzeStartPunkt(const x,y,z: Real);
         procedure setzeZeichnerName(const neuerName: String);
@@ -64,6 +68,7 @@ type TTurtle = class
           wurde, so wird falsch zurueckgegeben. }
         function zeichnen : Boolean;
         procedure speichern(datei: String);
+        function copy : TTurtle; 
 end;
 
 VAR objekt: TObjekte;
@@ -81,6 +86,19 @@ begin
     FMaximaleStringLaenge := 100000;
     FName := '';
     FVisible := true;
+end;
+
+constructor TTurtle.Create(gram: TGrammatik; 
+                   zeichner: TZeichnerBase; 
+                   stringEntwickler: TStringEntwickler);
+begin
+    FGrammatik := gram;
+    FZeichner := zeichner;
+    FStringEntwickler := stringEntwickler;
+    FMaximaleStringLaenge := 100000;
+    FName := '';
+    FVisible := true;
+
 end;
 
 constructor TTurtle.Create(datei: String);
@@ -229,6 +247,11 @@ begin
     result := FZeichner.name;
 end;
 
+function TTurtle.gibEntwickelterString : String;
+begin
+    result := FStringEntwickler.entwickelterString;
+end;
+
 // zeichner
 function TTurtle.zeichnen : Boolean;
 VAR i: Cardinal;
@@ -286,5 +309,20 @@ begin
   end;
 end;
 
-end.
+function TTurtle.copy : TTurtle;
+var turtle: TTurtle;
+    gram: TGrammatik;
+    zeichner: TZeichnerBase;
+    entwickler:TStringEntwickler;
+begin
+    gram := FGrammatik.copy;
+    zeichner := FZeichner.copy;
+    entwickler := FStringEntwickler.copy;
+    turtle := TTurtle.Create(gram,zeichner,entwickler);
+    turtle.name := FName;
+    turtle.visible := FVisible;
+    turtle.maximaleStringLaenge := FMaximaleStringLaenge;
+    result := turtle;
+end;
 
+end.

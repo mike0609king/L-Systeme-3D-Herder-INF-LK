@@ -5,7 +5,7 @@ unit uAnimation;
 {Bisher noch eine riesengroße Baustelle. Wer darf wen bewegen????
  Bsp. Bewegt sich die Kamera im EigenKOS durch die programmierte Animation oder
  ausschließlich interaktiv durch die Steuerung des Anwenders?! Beides gleichzeitig
- ist schlecht möglich!!!!}
+ ist schlecht möglich!!!!,}
 interface
 
 procedure ozeichnen;
@@ -70,8 +70,12 @@ begin
 
     // modifizieren der rekursions Tiefe und Winkel der Turtle an index 0
     o.gibTurtle(0, turtle);
-    turtle.rekursionsTiefe := 4;
+    turtle.rekursionsTiefe := 6;
     turtle.winkel := 15;
+
+    // aendern der maximalenStringLaenge, damit die turtle mit Rekursionstiefe
+    // 6 gezeichnet werden kann
+    turtle.maximaleStringLaenge := turtle.maximaleStringLaenge*2;
 
     turtle.setzeZeichnerName(zeichnerInit.gibZeichnerListe[1]);
     turtle.speichern(GetCurrentDir+'\test.json');

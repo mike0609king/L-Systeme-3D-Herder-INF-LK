@@ -212,7 +212,7 @@ var turtle: TTurtle;
     zeichnerInit: TZeichnerInit;
     regelIdx:Cardinal;
     produktionIdx:Cardinal;
-    tmp_path:Char;
+    tmp_path:Char; FGrammatik:TGrammatik;
 begin
   OpenDialog1.Filter:='Json-Dateien (*.json)|*.json';
   if OpenDialog1.Execute then
@@ -229,14 +229,14 @@ begin
       if Baum=baumListe[i] then CheckListBox1.Checked[i] := true;
     end;
     //Grammiken laden
-    for regelIdx := 0 to FGrammatik.regeln.Count - 1 do
+ (*   for regelIdx := 0 to FGrammatik.regeln.Count - 1 do
     begin
     for produktionIdx := 0 to (FGrammatik.regeln.data[regelIdx]).Count - 1 do
     begin
     tmp_path := 'Grammatik/regeln/' + FGrammatik.regeln.keys[regelIdx] + '/Regel ';
     // Code :)
     end;
-    end;
+    end;              *)
   end
   else
   begin

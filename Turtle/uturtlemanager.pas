@@ -30,6 +30,7 @@ type TTurtleManager = class
         { Aufgabe: Zeichnet alle L-Systeme dessen Turtles schon in den Manager eingefuegt worden
           wurden und dessen status auf sichtbar gestellt wurde. }
         procedure zeichnen;
+        function copy : TTurtleManager;
 
         // setter-Funktion
         { Rueckgabe: Gibt an, ob die Sichtbarkeit gesetzt wurde bzw. ob der Index
@@ -101,5 +102,16 @@ begin
     end;
 end;
 
+function TTurtleManager.copy : TTurtleManager;
+var i: Cardinal;
+    turtle: TTurtle;
+begin
+    result := TTurtleManager.Create;
+    for i := 0 to FTurtleListe.Count-1 do
+    begin
+        gibTurtle(i,turtle);
+        result.addTurtle(turtle.copy);
+    end;
+end;
 end.
 

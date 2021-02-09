@@ -29,6 +29,7 @@ type TGrammatik = class
         destructor Destroy; override;
         procedure addRegel(rechts: char; links: String; zufaelligkeit: Real); overload;
         procedure addRegel(rechts: char; links: String); overload;
+        function copy : TGrammatik;
 end;
 
 implementation
@@ -76,6 +77,26 @@ end;
 procedure TGrammatik.addRegel(rechts: char; links: String);
 begin
     addRegel(rechts,links,100);
+end;
+
+function TGrammatik.copy : TGrammatik;
+var regelIdx, produktionIdx: Cardinal;
+var gram: TGrammatik;
+begin
+    gram := TGrammatik.Create;
+    gram.axiom := axiom;
+    for regelIdx := 0 to regeln.Count - 1 do
+    begin
+        for produktionIdx := 0 to (regeln.data[regelIdx]).Count - 1 do
+        begin
+            gram.addRegel(
+                    regeln.keys[regelIdx],
+                    regeln.data[regelIdx][produktionIdx].produktion,
+                    regeln.data[regelIdx][produktionIdx].zufaelligkeit
+                );
+        end;
+    end;
+    result := gram;
 end;
 
 end.

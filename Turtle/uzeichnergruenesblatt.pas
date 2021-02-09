@@ -12,6 +12,7 @@ type TZeichnerGruenesBlatt = class(TZeichnerBase)
         procedure aktionBlatt;
     public
         constructor Create(zeichenPara: TZeichenParameter); override;
+        destructor Destroy; override;
 end;
 
 implementation
@@ -44,6 +45,12 @@ begin
     inherited;
     FName := 'ZeichnerGruenesBlatt';
     FVersandTabelle.AddOrSetData('B',aktionBlatt);
+end;
+
+//?
+destructor TZeichnerGruenesBlatt.Destroy;
+begin
+  FreeAndNil(FName);
 end;
 
 end.

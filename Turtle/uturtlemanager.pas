@@ -20,6 +20,8 @@ type TTurtleManager = class
     public
         constructor Create;
 
+        destructor Destroy; override;
+
         procedure addTurtle(turtle: TTurtle);
         { Aufgabe: Entfernt eine Turtle, die den gleichen Wert, wie die uebergebene Instanz hat.
           Rueckgabe: Gibt an, ob die Turtle endfernt wurde bzw. ob der Index.}
@@ -30,6 +32,7 @@ type TTurtleManager = class
         { Aufgabe: Zeichnet alle L-Systeme dessen Turtles schon in den Manager eingefuegt worden
           wurden und dessen status auf sichtbar gestellt wurde. }
         procedure zeichnen;
+        function copy : TTurtleManager;
 
         // setter-Funktion
         { Rueckgabe: Gibt an, ob die Sichtbarkeit gesetzt wurde bzw. ob der Index
@@ -49,6 +52,16 @@ uses uMatrizen,dglOpenGL;
 constructor TTurtleManager.Create;
 begin
     FTurtleListe := TTurtleListe.Create;
+end;
+
+destructor TTurtleManager.Destroy;
+VAR i:CARDINAL;
+begin
+    for i:=0 to FTurtleListe.count-1 do
+    begin
+       FTurtleListe[i].destroy()
+    end;
+    FreeandNil(FTurtleListe);
 end;
 
 function TTurtleManager.ueberpruefeGueltigkeitVomIndex(idx: Cardinal) :Boolean;
@@ -101,5 +114,16 @@ begin
     end;
 end;
 
+function TTurtleManager.copy : TTurtleManager;
+var i: Cardinal;
+    turtle: TTurtle;
+begin
+    result := TTurtleManager.Create;
+    for i := 0 to FTurtleListe.Count-1 do
+    begin
+        gibTurtle(i,turtle);
+        result.addTurtle(turtle.copy);
+    end;
+end;
 end.
 

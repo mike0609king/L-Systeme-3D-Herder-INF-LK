@@ -16,6 +16,7 @@ type TZeichenParameter = record
      rekursionsTiefe: Cardinal;
      startPunkt: TPunkt3D;
      procedure setzeStartPunkt(x,y,z: Real);
+     function copy : TZeichenParameter;
 end;
 
 type TProc = procedure of object;
@@ -44,7 +45,10 @@ type TZeichnerBase = class
 
     public
         constructor Create(zeichenPara: TZeichenParameter); virtual;
+        destructor Destroy; override;
+
         procedure zeichneBuchstabe(c: char); virtual;
+        function copy : TZeichnerBase;
 
         procedure setzeStartPunkt(x,y,z: Real);
         function gibZeichenParameter : TZeichenParameter;
@@ -58,13 +62,22 @@ type TZeichnerBase = class
 end;
 
 implementation
-uses uMatrizen,dglOpenGL;
+uses uMatrizen,dglOpenGL,uZeichnerInit;
 
 procedure TZeichenParameter.setzeStartPunkt(x,y,z: Real);
 begin
     startPunkt.x := x;
     startPunkt.y := y;
     startPunkt.z := z;
+end;
+
+function TZeichenParameter.copy : TZeichenParameter;
+var zeichenPara: TZeichenParameter;
+begin
+    zeichenPara.winkel := winkel;
+    zeichenPara.rekursionsTiefe := rekursionsTiefe;
+    zeichenPara.setzeStartPunkt(startPunkt.x, startPunkt.y, startPunkt.z);
+    result := zeichenPara;
 end;
 
 procedure TZeichnerBase.setzeWinkel(const phi: Real);
@@ -195,6 +208,13 @@ begin
   glGetFloatv(GL_MODELVIEW_MATRIX,@OMatrix.o);
 end;
 
+function TZeichnerBase.copy : TZeichnerBase;
+var zeichnerInit: TZeichnerInit;
+begin
+    zeichnerInit := TZeichnerInit.Create;
+    result := zeichnerinit.initialisiere(FName, FZeichenParameter.copy);
+end;
+
 constructor TZeichnerBase.Create(zeichenPara: TZeichenParameter);
 begin
     FName := 'ZeichnerBase';
@@ -210,6 +230,13 @@ begin
     FVersandTabelle.add('\',aktionBSlash);
     FVersandTabelle.add('[',aktionPush);
     FVersandTabelle.add(']',aktionPop);
+end;
+
+destructor TZeichnerBase.Destroy;
+begin
+    FreeAndNil(FName);
+    FreeAndNil(FZeichenParameter);
+    FreeAndNil(FVersandTabelle)
 end;
 
 end.

@@ -19,6 +19,8 @@ type TZeichnerInit = class
         constructor Create;
         { Aufgabe: Die 'zeichnerArt' spezifiziert den Namen der Zeichenart, welche genutzt wird. 
           Diese Funktion gibt dann die Instanz von dieser Zeichenart zurueck.}
+        destructor Destroy; override;
+
         function initialisiere(zeichnerArt: String; zeichenPara: TZeichenParameter) : TZeichnerBase;
 
         { Aufgabe: Gibt eine Liste von Zeichenartnamen zurueck. Diese koennen dann als 
@@ -43,6 +45,12 @@ begin
         (TZeichnerGruenesBlatt.Create(zeichenPara)).name,
         TZeichnerGruenesBlatt
     );
+end;
+
+//?
+destructor TZeichnerInit.Destroy;
+begin
+  FreeAndNil(FVersandTabelleZeichner);
 end;
 
 function TZeichnerInit.initialisiere(zeichnerArt: String; zeichenpara: TZeichenParameter) : TZeichnerBase;

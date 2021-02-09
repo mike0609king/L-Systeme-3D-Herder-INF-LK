@@ -155,8 +155,13 @@ end;
 //?destructor hoffentlich richtig
 destructor TTurtle.Destroy;
 begin
-    FreeAndNil(regelnRechteSeite);
-    FreeAndNil(regelnLinkeSeite);
+    FreeAndNil(FVisible);
+    FreeAndNil(FMaximaleStringLaenge);
+    FreeAndNil(FName);
+    FreeAndNil(FGrammatik);
+    FreeAndNil(FZeichner);
+    FreeAndNil(FStringEntwickler);
+    inherited;
     //! to do ...
 end;
 

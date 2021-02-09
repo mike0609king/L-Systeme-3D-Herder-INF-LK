@@ -51,7 +51,6 @@ end;
 destructor TZeichnerGruenesBlatt.Destroy;
 begin
   FreeAndNil(FName);
-  FreeAndNil(aktionBlatt)
 end;
 
 end.

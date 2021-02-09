@@ -82,6 +82,14 @@ begin
     turtle := TTurtle.Create(GetCurrentDir+'\test.json');
     turtle.rekursionsTiefe := 5;
     turtle.setzeStartPunkt(2,0,2);
+
     o.addTurtle(turtle);
+    //Testen destory()
+    (*
+    o.gibTurtle(2, turtle);
+    o.Destroy();
+    o:=TTurtleManager.Create;
+    o.addTurtle(turtle);
+    //o.turtleListe[0].destroy();      *)
 
 end.

@@ -19,6 +19,7 @@ VAR o: TTurtleManager;
     gram: TGrammatik;
     zeichenPara: TZeichenParameter;
     zeichnerInit: TZeichnerInit;
+    manager: TTurtleManager;
 
 procedure ozeichnen;
 begin
@@ -84,5 +85,6 @@ begin
     // aendern der maximalenStringLaenge, damit die turtle mit Rekursionstiefe
     // 6 gezeichnet werden kann
     turtle.maximaleStringLaenge := turtle.maximaleStringLaenge*2;
-
+    manager := o.copy;
+    o := manager.copy;
 end.

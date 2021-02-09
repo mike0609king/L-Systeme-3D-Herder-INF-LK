@@ -5,7 +5,7 @@ unit uparameter_form;
 interface
 
 uses
-  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, Menus,
+  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, Menus, uTurtlemanager,
   CheckLst;
 
 type
@@ -29,6 +29,7 @@ type
     procedure FormCreate(Sender: TObject);
   private
     baumListe: TStringList;
+    turtlemanager:TTurtlemanager;
   public
   end;
 
@@ -64,14 +65,16 @@ var
 I,h : integer;
 begin
     if (Sender as TCheckListBox).Checked[Index] then begin
+        turtlemanager:=Hauptform.o.copy();
         for I := 0 to CheckListBox1.Count -1 do
             CheckListBox1.Checked[I] := False;
         CheckListBox1.Checked[Index] := True;
         //zeichenart der markierten turtels ändern
         for h:=0 to EditorForm.ListView1.Items.Count-1 do
         begin
-             if EditorForm.ListView1.Items[h].Checked then Hauptform.o.turtleListe[h].setzeZeichnerName(baumListe[Index])
+             if EditorForm.ListView1.Items[h].Checked then turtlemanager.turtleListe[h].setzeZeichnerName(baumListe[Index])
         end;
+        Hauptform.push_neue_instanz(turtlemanager);
         EditorForm.BT_updateClick(1);
         Hauptform.zeichnen();
     end;
@@ -84,11 +87,13 @@ begin
   str:=ED_Winkel.Text;
   if not (str='') then
   begin
+    turtlemanager:=Hauptform.o.copy();
     winkel:=strtofloat(ED_Winkel.text);
     for i:=0 to EditorForm.ListView1.Items.Count-1 do
     begin
-         if EditorForm.ListView1.Items[i].Checked then Hauptform.o.turtleListe[i].winkel:=winkel;
+         if EditorForm.ListView1.Items[i].Checked then turtlemanager.turtleListe[i].winkel:=winkel;
     end;
+    Hauptform.push_neue_instanz(turtlemanager);
     Hauptform.zeichnen();
     EditorForm.BT_updateClick(1);
   end;
@@ -113,14 +118,16 @@ end;
 procedure TParameter_Form.ED_Rek_tiefeChange(Sender: TObject);
 VAR rek_tiefe,i:CARDINAL; str:string;
 begin
+  turtlemanager:=Hauptform.o.copy();
   str:=ED_Rek_tiefe.Text;
   if not (str='') then
     begin
       rek_tiefe:=strtoint(ED_Rek_tiefe.text);
       for i:=0 to EditorForm.ListView1.Items.Count-1 do
       begin
-           if EditorForm.ListView1.Items[i].Checked then Hauptform.o.turtleListe[i].rekursionsTiefe:=rek_tiefe;
+           if EditorForm.ListView1.Items[i].Checked then turtlemanager.turtleListe[i].rekursionsTiefe:=rek_tiefe;
       end;
+      Hauptform.push_neue_instanz(turtlemanager);
       Hauptform.zeichnen();
       EditorForm.BT_updateClick(1);
     end;

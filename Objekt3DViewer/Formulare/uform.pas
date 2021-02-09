@@ -6,7 +6,7 @@ interface
 
 uses
   Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs,ExtCtrls, StdCtrls, ComCtrls, Menus, LMessages, Spin,uTurtleManager,uTurtle,
+  Dialogs,ExtCtrls, StdCtrls, ComCtrls, Menus, LMessages, Spin,uTurtleManager,
   uGrammatik, uBeleuchtung, uZeichnerBase, uZeichnerGruenesBlatt,uEditor_Grammatiken; {uGrammatiken}
 type
 
@@ -108,7 +108,7 @@ var
 
 
 implementation
-uses  uAnimation,uKamera, uKamObjektiv, uMatrizen, uGrammatiken;
+uses  uAnimation,uKamera, uKamObjektiv, uMatrizen, uGrammatiken,uTurtle;
 {$R *.lfm}
 
 procedure TForm1.FormCreate(Sender: TObject);
@@ -146,14 +146,14 @@ begin
   //stellt die letzte zurückgenommene änderung wieder her
   //achtung nimmt das ganze objekt
   //änderungen die dazwischen passiert sind...
-  (*
+
   nr:=liste_w.Count-1;//letzte nr
   liste_z.add(o.copy());
   hlob:=TTurtleManager.Create;
   hlob:=liste_w[nr];
   liste_w.Delete(nr);
   o:=hlob;
-  update_sichtbarkeit_bt();     *)
+  update_sichtbarkeit_bt();
 end;
 procedure TForm1.update_sichtbarkeit_bt();
 VAR nr:CARDINAL;
@@ -168,30 +168,30 @@ procedure TForm1.BT_ZurueckClick(Sender: TObject); //darf nicht eingeblendet sei
 VAR nr:CARDINAL;hlob:TTurtleManager;
 begin
   //nimmt letzte änderung am object o zurück. Maximal 20 mal.
-  (*
+
   nr:=liste_z.Count-1;//letzte nr
   liste_w.add(o.copy());
   hlob:=TTurtleManager.Create;
   hlob:=liste_z[nr];
   liste_z.Delete(nr);
   o:=hlob;
-  update_sichtbarkeit_bt(); *)
+  update_sichtbarkeit_bt();
 end;
 procedure TForm1.push_neue_instanz(turtelmanager:TTurtleManager);
 VAR nr:CARDINAL;
 begin
-  (*
   nr:=liste_z.Count;
   //soll weiter noch verfügbar sein? oder muss sich gemerkt werden ob es sinn macht? ->erstmal nicht
   //liste_w zerstörern
-  if nr==max_gespeicherte_manager then
+  if nr=max_gespeicherte_manager then
   begin
-     liste_z[nr].distroy; //alte Instanze löschen
+     //liste_z[nr].Destroy; //alte Instanze löschen
      liste_z.Delete(nr);
   end;
-  liste_z.add(turtelmanager.copy());
+  liste_z.add(o.copy());
+  o:=turtelmanager;
   BT_Zurueck.Visible:=True;
-  update_sichtbarkeit_bt();      *)
+  update_sichtbarkeit_bt();
 end;
 procedure TForm1.abstand_aendern(x_abstand:REAL);
 VAR i:CARDINAL;
@@ -220,6 +220,7 @@ begin
 end;
 procedure TForm1.standardturtel();
 VAR //o: TTurtleManager;
+    h:TTurtleManager;
     turtle: TTurtle;
     gram: TGrammatik;
     zeichenPara: TZeichenParameter;
@@ -242,7 +243,6 @@ begin
     turtle := TTurtle.Create(gram, TZeichnerBase.Create(zeichenPara));
     o.addTurtle(turtle);
     //o.setzeSichtbarkeit(0,false);  // setzten der Sichtbarkeit der Turtle
-
     // zweiter Baum (index 1)
     zeichenPara.setzeStartPunkt(2,0,0);
     turtle := TTurtle.Create(gram, TZeichnerGruenesBlatt.Create(zeichenPara));

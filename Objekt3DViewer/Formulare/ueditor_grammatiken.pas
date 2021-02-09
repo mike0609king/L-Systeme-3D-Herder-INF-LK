@@ -184,12 +184,15 @@ begin
    BT_updateClick(1) ;
 end;
 procedure TForm10.markiere_liste_nr(liste:TIntegerList);
-VAR i,anzahl:CARDINAL;
+VAR i,h,anzahl:CARDINAL;
 begin
-   anzahl:=liste.Count-1;
+   anzahl:=ListView1.Items.Count-1;
    for i:=0 to anzahl do
        begin
-          ListView1.Items[i].Checked := True;
+            for h:=0 to liste.Count-1 do
+            begin
+                 if liste[h]=i then ListView1.Items[i].Checked := True;
+          end;
        end;
 end;
 

@@ -20,6 +20,8 @@ type TTurtleManager = class
     public
         constructor Create;
 
+        destructor Destroy; override;
+
         procedure addTurtle(turtle: TTurtle);
         { Aufgabe: Entfernt eine Turtle, die den gleichen Wert, wie die uebergebene Instanz hat.
           Rueckgabe: Gibt an, ob die Turtle endfernt wurde bzw. ob der Index.}
@@ -50,6 +52,16 @@ uses uMatrizen,dglOpenGL;
 constructor TTurtleManager.Create;
 begin
     FTurtleListe := TTurtleListe.Create;
+end;
+
+destructor TTurtleManager.Destroy;
+VAR i:CARDINAL;
+begin
+    for i:=0 to FTurtleListe.count-1 do
+    begin
+       FTurtleListe[i].destroy()
+    end;
+    FreeandNil(FTurtleListe);
 end;
 
 function TTurtleManager.ueberpruefeGueltigkeitVomIndex(idx: Cardinal) :Boolean;

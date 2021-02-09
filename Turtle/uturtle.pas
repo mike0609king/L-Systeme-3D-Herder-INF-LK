@@ -169,9 +169,18 @@ begin
     FStringEntwickler.entwickeln(FZeichner.rekursionsTiefe);
 end;
 
+
+//?destructor hoffentlich richtig
 destructor TTurtle.Destroy;
 begin
-    // to be done
+    FreeAndNil(FVisible);
+    FreeAndNil(FMaximaleStringLaenge);
+    FreeAndNil(FName);
+    FreeAndNil(FGrammatik);
+    FreeAndNil(FZeichner);
+    FreeAndNil(FStringEntwickler);
+    inherited;
+    //! to do ...
 end;
 
 //////////////////////////////////////////////////////////

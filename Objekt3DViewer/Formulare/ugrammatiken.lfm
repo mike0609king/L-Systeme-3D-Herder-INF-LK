@@ -30,6 +30,7 @@ object uGrammatiken: TuGrammatiken
     NumbersOnly = True
     OnChange = Edit1Change
     TabOrder = 1
+    Text = '1'
   end
   object Anzahl: TLabel
     Left = 272

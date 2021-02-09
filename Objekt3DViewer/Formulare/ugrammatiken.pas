@@ -78,47 +78,67 @@ var i,n,nr,anzahl:CARDINAL;
     gram:TGrammatik;R,L,NameGrammatik:String;
     Lc:Char;
     W:REAL;
+    g:String;
     Turtle:TTurtle;zeichenPara: TZeichenParameter;
     p,s,q: Integer; zeichnerInit:TzeichnerInit;
-begin
-  zeichnerInit := TZeichnerInit.Create;
-  gram:=TGrammatik.Create;
-  n:=0;
-  p:=pos('>',Memo1.Lines[0]);
-  gram.axiom:= copy(Memo1.Lines[0],1,p-2);
-  While n<= Memo1.Lines.Count-1 do
-    begin
-      s:=pos(',',Memo1.Lines[n]);
-      If s=0 then
-      begin
-        p:=pos('>',Memo1.Lines[n]);
-        L:=copy(Memo1.Lines[n],1,p-2);//linke Seite des '->'
-        Lc:=L[1]; //StrToChar
-        R:=copy(Memo1.Lines[n],p+1,p+100);//rechte Seite des '->'
-        gram.addRegel(Lc,R);//Regel ohne Wahrscheinlichkeit hinzufügen
-        INC(n)
+Begin
+g:=Memo1.Lines[0];
+if Length(g) > 0 then
+Begin
+n:=0;
+While n<= Memo1.Lines.Count-1 do
+ begin
+   p:=pos('>',Memo1.Lines[n]);
+      if p=0 then
+          Begin
+          SHOWMESSAGE('Deine Eingabe ist falsch! Bitte überprüfe die Grammatik!');
+          end
+      else
+      Begin
+      zeichnerInit := TZeichnerInit.Create;
+      gram:=TGrammatik.Create;
+      n:=0;
+      p:=pos('>',Memo1.Lines[0]);
+      gram.axiom:= copy(Memo1.Lines[0],1,p-2);
+      While n<= Memo1.Lines.Count-1 do
+            begin
+            s:=pos(',',Memo1.Lines[n]);
+            If s=0 then
+               begin
+               p:=pos('>',Memo1.Lines[n]);
+               L:=copy(Memo1.Lines[n],1,p-2);//linke Seite des '->'
+               Lc:=L[1]; //StrToChar
+               R:=copy(Memo1.Lines[n],p+1,p+100);//rechte Seite des '->'
+               gram.addRegel(Lc,R);//Regel ohne Wahrscheinlichkeit hinzufügen
+               INC(n)
+               end
+            else
+            begin
+                 p:=pos('>',Memo1.Lines[n]);
+                 L:=copy(Memo1.Lines[n],1,p-2);//linke Seite des '->'
+                 Lc:=L[1]; //StrToChar
+                 R:=copy(Memo1.Lines[n],p+1,s-1);//rechte Seite des '->'
+                 q:=pos(',',R);
+                 If not q=0 then delete(R,q,q+10)
+                 else
+                 begin
+                 W:=strtofloat(copy(Memo1.Lines[n],s+1,s+10));//wahrscheinlichkeit
+                 gram.addRegel(Lc,R,W);//Regel mit Wahrscheinlichkeit hinzufügen
+                 INC(n);
+                 end;
+            end
+            end;
+      zeichenPara.rekursionsTiefe:= strtoint(Edit2.Text);
+      zeichenPara.winkel:=strtofloat(Edit3.Text);
+      NameGrammatik:=Edit4.Text;
+      anzahl:= strtoint(Edit1.Text);
+      if anzahl=0 then
+      Begin
+           SHOWMESSAGE('Deine Anzahl ist 0. Es wird keine Darstellung erstellt.');
       end
       else
-      begin
-          p:=pos('>',Memo1.Lines[n]);
-          L:=copy(Memo1.Lines[n],1,p-2);//linke Seite des '->'
-          Lc:=L[1]; //StrToChar
-          R:=copy(Memo1.Lines[n],p+1,s-1);//rechte Seite des '->'
-          q:=pos(',',R);
-        If not q=0 then
-        delete(R,q,q+10)
-        else
-          W:=strtofloat(copy(Memo1.Lines[n],s+1,s+10));//wahrscheinlichkeit
-          gram.addRegel(Lc,R,W);//Regel mit Wahrscheinlichkeit hinzufügen
-          INC(n);
-        end
-    end;
-  //
-  zeichenPara.rekursionsTiefe:= strtoint(Edit2.Text);
-  zeichenPara.winkel:=strtofloat(Edit3.Text);
-  NameGrammatik:=Edit4.Text;
-  anzahl:= strtoint(Edit1.Text)-1;
-  nr:=gib_markierte_nr();
+      Begin
+      nr:=gib_markierte_nr();
   //erstellen der Turtels
   for i:=0 to anzahl do
   begin
@@ -130,6 +150,11 @@ begin
   end;
   Visible:=False;
   Hauptform.zeichnen();
+      end;
+      end;
+  end;
+end
+else SHOWMESSAGE('Deine Eingabe ist falsch! Bitte überprüfe die Grammatik!');
 end;
 
 procedure TuGrammatiken.Button2Click(Sender: TObject); //Alles leeren
@@ -212,7 +237,10 @@ var turtle: TTurtle;
     zeichnerInit: TZeichnerInit;
     regelIdx:Cardinal;
     produktionIdx:Cardinal;
-    tmp_path:Char; FGrammatik:TGrammatik;
+    tmp_path:String; FGrammatik:TGrammatik;
+    produktion:String;
+    axiom:String;
+    zufaelligkeit:Real;
 begin
   OpenDialog1.Filter:='Json-Dateien (*.json)|*.json';
   if OpenDialog1.Execute then
@@ -229,14 +257,18 @@ begin
       if Baum=baumListe[i] then CheckListBox1.Checked[i] := true;
     end;
     //Grammiken laden
- (*   for regelIdx := 0 to FGrammatik.regeln.Count - 1 do
+  {  for regelIdx:=0 to FGrammatik.regeln.Count - 1 do
     begin
-    for produktionIdx := 0 to (FGrammatik.regeln.data[regelIdx]).Count - 1 do
-    begin
-    tmp_path := 'Grammatik/regeln/' + FGrammatik.regeln.keys[regelIdx] + '/Regel ';
-    // Code :)
-    end;
-    end;              *)
+         tmp_path := 'Grammatik/regeln/' + FGrammatik.regeln.keys[regelIdx] + '/Regel ';
+         for produktionIdx := 0 to (FGrammatik.regeln.data[regelIdx]).Count - 1 do
+         begin
+              produktion:=FGrammatik.regeln.data[regelIdx][produktionIdx].produktion;
+              zufaelligkeit:=FGrammatik.regeln.data[regelIdx][produktionIdx].zufaelligkeit;
+              axiom:=FGrammatik.axiom;
+
+
+         end;
+    end;}
   end
   else
   begin

@@ -5,8 +5,8 @@ unit UGrammatiken;
 interface
 
 uses
-  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, Menus,
-  ExtCtrls, CheckLst, uAnimation, fgl, uTurtleManager, ugrammatik, uTurtle, fpjson, jsonparser, jsonConf;
+  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, Menus,uturtlemanager,
+  ExtCtrls, CheckLst, uAnimation, fgl, ugrammatik, uTurtle, fpjson, jsonparser, jsonConf;
 type
 
   { TuGrammatiken }
@@ -46,6 +46,7 @@ type
     procedure MenuItem2Click(Sender: TObject);
     procedure MenuItem3Click(Sender: TObject);
   private
+    turtlemanager:TTurtlemanager;
     function gib_markierte_nr():CARDINAL;
   public
 
@@ -87,70 +88,72 @@ if Length(g) > 0 then
 Begin
 n:=0;
 While n<= Memo1.Lines.Count-1 do
- begin
-   p:=pos('>',Memo1.Lines[n]);
-      if p=0 then
-          Begin
-          SHOWMESSAGE('Deine Eingabe ist falsch! Bitte überprüfe die Grammatik!');
-          end
-      else
+  begin
+    p:=pos('>',Memo1.Lines[n]);
+    if p=0 then
       Begin
-      zeichnerInit := TZeichnerInit.Create;
-      gram:=TGrammatik.Create;
-      n:=0;
-      p:=pos('>',Memo1.Lines[0]);
-      gram.axiom:= copy(Memo1.Lines[0],1,p-2);
-      While n<= Memo1.Lines.Count-1 do
-            begin
-            s:=pos(',',Memo1.Lines[n]);
-            If s=0 then
-               begin
-               p:=pos('>',Memo1.Lines[n]);
-               L:=copy(Memo1.Lines[n],1,p-2);//linke Seite des '->'
-               Lc:=L[1]; //StrToChar
-               R:=copy(Memo1.Lines[n],p+1,p+100);//rechte Seite des '->'
-               gram.addRegel(Lc,R);//Regel ohne Wahrscheinlichkeit hinzufügen
-               INC(n)
-               end
-            else
-            begin
-                 p:=pos('>',Memo1.Lines[n]);
-                 L:=copy(Memo1.Lines[n],1,p-2);//linke Seite des '->'
-                 Lc:=L[1]; //StrToChar
-                 R:=copy(Memo1.Lines[n],p+1,s-1);//rechte Seite des '->'
-                 q:=pos(',',R);
-                 If not q=0 then delete(R,q,q+10)
-                 else
-                 begin
-                 W:=strtofloat(copy(Memo1.Lines[n],s+1,s+10));//wahrscheinlichkeit
-                 gram.addRegel(Lc,R,W);//Regel mit Wahrscheinlichkeit hinzufügen
-                 INC(n);
-                 end;
-            end
-            end;
-      zeichenPara.rekursionsTiefe:= strtoint(Edit2.Text);
-      zeichenPara.winkel:=strtofloat(Edit3.Text);
-      NameGrammatik:=Edit4.Text;
-      anzahl:= strtoint(Edit1.Text);
-      if anzahl=0 then
-      Begin
-           SHOWMESSAGE('Deine Anzahl ist 0. Es wird keine Darstellung erstellt.');
+           SHOWMESSAGE('Deine Eingabe ist falsch! Bitte überprüfe die Grammatik!');
       end
       else
       Begin
-      nr:=gib_markierte_nr();
-  //erstellen der Turtels
-  for i:=0 to anzahl do
-  begin
-       zeichenPara.setzeStartPunkt(Hauptform.akt_x,Hauptform.akt_y,Hauptform.akt_z);
-       Turtle:=TTurtle.Create(gram,zeichnerInit.initialisiere(zeichnerInit.gibZeichnerListe[nr],zeichenPara));
-       Turtle.name:=NameGrammatik;
-       Hauptform.update_startkoords();
-       Hauptform.o.addTurtle(Turtle);
-  end;
-  Visible:=False;
-  Hauptform.zeichnen();
-      end;
+        zeichnerInit := TZeichnerInit.Create;
+        gram:=TGrammatik.Create;
+        n:=0;
+        p:=pos('>',Memo1.Lines[0]);
+        gram.axiom:= copy(Memo1.Lines[0],1,p-2);
+        While n<= Memo1.Lines.Count-1 do
+          begin
+          s:=pos(',',Memo1.Lines[n]);
+          If s=0 then
+            begin
+              p:=pos('>',Memo1.Lines[n]);
+              L:=copy(Memo1.Lines[n],1,p-2);//linke Seite des '->'
+              Lc:=L[1]; //StrToChar
+              R:=copy(Memo1.Lines[n],p+1,p+100);//rechte Seite des '->'
+              gram.addRegel(Lc,R);//Regel ohne Wahrscheinlichkeit hinzufügen
+              INC(n)
+            end
+            else
+            begin
+              p:=pos('>',Memo1.Lines[n]);
+              L:=copy(Memo1.Lines[n],1,p-2);//linke Seite des '->'
+              Lc:=L[1]; //StrToChar
+              R:=copy(Memo1.Lines[n],p+1,s-1);//rechte Seite des '->'
+              q:=pos(',',R);
+              If not q=0 then delete(R,q,q+10)
+            else
+            begin
+              W:=strtofloat(copy(Memo1.Lines[n],s+1,s+10));//wahrscheinlichkeit
+              gram.addRegel(Lc,R,W);//Regel mit Wahrscheinlichkeit hinzufügen
+              INC(n);
+              end;
+            end
+          end;
+        zeichenPara.rekursionsTiefe:= strtoint(Edit2.Text);
+        zeichenPara.winkel:=strtofloat(Edit3.Text);
+        NameGrammatik:=Edit4.Text;
+        anzahl:= strtoint(Edit1.Text);
+        if anzahl=0 then
+          Begin
+          SHOWMESSAGE('Deine Anzahl ist 0. Es wird keine Darstellung erstellt.');
+          end
+        else
+        Begin
+          nr:=gib_markierte_nr();
+          turtlemanager:=Hauptform.o.copy();
+          //erstellen der Turtels
+          for i:=0 to anzahl do
+            begin
+            zeichenPara.setzeStartPunkt(Hauptform.akt_x,Hauptform.akt_y,Hauptform.akt_z);
+            Turtle:=TTurtle.Create(gram,zeichnerInit.initialisiere(zeichnerInit.gibZeichnerListe[nr],zeichenPara));
+            Turtle.name:=NameGrammatik;
+            Hauptform.update_startkoords();
+            turtlemanager.addTurtle(Turtle);
+            end;
+          Hauptform.push_neue_instanz(turtlemanager);
+          Visible:=False;
+          Hauptform.zeichnen();
+        end;
       end;
   end;
 end

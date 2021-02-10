@@ -1,11 +1,10 @@
 unit uEditor_Grammatiken;
-//funktioniert noch nicht
 {$mode delphi}
 
 interface
 
 uses
-  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, StdCtrls,
+  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, StdCtrls,uTurtlemanager,
   CheckLst, ComCtrls, Menus,uTurtle,fgl;
 
 type
@@ -38,6 +37,7 @@ type
     procedure FormCreate(Sender: TObject);
     procedure UpDown1Click(Sender: TObject; Button: TUDBtnType);
   private
+    turtlemanager:TTurtlemanager;
     function gib_markierte_nr():TIntegerList;
     procedure markiere_liste_nr(liste:TIntegerList);
   public
@@ -119,8 +119,10 @@ begin
    str:=ED_abstand.Text;
    if not (str='') then
    begin
-     x_abstand:= strtofloat(ED_abstand.Text);
-     Hauptform.abstand_aendern(x_abstand);
+      turtlemanager:=Hauptform.o.copy();
+      x_abstand:= strtofloat(ED_abstand.Text);
+      Hauptform.abstand_aendern(x_abstand);
+      Hauptform.push_neue_instanz(turtlemanager);
    end;
 end;
 
@@ -140,16 +142,18 @@ end;
 procedure TForm10.BT_entfernenClick(Sender: TObject);
 VAR i,a:CARDINAL;
 begin
+   turtlemanager:=Hauptform.o.copy();
    a:=0;
    for i := 0 to ListView1.Items.Count -1 do
        begin
             if ListView1.Items[i].Checked then
             begin
-                 HauptForm.o.setzeSichtbarkeit(i-a,true);
-                 HauptForm.o.entferneTurtleAn(i-a) ;
+                 turtlemanager.setzeSichtbarkeit(i-a,true);
+                 turtlemanager.entferneTurtleAn(i-a) ;
                  inc(a)
             end;
        end;
+   Hauptform.push_neue_instanz(turtlemanager);
    BT_updateClick();
 end;
 procedure TForm10.BT_FertigClick(Sender: TObject);
@@ -161,26 +165,30 @@ end;
 procedure TForm10.BT_sichtbarkeitClick(Sender: TObject);
 VAR i:CARDINAL;
 begin
+   turtlemanager:=Hauptform.o.copy();
    for i := 0 to ListView1.Items.Count -1 do
        begin
             if ListView1.Items[i].Checked then
             begin
-                 Hauptform.o.setzeSichtbarkeit(i,true)
+                 turtlemanager.setzeSichtbarkeit(i,true)
             end;
        end;
+   Hauptform.push_neue_instanz(turtlemanager);
    BT_updateClick(1);
 end;
 
 procedure TForm10.BT_unsichtbar_machenClick(Sender: TObject);
 VAR i:CARDINAL;
 begin
+   turtlemanager:=Hauptform.o.copy();
    for i := 0 to ListView1.Items.Count -1 do
        begin
             if ListView1.Items[i].Checked then
             begin
-                 HauptForm.o.setzeSichtbarkeit(i,false)
+                 turtlemanager.setzeSichtbarkeit(i,false)
             end;
        end;
+   Hauptform.push_neue_instanz(turtlemanager);
    BT_updateClick(1) ;
 end;
 procedure TForm10.markiere_liste_nr(liste:TIntegerList);
@@ -197,7 +205,7 @@ begin
 end;
 
 function TForm10.gib_markierte_nr():TIntegerList;
-VAR hl:TIntegerList;i,h:CARDINAL;
+VAR hl:TIntegerList;i:CARDINAL;
 begin
    hl:=TIntegerList.Create();
    for i := 0 to ListView1.Items.Count -1 do

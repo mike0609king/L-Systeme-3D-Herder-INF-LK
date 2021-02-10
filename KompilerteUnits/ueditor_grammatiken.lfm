@@ -4,8 +4,8 @@ object Form10: TForm10
   Top = 440
   Width = 1144
   Caption = 'Grammatik_Editor'
-  ClientHeight = 0
-  ClientWidth = 0
+  ClientHeight = 480
+  ClientWidth = 1144
   OnCreate = FormCreate
   LCLVersion = '2.0.0.4'
   object BT_entfernen: TButton

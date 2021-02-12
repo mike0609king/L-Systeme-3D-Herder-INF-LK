@@ -360,5 +360,9 @@ object Form1: TForm1
       Caption = 'Turtels bearbeiten'
       OnClick = bearbeitenClick
     end
+    object optionen: TMenuItem
+      Caption = 'Optionen '
+      OnClick = optionenClick
+    end
   end
 end

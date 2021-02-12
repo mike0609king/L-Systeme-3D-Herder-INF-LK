@@ -37,8 +37,8 @@ type TTurtle = class
         function gibZeichnerName : String;
         function gibEntwickelterString : String;
     public
-        constructor Create(gram: TGrammatik; zeichner: TZeichnerBase); overload;
-        constructor Create(gram: TGrammatik; zeichner: TZeichnerBase; stringEntwickler: TStringEntwickler); overload;
+        constructor Create(gram: TGrammatik; zeichner: TZeichnerBase;MaximaleStringLaenge:CARDINAL=100000); overload;
+        constructor Create(gram: TGrammatik; zeichner: TZeichnerBase; stringEntwickler: TStringEntwickler;MaximaleStringLaenge:CARDINAL=100000); overload;
         constructor Create(datei: String); overload;
         destructor Destroy; override;
 
@@ -77,25 +77,25 @@ implementation
 
 uses uMatrizen,dglOpenGL;
 
-constructor TTurtle.Create(gram: TGrammatik; zeichner: TZeichnerBase);
+constructor TTurtle.Create(gram: TGrammatik; zeichner: TZeichnerBase;MaximaleStringLaenge:CARDINAL=100000);
 begin
     FGrammatik := gram;
     FZeichner := zeichner;
     FStringEntwickler := TStringEntwickler.Create(gram);
     FStringEntwickler.entwickeln(FZeichner.rekursionsTiefe);
-    FMaximaleStringLaenge := 100000;
+    FMaximaleStringLaenge := MaximaleStringLaenge;
     FName := '';
     FVisible := true;
 end;
 
 constructor TTurtle.Create(gram: TGrammatik; 
                    zeichner: TZeichnerBase; 
-                   stringEntwickler: TStringEntwickler);
+                   stringEntwickler: TStringEntwickler;MaximaleStringLaenge:CARDINAL=100000);
 begin
     FGrammatik := gram;
     FZeichner := zeichner;
     FStringEntwickler := stringEntwickler;
-    FMaximaleStringLaenge := 100000;
+    FMaximaleStringLaenge := MaximaleStringLaenge;
     FName := '';
     FVisible := true;
 
@@ -169,8 +169,6 @@ begin
     FStringEntwickler.entwickeln(FZeichner.rekursionsTiefe);
 end;
 
-
-//?destructor hoffentlich richtig
 destructor TTurtle.Destroy;
 begin
     FreeAndNil(FVisible);

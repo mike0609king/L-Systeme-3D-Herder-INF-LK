@@ -24,6 +24,7 @@ type
     GraphikPanel: TPanel;
     hinzufuegen: TMenuItem;
     bearbeiten: TMenuItem;
+    optionen: TMenuItem;
     Timer1: TTimer;
     BtLinksV: TButton;
     BtRechtsV: TButton;
@@ -53,6 +54,7 @@ type
     procedure BT_ZurueckClick(Sender: TObject);
     procedure hinzufuegenClick(Sender: TObject);
     procedure bearbeitenClick(Sender: TObject);
+    procedure optionenClick(Sender: TObject);
     procedure MOrthoClick(Sender: TObject);
     procedure MZentralClick(Sender: TObject);
     procedure MKoordinatensystemClick(Sender: TObject);
@@ -98,6 +100,7 @@ type
     o:TTurtleManager;
     max_gespeicherte_manager:CARDINAL;
     abstand_x,akt_x,akt_y,akt_z:REAL;
+    maximaleStringLaenge:CARDINAL;
     procedure update_startkoords();
     procedure abstand_aendern(x_abstand:REAL);
     procedure push_neue_instanz(turtelmanager:TTurtleManager);
@@ -108,7 +111,7 @@ var
 
 
 implementation
-uses  uAnimation,uKamera, uKamObjektiv, uMatrizen, uGrammatiken,uTurtle;
+uses  uAnimation,uKamera, uKamObjektiv, uMatrizen, uGrammatiken,uTurtle, uOptionen_form;
 {$R *.lfm}
 
 procedure TForm1.FormCreate(Sender: TObject);
@@ -132,6 +135,7 @@ begin
   akt_x:=0;
   akt_y:=0;
   akt_z:=0;
+  maximaleStringLaenge:=100000;
   standardturtel;
   KameraStart(uAnimation.ozeichnen);
   Timer1.Enabled:=FALSE;
@@ -277,6 +281,11 @@ procedure TForm1.bearbeitenClick(Sender: TObject);
 begin
    EditorForm.BT_updateClick();
    EditorForm.Show;
+end;
+
+procedure TForm1.optionenClick(Sender: TObject);
+begin
+   Optionen_Form.Show;
 end;
 
 procedure TForm1.BtPauseClick(Sender: TObject);

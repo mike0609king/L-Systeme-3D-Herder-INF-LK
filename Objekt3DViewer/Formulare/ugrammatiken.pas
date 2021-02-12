@@ -80,6 +80,7 @@ var i,n,nr,anzahl:CARDINAL;
     Lc:Char;
     W:REAL;
     g:String;
+    k,c:String;
     Turtle:TTurtle;zeichenPara: TZeichenParameter;
     p,s,q: Integer; zeichnerInit:TzeichnerInit;
 Begin
@@ -129,32 +130,43 @@ While n<= Memo1.Lines.Count-1 do
               end;
             end
           end;
-        zeichenPara.rekursionsTiefe:= strtoint(Edit2.Text);
-        zeichenPara.winkel:=strtofloat(Edit3.Text);
-        NameGrammatik:=Edit4.Text;
-        anzahl:= strtoint(Edit1.Text);
-        if anzahl=0 then
-          Begin
-          SHOWMESSAGE('Deine Anzahl ist 0. Es wird keine Darstellung erstellt.');
-          end
-        else
+        If not (Edit2.text = '') then
         Begin
-          nr:=gib_markierte_nr();
-          turtlemanager:=Hauptform.o.copy();
-          //erstellen der Turtels
-          for i:=0 to anzahl do
-            begin
-            zeichenPara.setzeStartPunkt(Hauptform.akt_x,Hauptform.akt_y,Hauptform.akt_z);
-            Turtle:=TTurtle.Create(gram,zeichnerInit.initialisiere(zeichnerInit.gibZeichnerListe[nr],zeichenPara));
-            Turtle.name:=NameGrammatik;
-            Hauptform.update_startkoords();
-            turtlemanager.addTurtle(Turtle);
-            end;
-          Hauptform.push_neue_instanz(turtlemanager);
-          Visible:=False;
-          Hauptform.zeichnen();
-        end;
-      end;
+         zeichenPara.rekursionsTiefe:= strtoint(Edit2.Text);
+         If not (Edit3.text = '') then
+         Begin
+         If strtofloat(Edit3.Text)>=99999999 then
+         Begin
+         zeichenPara.winkel:=strtofloat(Edit3.Text);
+         NameGrammatik:=Edit4.Text;
+         anzahl:= strtoint(Edit1.Text);
+         if anzahl=0 then
+           Begin
+           SHOWMESSAGE('Deine Anzahl ist 0. Es wird keine Darstellung erstellt.');
+           end
+         else
+         Begin
+           nr:=gib_markierte_nr();
+           turtlemanager:=Hauptform.o.copy();
+           //erstellen der Turtels
+           for i:=0 to anzahl do
+             begin
+             zeichenPara.setzeStartPunkt(Hauptform.akt_x,Hauptform.akt_y,Hauptform.akt_z);
+             Turtle:=TTurtle.Create(gram,zeichnerInit.initialisiere(zeichnerInit.gibZeichnerListe[nr],zeichenPara));
+             Turtle.name:=NameGrammatik;
+             Hauptform.update_startkoords();
+             turtlemanager.addTurtle(Turtle);
+             end;
+           Hauptform.push_neue_instanz(turtlemanager);
+           Visible:=False;
+           Hauptform.zeichnen();
+         end;
+         end
+         else SHOWMESSAGE('Du hast die Maximale Größe des Winkels von 99999999 überschritten!');
+         end;
+         end
+         else SHOWMESSAGE('Eine Rekurstiefe von 0 ist nicht möglich!');
+       end;
   end;
 end
 else SHOWMESSAGE('Deine Eingabe ist falsch! Bitte überprüfe die Grammatik!');
@@ -236,11 +248,12 @@ procedure TuGrammatiken.MenuItem2Click(Sender: TObject); //Turtle laden
 var turtle: TTurtle;
     baumListe: TStringList;
     Baum:String;
+    regelnLinkeSeite, regelnRechteSeite: TStringList;
+    regelnLinkeSeiteIdx, regelnRechteSeiteIdx: Cardinal;
     i:Cardinal;
+    conf: TJSONConfig;
     zeichnerInit: TZeichnerInit;
-    regelIdx:Cardinal;
-    produktionIdx:Cardinal;
-    tmp_path:String; FGrammatik:TGrammatik;
+    tmp_pfad:String; FGrammatik:TGrammatik;
     produktion:String;
     axiom:String;
     zufaelligkeit:Real;
@@ -248,6 +261,9 @@ begin
   OpenDialog1.Filter:='Json-Dateien (*.json)|*.json';
   if OpenDialog1.Execute then
   begin
+    conf:= TJSONConfig.Create(nil);
+    regelnRechteSeite := TStringList.Create;
+    regelnLinkeSeite := TStringList.Create;
     zeichnerInit := TZeichnerInit.Create;
     baumListe := zeichnerInit.gibZeichnerListe;
     turtle := TTurtle.Create(OpenDialog1.FileName);
@@ -255,23 +271,52 @@ begin
     Edit3.Text:=floattostr(turtle.winkel);
     Edit4.Text:=turtle.name;
     Baum:=turtle.zeichnerName;
+    conf.filename:= OpenDialog1.FileName;
     For i:=0 to baumListe.Count - 1 do
     begin
       if Baum=baumListe[i] then CheckListBox1.Checked[i] := true;
     end;
     //Grammiken laden
-  {  for regelIdx:=0 to FGrammatik.regeln.Count - 1 do
+    axiom := AnsiString(conf.getValue('Grammatik/axiom', ''));
+    If axiom = '' then
+    Begin
+    SHOWMESSAGE('Deine Datei ist nicht geeignet!')
+    end
+    else
+    Begin
+    conf.EnumSubKeys(UnicodeString('Grammatik/regeln/'),regelnLinkeSeite);
+    for regelnLinkeSeiteIdx := 0 to regelnLinkeSeite.Count - 1 do
+        begin
+            tmp_pfad := 'Grammatik/regeln/' + regelnLinkeSeite[regelnLinkeSeiteIdx];
+            conf.EnumSubKeys(UnicodeString(tmp_pfad), regelnRechteSeite);
+            for regelnRechteSeiteIdx := 0 to regelnRechteSeite.Count - 1 do
+            begin
+                produktion := AnsiString(conf.getValue(
+                    UnicodeString(tmp_pfad + '/' + regelnRechteSeite[regelnRechteSeiteIdx] + '/produktion'),
+                    ''
+                ));
+                zufaelligkeit := conf.getValue(
+                    UnicodeString(tmp_pfad + '/' + regelnRechteSeite[regelnRechteSeiteIdx] + '/zufaelligkeit'),
+                    0.0
+                );
+
+                Memo1.Lines[regelnLinkeSeiteIdx]:=axiom+'->'+produktion+','+FloattoStr(zufaelligkeit);
+            end;
+
+
+    {for regelIdx:=0 to FGrammatik.regeln.Count - 1 do
     begin
          tmp_path := 'Grammatik/regeln/' + FGrammatik.regeln.keys[regelIdx] + '/Regel ';
          for produktionIdx := 0 to (FGrammatik.regeln.data[regelIdx]).Count - 1 do
          begin
+              axiom := AnsiString(conf.getValue('Grammatik/axiom', ''));
               produktion:=FGrammatik.regeln.data[regelIdx][produktionIdx].produktion;
               zufaelligkeit:=FGrammatik.regeln.data[regelIdx][produktionIdx].zufaelligkeit;
               axiom:=FGrammatik.axiom;
-
-
+                                }
          end;
-    end;}
+      end;
+    conf.Free;
   end
   else
   begin

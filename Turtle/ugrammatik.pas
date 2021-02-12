@@ -52,7 +52,6 @@ begin
     regeln := TRegelDictionary.Create;
 end;
 
-// review !!!!!!!!!!!!!!!!!!!!!!!!!!
 destructor TGrammatik.Destroy;
 begin
     FreeAndNil(axiom);

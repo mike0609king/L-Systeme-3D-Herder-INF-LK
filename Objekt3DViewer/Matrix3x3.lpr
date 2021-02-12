@@ -9,6 +9,7 @@ uses
   uEditor_Grammatiken in 'Formulare\uEditor_Grammatiken.pas' {EditorForm},
   ugrammatiken in 'Formulare\ugrammatiken.pas' {uGrammatiken},
   uparameter_Form in  'Formulare\uparameter_Form.pas' {Parameter_Form},
+  uoptionen_form in 'Formulare\uoptionen_form .pas' {Optionen_Form},
   (*  AMatrix in 'Formulare\AMatrix.pas' {FormAMatrix},
   MMatrix in 'Formulare\MMatrix.pas' {FormMMatrix},
   Rotation in 'Formulare\Rotation.pas' {FormRot},
@@ -32,6 +33,7 @@ begin
   Application.CreateForm(TForm10, EditorForm);
   Application.CreateForm(TuGrammatiken, aGrammatiken);
   Application.CreateForm(TParameter_Form, Parameter_Form);
+  Application.CreateForm(TTOptionen, Optionen_Form);
   (*Application.CreateForm(TForm3, FormMMatrix);
   Application.CreateForm(TForm2, FormAMatrix);
   Application.CreateForm(TForm4, FormRot);

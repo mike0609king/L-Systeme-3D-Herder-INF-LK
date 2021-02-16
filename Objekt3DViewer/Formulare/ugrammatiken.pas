@@ -135,7 +135,7 @@ While n<= Memo1.Lines.Count-1 do
          zeichenPara.rekursionsTiefe:= strtoint(Edit2.Text);
          If not (Edit3.text = '') then
          Begin
-         If strtofloat(Edit3.Text)>=99999999 then
+         If strtofloat(Edit3.Text)<=99999999 then
          Begin
          zeichenPara.winkel:=strtofloat(Edit3.Text);
          NameGrammatik:=Edit4.Text;
@@ -251,6 +251,7 @@ var turtle: TTurtle;
     regelnLinkeSeite, regelnRechteSeite: TStringList;
     regelnLinkeSeiteIdx, regelnRechteSeiteIdx: Cardinal;
     i:Cardinal;
+    q:Integer;
     conf: TJSONConfig;
     zeichnerInit: TZeichnerInit;
     tmp_pfad:String; FGrammatik:TGrammatik;
@@ -287,6 +288,7 @@ begin
     conf.EnumSubKeys(UnicodeString('Grammatik/regeln/'),regelnLinkeSeite);
     for regelnLinkeSeiteIdx := 0 to regelnLinkeSeite.Count - 1 do
         begin
+            i:=0;
             tmp_pfad := 'Grammatik/regeln/' + regelnLinkeSeite[regelnLinkeSeiteIdx];
             conf.EnumSubKeys(UnicodeString(tmp_pfad), regelnRechteSeite);
             for regelnRechteSeiteIdx := 0 to regelnRechteSeite.Count - 1 do
@@ -295,25 +297,27 @@ begin
                     UnicodeString(tmp_pfad + '/' + regelnRechteSeite[regelnRechteSeiteIdx] + '/produktion'),
                     ''
                 ));
-                zufaelligkeit := conf.getValue(
-                    UnicodeString(tmp_pfad + '/' + regelnRechteSeite[regelnRechteSeiteIdx] + '/zufaelligkeit'),
-                    0.0
-                );
-
-                Memo1.Lines[regelnLinkeSeiteIdx]:=axiom+'->'+produktion+','+FloattoStr(zufaelligkeit);
-            end;
-
-
-    {for regelIdx:=0 to FGrammatik.regeln.Count - 1 do
-    begin
-         tmp_path := 'Grammatik/regeln/' + FGrammatik.regeln.keys[regelIdx] + '/Regel ';
-         for produktionIdx := 0 to (FGrammatik.regeln.data[regelIdx]).Count - 1 do
-         begin
-              axiom := AnsiString(conf.getValue('Grammatik/axiom', ''));
-              produktion:=FGrammatik.regeln.data[regelIdx][produktionIdx].produktion;
-              zufaelligkeit:=FGrammatik.regeln.data[regelIdx][produktionIdx].zufaelligkeit;
-              axiom:=FGrammatik.axiom;
-                                }
+                q:=pos(',',produktion);
+                If q=0 then
+                BEGIN
+                  zufaelligkeit := conf.getValue(
+                      UnicodeString(tmp_pfad + '/' + regelnRechteSeite[regelnRechteSeiteIdx] + '/zufaelligkeit'),
+                      0.0
+                  );
+                  Memo1.Lines[i]:=axiom+'->'+produktion+','+FloattoStr(zufaelligkeit);
+                  INC(i);
+                end
+                else
+                Begin
+                delete(produktion,q,q+10);
+                  zufaelligkeit := conf.getValue(
+                      UnicodeString(tmp_pfad + '/' + regelnRechteSeite[regelnRechteSeiteIdx] + '/zufaelligkeit'),
+                      0.0
+                  );
+                  Memo1.Lines[i]:=axiom+'->'+produktion+','+FloattoStr(zufaelligkeit);
+                  INC(i);
+                END;
+          end;
          end;
       end;
     conf.Free;

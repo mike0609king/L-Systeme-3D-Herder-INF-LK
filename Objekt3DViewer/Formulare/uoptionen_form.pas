@@ -35,9 +35,9 @@ uses uForm;
 { TTOptionen }
 
 procedure TTOptionen.BT_fertigClick(Sender: TObject);
-VAR: maximaleStringLaenge:CARDINAL;
+VAR maximaleStringLaenge:CARDINAL;
 begin
-  maximaleStringLaenge:=strtoint(ED_stringlaenge); //Aufpassen mit der Größe
+  maximaleStringLaenge:=strtoint(ED_stringlaenge.text); //Aufpassen mit der Größe
   if  maximaleStringLaenge < 99999999 then
   begin
 
@@ -51,7 +51,7 @@ begin
 end;
 procedure TTOptionen.update();
 begin
-   ED_stringlaenge:=inttostr(Hauptform.maximaleStringLaenge);
+   ED_stringlaenge.text:=inttostr(Hauptform.maximaleStringLaenge);
 end;
 
 

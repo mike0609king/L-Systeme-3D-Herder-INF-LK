@@ -157,6 +157,7 @@ begin
   hlob:=liste_w[nr];
   liste_w.Delete(nr);
   o:=hlob;
+  maximaleStringLaenge:=o.turtleListe[0].maximaleStringLaenge;
   update_sichtbarkeit_bt();
 end;
 procedure TForm1.update_sichtbarkeit_bt();
@@ -172,13 +173,13 @@ procedure TForm1.BT_ZurueckClick(Sender: TObject); //darf nicht eingeblendet sei
 VAR nr:CARDINAL;hlob:TTurtleManager;
 begin
   //nimmt letzte änderung am object o zurück. Maximal 20 mal.
-
   nr:=liste_z.Count-1;//letzte nr
   liste_w.add(o.copy());
   hlob:=TTurtleManager.Create;
   hlob:=liste_z[nr];
   liste_z.Delete(nr);
   o:=hlob;
+  maximaleStringLaenge:=o.turtleListe[0].maximaleStringLaenge;
   update_sichtbarkeit_bt();
 end;
 procedure TForm1.push_neue_instanz(turtelmanager:TTurtleManager);
@@ -286,6 +287,7 @@ end;
 procedure TForm1.optionenClick(Sender: TObject);
 begin
    Optionen_Form.Show;
+   Optionen_Form.update_bt();
 end;
 
 procedure TForm1.BtPauseClick(Sender: TObject);

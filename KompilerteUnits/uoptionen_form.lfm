@@ -4,8 +4,8 @@ object TOptionen: TTOptionen
   Top = 68
   Width = 416
   Caption = 'Optionen'
-  ClientHeight = 299
-  ClientWidth = 416
+  ClientHeight = 0
+  ClientWidth = 0
   LCLVersion = '2.0.0.4'
   object BT_fertig: TButton
     Left = 264

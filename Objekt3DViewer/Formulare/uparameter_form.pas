@@ -89,13 +89,21 @@ begin
   begin
     turtlemanager:=Hauptform.o.copy();
     winkel:=strtofloat(ED_Winkel.text);
-    for i:=0 to EditorForm.ListView1.Items.Count-1 do
+    if winkel> 9999999 then
     begin
-         if EditorForm.ListView1.Items[i].Checked then turtlemanager.turtleListe[i].winkel:=winkel;
+       SHOWMESSAGE('Der Winkelparameter darf maximal 9.999.999 groß sein.');
+       ED_Winkel.text:='';
+    end
+    else
+    begin
+      for i:=0 to EditorForm.ListView1.Items.Count-1 do
+      begin
+           if EditorForm.ListView1.Items[i].Checked then turtlemanager.turtleListe[i].winkel:=winkel;
+      end;
+      Hauptform.push_neue_instanz(turtlemanager);
+      Hauptform.zeichnen();
+      EditorForm.BT_updateClick(1);
     end;
-    Hauptform.push_neue_instanz(turtlemanager);
-    Hauptform.zeichnen();
-    EditorForm.BT_updateClick(1);
   end;
 end;
 
@@ -116,7 +124,7 @@ end;
 
 
 procedure TParameter_Form.ED_Rek_tiefeChange(Sender: TObject);
-VAR rek_tiefe,i:CARDINAL; str:string;
+VAR rek_tiefe,i:CARDINAL; str:string;bool:boolean;
 begin
   turtlemanager:=Hauptform.o.copy();
   str:=ED_Rek_tiefe.Text;
@@ -125,7 +133,10 @@ begin
       rek_tiefe:=strtoint(ED_Rek_tiefe.text);
       for i:=0 to EditorForm.ListView1.Items.Count-1 do
       begin
-           if EditorForm.ListView1.Items[i].Checked then turtlemanager.turtleListe[i].rekursionsTiefe:=rek_tiefe;
+           if EditorForm.ListView1.Items[i].Checked then
+           begin
+             turtlemanager.turtleListe[i].rekursionsTiefe:=rek_tiefe;
+           end;
       end;
       Hauptform.push_neue_instanz(turtlemanager);
       Hauptform.zeichnen();

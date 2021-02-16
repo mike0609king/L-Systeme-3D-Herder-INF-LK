@@ -94,6 +94,7 @@ While n<= Memo1.Lines.Count-1 do
     if p=0 then
       Begin
            SHOWMESSAGE('Deine Eingabe ist falsch! Bitte überprüfe die Grammatik!');
+           break;
       end
       else
       Begin

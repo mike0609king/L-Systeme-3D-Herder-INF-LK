@@ -199,17 +199,19 @@ begin
   update_sichtbarkeit_bt();
 end;
 procedure TForm1.abstand_aendern(x_abstand:REAL);
-VAR i:CARDINAL;
+VAR i:CARDINAL; turtlemanager:Tturtlemanager;
 begin
+  turtlemanager:=o.copy();
   abstand_x:=x_abstand;
   akt_x:=0;
   akt_y:=0;
   akt_z:=0;
-  for i:=0 to (o.turtleListe.Count)-1 do
+  for i:=0 to (turtlemanager.turtleListe.Count)-1 do
       begin
-       o.turtleListe[i].setzeStartPunkt(akt_x,akt_y,akt_z);
+       turtlemanager.turtleListe[i].setzeStartPunkt(akt_x,akt_y,akt_z);
        update_startkoords();
       end;
+  push_neue_instanz(turtlemanager);
   zeichnen();
 end;
 

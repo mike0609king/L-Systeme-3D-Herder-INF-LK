@@ -119,10 +119,8 @@ begin
    str:=ED_abstand.Text;
    if not (str='') then
    begin
-      turtlemanager:=Hauptform.o.copy();
       x_abstand:= strtofloat(ED_abstand.Text);
       Hauptform.abstand_aendern(x_abstand);
-      Hauptform.push_neue_instanz(turtlemanager);
    end;
 end;
 

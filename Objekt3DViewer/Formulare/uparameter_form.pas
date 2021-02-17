@@ -127,6 +127,7 @@ procedure TParameter_Form.ED_Rek_tiefeChange(Sender: TObject);
 VAR rek_tiefe,i:CARDINAL; str:string;bool:boolean;
 begin
   turtlemanager:=Hauptform.o.copy();
+  bool:=False;
   str:=ED_Rek_tiefe.Text;
   if not (str='') then
     begin
@@ -136,11 +137,21 @@ begin
            if EditorForm.ListView1.Items[i].Checked then
            begin
              turtlemanager.turtleListe[i].rekursionsTiefe:=rek_tiefe;
+             if not turtlemanager.turtleListe[i].zeichnen() then bool:=True;
            end;
       end;
-      Hauptform.push_neue_instanz(turtlemanager);
-      Hauptform.zeichnen();
-      EditorForm.BT_updateClick(1);
+      if bool then
+      begin
+         Showmessage('Eine oder mehrere Turtles überschreiten bei dieser Rekursiontiefe die maximale Stringlänge. Diese kann im Optionenfeld geändert werden.');
+         ED_Rek_tiefe.Text:='';
+      end
+      else
+      begin
+        Hauptform.push_neue_instanz(turtlemanager);
+        Hauptform.zeichnen();
+        EditorForm.BT_updateClick(1);
+      end;
+
     end;
 end;
 end.

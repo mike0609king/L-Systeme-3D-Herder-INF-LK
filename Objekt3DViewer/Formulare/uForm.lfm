@@ -1,11 +1,11 @@
 object Form1: TForm1
-  Left = 1912
-  Height = 1017
-  Top = -8
+  Left = -29
+  Height = 1028
+  Top = 102
   Width = 1920
   Caption = 'L-Systeme in 3D'
-  ClientHeight = 0
-  ClientWidth = 0
+  ClientHeight = 1008
+  ClientWidth = 1920
   Color = clBtnFace
   Font.Color = clWindowText
   Font.Height = -11
@@ -342,6 +342,24 @@ object Form1: TForm1
     OnClick = BT_weiterClick
     TabOrder = 23
     Visible = False
+  end
+  object ComboBox1: TComboBox
+    Left = 1792
+    Height = 21
+    Top = 560
+    Width = 111
+    ItemHeight = 13
+    OnChange = ComboBox1Change
+    TabOrder = 24
+    Text = 'ComboBox1'
+  end
+  object Label7: TLabel
+    Left = 1752
+    Height = 13
+    Top = 560
+    Width = 32
+    Caption = 'Fokus:'
+    ParentColor = False
   end
   object Timer1: TTimer
     Interval = 100

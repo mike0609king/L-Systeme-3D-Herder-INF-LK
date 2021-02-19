@@ -1,7 +1,7 @@
 object uGrammatiken: TuGrammatiken
-  Left = 898
+  Left = 874
   Height = 421
-  Top = 167
+  Top = 173
   Width = 505
   Caption = 'Grammatiken'
   ClientHeight = 401

@@ -19,7 +19,9 @@ type
     BtKameraReset: TButton;
     BT_Zurueck: TButton;
     BT_weiter: TButton;
+    ComboBox1: TComboBox;
     Label1: TLabel;
+    Label7: TLabel;
     MainMenu1: TMainMenu;
     GraphikPanel: TPanel;
     hinzufuegen: TMenuItem;
@@ -52,6 +54,7 @@ type
     procedure BtKameraResetClick(Sender: TObject);
     procedure BT_weiterClick(Sender: TObject);
     procedure BT_ZurueckClick(Sender: TObject);
+    procedure ComboBox1Change(Sender: TObject);
     procedure hinzufuegenClick(Sender: TObject);
     procedure bearbeitenClick(Sender: TObject);
     procedure optionenClick(Sender: TObject);
@@ -96,6 +99,7 @@ type
     v:CARDINAL;
     procedure standardturtel();
     procedure update_sichtbarkeit_bt();
+    procedure update_combobox();
   public    { Public-Deklarationen }
     o:TTurtleManager;
     max_gespeicherte_manager:CARDINAL;
@@ -182,6 +186,31 @@ begin
   maximaleStringLaenge:=o.turtleListe[0].maximaleStringLaenge;
   update_sichtbarkeit_bt();
 end;
+
+procedure TForm1.update_combobox();
+VAR i,anzahl:CARDINAL; turtle:TTurtle; name:string;
+BEGIN
+  ComboBox1.Items.Clear;
+  anzahl:=(HauptForm.o.turtleListe.Count)-1;
+  for i:=0 to anzahl do
+      begin
+         turtle:=HauptForm.o.turtleListe[i];
+         name:=turtle.name;
+         ComboBox1.Items.Add(name);
+      end;
+end;
+
+procedure TForm1.ComboBox1Change(Sender: TObject);
+VAR i:CARDINAL;
+begin
+  i:=0;
+  update_sichtbarkeit_bt();
+  if ComboBox1.ItemIndex <> -1 then
+  Begin
+
+  end;
+end;
+
 procedure TForm1.push_neue_instanz(turtelmanager:TTurtleManager);
 VAR nr:CARDINAL;
 begin

@@ -5,10 +5,11 @@ unit uColors;
 interface
 
 uses
-  Classes, SysUtils;
+  Classes, SysUtils, fgl;
 
 type TColor = class
 
 end;
 
 implementation
+

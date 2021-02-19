@@ -76,7 +76,7 @@ begin
 end;
 
 procedure TForm10.BT_updateClick(mode:CARDINAL=0);
-VAR i,anzahl:CARDINAL;str,name,sichtbarkeit,Winkel,Rek_tiefe,Zeichenart:string; turtle:TTurtle; Item1: TListItem; liste:TIntegerList;
+VAR i,anzahl:CARDINAL;str,name,sichtbarkeit,Winkel,Rek_tiefe,Zeichenart:string; turtle:TTurtle; Item1: TListItem; liste:TIntegerList;str_max:string;
 begin
   if mode=1 then liste:=gib_markierte_nr();
   ListView1.clear;
@@ -101,6 +101,8 @@ begin
            Item1.SubItems.Add(Winkel);
            Item1.SubItems.Add(Rek_tiefe);
            Item1.SubItems.Add(Zeichenart);
+           //str_max:=inttostr(turtle.maximaleStringLaenge);
+           //Item1.SubItems.Add(str_max);
            //Aktuelle anzhal von Spalten 5
       end;
   if mode=1 then markiere_liste_nr(liste);

@@ -129,8 +129,8 @@ object uGrammatiken: TuGrammatiken
     Left = 16
     Height = 15
     Top = 0
-    Width = 56
-    Caption = 'Grammtik:'
+    Width = 62
+    Caption = 'Grammatik:'
     ParentColor = False
   end
   object OpenDialog1: TOpenDialog

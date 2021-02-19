@@ -1,7 +1,7 @@
 object uGrammatiken: TuGrammatiken
-  Left = 717
+  Left = 874
   Height = 421
-  Top = 195
+  Top = 173
   Width = 505
   Caption = 'Grammatiken'
   ClientHeight = 401
@@ -13,8 +13,8 @@ object uGrammatiken: TuGrammatiken
   LCLVersion = '2.0.0.4'
   object Memo1: TMemo
     Left = 16
-    Height = 356
-    Top = 12
+    Height = 348
+    Top = 20
     Width = 250
     Lines.Strings = (
       ''
@@ -25,7 +25,7 @@ object uGrammatiken: TuGrammatiken
   object Edit1: TEdit
     Left = 364
     Height = 23
-    Top = 16
+    Top = 20
     Width = 132
     NumbersOnly = True
     OnChange = Edit1Change
@@ -35,7 +35,7 @@ object uGrammatiken: TuGrammatiken
   object Anzahl: TLabel
     Left = 272
     Height = 15
-    Top = 16
+    Top = 20
     Width = 39
     Caption = 'Anzahl:'
     ParentColor = False
@@ -53,7 +53,7 @@ object uGrammatiken: TuGrammatiken
   object Label1: TLabel
     Left = 272
     Height = 15
-    Top = 48
+    Top = 56
     Width = 83
     Caption = 'Rekursionstiefe:'
     ParentColor = False
@@ -61,7 +61,7 @@ object uGrammatiken: TuGrammatiken
   object Label2: TLabel
     Left = 272
     Height = 15
-    Top = 80
+    Top = 88
     Width = 39
     Caption = 'Winkel:'
     ParentColor = False
@@ -69,7 +69,7 @@ object uGrammatiken: TuGrammatiken
   object Edit2: TEdit
     Left = 364
     Height = 23
-    Top = 48
+    Top = 56
     Width = 132
     NumbersOnly = True
     OnChange = Edit2Change
@@ -78,7 +78,7 @@ object uGrammatiken: TuGrammatiken
   object Edit3: TEdit
     Left = 364
     Height = 23
-    Top = 80
+    Top = 88
     Width = 132
     NumbersOnly = True
     OnChange = Edit3Change
@@ -95,7 +95,7 @@ object uGrammatiken: TuGrammatiken
   object Label4: TLabel
     Left = 272
     Height = 15
-    Top = 112
+    Top = 120
     Width = 35
     Caption = 'Name:'
     ParentColor = False
@@ -103,7 +103,7 @@ object uGrammatiken: TuGrammatiken
   object Edit4: TEdit
     Left = 364
     Height = 23
-    Top = 112
+    Top = 120
     Width = 132
     OnChange = Edit4Change
     TabOrder = 5
@@ -124,6 +124,14 @@ object uGrammatiken: TuGrammatiken
     Caption = 'Leeren'
     OnClick = Button2Click
     TabOrder = 7
+  end
+  object Label5: TLabel
+    Left = 16
+    Height = 15
+    Top = 0
+    Width = 56
+    Caption = 'Grammtik:'
+    ParentColor = False
   end
   object OpenDialog1: TOpenDialog
     left = 16

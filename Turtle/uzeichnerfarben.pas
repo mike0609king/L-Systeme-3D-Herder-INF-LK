@@ -70,6 +70,3 @@ begin
   inherited;
 end;
 end.
-
-implementation
-

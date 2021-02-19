@@ -1,7 +1,7 @@
 object uGrammatiken: TuGrammatiken
-  Left = 874
+  Left = 898
   Height = 421
-  Top = 173
+  Top = 167
   Width = 505
   Caption = 'Grammatiken'
   ClientHeight = 401
@@ -129,8 +129,8 @@ object uGrammatiken: TuGrammatiken
     Left = 16
     Height = 15
     Top = 0
-    Width = 56
-    Caption = 'Grammtik:'
+    Width = 62
+    Caption = 'Grammatik:'
     ParentColor = False
   end
   object OpenDialog1: TOpenDialog

@@ -51,6 +51,7 @@ end;
 destructor TZeichnerGruenesBlatt.Destroy;
 begin
   FreeAndNil(FName);
+  inherited;
 end;
 
 end.

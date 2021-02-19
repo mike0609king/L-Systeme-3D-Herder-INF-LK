@@ -78,7 +78,6 @@ end;
 procedure TuGrammatiken.Button1Click(Sender: TObject); //Turtle erstellen
 var i,n,nr,anzahl:CARDINAL;
     gram:TGrammatik;R,L,NameGrammatik:String;
-    Lc:Char;
     W:REAL;
     g:String;
     k,c:String;
@@ -111,23 +110,21 @@ While n<= Memo1.Lines.Count-1 do
             begin
               p:=pos('>',Memo1.Lines[n]);
               L:=copy(Memo1.Lines[n],1,p-2);//linke Seite des '->'
-              Lc:=L[1]; //StrToChar
               R:=copy(Memo1.Lines[n],p+1,p+100);//rechte Seite des '->'
-              gram.addRegel(Lc,R);//Regel ohne Wahrscheinlichkeit hinzufügen
+              gram.addRegel(L,R);//Regel ohne Wahrscheinlichkeit hinzufügen
               INC(n)
             end
             else
             begin
               p:=pos('>',Memo1.Lines[n]);
               L:=copy(Memo1.Lines[n],1,p-2);//linke Seite des '->'
-              Lc:=L[1]; //StrToChar
               R:=copy(Memo1.Lines[n],p+1,s-1);//rechte Seite des '->'
               q:=pos(',',R);
               If not q=0 then delete(R,q,q+10)
             else
             begin
               W:=strtofloat(copy(Memo1.Lines[n],s+1,s+10));//wahrscheinlichkeit
-              gram.addRegel(Lc,R,W);//Regel mit Wahrscheinlichkeit hinzufügen
+              gram.addRegel(L,R,W);//Regel mit Wahrscheinlichkeit hinzufügen
               INC(n);
               end;
             end
@@ -333,7 +330,6 @@ procedure TuGrammatiken.MenuItem3Click(Sender: TObject); //Turtle speichern
   var turtle: TTurtle;
       n,nr,anzahl:CARDINAL;
       gram:TGrammatik;R,L,NameGrammatik:String;
-      Lc:Char;
       W:REAL;
       zeichenPara: TZeichenParameter;
       p,s,q: Integer; zeichnerInit:TzeichnerInit;
@@ -353,23 +349,21 @@ procedure TuGrammatiken.MenuItem3Click(Sender: TObject); //Turtle speichern
         begin
           p:=pos('>',Memo1.Lines[n]);
           L:=copy(Memo1.Lines[n],1,p-2);//linke Seite des '->'
-          Lc:=L[1]; //StrToChar
           R:=copy(Memo1.Lines[n],p+1,p+100);//rechte Seite des '->'
-          gram.addRegel(Lc,R);//Regel ohne Wahrscheinlichkeit hinzufügen
+          gram.addRegel(L,R);//Regel ohne Wahrscheinlichkeit hinzufügen
           INC(n)
         end
            else
            begin
             p:=pos('>',Memo1.Lines[n]);
             L:=copy(Memo1.Lines[n],1,p-2);//linke Seite des '->'
-            Lc:=L[1]; //StrToChar
             R:=copy(Memo1.Lines[n],p+1,s-1);//rechte Seite des '->'
             q:=pos(',',R);
           If not q=0 then
           delete(R,q,q+10)
           else
             W:=strtofloat(copy(Memo1.Lines[n],s+1,s+10));//wahrscheinlichkeit
-            gram.addRegel(Lc,R,W);//Regel mit Wahrscheinlichkeit hinzufügen
+            gram.addRegel(L,R,W);//Regel mit Wahrscheinlichkeit hinzufügen
             INC(n);
         end
       end;

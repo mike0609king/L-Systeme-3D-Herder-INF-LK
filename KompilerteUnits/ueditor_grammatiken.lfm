@@ -134,7 +134,7 @@ object Form10: TForm10
         Width = 71
       end    
       item
-        Caption = 'Maximale Stringlänge'
+        Caption = 'Aktuelle Stringlänge'
       end>
     TabOrder = 9
     ViewStyle = vsReport

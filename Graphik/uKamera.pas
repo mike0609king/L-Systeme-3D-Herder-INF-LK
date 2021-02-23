@@ -40,7 +40,7 @@ begin
   KamProjFlaecheInit(p.width,p.height);
   KamObjektivInit(40,0.1,99);
   KamKOSInitialisieren;
-  KamInEigenKOSVerschieben(0,0,7);
+  KamInEigenKOSVerschieben(0,3,10);
   //KamUmWeltKOSDrehen(15,0,0,0,0,1,0);
   //KamUmWeltKOSDrehen(15,0,0,0,1,0,0)
 end;

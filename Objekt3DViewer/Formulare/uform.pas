@@ -19,7 +19,7 @@ type
     BtKameraReset: TButton;
     BT_Zurueck: TButton;
     BT_weiter: TButton;
-    ComboBox1: TComboBox;
+    ComboBox2: TComboBox;
     Label1: TLabel;
     Label7: TLabel;
     MainMenu1: TMainMenu;
@@ -54,7 +54,7 @@ type
     procedure BtKameraResetClick(Sender: TObject);
     procedure BT_weiterClick(Sender: TObject);
     procedure BT_ZurueckClick(Sender: TObject);
-    procedure ComboBox1Change(Sender: TObject);
+    procedure ComboBox2Change(Sender: TObject);
     procedure hinzufuegenClick(Sender: TObject);
     procedure bearbeitenClick(Sender: TObject);
     procedure optionenClick(Sender: TObject);
@@ -115,7 +115,7 @@ var
 
 
 implementation
-uses  uAnimation,uKamera, uKamObjektiv, uMatrizen, uGrammatiken,uTurtle, uOptionen_form;
+uses  uAnimation,uKamera, uKamObjektiv, uMatrizen, uGrammatiken, uTurtle, uOptionen_form;
 {$R *.lfm}
 
 procedure TForm1.FormCreate(Sender: TObject);
@@ -142,6 +142,7 @@ begin
   maximaleStringLaenge:=100000;
   standardturtel;
   KameraStart(uAnimation.ozeichnen);
+  update_combobox();
   Timer1.Enabled:=FALSE;
   ObjKOSinitialisieren;
  // kartToKugel;
@@ -190,24 +191,28 @@ end;
 procedure TForm1.update_combobox();
 VAR i,anzahl:CARDINAL; turtle:TTurtle; name:string;
 BEGIN
-  ComboBox1.Items.Clear;
+  ComboBox2.Items.Clear;
   anzahl:=(HauptForm.o.turtleListe.Count)-1;
   for i:=0 to anzahl do
       begin
          turtle:=HauptForm.o.turtleListe[i];
-         name:=turtle.name;
-         ComboBox1.Items.Add(name);
+         name:='Turtle'+inttostr(i);
+         ComboBox2.Items.Add(name);
       end;
 end;
 
-procedure TForm1.ComboBox1Change(Sender: TObject);
-VAR i:CARDINAL;
+procedure TForm1.ComboBox2Change(Sender: TObject);
+VAR i:CARDINAL; turtle:TTurtle; x:Real;
 begin
-  i:=0;
-  update_sichtbarkeit_bt();
-  if ComboBox1.ItemIndex <> -1 then
+  if ComboBox2.ItemIndex <> -1 then
   Begin
-
+       i:=ComboBox2.ItemIndex ;
+       turtle:=HauptForm.o.turtleListe[i];
+       x:=turtle.StartPunkt.x;
+     //  y:=turtle.StartPunkt.y;
+     //  z:=turtle.StartPunkt.z;
+       BtKameraResetClick(self);
+       KamInEigenKOSVerschieben(x,0,0);
   end;
 end;
 

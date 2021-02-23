@@ -101,8 +101,8 @@ begin
            Item1.SubItems.Add(Winkel);
            Item1.SubItems.Add(Rek_tiefe);
            Item1.SubItems.Add(Zeichenart);
-           //str_max:=inttostr(turtle.maximaleStringLaenge);
-           //Item1.SubItems.Add(str_max);
+           str_max:=inttostr(length(turtle.zuZeichnenderString));
+           Item1.SubItems.Add(str_max);
            //Aktuelle anzhal von Spalten 5
       end;
   if mode=1 then markiere_liste_nr(liste);

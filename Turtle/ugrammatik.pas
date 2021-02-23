@@ -18,7 +18,7 @@ end;
 
 type TRegelProduktionsseitenListe = TFPGList<TRegelProduktionsseite>;
 
-type TRegelDictionary = TFPGMap<Char,TRegelProduktionsseitenListe>;
+type TRegelDictionary = TFPGMap<String,TRegelProduktionsseitenListe>;
 
 type TGrammatik = class
     public
@@ -27,8 +27,8 @@ type TGrammatik = class
 
         constructor Create;
         destructor Destroy; override;
-        procedure addRegel(rechts: char; links: String; zufaelligkeit: Real); overload;
-        procedure addRegel(rechts: char; links: String); overload;
+        procedure addRegel(links: String; rechts: String; zufaelligkeit: Real); overload;
+        procedure addRegel(links: String; rechts: String); overload;
         function copy : TGrammatik;
 end;
 
@@ -58,24 +58,24 @@ begin
     FreeAndNil(regeln);
 end;
 
-procedure TGrammatik.addRegel(rechts: char; links: String; zufaelligkeit: Real);
+procedure TGrammatik.addRegel(links: String; rechts: String; zufaelligkeit: Real);
 var tmp_regel: TRegelProduktionsseite;
     data: TRegelProduktionsseitenListe;
 begin
     tmp_regel := TRegelProduktionsseite.Create;
-    tmp_regel.produktion := links;
+    tmp_regel.produktion := rechts;
     tmp_regel.zufaelligkeit := zufaelligkeit;
-    if regeln.TryGetData(rechts,data) then regeln[rechts].add(tmp_regel)
+    if regeln.TryGetData(links,data) then regeln[links].add(tmp_regel)
     else
     begin
-        regeln[rechts] := TRegelProduktionsseitenListe.Create;
-        regeln[rechts].add(tmp_regel);
+        regeln[links] := TRegelProduktionsseitenListe.Create;
+        regeln[links].add(tmp_regel);
     end;
 end;
 
-procedure TGrammatik.addRegel(rechts: char; links: String);
+procedure TGrammatik.addRegel(links: String; rechts: String);
 begin
-    addRegel(rechts,links,100);
+    addRegel(links,rechts,100);
 end;
 
 function TGrammatik.copy : TGrammatik;

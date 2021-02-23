@@ -357,8 +357,8 @@ procedure TuGrammatiken.MenuItem3Click(Sender: TObject); //Turtle speichern
           L:=copy(Memo1.Lines[n],1,p-2);//linke Seite des '->'
           //Lc:=L[1]; //StrToChar
           R:=copy(Memo1.Lines[n],p+1,p+100);//rechte Seite des '->'
-          gram.addRegel(Lc,R);//Regel ohne Wahrscheinlichkeit hinzufügen
-          //gram.addRegel(L,R);//Regel ohne Wahrscheinlichkeit hinzufügen
+          //gram.addRegel( Lc,R);//Regel ohne Wahrscheinlichkeit hinzufügen
+          gram.addRegel(L,R);//Regel ohne Wahrscheinlichkeit hinzufügen
           INC(n)
         end
            else

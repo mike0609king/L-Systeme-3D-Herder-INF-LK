@@ -22,6 +22,7 @@ type
     BT_Alle: TButton;
     BT_alle_unmarkieren: TButton;
     BT_unsichtbar_machen: TButton;
+    BT_kopieren: TButton;
     ED_abstand: TEdit;
     Label1: TLabel;
     ListView1: TListView;
@@ -30,6 +31,7 @@ type
     procedure BT_bearbeitenClick(Sender: TObject);
     procedure BT_entfernenClick(Sender: TObject);
     procedure BT_FertigClick(Sender: TObject);
+    procedure BT_kopierenClick(Sender: TObject);
     procedure BT_sichtbarkeitClick(Sender: TObject);
     procedure BT_unsichtbar_machenClick(Sender: TObject);
     procedure BT_alle_unmarkierenClick(Sender: TObject);
@@ -160,6 +162,25 @@ procedure TForm10.BT_FertigClick(Sender: TObject);
 begin
    Visible:=False;
    Hauptform.zeichnen;
+end;
+
+procedure TForm10.BT_kopierenClick(Sender: TObject);
+VAR turtle:Tturtle;  i:CARDINAL; liste:TIntegerlist;
+begin
+   liste:=gib_markierte_nr();
+   turtlemanager:=Hauptform.o.copy();
+   for i := 0 to ListView1.Items.Count -1 do
+       begin
+            if ListView1.Items[i].Checked then
+            begin
+                 turtle:=hauptform.o.turtleListe[i].copy();
+                 turtlemanager.addTurtle(turtle);
+            end;
+       end;
+   ED_abstandChange(self);
+   Hauptform.push_neue_instanz(turtlemanager);
+   BT_updateClick();
+   markiere_liste_nr(liste);
 end;
 
 procedure TForm10.BT_sichtbarkeitClick(Sender: TObject);

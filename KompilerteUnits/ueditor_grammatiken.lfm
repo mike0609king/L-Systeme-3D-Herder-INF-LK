@@ -1,163 +1,162 @@
 object Form10: TForm10
   Left = 380
-  Height = 960
+  Height = 480
   Top = 440
-  Width = 2288
+  Width = 1144
   Caption = 'Grammatik_Editor'
-  ClientHeight = 960
-  ClientWidth = 2288
-  DesignTimePPI = 192
+  ClientHeight = 480
+  ClientWidth = 1144
   OnCreate = FormCreate
-  LCLVersion = '2.0.2.0'
+  LCLVersion = '2.0.0.4'
   object BT_entfernen: TButton
-    Left = 640
-    Height = 50
-    Top = 496
-    Width = 246
+    Left = 320
+    Height = 25
+    Top = 248
+    Width = 123
     Caption = 'entfernen'
     OnClick = BT_entfernenClick
     ParentFont = False
     TabOrder = 0
   end
   object BT_bearbeiten: TButton
-    Left = 118
-    Height = 50
-    Top = 352
-    Width = 320
+    Left = 59
+    Height = 25
+    Top = 176
+    Width = 160
     Caption = 'Parameter bearbeiten'
     OnClick = BT_bearbeitenClick
     ParentFont = False
     TabOrder = 1
   end
   object BT_sichtbarkeit: TButton
-    Left = 640
-    Height = 50
-    Top = 416
-    Width = 246
+    Left = 320
+    Height = 25
+    Top = 208
+    Width = 123
     Caption = 'Sichtbar machen'
     OnClick = BT_sichtbarkeitClick
     ParentFont = False
     TabOrder = 2
   end
   object BT_Alle: TButton
-    Left = 118
-    Height = 50
-    Top = 416
-    Width = 320
+    Left = 59
+    Height = 25
+    Top = 208
+    Width = 160
     Caption = 'Alle markieren'
     OnClick = BT_AlleClick
     ParentFont = False
     TabOrder = 3
   end
   object BT_Fertig: TButton
-    Left = 118
-    Height = 50
-    Top = 704
-    Width = 150
+    Left = 59
+    Height = 25
+    Top = 352
+    Width = 75
     Caption = 'Fertig'
     OnClick = BT_FertigClick
     ParentFont = False
     TabOrder = 4
   end
   object BT_alle_unmarkieren: TButton
-    Left = 118
-    Height = 50
-    Top = 496
-    Width = 320
+    Left = 59
+    Height = 25
+    Top = 248
+    Width = 160
     Caption = 'Alle markierungen enfernen '
     OnClick = BT_alle_unmarkierenClick
     ParentFont = False
     TabOrder = 5
   end
   object BT_unsichtbar_machen: TButton
-    Left = 640
-    Height = 50
-    Top = 352
-    Width = 246
+    Left = 320
+    Height = 25
+    Top = 176
+    Width = 123
     Caption = 'Unsichtbar machen '
     OnClick = BT_unsichtbar_machenClick
     ParentFont = False
     TabOrder = 6
   end
   object ED_abstand: TEdit
-    Left = 470
-    Height = 40
-    Top = 592
-    Width = 160
+    Left = 235
+    Height = 23
+    Top = 296
+    Width = 80
     NumbersOnly = True
     OnChange = ED_abstandChange
     ParentFont = False
     TabOrder = 7
   end
   object UpDown1: TUpDown
-    Left = 646
-    Height = 62
-    Top = 576
-    Width = 34
+    Left = 323
+    Height = 31
+    Top = 288
+    Width = 17
     Min = 0
     OnClick = UpDown1Click
     Position = 0
     TabOrder = 8
   end
   object Label1: TLabel
-    Left = 118
-    Height = 32
-    Top = 608
-    Width = 346
+    Left = 59
+    Height = 15
+    Top = 304
+    Width = 171
     Caption = 'X_Abstand zwischen den Turtels:'
     ParentColor = False
     ParentFont = False
   end
   object ListView1: TListView
-    Left = 118
+    Left = 59
     Height = 158
-    Top = 16
+    Top = 8
     Width = 709
     Checkboxes = True
     Columns = <    
       item
-        Width = 118
+        Width = 59
       end    
       item
         Caption = 'Turtlenummer'
-        Width = 182
+        Width = 91
       end    
       item
         Caption = 'Grammatikname'
-        Width = 208
+        Width = 104
       end    
       item
         Caption = 'Sichtbarkeit'
-        Width = 154
+        Width = 77
       end    
       item
         Caption = 'Winkel'
-        Width = 102
+        Width = 51
       end    
       item
         Caption = 'Rekursionstiefe'
-        Width = 190
+        Width = 95
       end    
       item
         AutoSize = True
         Caption = 'Zeichenart'
-        Width = 145
+        Width = 71
       end    
       item
         Caption = 'Aktuelle Stringlänge'
-        Width = 100
       end>
     ParentFont = False
     TabOrder = 9
     ViewStyle = vsReport
   end
   object BT_kopieren: TButton
-    Left = 944
-    Height = 50
-    Top = 352
-    Width = 208
+    Left = 472
+    Height = 25
+    Top = 176
+    Width = 104
     Caption = 'kopieren'
     OnClick = BT_kopierenClick
+    ParentFont = False
     TabOrder = 10
   end
 end

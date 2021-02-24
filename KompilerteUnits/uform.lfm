@@ -1,145 +1,144 @@
 object Form1: TForm1
-  Left = -9
-  Height = 1783
-  Top = 0
-  Width = 2740
+  Left = 1912
+  Height = 1017
+  Top = -8
+  Width = 1920
   Caption = 'L-Systeme in 3D'
-  ClientHeight = 0
-  ClientWidth = 0
+  ClientHeight = 997
+  ClientWidth = 1920
   Color = clBtnFace
-  DesignTimePPI = 192
   Font.Color = clWindowText
-  Font.Height = -22
+  Font.Height = -11
   Font.Name = 'MS Sans Serif'
   Menu = MainMenu1
   OnCreate = FormCreate
-  LCLVersion = '2.0.4.0'
+  LCLVersion = '2.0.0.4'
   object GraphikPanel: TPanel
-    Left = 8
-    Height = 772
-    Top = 2
-    Width = 742
+    Left = 4
+    Height = 386
+    Top = 1
+    Width = 371
     Caption = 'GraphikPanel'
     Font.Color = clWindowText
-    Font.Height = -22
+    Font.Height = -11
     Font.Name = 'MS Sans Serif'
     ParentFont = False
     TabOrder = 20
   end
   object Label1: TLabel
-    Left = 2578
-    Height = 26
-    Top = 96
-    Width = 54
+    Left = 1839
+    Height = 13
+    Top = 48
+    Width = 27
     Anchors = [akTop, akRight]
     Caption = 'Zoom'
     Font.Color = clWindowText
-    Font.Height = -22
+    Font.Height = -11
     Font.Name = 'MS Sans Serif'
     ParentColor = False
     ParentFont = False
   end
   object Label2: TLabel
-    Left = 2482
-    Height = 26
-    Top = 142
-    Width = 202
+    Left = 1791
+    Height = 13
+    Top = 71
+    Width = 101
     Anchors = [akTop, akRight]
     Caption = 'KameraVerschiebung'
     Font.Color = clWindowText
-    Font.Height = -22
+    Font.Height = -11
     Font.Name = 'MS Sans Serif'
     ParentColor = False
     ParentFont = False
   end
   object Label3: TLabel
-    Left = 2482
-    Height = 26
-    Top = 316
-    Width = 254
+    Left = 1791
+    Height = 13
+    Top = 158
+    Width = 127
     Anchors = [akTop, akRight]
     Caption = 'Kameraschwenk horizontal'
     Font.Color = clWindowText
-    Font.Height = -22
+    Font.Height = -11
     Font.Name = 'MS Sans Serif'
     ParentColor = False
     ParentFont = False
   end
   object Label4: TLabel
-    Left = 2482
-    Height = 26
-    Top = 396
-    Width = 232
+    Left = 1791
+    Height = 13
+    Top = 198
+    Width = 116
     Anchors = [akTop, akRight]
     Caption = 'Kameraschwenk vertikal'
     Font.Color = clWindowText
-    Font.Height = -22
+    Font.Height = -11
     Font.Name = 'MS Sans Serif'
     ParentColor = False
     ParentFont = False
   end
   object Label5: TLabel
-    Left = 2482
-    Height = 26
-    Top = 476
-    Width = 212
+    Left = 1791
+    Height = 13
+    Top = 238
+    Width = 106
     Anchors = [akTop, akRight]
     Caption = 'Kamera seitlich kippen'
     Font.Color = clWindowText
-    Font.Height = -22
+    Font.Height = -11
     Font.Name = 'MS Sans Serif'
     ParentColor = False
     ParentFont = False
   end
   object Label6: TLabel
-    Left = 2484
-    Height = 26
-    Top = 560
-    Width = 230
+    Left = 1792
+    Height = 13
+    Top = 280
+    Width = 115
     Anchors = [akTop, akRight]
     Caption = 'Kamera um Welt kreisen'
     Font.Color = clWindowText
-    Font.Height = -22
+    Font.Height = -11
     Font.Name = 'MS Sans Serif'
     ParentColor = False
     ParentFont = False
   end
   object Label8: TLabel
-    Left = 8
-    Height = 26
-    Top = 1656
-    Width = 156
+    Left = 4
+    Height = 13
+    Top = 1304
+    Width = 78
     Anchors = [akLeft, akBottom]
     Caption = 'Geschwindigkeit'
     Font.Color = clWindowText
-    Font.Height = -22
+    Font.Height = -11
     Font.Name = 'MS Sans Serif'
     ParentColor = False
     ParentFont = False
   end
   object BtPause: TButton
-    Left = 2512
-    Height = 50
-    Top = 16
-    Width = 162
+    Left = 1806
+    Height = 25
+    Top = 8
+    Width = 81
     Anchors = [akTop, akRight]
     Caption = 'Pause'
     Font.Color = clWindowText
-    Font.Height = -22
+    Font.Height = -11
     Font.Name = 'MS Sans Serif'
     OnClick = BtPauseClick
     ParentFont = False
     TabOrder = 0
   end
   object BtZoomP: TButton
-    Left = 2480
-    Height = 32
-    Top = 96
-    Width = 50
+    Left = 1790
+    Height = 16
+    Top = 48
+    Width = 25
     Anchors = [akTop, akRight]
     Caption = '+'
     Font.Color = clWindowText
-    Font.Height = -22
+    Font.Height = -11
     Font.Name = 'MS Sans Serif'
     OnMouseDown = Button2OnMouseDown
     OnMouseUp = Button2OnMouseUp
@@ -147,16 +146,16 @@ object Form1: TForm1
     TabOrder = 1
   end
   object BtZoomM: TButton
-    Left = 2656
-    Height = 32
-    Top = 96
-    Width = 50
+    Left = 1878
+    Height = 16
+    Top = 48
+    Width = 25
     Anchors = [akTop, akRight]
     Cancel = True
     Caption = '-'
     Default = True
     Font.Color = clWindowText
-    Font.Height = -22
+    Font.Height = -11
     Font.Name = 'MS Sans Serif'
     OnMouseDown = Button3OnMouseDown
     OnMouseUp = Button2OnMouseUp
@@ -164,14 +163,14 @@ object Form1: TForm1
     TabOrder = 2
   end
   object BtLinksV: TButton
-    Left = 2480
-    Height = 32
-    Top = 174
-    Width = 82
+    Left = 1790
+    Height = 16
+    Top = 87
+    Width = 41
     Anchors = [akTop, akRight]
     Caption = 'links'
     Font.Color = clWindowText
-    Font.Height = -22
+    Font.Height = -11
     Font.Name = 'MS Sans Serif'
     OnMouseDown = Button4OnMouseDown
     OnMouseUp = Button2OnMouseUp
@@ -179,14 +178,14 @@ object Form1: TForm1
     TabOrder = 3
   end
   object BtRechtsV: TButton
-    Left = 2624
-    Height = 32
-    Top = 174
-    Width = 82
+    Left = 1862
+    Height = 16
+    Top = 87
+    Width = 41
     Anchors = [akTop, akRight]
     Caption = 'rechts'
     Font.Color = clWindowText
-    Font.Height = -22
+    Font.Height = -11
     Font.Name = 'MS Sans Serif'
     OnMouseDown = Button5OnMouseDown
     OnMouseUp = Button2OnMouseUp
@@ -194,14 +193,14 @@ object Form1: TForm1
     TabOrder = 4
   end
   object BtVorV: TButton
-    Left = 2480
-    Height = 32
-    Top = 222
-    Width = 82
+    Left = 1790
+    Height = 16
+    Top = 111
+    Width = 41
     Anchors = [akTop, akRight]
     Caption = 'vor'
     Font.Color = clWindowText
-    Font.Height = -22
+    Font.Height = -11
     Font.Name = 'MS Sans Serif'
     OnMouseDown = Button6OnMouseDown
     OnMouseUp = Button2OnMouseUp
@@ -209,14 +208,14 @@ object Form1: TForm1
     TabOrder = 5
   end
   object BtZurueckV: TButton
-    Left = 2624
-    Height = 32
-    Top = 222
-    Width = 82
+    Left = 1862
+    Height = 16
+    Top = 111
+    Width = 41
     Anchors = [akTop, akRight]
     Caption = 'zurück'
     Font.Color = clWindowText
-    Font.Height = -22
+    Font.Height = -11
     Font.Name = 'MS Sans Serif'
     OnMouseDown = Button7OnMouseDown
     OnMouseUp = Button2OnMouseUp
@@ -224,14 +223,14 @@ object Form1: TForm1
     TabOrder = 6
   end
   object BtHochV: TButton
-    Left = 2480
-    Height = 32
-    Top = 268
-    Width = 82
+    Left = 1790
+    Height = 16
+    Top = 134
+    Width = 41
     Anchors = [akTop, akRight]
     Caption = 'hoch'
     Font.Color = clWindowText
-    Font.Height = -22
+    Font.Height = -11
     Font.Name = 'MS Sans Serif'
     OnMouseDown = Button8OnMouseDown
     OnMouseUp = Button2OnMouseUp
@@ -239,14 +238,14 @@ object Form1: TForm1
     TabOrder = 7
   end
   object BtRunterV: TButton
-    Left = 2624
-    Height = 32
-    Top = 268
-    Width = 82
+    Left = 1862
+    Height = 16
+    Top = 134
+    Width = 41
     Anchors = [akTop, akRight]
     Caption = 'runter'
     Font.Color = clWindowText
-    Font.Height = -22
+    Font.Height = -11
     Font.Name = 'MS Sans Serif'
     OnMouseDown = Button9OnMouseDown
     OnMouseUp = Button2OnMouseUp
@@ -254,14 +253,14 @@ object Form1: TForm1
     TabOrder = 8
   end
   object BtLinksS: TButton
-    Left = 2480
-    Height = 32
-    Top = 348
-    Width = 82
+    Left = 1790
+    Height = 16
+    Top = 174
+    Width = 41
     Anchors = [akTop, akRight]
     Caption = 'links'
     Font.Color = clWindowText
-    Font.Height = -22
+    Font.Height = -11
     Font.Name = 'MS Sans Serif'
     OnMouseDown = Button10OnMouseDown
     OnMouseUp = Button2OnMouseUp
@@ -269,14 +268,14 @@ object Form1: TForm1
     TabOrder = 9
   end
   object BtRechtsS: TButton
-    Left = 2624
-    Height = 32
-    Top = 348
-    Width = 82
+    Left = 1862
+    Height = 16
+    Top = 174
+    Width = 41
     Anchors = [akTop, akRight]
     Caption = 'rechts'
     Font.Color = clWindowText
-    Font.Height = -22
+    Font.Height = -11
     Font.Name = 'MS Sans Serif'
     OnMouseDown = Button11OnMouseDown
     OnMouseUp = Button2OnMouseUp
@@ -284,14 +283,14 @@ object Form1: TForm1
     TabOrder = 10
   end
   object BtRunterS: TButton
-    Left = 2480
-    Height = 32
-    Top = 430
-    Width = 82
+    Left = 1790
+    Height = 16
+    Top = 215
+    Width = 41
     Anchors = [akTop, akRight]
     Caption = 'runter'
     Font.Color = clWindowText
-    Font.Height = -22
+    Font.Height = -11
     Font.Name = 'MS Sans Serif'
     OnMouseDown = Button12OnMouseDown
     OnMouseUp = Button2OnMouseUp
@@ -299,14 +298,14 @@ object Form1: TForm1
     TabOrder = 11
   end
   object BtHochS: TButton
-    Left = 2624
-    Height = 32
-    Top = 430
-    Width = 82
+    Left = 1862
+    Height = 16
+    Top = 215
+    Width = 41
     Anchors = [akTop, akRight]
     Caption = 'hoch'
     Font.Color = clWindowText
-    Font.Height = -22
+    Font.Height = -11
     Font.Name = 'MS Sans Serif'
     OnMouseDown = Button13OnMouseDown
     OnMouseUp = Button2OnMouseUp
@@ -314,14 +313,14 @@ object Form1: TForm1
     TabOrder = 12
   end
   object BtLinksK: TButton
-    Left = 2480
-    Height = 32
-    Top = 510
-    Width = 82
+    Left = 1790
+    Height = 16
+    Top = 255
+    Width = 41
     Anchors = [akTop, akRight]
     Caption = 'links'
     Font.Color = clWindowText
-    Font.Height = -22
+    Font.Height = -11
     Font.Name = 'MS Sans Serif'
     OnMouseDown = Button14OnMouseDown
     OnMouseUp = Button2OnMouseUp
@@ -329,14 +328,14 @@ object Form1: TForm1
     TabOrder = 13
   end
   object BtRechtsK: TButton
-    Left = 2624
-    Height = 32
-    Top = 510
-    Width = 82
+    Left = 1862
+    Height = 16
+    Top = 255
+    Width = 41
     Anchors = [akTop, akRight]
     Caption = 'rechts'
     Font.Color = clWindowText
-    Font.Height = -22
+    Font.Height = -11
     Font.Name = 'MS Sans Serif'
     OnMouseDown = Button15OnMouseDown
     OnMouseUp = Button2OnMouseUp
@@ -344,14 +343,14 @@ object Form1: TForm1
     TabOrder = 14
   end
   object BtLinksKreis: TButton
-    Left = 2480
-    Height = 32
-    Top = 640
-    Width = 82
+    Left = 1790
+    Height = 16
+    Top = 320
+    Width = 41
     Anchors = [akTop, akRight]
     Caption = 'links'
     Font.Color = clWindowText
-    Font.Height = -22
+    Font.Height = -11
     Font.Name = 'MS Sans Serif'
     OnMouseDown = Button16OnMouseDown
     OnMouseUp = Button2OnMouseUp
@@ -359,14 +358,14 @@ object Form1: TForm1
     TabOrder = 15
   end
   object BtRechtsKreis: TButton
-    Left = 2624
-    Height = 32
-    Top = 640
-    Width = 82
+    Left = 1862
+    Height = 16
+    Top = 320
+    Width = 41
     Anchors = [akTop, akRight]
     Caption = 'rechts'
     Font.Color = clWindowText
-    Font.Height = -22
+    Font.Height = -11
     Font.Name = 'MS Sans Serif'
     OnMouseDown = Button17OnMouseDown
     OnMouseUp = Button2OnMouseUp
@@ -374,14 +373,14 @@ object Form1: TForm1
     TabOrder = 16
   end
   object BtHochKreis: TButton
-    Left = 2544
-    Height = 32
-    Top = 592
-    Width = 82
+    Left = 1822
+    Height = 16
+    Top = 296
+    Width = 41
     Anchors = [akTop, akRight]
     Caption = 'hoch'
     Font.Color = clWindowText
-    Font.Height = -22
+    Font.Height = -11
     Font.Name = 'MS Sans Serif'
     OnMouseDown = Button18OnMouseDown
     OnMouseUp = Button2OnMouseUp
@@ -389,14 +388,14 @@ object Form1: TForm1
     TabOrder = 17
   end
   object BtRunterKreis: TButton
-    Left = 2544
-    Height = 32
-    Top = 688
-    Width = 82
+    Left = 1822
+    Height = 16
+    Top = 344
+    Width = 41
     Anchors = [akTop, akRight]
     Caption = 'runter'
     Font.Color = clWindowText
-    Font.Height = -22
+    Font.Height = -11
     Font.Name = 'MS Sans Serif'
     OnMouseDown = Button19OnMouseDown
     OnMouseUp = Button2OnMouseUp
@@ -404,30 +403,30 @@ object Form1: TForm1
     TabOrder = 18
   end
   object TrackBar1: TTrackBar
-    Left = 184
-    Height = 50
-    Top = 1658
-    Width = 802
+    Left = 92
+    Height = 25
+    Top = 1306
+    Width = 401
     Max = 51
     Min = 1
     OnChange = TrackBar1Change
     Position = 2
     Anchors = [akLeft, akBottom]
     Font.Color = clWindowText
-    Font.Height = -22
+    Font.Height = -11
     Font.Name = 'MS Sans Serif'
     ParentFont = False
     TabOrder = 19
   end
   object BtKameraReset: TButton
-    Left = 2482
-    Height = 36
-    Top = 738
-    Width = 226
+    Left = 1791
+    Height = 18
+    Top = 369
+    Width = 113
     Anchors = [akTop, akRight]
     Caption = 'Kamera Reset'
     Font.Color = clWindowText
-    Font.Height = -22
+    Font.Height = -11
     Font.Name = 'MS Sans Serif'
     OnClick = BtKameraResetClick
     ParentFont = False
@@ -437,14 +436,14 @@ object Form1: TForm1
     AnchorSideLeft.Control = TrackBar1
     AnchorSideLeft.Side = asrBottom
     AnchorSideRight.Control = BT_weiter
-    Left = 986
-    Height = 50
-    Top = 1680
-    Width = 186
+    Left = 493
+    Height = 25
+    Top = 1608
+    Width = 93
     Anchors = [akLeft]
     Caption = 'Zurücknehmen'
     Font.Color = clWindowText
-    Font.Height = -22
+    Font.Height = -11
     Font.Name = 'MS Sans Serif'
     OnClick = BT_ZurueckClick
     ParentFont = False
@@ -454,14 +453,14 @@ object Form1: TForm1
   object BT_weiter: TButton
     AnchorSideLeft.Control = BT_Zurueck
     AnchorSideLeft.Side = asrBottom
-    Left = 1172
-    Height = 50
-    Top = 1680
-    Width = 150
+    Left = 586
+    Height = 25
+    Top = 1608
+    Width = 75
     Anchors = [akLeft]
     Caption = 'Weiter'
     Font.Color = clWindowText
-    Font.Height = -22
+    Font.Height = -11
     Font.Name = 'MS Sans Serif'
     OnClick = BT_weiterClick
     ParentFont = False
@@ -469,13 +468,15 @@ object Form1: TForm1
     Visible = False
   end
   object Label7: TLabel
-    Left = 3504
-    Height = 26
-    Top = 1120
-    Width = 64
+    AnchorSideRight.Control = ComboBox2
+    Left = 1757
+    Height = 13
+    Top = 400
+    Width = 32
+    Anchors = [akRight]
     Caption = 'Fokus:'
     Font.Color = clWindowText
-    Font.Height = -22
+    Font.Height = -11
     Font.Name = 'MS Sans Serif'
     ParentColor = False
     ParentFont = False
@@ -483,27 +484,31 @@ object Form1: TForm1
   object ComboBox2: TComboBox
     AnchorSideTop.Control = BtKameraReset
     AnchorSideTop.Side = asrBottom
-    Left = 2496
-    Height = 34
-    Top = 792
-    Width = 200
+    Left = 1798
+    Height = 21
+    Top = 396
+    Width = 100
     Anchors = [akTop, akRight]
     AutoSize = False
-    BorderSpacing.Around = 18
-    ItemHeight = 26
+    BorderSpacing.Around = 9
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    ItemHeight = 13
     OnChange = ComboBox2Change
+    ParentFont = False
     TabOrder = 24
     Text = 'Fokus setzen'
   end
   object Timer1: TTimer
     Interval = 100
     OnTimer = Timer1Timer
-    left = 208
-    top = 96
+    left = 104
+    top = 48
   end
   object MainMenu1: TMainMenu
-    left = 80
-    top = 96
+    left = 40
+    top = 48
     object hinzufuegen: TMenuItem
       Caption = 'Turtels hinzufügen'
       OnClick = hinzufuegenClick

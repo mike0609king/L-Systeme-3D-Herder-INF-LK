@@ -165,7 +165,7 @@ begin
 end;
 
 procedure TForm10.BT_kopierenClick(Sender: TObject);
-VAR turtle:Tturtle;  i:CARDINAL; liste:TIntegerlist;
+VAR turtle:Tturtle;  i:CARDINAL; liste:TIntegerlist;x_abstand:REAL;
 begin
    liste:=gib_markierte_nr();
    turtlemanager:=Hauptform.o.copy();
@@ -177,7 +177,8 @@ begin
                  turtlemanager.addTurtle(turtle);
             end;
        end;
-   ED_abstandChange(self);
+   x_abstand:= strtofloat(ED_abstand.Text);
+   Hauptform.abstand_aendern(x_abstand);
    Hauptform.push_neue_instanz(turtlemanager);
    BT_updateClick();
    markiere_liste_nr(liste);

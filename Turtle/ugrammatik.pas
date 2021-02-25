@@ -29,7 +29,7 @@ type TGrammatik = class
         destructor Destroy; override;
         procedure addRegel(rechts: char; links: String; zufaelligkeit: Real); overload;
         procedure addRegel(rechts: char; links: String); overload;
-        procedure RegelTausch;
+        procedure RegelTausch(links: string; rechts:char); overload;
         function copy : TGrammatik;
 end;
 
@@ -66,8 +66,8 @@ var tmp_regel: TRegelProduktionsseite;
 begin
     if links[2] = '(' then
     begin
-        
         RegelTausch(links,rechts)
+        
     end;
     tmp_regel := TRegelProduktionsseite.Create;
     tmp_regel.produktion := links;
@@ -80,28 +80,40 @@ begin
     end;
 end;
 
-procedure TGrammatik.RegelTausch(links, rechts);
-var parameterCount, letterAsc:INTEGER;
+procedure TGrammatik.RegelTausch(links: string; rechts:char);
+var letterAsc:INTEGER;
     letter:string;
-    pter:CARDINAL;
 begin
-    pter:=3;
-    letterAsc:=Ord(links[1]);
-    letterAsc:=letterAsc+32;
-
-    procedure stringtausch;
+    procedure stringtausch(parameterCount);
     begin
         letter:=IntToString(parameterCount)+Chr(letterAsc);
         links[pter]:=letter;
     end;
 
+    procedure tauschLinks;
+    var parameterCount:INTEGER;
+        pter:CARDINAL;
+    begin
+        pter:=3;
+        letterAsc:=Ord(links[1]);
+        letterAsc:=letterAsc+32;
     for parameterCount:=1 to 26 do
     begin
-        stringtausch;
+        stringtausch(parameterCount);
         pter:=pter+2;
         if links[pter]=';' then pter:=pter+1
         else break;
     end;
+
+    procedure tauschRechts;
+    var parameterCount:INTEGER;
+        pter:CARDINAL;
+    begin
+
+    end;
+
+    tauschLinks;
+    tauschRechts;
 end;
 
 procedure TGrammatik.addRegel(rechts: char; links: String);

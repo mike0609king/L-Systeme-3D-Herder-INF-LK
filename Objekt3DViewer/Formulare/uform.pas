@@ -123,7 +123,7 @@ begin
   height:=screen.Height-200;
   GraphikPanel.Height:=height-50;
   GraphikPanel.Width:=width-150;
-  Trackbar1.width:=width-300;
+  Trackbar1.width:=width-400;
   Trackbar1.top:=height-50;
   BT_Zurueck.top:=height-50;
   BT_weiter.top:=height-50;
@@ -140,13 +140,14 @@ begin
   akt_z:=0;
   maximaleStringLaenge:=100000;
   standardturtel;
+  //o:=Tturtlemanager.create();
   KameraStart(uAnimation.ozeichnen);
   update_combobox();
   Timer1.Enabled:=FALSE;
   ObjKOSinitialisieren;
  // kartToKugel;
 end;
-//Alle interaktionen mit o überarbeiten
+
 
 procedure TForm1.BT_weiterClick(Sender: TObject);  //weiter bt nur sichtbar wenn sinvoll
 VAR nr:CARDINAL;hlob:TTurtleManager;
@@ -188,13 +189,12 @@ begin
 end;
 
 procedure TForm1.update_combobox();
-VAR i,anzahl:CARDINAL; turtle:TTurtle; name:string;
+VAR i,anzahl:CARDINAL; name:string;
 BEGIN
   ComboBox2.Items.Clear;
   anzahl:=(HauptForm.o.turtleListe.Count)-1;
   for i:=0 to anzahl do
       begin
-         turtle:=HauptForm.o.turtleListe[i];
          name:='Turtle'+inttostr(i);
          ComboBox2.Items.Add(name);
       end;
@@ -230,6 +230,7 @@ begin
   o:=turtelmanager;
   BT_Zurueck.Visible:=True;
   update_sichtbarkeit_bt();
+  update_combobox();
 end;
 procedure TForm1.abstand_aendern(x_abstand:REAL);
 VAR i:CARDINAL; turtlemanager:Tturtlemanager;

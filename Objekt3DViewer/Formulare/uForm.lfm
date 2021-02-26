@@ -1,11 +1,11 @@
 object Form1: TForm1
-  Left = -11
+  Left = -25
   Height = 1783
-  Top = 0
+  Top = 108
   Width = 2740
   Caption = 'L-Systeme in 3D'
-  ClientHeight = 0
-  ClientWidth = 0
+  ClientHeight = 1744
+  ClientWidth = 2740
   Color = clBtnFace
   DesignTimePPI = 192
   Font.Color = clWindowText
@@ -13,7 +13,7 @@ object Form1: TForm1
   Font.Name = 'MS Sans Serif'
   Menu = MainMenu1
   OnCreate = FormCreate
-  LCLVersion = '2.0.4.0'
+  LCLVersion = '2.0.2.0'
   object GraphikPanel: TPanel
     Left = 8
     Height = 772
@@ -467,18 +467,6 @@ object Form1: TForm1
     ParentFont = False
     TabOrder = 23
     Visible = False
-  end
-  object Label7: TLabel
-    Left = 3504
-    Height = 26
-    Top = 1120
-    Width = 64
-    Caption = 'Fokus:'
-    Font.Color = clWindowText
-    Font.Height = -22
-    Font.Name = 'MS Sans Serif'
-    ParentColor = False
-    ParentFont = False
   end
   object ComboBox2: TComboBox
     AnchorSideTop.Control = BtKameraReset

@@ -21,7 +21,6 @@ type
     BT_weiter: TButton;
     ComboBox2: TComboBox;
     Label1: TLabel;
-    Label7: TLabel;
     MainMenu1: TMainMenu;
     GraphikPanel: TPanel;
     hinzufuegen: TMenuItem;
@@ -125,10 +124,10 @@ begin
   GraphikPanel.Height:=height-50;
   GraphikPanel.Width:=width-150;
   Trackbar1.width:=width-300;
-  Trackbar1.top:=height-25;
-  BT_Zurueck.top:=height-25;
-  BT_weiter.top:=height-25;
-  Label8.Top:=height-25;
+  Trackbar1.top:=height-50;
+  BT_Zurueck.top:=height-50;
+  BT_weiter.top:=height-50;
+  Label8.Top:=height-50;
   v:=TrackBar1.Position;
   //uObjekt.objekt:=n;
   KameraInit(GraphikPanel);

@@ -22,6 +22,7 @@ type
     BT_Alle: TButton;
     BT_alle_unmarkieren: TButton;
     BT_unsichtbar_machen: TButton;
+    BT_kopieren: TButton;
     ED_abstand: TEdit;
     Label1: TLabel;
     ListView1: TListView;
@@ -30,6 +31,7 @@ type
     procedure BT_bearbeitenClick(Sender: TObject);
     procedure BT_entfernenClick(Sender: TObject);
     procedure BT_FertigClick(Sender: TObject);
+    procedure BT_kopierenClick(Sender: TObject);
     procedure BT_sichtbarkeitClick(Sender: TObject);
     procedure BT_unsichtbar_machenClick(Sender: TObject);
     procedure BT_alle_unmarkierenClick(Sender: TObject);
@@ -76,7 +78,7 @@ begin
 end;
 
 procedure TForm10.BT_updateClick(mode:CARDINAL=0);
-VAR i,anzahl:CARDINAL;str,name,sichtbarkeit,Winkel,Rek_tiefe,Zeichenart:string; turtle:TTurtle; Item1: TListItem; liste:TIntegerList;
+VAR i,anzahl:CARDINAL;str,name,sichtbarkeit,Winkel,Rek_tiefe,Zeichenart:string; turtle:TTurtle; Item1: TListItem; liste:TIntegerList;str_max:string;
 begin
   if mode=1 then liste:=gib_markierte_nr();
   ListView1.clear;
@@ -101,6 +103,8 @@ begin
            Item1.SubItems.Add(Winkel);
            Item1.SubItems.Add(Rek_tiefe);
            Item1.SubItems.Add(Zeichenart);
+           str_max:=inttostr(length(turtle.zuZeichnenderString));
+           Item1.SubItems.Add(str_max);
            //Aktuelle anzhal von Spalten 5
       end;
   if mode=1 then markiere_liste_nr(liste);
@@ -158,6 +162,26 @@ procedure TForm10.BT_FertigClick(Sender: TObject);
 begin
    Visible:=False;
    Hauptform.zeichnen;
+end;
+
+procedure TForm10.BT_kopierenClick(Sender: TObject);
+VAR turtle:Tturtle;  i:CARDINAL; liste:TIntegerlist; x_abstand:Real;
+begin
+   liste:=gib_markierte_nr();
+   turtlemanager:=Hauptform.o.copy();
+   for i := 0 to ListView1.Items.Count -1 do
+       begin
+            if ListView1.Items[i].Checked then
+            begin
+                 turtle:=hauptform.o.turtleListe[i].copy();
+                 turtlemanager.addTurtle(turtle);
+            end;
+       end;
+   Hauptform.push_neue_instanz(turtlemanager);
+   x_abstand:= strtofloat(ED_abstand.Text);
+   Hauptform.abstand_aendern(x_abstand);
+   BT_updateClick();
+   markiere_liste_nr(liste);
 end;
 
 procedure TForm10.BT_sichtbarkeitClick(Sender: TObject);

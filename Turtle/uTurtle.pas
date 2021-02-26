@@ -21,14 +21,14 @@ type TTurtle = class
 
         FName: String;
         FVisible: Boolean;
-        FMaximaleStringLaenge: Cardinal;
+        FMaximaleStringLaenge: Int64;
 
         // setter-Funktionen
         procedure setzeWinkel(const phi: Real);
         procedure setzeRekursionsTiefe(const tiefe: Cardinal);
         procedure setzeVisible(const vis: Boolean);
         procedure setzeName(const name: String);
-        procedure setzeMaximaleStringLaenge(const mxStringLaenge: Cardinal);
+        procedure setzeMaximaleStringLaenge(const mxStringLaenge: Int64);
 
         // getter-Funktionen (die normale read Routine funktioniert hier nicht)
         function gibRekursionsTiefe : Cardinal;
@@ -37,8 +37,8 @@ type TTurtle = class
         function gibZeichnerName : String;
         function gibEntwickelterString : String;
     public
-        constructor Create(gram: TGrammatik; zeichner: TZeichnerBase;MaximaleStringLaenge:CARDINAL=100000); overload;
-        constructor Create(gram: TGrammatik; zeichner: TZeichnerBase; stringEntwickler: TStringEntwickler;MaximaleStringLaenge:CARDINAL=100000); overload;
+        constructor Create(gram: TGrammatik; zeichner: TZeichnerBase;MaximaleStringLaenge:Int64=100000); overload;
+        constructor Create(gram: TGrammatik; zeichner: TZeichnerBase; stringEntwickler: TStringEntwickler;MaximaleStringLaenge:Int64=100000); overload;
         constructor Create(datei: String); overload;
         destructor Destroy; override;
 
@@ -54,7 +54,7 @@ type TTurtle = class
         //// 
         property visible: Boolean read FVisible write setzeVisible;
         property name: String read FName write setzeName;
-        property maximaleStringLaenge: Cardinal read FMaximaleStringLaenge write setzeMaximaleStringLaenge;
+        property maximaleStringLaenge: Int64 read FMaximaleStringLaenge write setzeMaximaleStringLaenge;
 
         property zuZeichnenderString: String read gibEntwickelterString;
 
@@ -77,7 +77,7 @@ implementation
 
 uses uMatrizen,dglOpenGL;
 
-constructor TTurtle.Create(gram: TGrammatik; zeichner: TZeichnerBase;MaximaleStringLaenge:CARDINAL=100000);
+constructor TTurtle.Create(gram: TGrammatik; zeichner: TZeichnerBase;MaximaleStringLaenge:Int64=100000);
 begin
     FGrammatik := gram;
     FZeichner := zeichner;
@@ -90,7 +90,7 @@ end;
 
 constructor TTurtle.Create(gram: TGrammatik; 
                    zeichner: TZeichnerBase; 
-                   stringEntwickler: TStringEntwickler;MaximaleStringLaenge:CARDINAL=100000);
+                   stringEntwickler: TStringEntwickler;MaximaleStringLaenge:Int64=100000);
 begin
     FGrammatik := gram;
     FZeichner := zeichner;
@@ -218,7 +218,7 @@ begin
     FName := name;
 end;
 
-procedure TTurtle.setzeMaximaleStringLaenge(const mxStringLaenge: Cardinal);
+procedure TTurtle.setzeMaximaleStringLaenge(const mxStringLaenge: Int64);
 begin
     FMaximaleStringLaenge := mxStringLaenge;
 end;
@@ -285,7 +285,6 @@ begin
         conf.setValue('name', UnicodeString(FName));
         conf.setValue('visible', FVisible);
         conf.setValue('Maximale Stringlaenge', FMaximaleStringLaenge);
-        
         conf.setValue('Zeichen Art', UnicodeString(FZeichner.name));
 
         conf.setValue('Zeichen Parameter/winkel', FZeichner.winkel);

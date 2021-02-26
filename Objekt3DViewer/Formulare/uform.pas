@@ -19,6 +19,7 @@ type
     BtKameraReset: TButton;
     BT_Zurueck: TButton;
     BT_weiter: TButton;
+    ComboBox2: TComboBox;
     Label1: TLabel;
     MainMenu1: TMainMenu;
     GraphikPanel: TPanel;
@@ -52,6 +53,7 @@ type
     procedure BtKameraResetClick(Sender: TObject);
     procedure BT_weiterClick(Sender: TObject);
     procedure BT_ZurueckClick(Sender: TObject);
+    procedure ComboBox2Change(Sender: TObject);
     procedure hinzufuegenClick(Sender: TObject);
     procedure bearbeitenClick(Sender: TObject);
     procedure optionenClick(Sender: TObject);
@@ -96,6 +98,7 @@ type
     v:CARDINAL;
     procedure standardturtel();
     procedure update_sichtbarkeit_bt();
+    procedure update_combobox();
   public    { Public-Deklarationen }
     o:TTurtleManager;
     max_gespeicherte_manager:CARDINAL;
@@ -111,7 +114,7 @@ var
 
 
 implementation
-uses  uAnimation,uKamera, uKamObjektiv, uMatrizen, uGrammatiken,uTurtle, uOptionen_form;
+uses  uAnimation,uKamera, uKamObjektiv, uMatrizen, uGrammatiken, uTurtle, uOptionen_form;
 {$R *.lfm}
 
 procedure TForm1.FormCreate(Sender: TObject);
@@ -120,11 +123,11 @@ begin
   height:=screen.Height-200;
   GraphikPanel.Height:=height-50;
   GraphikPanel.Width:=width-150;
-  Trackbar1.width:=width-300;
-  Trackbar1.top:=height-25;
-  BT_Zurueck.top:=height-25;
-  BT_weiter.top:=height-25;
-  Label8.Top:=height-25;
+  Trackbar1.width:=width-400;
+  Trackbar1.top:=height-50;
+  BT_Zurueck.top:=height-50;
+  BT_weiter.top:=height-50;
+  Label8.Top:=height-50;
   v:=TrackBar1.Position;
   //uObjekt.objekt:=n;
   KameraInit(GraphikPanel);
@@ -137,12 +140,14 @@ begin
   akt_z:=0;
   maximaleStringLaenge:=100000;
   standardturtel;
+  //o:=Tturtlemanager.create();
   KameraStart(uAnimation.ozeichnen);
+  update_combobox();
   Timer1.Enabled:=FALSE;
   ObjKOSinitialisieren;
  // kartToKugel;
 end;
-//Alle interaktionen mit o überarbeiten
+
 
 procedure TForm1.BT_weiterClick(Sender: TObject);  //weiter bt nur sichtbar wenn sinvoll
 VAR nr:CARDINAL;hlob:TTurtleManager;
@@ -182,6 +187,34 @@ begin
   maximaleStringLaenge:=o.turtleListe[0].maximaleStringLaenge;
   update_sichtbarkeit_bt();
 end;
+
+procedure TForm1.update_combobox();
+VAR i,anzahl:CARDINAL; name:string;
+BEGIN
+  ComboBox2.Items.Clear;
+  anzahl:=(HauptForm.o.turtleListe.Count)-1;
+  for i:=0 to anzahl do
+      begin
+         name:='Turtle'+inttostr(i);
+         ComboBox2.Items.Add(name);
+      end;
+end;
+
+procedure TForm1.ComboBox2Change(Sender: TObject);
+VAR i:CARDINAL; turtle:TTurtle; x:Real;
+begin
+  if ComboBox2.ItemIndex <> -1 then
+  Begin
+       i:=ComboBox2.ItemIndex ;
+       turtle:=HauptForm.o.turtleListe[i];
+       x:=turtle.StartPunkt.x;
+     //  y:=turtle.StartPunkt.y;
+     //  z:=turtle.StartPunkt.z;
+       BtKameraResetClick(self);
+       KamInEigenKOSVerschieben(x,0,0);
+  end;
+end;
+
 procedure TForm1.push_neue_instanz(turtelmanager:TTurtleManager);
 VAR nr:CARDINAL;
 begin
@@ -197,6 +230,7 @@ begin
   o:=turtelmanager;
   BT_Zurueck.Visible:=True;
   update_sichtbarkeit_bt();
+  update_combobox();
 end;
 procedure TForm1.abstand_aendern(x_abstand:REAL);
 VAR i:CARDINAL; turtlemanager:Tturtlemanager;

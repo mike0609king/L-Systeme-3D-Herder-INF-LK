@@ -36,12 +36,12 @@ uses uForm;
 { TTOptionen }
 
 procedure TTOptionen.BT_fertigClick(Sender: TObject);
-VAR maximaleStringLaenge:CARDINAL;turtlemanager:TTurtlemanager;i:CARDINAL;
+VAR maximaleStringLaenge:QWord;turtlemanager:TTurtlemanager;i:CARDINAL;
 begin
   maximaleStringLaenge:=strtoint(ED_stringlaenge.text); //Aufpassen mit der Größe
-  if maximaleStringLaenge > 9999999 then
+  if maximaleStringLaenge > 18446744073709 then
   begin
-     SHOWMESSAGE('Die maximale Stringlänge darf maximal 9.999.999 sein.');
+     SHOWMESSAGE('Die maximale Stringlänge darf maximal 1.8446.744.073.709 sein.');
      BT_zuruecksetzenClick(self);
   end
   else
@@ -61,6 +61,7 @@ begin
            turtlemanager.turtleListe[i].maximaleStringLaenge:=maximaleStringLaenge;
            turtlemanager.turtleListe[i].zeichnen();
          end;
+       Hauptform.push_neue_instanz(turtlemanager);
     end;
     Visible:=False;
     Hauptform.zeichnen;

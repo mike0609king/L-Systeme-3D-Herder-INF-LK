@@ -29,7 +29,8 @@ type TGrammatik = class
         destructor Destroy; override;
         procedure addRegel(rechts: char; links: String; zufaelligkeit: Real); overload;
         procedure addRegel(rechts: char; links: String); overload;
-        procedure RegelTausch(links: string; rechts:char); overload;
+        procedure RegelTauschLinks(links: string); overload;
+        procedure RegelTauschRechts(rechts:char); overload;
         function copy : TGrammatik;
 end;
 
@@ -66,7 +67,8 @@ var tmp_regel: TRegelProduktionsseite;
 begin
     if links[2] = '(' then
     begin
-        RegelTausch(links,rechts)
+        RegelTauschLinks(links);
+        RegelTauschRechts(rechts);
         
     end;
     tmp_regel := TRegelProduktionsseite.Create;
@@ -80,40 +82,53 @@ begin
     end;
 end;
 
-procedure TGrammatik.RegelTausch(links: string; rechts:char);
-var letterAsc:INTEGER;
-    letter:string;
+procedure TGrammatik.RegelTauschLinks(links: string);
+var parameterCount,letterAsc:INTEGER;
+    pter:CARDINAL;
+    letter,smlLetter:string;
 begin
-    procedure stringtausch(parameterCount);
+    procedure stringtausch;
     begin
-        letter:=IntToString(parameterCount)+Chr(letterAsc);
+        letter:=IntToString(parameterCount)+smlLetter;
         links[pter]:=letter;
     end;
 
-    procedure tauschLinks;
-    var parameterCount:INTEGER;
-        pter:CARDINAL;
-    begin
-        pter:=3;
-        letterAsc:=Ord(links[1]);
-        letterAsc:=letterAsc+32;
+    letter:=''
+    pter:=3;
+    letterAsc:=Ord(links[1]);
+    letterAsc:=letterAsc+32;
+    smlLetter:=Chr(letterAsc);
     for parameterCount:=1 to 26 do
     begin
-        stringtausch(parameterCount);
+        stringtausch(parameterCount, letter);
         pter:=pter+2;
         if links[pter]=';' then pter:=pter+1
         else break;
     end;
+end;
 
-    procedure tauschRechts;
-    var parameterCount:INTEGER;
-        pter:CARDINAL;
+procedure TGrammatik.RegelTauschRechts(rechts:char);
+var ind,letterAsc:INTEGER;
+    pter:CARDINAL;
+    letter,element:string;
+    list:= array[1..27] of string;
+begin
+    pter:=4;
+    letterAsc:=Ord(rechts[1]);
+    letterAsc:=letterAsc+32;
+    letter:=Chr(letterAsc);
+    list[1]:=rechts[3];
+    for ind:=2 to 27 do
     begin
-
+        if rechts[pter]=';' then list[ind]:=rechts[pter+1];
+        else break;
+        pter:=pter+2;
     end;
 
-    tauschLinks;
-    tauschRechts;
+    for element in list do 
+    begin
+        while pos(element,list)>0 do rechts[pos(element,list)]=IntToString(index(element))+letter;
+    end;
 end;
 
 procedure TGrammatik.addRegel(rechts: char; links: String);

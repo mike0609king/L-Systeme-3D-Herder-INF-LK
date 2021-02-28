@@ -87,20 +87,14 @@ var parameterCount,letterAsc:INTEGER;
     pter:CARDINAL;
     letter,smlLetter:string;
 begin
-    procedure stringtausch;
-    begin
-        letter:=IntToString(parameterCount)+smlLetter;
-        links[pter]:=letter;
-    end;
-
-    letter:=''
     pter:=3;
     letterAsc:=Ord(links[1]);
     letterAsc:=letterAsc+32;
     smlLetter:=Chr(letterAsc);
+    
     for parameterCount:=1 to 26 do
     begin
-        stringtausch(parameterCount, letter);
+        letter:=IntToString(parameterCount)+smlLetter
         pter:=pter+2;
         if links[pter]=';' then pter:=pter+1
         else break;
@@ -127,7 +121,7 @@ begin
 
     for element in list do 
     begin
-        while pos(element,list)>0 do rechts[pos(element,list)]=IntToString(index(element))+letter;
+        while pos(element,rechts)>0 do rechts[pos(element,rechts)]=IntToString(index(element))+letter;
     end;
 end;
 

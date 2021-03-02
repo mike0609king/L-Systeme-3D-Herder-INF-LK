@@ -153,7 +153,7 @@ While n<= Memo1.Lines.Count-1 do
            nr:=gib_markierte_nr();
            turtlemanager:=Hauptform.o.copy();
            //erstellen der Turtels
-           for i:=0 to anzahl do
+           for i:=1 to anzahl do
              begin
              zeichenPara.setzeStartPunkt(Hauptform.akt_x,Hauptform.akt_y,Hauptform.akt_z);
              Turtle:=TTurtle.Create(gram,zeichnerInit.initialisiere(zeichnerInit.gibZeichnerListe[nr],zeichenPara));
@@ -381,7 +381,6 @@ procedure TuGrammatiken.MenuItem3Click(Sender: TObject); //Turtle speichern
     zeichenPara.rekursionsTiefe:= strtoint(Edit2.Text);
     zeichenPara.winkel:=strtofloat(Edit3.Text);
     NameGrammatik:=Edit4.Text;
-    anzahl:= strtoint(Edit1.Text)-1;
     nr:=gib_markierte_nr();
          begin
            zeichenPara.setzeStartPunkt(Hauptform.akt_x,Hauptform.akt_y,Hauptform.akt_z);
@@ -392,6 +391,7 @@ procedure TuGrammatiken.MenuItem3Click(Sender: TObject); //Turtle speichern
        end
   else
   begin
+
   end;
   end;
 end.

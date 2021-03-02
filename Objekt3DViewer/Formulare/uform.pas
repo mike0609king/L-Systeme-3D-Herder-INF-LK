@@ -7,7 +7,7 @@ interface
 uses
   Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs,ExtCtrls, StdCtrls, ComCtrls, Menus, LMessages, Spin,uTurtleManager,
-  uGrammatik, uBeleuchtung, uZeichnerBase, uZeichnerGruenesBlatt,uEditor_Grammatiken; {uGrammatiken}
+  uGrammatik, uBeleuchtung, uZeichnerBase, uZeichnerGruenesBlatt,uEditor_Grammatiken, LCLType; {uGrammatiken}
 type
 
   { TForm1 }
@@ -50,7 +50,23 @@ type
     BtRunterKreis: TButton;
     TrackBar1: TTrackBar;
     Label8: TLabel;
+    procedure BtHochKreisKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure BtHochKreisKeyUp(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure BtLinksKreisKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure BtLinksKreisKeyUp(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure BtRechtsKreisKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure BtRechtsKreisKeyUp(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure BtRunterKreisKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
     procedure BtKameraResetClick(Sender: TObject);
+    procedure BtRunterKreisKeyUp(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
     procedure BT_weiterClick(Sender: TObject);
     procedure BT_ZurueckClick(Sender: TObject);
     procedure ComboBox2Change(Sender: TObject);
@@ -144,9 +160,76 @@ begin
   update_combobox();
   Timer1.Enabled:=FALSE;
   ObjKOSinitialisieren;
+  KeyPreview:= True;
  // kartToKugel;
 end;
 //Alle interaktionen mit o überarbeiten
+
+procedure TForm1.BtRunterKreisKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  if (Key = VK_S) then
+  begin
+   aktiv:=KameraGrossKreisXRotieren;
+   r:=0.1*v;
+   Timer1.Enabled:=True;
+   Key:=0;
+  end;
+end;
+
+procedure TForm1.BtHochKreisKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  if (Key = VK_W) then
+  begin
+   aktiv:=KameraGrossKreisXRotieren;
+   r:=-0.1*v;
+   Timer1.Enabled:=True;
+   Key:=0;
+  end;
+end;
+
+procedure TForm1.BtHochKreisKeyUp(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  Timer1.Enabled:=FALSE;
+end;
+
+procedure TForm1.BtLinksKreisKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  if (Key = VK_A) then
+  begin
+     aktiv:=KameraGrossKreisYRotieren;
+     r:=-0.1*v;
+     Timer1.Enabled:=True;
+     Key:=0;
+  end;
+end;
+
+procedure TForm1.BtLinksKreisKeyUp(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  Timer1.Enabled:=FALSE;
+end;
+
+procedure TForm1.BtRechtsKreisKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  if (Key = VK_D) then
+  begin
+     aktiv:=KameraGrossKreisYRotieren;
+     r:=0.1*v;
+     Timer1.Enabled:=True;
+     Key:=0;
+  end;
+end;
+
+procedure TForm1.BtRechtsKreisKeyUp(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  Timer1.Enabled:=FALSE;
+end;
 
 procedure TForm1.BT_weiterClick(Sender: TObject);  //weiter bt nur sichtbar wenn sinvoll
 VAR nr:CARDINAL;hlob:TTurtleManager;
@@ -376,6 +459,12 @@ end;
 procedure TForm1.BtKameraResetClick(Sender: TObject);
 begin
   KameraInit(GraphikPanel);
+end;
+
+procedure TForm1.BtRunterKreisKeyUp(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  Timer1.Enabled:=FALSE;
 end;
 
 

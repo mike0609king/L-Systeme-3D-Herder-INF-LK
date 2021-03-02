@@ -1,7 +1,7 @@
 object Form1: TForm1
-  Left = -25
+  Left = 742
   Height = 1783
-  Top = 108
+  Top = 180
   Width = 2740
   Caption = 'L-Systeme in 3D'
   ClientHeight = 1744
@@ -13,7 +13,7 @@ object Form1: TForm1
   Font.Name = 'MS Sans Serif'
   Menu = MainMenu1
   OnCreate = FormCreate
-  LCLVersion = '2.0.2.0'
+  LCLVersion = '2.0.4.0'
   object GraphikPanel: TPanel
     Left = 8
     Height = 772
@@ -353,6 +353,8 @@ object Form1: TForm1
     Font.Color = clWindowText
     Font.Height = -22
     Font.Name = 'MS Sans Serif'
+    OnKeyDown = BtLinksKreisKeyDown
+    OnKeyUp = BtLinksKreisKeyUp
     OnMouseDown = Button16OnMouseDown
     OnMouseUp = Button2OnMouseUp
     ParentFont = False
@@ -368,6 +370,8 @@ object Form1: TForm1
     Font.Color = clWindowText
     Font.Height = -22
     Font.Name = 'MS Sans Serif'
+    OnKeyDown = BtRechtsKreisKeyDown
+    OnKeyUp = BtRechtsKreisKeyUp
     OnMouseDown = Button17OnMouseDown
     OnMouseUp = Button2OnMouseUp
     ParentFont = False
@@ -383,6 +387,8 @@ object Form1: TForm1
     Font.Color = clWindowText
     Font.Height = -22
     Font.Name = 'MS Sans Serif'
+    OnKeyDown = BtHochKreisKeyDown
+    OnKeyUp = BtHochKreisKeyUp
     OnMouseDown = Button18OnMouseDown
     OnMouseUp = Button2OnMouseUp
     ParentFont = False
@@ -398,6 +404,8 @@ object Form1: TForm1
     Font.Color = clWindowText
     Font.Height = -22
     Font.Name = 'MS Sans Serif'
+    OnKeyDown = BtRunterKreisKeyDown
+    OnKeyUp = BtRunterKreisKeyUp
     OnMouseDown = Button19OnMouseDown
     OnMouseUp = Button2OnMouseUp
     ParentFont = False

@@ -96,6 +96,7 @@ begin
     begin
         letter:=IntToString(parameterCount)+smlLetter
         pter:=pter+2;
+        links[pter]:=letter;
         if links[pter]=';' then pter:=pter+1
         else break;
     end;

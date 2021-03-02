@@ -70,6 +70,8 @@ type
     procedure BT_weiterClick(Sender: TObject);
     procedure BT_ZurueckClick(Sender: TObject);
     procedure ComboBox2Change(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure FormKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure hinzufuegenClick(Sender: TObject);
     procedure bearbeitenClick(Sender: TObject);
     procedure optionenClick(Sender: TObject);
@@ -296,6 +298,44 @@ begin
        BtKameraResetClick(self);
        KamInEigenKOSVerschieben(x,0,0);
   end;
+end;
+
+procedure TForm1.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState
+  );
+begin
+  if (Key = VK_S) then
+  begin
+   aktiv:=KameraGrossKreisXRotieren;
+   r:=0.1*v;
+   Timer1.Enabled:=True;
+   Key:=0;
+  end;
+  if (Key = VK_A) then
+  begin
+     aktiv:=KameraGrossKreisYRotieren;
+     r:=-0.1*v;
+     Timer1.Enabled:=True;
+     Key:=0;
+  end;
+  if (Key = VK_D) then
+  begin
+     aktiv:=KameraGrossKreisYRotieren;
+     r:=0.1*v;
+     Timer1.Enabled:=True;
+     Key:=0;
+  end;
+  if (Key = VK_W) then
+  begin
+   aktiv:=KameraGrossKreisXRotieren;
+   r:=-0.1*v;
+   Timer1.Enabled:=True;
+   Key:=0;
+  end;
+end;
+
+procedure TForm1.FormKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+  Timer1.Enabled:=FALSE;
 end;
 
 procedure TForm1.push_neue_instanz(turtelmanager:TTurtleManager);

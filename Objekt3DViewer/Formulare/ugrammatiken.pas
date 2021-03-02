@@ -155,15 +155,23 @@ While n<= Memo1.Lines.Count-1 do
            //erstellen der Turtels
            for i:=1 to anzahl do
              begin
-             zeichenPara.setzeStartPunkt(Hauptform.akt_x,Hauptform.akt_y,Hauptform.akt_z);
-             Turtle:=TTurtle.Create(gram,zeichnerInit.initialisiere(zeichnerInit.gibZeichnerListe[nr],zeichenPara));
-             Turtle.name:=NameGrammatik;
-             Hauptform.update_startkoords();
-             turtlemanager.addTurtle(Turtle);
+               Hauptform.update_startkoords();
+               zeichenPara.setzeStartPunkt(Hauptform.akt_x,Hauptform.akt_y,Hauptform.akt_z);
+               Turtle:=TTurtle.Create(gram,zeichnerInit.initialisiere(zeichnerInit.gibZeichnerListe[nr],zeichenPara));
+               Turtle.name:=NameGrammatik;
+               turtlemanager.addTurtle(Turtle);
              end;
-           Hauptform.push_neue_instanz(turtlemanager);
-           Visible:=False;
-           Hauptform.zeichnen();
+           if turtle.zeichnen() then
+           begin
+             Hauptform.push_neue_instanz(turtlemanager);
+             Hauptform.ordnen();
+             Visible:=False;
+             Hauptform.zeichnen();
+           end
+           else
+           begin
+             SHOWMESSAGE('Der gezeichnete Baum ist zu groß. In den Optionen kann die maximale Stringlänge geändert werden. ');
+           end;
          end;
          end
          else SHOWMESSAGE('Du hast die Maximale Größe des Winkels von 99999999 überschritten!');

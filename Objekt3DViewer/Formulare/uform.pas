@@ -72,6 +72,7 @@ type
     procedure ComboBox2Change(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure FormKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure FormShow(Sender: TObject);
     procedure hinzufuegenClick(Sender: TObject);
     procedure bearbeitenClick(Sender: TObject);
     procedure optionenClick(Sender: TObject);
@@ -125,6 +126,7 @@ type
     procedure update_startkoords();
     procedure abstand_aendern(x_abstand:REAL);
     procedure push_neue_instanz(turtelmanager:TTurtleManager);
+    procedure ordnen();
   end;
 
 var
@@ -146,6 +148,7 @@ begin
   BT_Zurueck.top:=height-50;
   BT_weiter.top:=height-50;
   Label8.Top:=height-50;
+  TrackBar1.Position:=25;
   v:=TrackBar1.Position;
   //uObjekt.objekt:=n;
   KameraInit(GraphikPanel);
@@ -166,7 +169,15 @@ begin
   KeyPreview:= True;
  // kartToKugel;
 end;
+procedure TForm1.FormShow(Sender: TObject);
+begin
+  WindowState := wsFullScreen;
+end;
 
+procedure TForm1.ordnen();
+begin
+  abstand_aendern(abstand_x);
+end;
 
 procedure TForm1.BtRunterKreisKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
@@ -251,7 +262,6 @@ begin
   update_sichtbarkeit_bt();
 end;
 procedure TForm1.update_sichtbarkeit_bt();
-VAR nr:CARDINAL;
 begin
    if liste_z.Count=0 then BT_Zurueck.Visible:=False
    else BT_Zurueck.Visible:=True;
@@ -384,7 +394,6 @@ begin
 end;
 procedure TForm1.standardturtel();
 VAR //o: TTurtleManager;
-    h:TTurtleManager;
     turtle: TTurtle;
     gram: TGrammatik;
     zeichenPara: TZeichenParameter;

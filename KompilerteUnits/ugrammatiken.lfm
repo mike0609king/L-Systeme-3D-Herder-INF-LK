@@ -11,7 +11,7 @@ object uGrammatiken: TuGrammatiken
   Menu = MainMenu1
   OnCreate = FormCreate
   ParentDoubleBuffered = False
-  LCLVersion = '2.0.4.0'
+  LCLVersion = '2.0.2.0'
   object Memo1: TMemo
     Left = 32
     Height = 696

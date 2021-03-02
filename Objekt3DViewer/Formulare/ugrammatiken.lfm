@@ -12,6 +12,7 @@ object uGrammatiken: TuGrammatiken
   OnCreate = FormCreate
   ParentDoubleBuffered = False
   LCLVersion = '2.0.2.0'
+  WindowState = wsMaximized
   object Memo1: TMemo
     Left = 32
     Height = 696
@@ -88,6 +89,7 @@ object uGrammatiken: TuGrammatiken
     Height = 40
     Top = 176
     Width = 264
+    NumbersOnly = True
     OnChange = Edit3Change
     ParentFont = False
     TabOrder = 4

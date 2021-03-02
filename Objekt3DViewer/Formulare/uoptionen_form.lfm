@@ -1,43 +1,51 @@
 object TOptionen: TTOptionen
   Left = 1980
-  Height = 299
+  Height = 598
   Top = 68
-  Width = 416
+  Width = 832
   Caption = 'Optionen'
-  ClientHeight = 0
-  ClientWidth = 0
-  LCLVersion = '2.0.0.4'
+  ClientHeight = 598
+  ClientWidth = 832
+  DesignTimePPI = 192
+  OnShow = FormShow
+  Position = poScreenCenter
+  LCLVersion = '2.0.2.0'
+  Scaled = False
   object BT_fertig: TButton
-    Left = 264
-    Height = 25
-    Top = 232
-    Width = 75
+    Left = 528
+    Height = 50
+    Top = 464
+    Width = 150
     Caption = 'Bestätigen '
     OnClick = BT_fertigClick
+    ParentFont = False
     TabOrder = 0
   end
   object ED_stringlaenge: TEdit
-    Left = 216
-    Height = 23
-    Top = 81
-    Width = 80
+    Left = 432
+    Height = 40
+    Top = 162
+    Width = 160
+    ParentFont = False
     TabOrder = 1
   end
   object Label1: TLabel
-    Left = 24
-    Height = 15
-    Top = 89
-    Width = 172
+    Left = 48
+    Height = 32
+    Top = 178
+    Width = 348
     Caption = 'Maximale Stringlänge pro Turtle:'
     ParentColor = False
+    ParentFont = False
   end
   object BT_zuruecksetzen: TButton
-    Left = 64
-    Height = 25
-    Top = 232
-    Width = 147
+    Left = 128
+    Height = 50
+    Top = 464
+    Width = 294
     Caption = 'Änderungen zurücksetzen'
     OnClick = BT_zuruecksetzenClick
+    ParentFont = False
     TabOrder = 2
   end
 end

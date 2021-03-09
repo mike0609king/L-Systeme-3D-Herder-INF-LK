@@ -18,7 +18,7 @@ end;
 
 type TRegelProduktionsseitenListe = TFPGList<TRegelProduktionsseite>;
 
-type TRegelDictionary = TFPGMap<Char,TRegelProduktionsseitenListe>;
+type TRegelDictionary = TFPGMap<String,TRegelProduktionsseitenListe>;
 
 type TGrammatik = class
     public
@@ -27,10 +27,10 @@ type TGrammatik = class
 
         constructor Create;
         destructor Destroy; override;
-        procedure addRegel(rechts: char; links: String; zufaelligkeit: Real); overload;
-        procedure addRegel(rechts: char; links: String); overload;
-        procedure RegelTauschLinks(links: string); overload;
-        procedure RegelTauschRechts(rechts:char); overload;
+        procedure addRegel(links: String; rechts: String; zufaelligkeit: Real); overload;
+        procedure addRegel(links: String; rechts: String); overload;
+        function RegelTauschLinks(links: String) : String; overload;
+        function RegelTauschRechts(links: String; rechts: String) : String; overload;
         function copy : TGrammatik;
 end;
 
@@ -61,74 +61,82 @@ begin
     FreeAndNil(regeln);
 end;
 
-procedure TGrammatik.addRegel(rechts: char; links: String; zufaelligkeit: Real);
+procedure TGrammatik.addRegel(links: String; rechts: String; zufaelligkeit: Real);
 var tmp_regel: TRegelProduktionsseite;
     data: TRegelProduktionsseitenListe;
+    tmp_links: String;
 begin
     if links[2] = '(' then
     begin
-        RegelTauschLinks(links);
-        RegelTauschRechts(rechts);
-        
+        tmp_links := links;
+        writeLn(links);
+        writeLn(rechts);
+        links := RegelTauschLinks(links);
+        rechts := RegelTauschRechts(tmp_links,rechts);
+        writeLn(links);
+        writeLn(rechts);
     end;
     tmp_regel := TRegelProduktionsseite.Create;
-    tmp_regel.produktion := links;
+    tmp_regel.produktion := rechts;
     tmp_regel.zufaelligkeit := zufaelligkeit;
-    if regeln.TryGetData(rechts,data) then regeln[rechts].add(tmp_regel)
+    if regeln.TryGetData(links,data) then regeln[links].add(tmp_regel)
     else
     begin
-        regeln[rechts] := TRegelProduktionsseitenListe.Create;
-        regeln[rechts].add(tmp_regel);
+        regeln[links] := TRegelProduktionsseitenListe.Create;
+        regeln[links].add(tmp_regel);
     end;
 end;
 
-procedure TGrammatik.RegelTauschLinks(links: string);
+function TGrammatik.RegelTauschLinks(links: string) : String;
 var parameterCount,letterAsc:INTEGER;
     pter:CARDINAL;
     letter,smlLetter:string;
+begin
+    result := ''; 
+    result += links[1]; result += links[2];
+    pter:=3;
+    letterAsc:=Ord(links[1]);
+    letterAsc:=letterAsc+32;
+    smlLetter:=Chr(letterAsc);
+    for parameterCount:=1 to 27 do
+    begin
+        letter := IntToStr(parameterCount)+smlLetter;
+        result := result + letter;
+        if links[pter+1]=';' then 
+        begin
+            result := result + ';';
+            pter:=pter+2;
+        end
+        else
+        begin
+            result := result + ')';
+            break;
+        end
+    end;
+end;
+
+function TGrammatik.RegelTauschRechts(links: String; rechts: String) : String;
+var parameterCount,letterAsc:INTEGER;
+    pter:CARDINAL;
+    toReplace,letter,smlLetter:string;
 begin
     pter:=3;
     letterAsc:=Ord(links[1]);
     letterAsc:=letterAsc+32;
     smlLetter:=Chr(letterAsc);
-    
-    for parameterCount:=1 to 26 do
+    for parameterCount:=1 to 27 do
     begin
-        letter:=IntToString(parameterCount)+smlLetter
-        pter:=pter+2;
-        links[pter]:=letter;
-        if links[pter]=';' then pter:=pter+1
+        letter := IntToStr(parameterCount) + smlLetter;
+        rechts := StringReplace(rechts,links[pter],letter,[rfReplaceAll]);
+        if links[pter+1]=';' then pter:=pter+2
         else break;
     end;
+    result := rechts;
 end;
 
-procedure TGrammatik.RegelTauschRechts(rechts:char);
-var ind,letterAsc:INTEGER;
-    pter:CARDINAL;
-    letter,element:string;
-    list:= array[1..27] of string;
+procedure TGrammatik.addRegel(links: String; rechts: String);
 begin
-    pter:=4;
-    letterAsc:=Ord(rechts[1]);
-    letterAsc:=letterAsc+32;
-    letter:=Chr(letterAsc);
-    list[1]:=rechts[3];
-    for ind:=2 to 27 do
-    begin
-        if rechts[pter]=';' then list[ind]:=rechts[pter+1];
-        else break;
-        pter:=pter+2;
-    end;
-
-    for element in list do 
-    begin
-        while pos(element,rechts)>0 do rechts[pos(element,rechts)]=IntToString(index(element))+letter;
-    end;
-end;
-
-procedure TGrammatik.addRegel(rechts: char; links: String);
-begin
-    addRegel(rechts,links,100);
+    addRegel(links,rechts,100);
 end;
 
 function TGrammatik.copy : TGrammatik;
@@ -152,4 +160,5 @@ begin
 end;
 
 end.
+
 

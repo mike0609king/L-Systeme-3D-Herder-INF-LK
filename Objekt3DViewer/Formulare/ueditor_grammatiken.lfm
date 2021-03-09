@@ -1,14 +1,15 @@
 object Form10: TForm10
-  Left = 380
-  Height = 960
+  Left = 316
+  Height = 812
   Top = 440
-  Width = 2288
+  Width = 1235
   Caption = 'Grammatik_Editor'
-  ClientHeight = 960
-  ClientWidth = 2288
+  ClientHeight = 0
+  ClientWidth = 0
   DesignTimePPI = 192
   OnCreate = FormCreate
   LCLVersion = '2.0.2.0'
+  Scaled = False
   object BT_entfernen: TButton
     Left = 640
     Height = 50
@@ -110,33 +111,39 @@ object Form10: TForm10
   end
   object ListView1: TListView
     Left = 118
-    Height = 158
+    Height = 304
     Top = 16
-    Width = 709
+    Width = 1029
     Checkboxes = True
     Columns = <    
       item
-        Width = 118
+        AutoSize = True
+        Width = 0
       end    
       item
+        AutoSize = True
         Caption = 'Turtlenummer'
-        Width = 182
+        Width = 185
       end    
       item
+        AutoSize = True
         Caption = 'Grammatikname'
         Width = 208
       end    
       item
+        AutoSize = True
         Caption = 'Sichtbarkeit'
-        Width = 154
+        Width = 157
       end    
       item
+        AutoSize = True
         Caption = 'Winkel'
-        Width = 102
+        Width = 105
       end    
       item
+        AutoSize = True
         Caption = 'Rekursionstiefe'
-        Width = 190
+        Width = 195
       end    
       item
         AutoSize = True
@@ -144,8 +151,9 @@ object Form10: TForm10
         Width = 145
       end    
       item
+        AutoSize = True
         Caption = 'Aktuelle Stringlänge'
-        Width = 100
+        Width = 248
       end>
     ParentFont = False
     TabOrder = 9

@@ -443,19 +443,22 @@ begin
 end;
 procedure TForm1.hinzufuegenClick(Sender: TObject);
 begin
-   aGrammatiken.Show;
+  if aGrammatiken.WindowState=wsMinimized then aGrammatiken.WindowState:=wsMaximized
+  else aGrammatiken.Show;
 end;
 
 procedure TForm1.bearbeitenClick(Sender: TObject);
 begin
-   EditorForm.BT_updateClick();
-   EditorForm.Show;
+  EditorForm.BT_updateClick();
+  if EditorForm.WindowState=wsMinimized then EditorForm.WindowState:=wsNormal
+  else EditorForm.Show;
 end;
 
 procedure TForm1.optionenClick(Sender: TObject);
 begin
-   Optionen_Form.Show;
-   Optionen_Form.update_bt();
+  Optionen_Form.update_bt();
+  if Optionen_Form.WindowState=wsMinimized then Optionen_Form.WindowState:=wsNormal
+  else Optionen_Form.Show;
 end;
 
 procedure TForm1.BtPauseClick(Sender: TObject);

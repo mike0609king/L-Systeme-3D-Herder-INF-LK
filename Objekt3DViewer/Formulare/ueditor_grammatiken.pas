@@ -59,7 +59,6 @@ procedure TForm10.FormCreate(Sender: TObject);
 begin
   //CheckListBox1:=TCheckListBox.Create();
 
-
 end;
 procedure TForm10.UpDown1Click(Sender: TObject; Button: TUDBtnType);
 VAR i:REAL;
@@ -107,6 +106,7 @@ begin
            Item1.SubItems.Add(str_max);
            //Aktuelle anzhal von Spalten 5
       end;
+  //for i:=0 to 7 do ListView1.columns[1].Autosize:=True;
   if mode=1 then markiere_liste_nr(liste);
 end;
 

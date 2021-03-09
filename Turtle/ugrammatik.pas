@@ -31,6 +31,7 @@ type TGrammatik = class
         procedure addRegel(links: String; rechts: String); overload;
         function RegelTauschLinks(links: String) : String; overload;
         function RegelTauschRechts(links: String; rechts: String) : String; overload;
+        //function setzeAxiom() : String overload;
         function copy : TGrammatik;
 end;
 
@@ -87,6 +88,12 @@ begin
     end;
 end;
 
+function TGrammatik.setzeAxiom() : String;
+var
+begin
+
+end;
+
 function TGrammatik.RegelTauschLinks(links: string) : String;
 var parameterCount,letterAsc:INTEGER;
     pter:CARDINAL;
@@ -116,6 +123,7 @@ begin
     end;
 end;
 
+
 function TGrammatik.RegelTauschRechts(links: String; rechts: String) : String;
 var parameterCount,letterAsc:INTEGER;
     pter:CARDINAL;
@@ -137,7 +145,7 @@ end;
 
 procedure TGrammatik.addRegel(links: String; rechts: String);
 begin
-    addRegel(links,rechts,100);
+        addRegel(links,rechts,100);
 end;
 
 function TGrammatik.copy : TGrammatik;
@@ -161,5 +169,4 @@ begin
 end;
 
 end.
-
 

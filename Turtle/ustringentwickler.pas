@@ -19,7 +19,7 @@ type TStringEntwickler = class
         { Rueckgabe: Gibt zurueck, ob dieser Buchstabe ueberhaupt existiert und dem nach ersetzt
           werden kann. Wenn false zurueckgegeben wurde, so kann dieser string ueberhaupt nicht
           ersetze werden. Demnach steht auch kein sinvoller wert in der Variable ret.}
-        function gibEinzusetzendenString(c: char; var ret: String) : Boolean;
+        function gibEinzusetzendenString(c: String; var ret: String) : Boolean;
 
         { Aufgabe: Die Zufaelligkeitsraeume werden als Cardinal gespeichert. Hierbei wird
           der Fliesskommawert ab dem log_10(maximalerZufallsraum)-2 ten Wert verworfen. Wir nehmen 
@@ -72,7 +72,7 @@ begin
     result := trunc(wert * (maximalerZufallsraum div 100));
 end;
 
-function TStringEntwickler.gibEinzusetzendenString(c: char; var ret: String) : Boolean;
+function TStringEntwickler.gibEinzusetzendenString(c: String; var ret: String) : Boolean;
 var data: TRegelProduktionsseitenListe;
     prefix: TFPGList<Cardinal>;
     i: Cardinal;

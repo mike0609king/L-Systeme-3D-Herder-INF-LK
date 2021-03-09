@@ -80,7 +80,7 @@ var i,n,nr,anzahl:CARDINAL;
     gram:TGrammatik;R,L,NameGrammatik:String;
     W:REAL;
     g:String;
-    Lc:Char;
+    //Lc:Char;
     k,c:String;
     Turtle:TTurtle;zeichenPara: TZeichenParameter;
     p,s,q: Integer; zeichnerInit:TzeichnerInit;
@@ -338,7 +338,7 @@ end;
 procedure TuGrammatiken.MenuItem3Click(Sender: TObject); //Turtle speichern
   var turtle: TTurtle;
       n,nr,anzahl:CARDINAL;
-      Lc:Char;
+      //Lc:Char;
       gram:TGrammatik;R,L,NameGrammatik:String;
       W:REAL;
       zeichenPara: TZeichenParameter;

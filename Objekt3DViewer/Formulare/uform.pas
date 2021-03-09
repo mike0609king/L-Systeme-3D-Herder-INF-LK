@@ -315,29 +315,43 @@ procedure TForm1.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState
 begin
   if (Key = VK_S) then
   begin
-   aktiv:=KameraGrossKreisXRotieren;
-   r:=0.1*v;
+   aktiv:=KameraZVersch;
+   r:=0.01*v;
    Timer1.Enabled:=True;
    Key:=0;
   end;
   if (Key = VK_A) then
   begin
-     aktiv:=KameraGrossKreisYRotieren;
-     r:=-0.1*v;
+     aktiv:=KameraXVersch;
+     r:=-0.01*v;
      Timer1.Enabled:=True;
      Key:=0;
   end;
   if (Key = VK_D) then
   begin
-     aktiv:=KameraGrossKreisYRotieren;
-     r:=0.1*v;
+     aktiv:=KameraXVersch;
+     r:=0.01*v;
      Timer1.Enabled:=True;
      Key:=0;
   end;
   if (Key = VK_W) then
   begin
-   aktiv:=KameraGrossKreisXRotieren;
-   r:=-0.1*v;
+   aktiv:=KameraZVersch;
+   r:=-0.01*v;
+   Timer1.Enabled:=True;
+   Key:=0;
+  end;
+  if (Key = VK_Y) then
+  begin
+   aktiv:=KameraYVersch;
+   r:=0.01*v;
+   Timer1.Enabled:=True;
+   Key:=0;
+  end;
+  if (Key = VK_X) then
+  begin
+   aktiv:=KameraYVersch;
+   r:=-0.01*v;
    Timer1.Enabled:=True;
    Key:=0;
   end;

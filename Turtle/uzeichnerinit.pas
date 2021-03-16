@@ -47,7 +47,6 @@ begin
     );
 end;
 
-//?
 destructor TZeichnerInit.Destroy;
 begin
   FreeAndNil(FVersandTabelleZeichner);

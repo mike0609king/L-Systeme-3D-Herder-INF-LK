@@ -20,6 +20,8 @@ type TRegelProduktionsseitenListe = TFPGList<TRegelProduktionsseite>;
 
 type TRegelDictionary = TFPGMap<String,TRegelProduktionsseitenListe>;
 
+type TMap = specialize TFPGMap<String, Integer>;
+
 type TGrammatik = class
     public
         axiom: String;
@@ -31,7 +33,7 @@ type TGrammatik = class
         procedure addRegel(links: String; rechts: String); overload;
         function RegelTauschLinks(links: String) : String; overload;
         function RegelTauschRechts(links: String; rechts: String) : String; overload;
-        //function setzeAxiom() : String overload;
+        procedure setzeAxiom(); overload;
         function copy : TGrammatik;
 end;
 
@@ -55,7 +57,6 @@ begin
     regeln := TRegelDictionary.Create;
 end;
 
-// review !!!!!!!!!!!!!!!!!!!!!!!!!!
 destructor TGrammatik.Destroy;
 begin
     FreeAndNil(axiom);
@@ -88,10 +89,23 @@ begin
     end;
 end;
 
-function TGrammatik.setzeAxiom() : String;
-var
+procedure TGrammatik.setzeAxiom();
+var parameterCount,pter:Cardinal;
+    insertLetter,letter:string;
+    map:TMap;
+    element:Char;
 begin
+    pter:=1;
+    for element in axiom do
+    begin
+        
+        for parameterCount:=1 to 27 do
+        begin
+            insertLetter:= IntToStr(parameterCount)+'ax';
+            while length(insertLetter)<5 do insertLetter:='0'+insertLetter;
 
+        end;
+    end;
 end;
 
 function TGrammatik.RegelTauschLinks(links: string) : String;
@@ -108,9 +122,9 @@ begin
     for parameterCount:=1 to 27 do
     begin
         letter := IntToStr(parameterCount)+smlLetter;
-        while len(letter)<4 do letter:='0'+letter;
+        while length(letter)<4 do letter:='0'+letter;
         result := result + letter;
-        if links[pter+1]=';' then 
+        if links[pter+1]=';' then
         begin
             result := result + ';';
             pter:=pter+2;

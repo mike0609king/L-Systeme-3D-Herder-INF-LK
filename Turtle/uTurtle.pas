@@ -180,7 +180,6 @@ begin
     FreeAndNil(FZeichner);
     FreeAndNil(FStringEntwickler);
     inherited;
-    //! to do ...
 end;
 
 //////////////////////////////////////////////////////////

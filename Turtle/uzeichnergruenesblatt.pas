@@ -47,7 +47,6 @@ begin
     FVersandTabelle.AddOrSetData('B',aktionBlatt);
 end;
 
-//?
 destructor TZeichnerGruenesBlatt.Destroy;
 begin
   FreeAndNil(FName);

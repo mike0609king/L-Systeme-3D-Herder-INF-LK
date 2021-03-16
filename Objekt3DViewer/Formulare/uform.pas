@@ -7,7 +7,7 @@ interface
 uses
   Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs,ExtCtrls, StdCtrls, ComCtrls, Menus, LMessages, Spin,uTurtleManager,
-  uGrammatik, uBeleuchtung, uZeichnerBase, uZeichnerGruenesBlatt,uEditor_Grammatiken, LCLType; {uGrammatiken}
+  uGrammatik, uBeleuchtung, uZeichnerBase, uZeichnerGruenesBlatt,uEditor_Grammatiken, LCLType, uscaledpi; {uGrammatiken}
 type
 
   { TForm1 }
@@ -163,7 +163,7 @@ begin
   BT_Zurueck.top:=height-50;
   BT_weiter.top:=height-50;
   Label8.Top:=height-50;
-  BtRunterKreis1.Top:=height-50;
+  //BtRunterKreis1.Top:=height-50;
   TrackBar1.Position:=25;
   v:=TrackBar1.Position;
   //uObjekt.objekt:=n;
@@ -184,6 +184,7 @@ begin
   Timer1.Enabled:=FALSE;
   ObjKOSinitialisieren;
   KeyPreview:= True;
+  //ScaleDPI(Self, 192);
  // kartToKugel;
 end;
 procedure TForm1.FormShow(Sender: TObject);
@@ -535,7 +536,7 @@ begin
 end;
 procedure TForm1.hinzufuegenClick(Sender: TObject);
 begin
-  if aGrammatiken.WindowState=wsMinimized then aGrammatiken.WindowState:=wsMaximized
+  if aGrammatiken.WindowState=wsMinimized then aGrammatiken.WindowState:=wsNormal
   else aGrammatiken.Show;
 end;
 

@@ -481,11 +481,11 @@ object Form1: TForm1
     Visible = False
   end
   object ComboBox2: TComboBox
-    AnchorSideTop.Control = BtKameraReset
+    AnchorSideTop.Control = BtRunterKreis1
     AnchorSideTop.Side = asrBottom
     Left = 2040
     Height = 34
-    Top = 792
+    Top = 1058
     Width = 200
     Anchors = [akTop, akRight]
     AutoSize = False

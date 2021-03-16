@@ -28,7 +28,10 @@ uses
 
 //uOctree in '..\Octree\uOctree.pas';
 
+{$R *.res}
+
 begin
+  Application.Scaled:=True;
   Application.Initialize;
   Application.CreateForm(TForm1, HauptForm);
   Application.CreateForm(TForm10, EditorForm);

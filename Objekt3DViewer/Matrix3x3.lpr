@@ -23,7 +23,8 @@ uses
   uRenderer in '..\Graphik\uRenderer.pas',
   uBeleuchtung in '..\Graphik\uBeleuchtung.pas',
   uAnimation in 'uAnimation.pas',
-  uturtle in 'uObjekt.pas';
+  uturtle in 'uObjekt.pas',
+  uscaledpi in 'uscaledpi.pas';
 
 //uOctree in '..\Octree\uOctree.pas';
 
@@ -42,5 +43,6 @@ begin
   Application.CreateForm(TForm7, FormStreck);
   Application.CreateForm(TForm8, FormVer);
   Application.CreateForm(TForm9, FormScher);     *)
+  //HighDPI(192);
   Application.Run;
 end.

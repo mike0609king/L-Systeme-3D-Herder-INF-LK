@@ -290,7 +290,7 @@ procedure TForm1.BtRunterKreis1MouseDown(Sender: TObject; Button: TMouseButton;
   Shift: TShiftState; X, Y: Integer);
 begin
    aktiv:=KameraUmTurtleXRotieren;
-   r:=-0.1*v;
+   r:=0.1*v;
    Timer1.Enabled:=True;
 end;
 
@@ -429,7 +429,7 @@ begin
   if (Key = VK_K) then
   begin
    aktiv:=KameraUmTurtleXRotieren;
-   r:=-0.1*v;
+   r:=0.1*v;
    Timer1.Enabled:=True;
    Key:=0;
   end;

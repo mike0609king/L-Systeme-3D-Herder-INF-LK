@@ -66,7 +66,7 @@ end;
 procedure KameraUmTurtleYRotieren(deltaphi:Real);
 VAR pw,po,pt:TPunkt;nr:CARDINAL;
 Begin
-   po.x:=1;po.y:=0;po.z:=0;
+   po.x:=0;po.y:=1;po.z:=0;
    nr:=Hauptform.aktuelle_turtle_nr;
    pt.x:=Hauptform.o.turtleListe[nr].StartPunkt.x;
    pt.y:=Hauptform.o.turtleListe[nr].StartPunkt.y;

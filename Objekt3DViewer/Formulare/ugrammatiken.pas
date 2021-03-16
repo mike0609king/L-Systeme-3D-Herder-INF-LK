@@ -199,8 +199,8 @@ var i : integer;
 //Diese Funktion sorgt dafür, dass immer nur ein objekt gleichzeitig angeklickt sein kann.
 begin
     if (Sender as TCheckListBox).Checked[Index] then begin
-        for I := 0 to CheckListBox1.Count -1 do
-            CheckListBox1.Checked[I] := False;
+        for i := 0 to CheckListBox1.Count -1 do
+            CheckListBox1.Checked[i] := False;
         CheckListBox1.Checked[Index] := True;
     end;
 end;

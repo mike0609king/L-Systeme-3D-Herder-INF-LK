@@ -223,7 +223,7 @@ end;
 procedure TForm1.BtHochKreis1MouseDown(Sender: TObject; Button: TMouseButton;
   Shift: TShiftState; X, Y: Integer);
 begin
-  aktiv:=KameraUmTurtleXRotieren;
+   aktiv:=KameraUmTurtleXRotieren;
    r:=-0.1*v;
    Timer1.Enabled:=True;
 end;
@@ -402,6 +402,34 @@ begin
   begin
    aktiv:=KameraYVersch;
    r:=-0.01*v;
+   Timer1.Enabled:=True;
+   Key:=0;
+  end;
+  if (Key = VK_J) then
+  begin
+   aktiv:=KameraUmTurtleYRotieren;
+   r:=-0.1*v;
+   Timer1.Enabled:=True;
+   Key:=0;
+  end;
+  if (Key = VK_I) then
+  begin
+   aktiv:=KameraUmTurtleXRotieren;
+   r:=-0.1*v;
+   Timer1.Enabled:=True;
+   Key:=0;
+  end;
+  if (Key = VK_L) then
+  begin
+   aktiv:=KameraUmTurtleYRotieren;
+   r:=0.1*v;
+   Timer1.Enabled:=True;
+   Key:=0;
+  end;
+  if (Key = VK_K) then
+  begin
+   aktiv:=KameraUmTurtleXRotieren;
+   r:=-0.1*v;
    Timer1.Enabled:=True;
    Key:=0;
   end;

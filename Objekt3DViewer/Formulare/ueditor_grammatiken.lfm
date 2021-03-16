@@ -4,8 +4,8 @@ object Form10: TForm10
   Top = 440
   Width = 1235
   Caption = 'Grammatik_Editor'
-  ClientHeight = 0
-  ClientWidth = 0
+  ClientHeight = 812
+  ClientWidth = 1235
   DesignTimePPI = 192
   OnCreate = FormCreate
   LCLVersion = '2.0.2.0'
@@ -103,7 +103,7 @@ object Form10: TForm10
   object Label1: TLabel
     Left = 118
     Height = 32
-    Top = 608
+    Top = 600
     Width = 346
     Caption = 'X_Abstand zwischen den Turtels:'
     ParentColor = False
@@ -121,37 +121,30 @@ object Form10: TForm10
         Width = 0
       end    
       item
-        AutoSize = True
         Caption = 'Turtlenummer'
         Width = 185
       end    
       item
-        AutoSize = True
         Caption = 'Grammatikname'
         Width = 208
       end    
       item
-        AutoSize = True
         Caption = 'Sichtbarkeit'
         Width = 157
       end    
       item
-        AutoSize = True
         Caption = 'Winkel'
         Width = 105
       end    
       item
-        AutoSize = True
         Caption = 'Rekursionstiefe'
         Width = 195
       end    
       item
-        AutoSize = True
         Caption = 'Zeichenart'
         Width = 145
       end    
       item
-        AutoSize = True
         Caption = 'Aktuelle Stringlänge'
         Width = 248
       end>
@@ -167,5 +160,20 @@ object Form10: TForm10
     Caption = 'kopieren'
     OnClick = BT_kopierenClick
     TabOrder = 10
+  end
+  object Label2: TLabel
+    Left = 768
+    Height = 32
+    Top = 600
+    Width = 321
+    Caption = 'Sichtbare gesamt Strichlänge: '
+    ParentColor = False
+  end
+  object Label3: TLabel
+    Left = 1112
+    Height = 1
+    Top = 600
+    Width = 1
+    ParentColor = False
   end
 end

@@ -13,14 +13,20 @@ type
   { TForm1 }
 
   TForm1 = class(TForm)
+    BtHochKreis1: TButton;
+    BtLinksKreis1: TButton;
+    BtRechtsKreis1: TButton;
+    BtRunterKreis1: TButton;
     BtPause: TButton;
     BtZoomP: TButton;
     BtZoomM: TButton;
     BtKameraReset: TButton;
     BT_Zurueck: TButton;
     BT_weiter: TButton;
+    Button1: TButton;
     ComboBox2: TComboBox;
     Label1: TLabel;
+    Label7: TLabel;
     MainMenu1: TMainMenu;
     GraphikPanel: TPanel;
     hinzufuegen: TMenuItem;
@@ -50,18 +56,26 @@ type
     BtRunterKreis: TButton;
     TrackBar1: TTrackBar;
     Label8: TLabel;
+    procedure BtHochKreis1MouseDown(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
     procedure BtHochKreisKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure BtHochKreisKeyUp(Sender: TObject; var Key: Word;
       Shift: TShiftState);
+    procedure BtLinksKreis1MouseDown(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
     procedure BtLinksKreisKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure BtLinksKreisKeyUp(Sender: TObject; var Key: Word;
       Shift: TShiftState);
+    procedure BtRechtsKreis1MouseDown(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
     procedure BtRechtsKreisKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure BtRechtsKreisKeyUp(Sender: TObject; var Key: Word;
       Shift: TShiftState);
+    procedure BtRunterKreis1MouseDown(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
     procedure BtRunterKreisKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure BtKameraResetClick(Sender: TObject);
@@ -119,6 +133,7 @@ type
     procedure update_sichtbarkeit_bt();
     procedure update_combobox();
   public    { Public-Deklarationen }
+    aktuelle_turtle_nr:CARDINAL;
     o:TTurtleManager;
     max_gespeicherte_manager:CARDINAL;
     abstand_x,akt_x,akt_y,akt_z:REAL;
@@ -148,6 +163,7 @@ begin
   BT_Zurueck.top:=height-50;
   BT_weiter.top:=height-50;
   Label8.Top:=height-50;
+  BtRunterKreis1.Top:=height-50;
   TrackBar1.Position:=25;
   v:=TrackBar1.Position;
   //uObjekt.objekt:=n;
@@ -161,6 +177,7 @@ begin
   akt_z:=0;
   maximaleStringLaenge:=100000;
   standardturtel;
+  aktuelle_turtle_nr:=0;
   //o:=Tturtlemanager.create();
   KameraStart(uAnimation.ozeichnen);
   update_combobox();
@@ -203,10 +220,26 @@ begin
   end;
 end;
 
+procedure TForm1.BtHochKreis1MouseDown(Sender: TObject; Button: TMouseButton;
+  Shift: TShiftState; X, Y: Integer);
+begin
+  aktiv:=KameraUmTurtleXRotieren;
+   r:=-0.1*v;
+   Timer1.Enabled:=True;
+end;
+
 procedure TForm1.BtHochKreisKeyUp(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
   Timer1.Enabled:=FALSE;
+end;
+
+procedure TForm1.BtLinksKreis1MouseDown(Sender: TObject; Button: TMouseButton;
+  Shift: TShiftState; X, Y: Integer);
+begin
+   aktiv:=KameraUmTurtleYRotieren;
+   r:=-0.1*v;
+   Timer1.Enabled:=True;
 end;
 
 procedure TForm1.BtLinksKreisKeyDown(Sender: TObject; var Key: Word;
@@ -227,6 +260,14 @@ begin
   Timer1.Enabled:=FALSE;
 end;
 
+procedure TForm1.BtRechtsKreis1MouseDown(Sender: TObject; Button: TMouseButton;
+  Shift: TShiftState; X, Y: Integer);
+begin
+   aktiv:=KameraUmTurtleYRotieren;
+   r:=0.1*v;
+   Timer1.Enabled:=True;
+end;
+
 procedure TForm1.BtRechtsKreisKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
@@ -243,6 +284,14 @@ procedure TForm1.BtRechtsKreisKeyUp(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
   Timer1.Enabled:=FALSE;
+end;
+
+procedure TForm1.BtRunterKreis1MouseDown(Sender: TObject; Button: TMouseButton;
+  Shift: TShiftState; X, Y: Integer);
+begin
+   aktiv:=KameraUmTurtleXRotieren;
+   r:=-0.1*v;
+   Timer1.Enabled:=True;
 end;
 
 procedure TForm1.BT_weiterClick(Sender: TObject);  //weiter bt nur sichtbar wenn sinvoll
@@ -302,6 +351,7 @@ begin
   Begin
        i:=ComboBox2.ItemIndex ;
        turtle:=HauptForm.o.turtleListe[i];
+       aktuelle_turtle_nr:=i;
        x:=turtle.StartPunkt.x;
      //  y:=turtle.StartPunkt.y;
      //  z:=turtle.StartPunkt.z;

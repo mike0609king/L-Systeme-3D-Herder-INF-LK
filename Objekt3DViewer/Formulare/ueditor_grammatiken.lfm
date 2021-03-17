@@ -1,11 +1,11 @@
 object Form10: TForm10
   Left = 316
-  Height = 812
+  Height = 941
   Top = 440
-  Width = 1235
+  Width = 1514
   Caption = 'Grammatik_Editor'
-  ClientHeight = 812
-  ClientWidth = 1235
+  ClientHeight = 941
+  ClientWidth = 1514
   DesignTimePPI = 192
   OnCreate = FormCreate
   LCLVersion = '2.0.2.0'
@@ -111,9 +111,9 @@ object Form10: TForm10
   end
   object ListView1: TListView
     Left = 118
-    Height = 304
+    Height = 312
     Top = 16
-    Width = 1029
+    Width = 1234
     Checkboxes = True
     Columns = <    
       item

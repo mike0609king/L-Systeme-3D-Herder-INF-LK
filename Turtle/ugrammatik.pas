@@ -98,6 +98,7 @@ begin
     parameterCount:=1;
     newAxiom:='';
     axiomOutput:='';
+    map:=TMap.Create;
     for letter in axiom do
     begin
         if (ord(letter)<47) or (ord(letter)>57) or then
@@ -110,7 +111,7 @@ begin
             begin
                 insertLetter:= IntToStr(parameterCount)+'ax';
                 while length(insertLetter)<5 do insertLetter:='0'+insertLetter;
-                TMap.Add(insertLetter,StringToInt(axiomOutput));
+                map[insertLetter]:=StringToInt(axiomOutput);
                 newAxiom:=newAxiom+insertLetter+letter;
 
                 axiomOutput:='';

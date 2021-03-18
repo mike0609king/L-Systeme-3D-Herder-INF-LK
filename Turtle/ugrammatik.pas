@@ -5,7 +5,7 @@ unit uGrammatik;
 interface
 
 uses
-  Classes, SysUtils,fgl, fpjson, jsonparser, jsonConf;
+  Classes, SysUtils,fgl, fpjson, jsonparser, jsonConf, TCharacter;
 
 // zu einem record machen (wegen operator error nicht moeglich) !!!!!!
 type TRegelProduktionsseite = class
@@ -90,22 +90,36 @@ begin
 end;
 
 procedure TGrammatik.setzeAxiom();
-var parameterCount,pter:Cardinal;
-    insertLetter,letter:string;
+var parameterCount:Integer;
+    insertLetter,axiomOutput,newAxiom:String;
     map:TMap;
-    element:Char;
+    letter:Char;
 begin
-    pter:=1;
-    for element in axiom do
+    parameterCount:=1;
+    newAxiom:='';
+    axiomOutput:='';
+    for letter in axiom do
     begin
-        
-        for parameterCount:=1 to 27 do
+        if (ord(letter)<47) or (ord(letter)>57) or then
         begin
-            insertLetter:= IntToStr(parameterCount)+'ax';
-            while length(insertLetter)<5 do insertLetter:='0'+insertLetter;
+            if not letter=';' then
+            begin
+                newAxiom:=newAxiom+letter;
+            end;
+            else
+            begin
+                insertLetter:= IntToStr(parameterCount)+'ax';
+                while length(insertLetter)<5 do insertLetter:='0'+insertLetter;
+                TMap.Add(insertLetter,StringToInt(axiomOutput));
+                newAxiom:=newAxiom+insertLetter+letter;
 
+                axiomOutput:='';
+                parameterCount+=1;
+            end;
         end;
+        else axiomOutput:=axiomOutput+letter;
     end;
+    Axiom:=newAxiom;
 end;
 
 function TGrammatik.RegelTauschLinks(links: string) : String;

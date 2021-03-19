@@ -5,7 +5,7 @@ unit uGrammatik;
 interface
 
 uses
-  Classes, SysUtils,fgl, fpjson, jsonparser, jsonConf;
+  Classes, SysUtils,fgl, fpjson, jsonparser, jsonConf, TCharacter;
 
 // zu einem record machen (wegen operator error nicht moeglich) !!!!!!
 type TRegelProduktionsseite = class
@@ -20,6 +20,8 @@ type TRegelProduktionsseitenListe = TFPGList<TRegelProduktionsseite>;
 
 type TRegelDictionary = TFPGMap<String,TRegelProduktionsseitenListe>;
 
+type TMap = specialize TFPGMap<String, String>;
+
 type TGrammatik = class
     public
         axiom: String;
@@ -31,6 +33,7 @@ type TGrammatik = class
         procedure addRegel(links: String; rechts: String); overload;
         function RegelTauschLinks(links: String) : String; overload;
         function RegelTauschRechts(links: String; rechts: String) : String; overload;
+        procedure setzeAxiom(Axiom:String); overload;
         function copy : TGrammatik;
 end;
 
@@ -54,7 +57,6 @@ begin
     regeln := TRegelDictionary.Create;
 end;
 
-// review !!!!!!!!!!!!!!!!!!!!!!!!!!
 destructor TGrammatik.Destroy;
 begin
     FreeAndNil(axiom);
@@ -87,6 +89,40 @@ begin
     end;
 end;
 
+procedure TGrammatik.setzeAxiom(Axiom:String);
+var parameterCount:Integer;
+    insertLetter,axiomOutput,newAxiom:String;
+    map:TMap;
+    letter:Char;
+begin
+    parameterCount:=1;
+    newAxiom:='';
+    axiomOutput:='';
+    map:=TMap.Create;
+    for letter in axiom do
+    begin
+        if (ord(letter)<47) or (ord(letter)>57) then
+        begin
+            if not letter=';' or letter=')' then
+            begin
+                newAxiom:=newAxiom+letter;
+            end;
+            else
+            begin
+                insertLetter:= IntToStr(parameterCount)+'ax';
+                while length(insertLetter)<5 do insertLetter:='0'+insertLetter;
+                map[insertLetter]:=axiomOutput;
+                newAxiom:=newAxiom+insertLetter+letter;
+
+                axiomOutput:='';
+                parameterCount+=1;
+            end;
+        end;
+        else axiomOutput:=axiomOutput+letter;
+    end;
+    Axiom:=newAxiom;
+end;
+
 function TGrammatik.RegelTauschLinks(links: string) : String;
 var parameterCount,letterAsc:INTEGER;
     pter:CARDINAL;
@@ -103,7 +139,7 @@ begin
         letter := IntToStr(parameterCount)+smlLetter;
         while length(letter)<4 do letter:='0'+letter;
         result := result + letter;
-        if links[pter+1]=';' then 
+        if links[pter+1]=';' then
         begin
             result := result + ';';
             pter:=pter+2;
@@ -115,6 +151,7 @@ begin
         end
     end;
 end;
+
 
 function TGrammatik.RegelTauschRechts(links: String; rechts: String) : String;
 var parameterCount,letterAsc:INTEGER;
@@ -137,7 +174,7 @@ end;
 
 procedure TGrammatik.addRegel(links: String; rechts: String);
 begin
-    addRegel(links,rechts,100);
+        addRegel(links,rechts,100);
 end;
 
 function TGrammatik.copy : TGrammatik;
@@ -161,5 +198,4 @@ begin
 end;
 
 end.
-
 

@@ -101,7 +101,7 @@ begin
     map:=TMap.Create;
     for letter in axiom do
     begin
-        if (ord(letter)<47) or (ord(letter)>57) or then
+        if (ord(letter)<47) or (ord(letter)>57) then
         begin
             if not letter=';' then
             begin

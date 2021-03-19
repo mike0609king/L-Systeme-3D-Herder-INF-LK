@@ -20,7 +20,7 @@ type TRegelProduktionsseitenListe = TFPGList<TRegelProduktionsseite>;
 
 type TRegelDictionary = TFPGMap<String,TRegelProduktionsseitenListe>;
 
-type TMap = specialize TFPGMap<String, Integer>;
+type TMap = specialize TFPGMap<String, String>;
 
 type TGrammatik = class
     public
@@ -33,7 +33,7 @@ type TGrammatik = class
         procedure addRegel(links: String; rechts: String); overload;
         function RegelTauschLinks(links: String) : String; overload;
         function RegelTauschRechts(links: String; rechts: String) : String; overload;
-        procedure setzeAxiom(); overload;
+        procedure setzeAxiom(Axiom:String); overload;
         function copy : TGrammatik;
 end;
 
@@ -89,7 +89,7 @@ begin
     end;
 end;
 
-procedure TGrammatik.setzeAxiom();
+procedure TGrammatik.setzeAxiom(Axiom:String);
 var parameterCount:Integer;
     insertLetter,axiomOutput,newAxiom:String;
     map:TMap;
@@ -103,7 +103,7 @@ begin
     begin
         if (ord(letter)<47) or (ord(letter)>57) then
         begin
-            if not letter=';' then
+            if not letter=';' or letter=')' then
             begin
                 newAxiom:=newAxiom+letter;
             end;
@@ -111,7 +111,7 @@ begin
             begin
                 insertLetter:= IntToStr(parameterCount)+'ax';
                 while length(insertLetter)<5 do insertLetter:='0'+insertLetter;
-                map[insertLetter]:=StringToInt(axiomOutput);
+                map[insertLetter]:=axiomOutput;
                 newAxiom:=newAxiom+insertLetter+letter;
 
                 axiomOutput:='';

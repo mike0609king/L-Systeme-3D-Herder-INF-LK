@@ -134,10 +134,10 @@ procedure TStringEntwickler.entwickeln(rekursionsTiefe: Cardinal);
         rechteSeiteGefunden: Boolean;
         smLetter: Char;
     begin
-        i := 1; paraList := TStringList.Create; 
+        i := 1; 
         while (i <= length(s)) do
         begin
-          links := s[i];
+          links := s[i]; paraList := TStringList.Create; 
           // parameter Liste richtig initialisieren (links = '<Buchstabe>(' wenn 
           // length(paraList) > 0)
           if (i <> length(s) - 1) and (s[i+1] = '(') and (tiefe <> 0) then
@@ -152,8 +152,7 @@ procedure TStringEntwickler.entwickeln(rekursionsTiefe: Cardinal);
               end
               else if (s[i] = ')') then 
               begin
-                paraList.add(tmp_string); tmp_string := '';
-                inc(i); break;
+                paraList.add(tmp_string); tmp_string := ''; break;
               end
               else if (s[i] = '(') then 
               begin
@@ -162,14 +161,13 @@ procedure TStringEntwickler.entwickeln(rekursionsTiefe: Cardinal);
               end;
               tmp_string := tmp_string + s[i]; inc(i);
             end;
-            inc(i);
 
             // rekonstruktion der rechten Seite
             smLetter := toSmallLetter(links[1]);
             for j := 1 to paraList.Count do
             begin
-              letters := IntToStr(j)+smLetter;
-              while length(letters)<4 do letters:='0'+letters;
+              letters := IntToStr(j) + smLetter;
+              while length(letters) < 4 do letters:='0'+letters;
               links := links + letters;
               if (j = paraList.Count) then links := links + ')'
               else links := links + ';';
@@ -183,7 +181,7 @@ procedure TStringEntwickler.entwickeln(rekursionsTiefe: Cardinal);
             smLetter := toSmallLetter(links[1]);
             for j := 0 to paraList.Count - 1 do
             begin
-              letters := IntToStr(j+1)+smLetter;
+              letters := IntToStr(j+1) + smLetter;
               while length(letters)<4 do letters:='0'+letters;
               tmp_string:=paraList[j];
               data := StringReplace(data,letters,paraList[j],[rfReplaceAll]);

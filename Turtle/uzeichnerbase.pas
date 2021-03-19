@@ -19,7 +19,7 @@ type TZeichenParameter = record
      function copy : TZeichenParameter;
 end;
 
-type TProc = procedure of object;
+type TProc = procedure(list: TStringList) of object;
 type TVersandTabelle = TFPGMap<char, TProc>;
 type TZeichnerBase = class
     protected
@@ -28,16 +28,16 @@ type TZeichnerBase = class
         FZeichenParameter: TZeichenParameter;
     private
         // Bewegungen
-        procedure aktionSchrittMitLinie;
-        procedure aktionSchrittOhneLinie;
-        procedure aktionPlus;
-        procedure aktionMinus;
-        procedure aktionUnd;
-        procedure aktionDach;
-        procedure aktionFSlash;
-        procedure aktionBSlash;
-        procedure aktionPush;
-        procedure aktionPop;
+        procedure aktionSchrittMitLinie(list: TStringList);
+        procedure aktionSchrittOhneLinie(list: TStringList);
+        procedure aktionPlus(list: TStringList);
+        procedure aktionMinus(list: TStringList);
+        procedure aktionUnd(list: TStringList);
+        procedure aktionDach(list: TStringList);
+        procedure aktionFSlash(list: TStringList);
+        procedure aktionBSlash(list: TStringList);
+        procedure aktionPush(list: TStringList);
+        procedure aktionPop(list: TStringList);
 
         // setter-funktionen
         procedure setzeWinkel(const phi: Real);
@@ -47,7 +47,7 @@ type TZeichnerBase = class
         constructor Create(zeichenPara: TZeichenParameter); virtual;
         destructor Destroy; override;
 
-        procedure zeichneBuchstabe(c: char); virtual;
+        procedure zeichneBuchstabe(c: char; list: TStringList); virtual;
         function copy : TZeichnerBase;
 
         procedure setzeStartPunkt(x,y,z: Real);
@@ -100,11 +100,12 @@ begin
     result := FZeichenParameter;
 end;
 
-procedure TZeichnerBase.zeichneBuchstabe(c: char);
+procedure TZeichnerBase.zeichneBuchstabe(c: char; list: TStringList);
 var tmp: TProc;
 begin
-    if FVersandTabelle.tryGetData(c,tmp) then tmp;
+    if FVersandTabelle.tryGetData(c,tmp) then tmp(list);
 end;
+
 
 
 //////////////////////////////////////////////////////////
@@ -150,58 +151,58 @@ end;
 }
 
 //// feste Aktionen der Versandtabelle
-procedure TZeichnerBase.aktionSchrittMitLinie;
+procedure TZeichnerBase.aktionSchrittMitLinie(list: TStringList);
 var m: Cardinal;
 begin
     m := 50; // spaeter parametrisieren
     schritt(1/m,true);
 end;
 
-procedure TZeichnerBase.aktionSchrittOhneLinie;
+procedure TZeichnerBase.aktionSchrittOhneLinie(list: TStringList);
 var m: Cardinal;
 begin
     m := 50; // spaeter parametrisieren
     schritt(1/m,false);
 end;
 
-procedure TZeichnerBase.aktionPlus;
+procedure TZeichnerBase.aktionPlus(list: TStringList);
 begin
     Z_Rot(FZeichenParameter.winkel);
 end;
 
-procedure TZeichnerBase.aktionMinus;
+procedure TZeichnerBase.aktionMinus(list: TStringList);
 begin
     Z_Rot(-FZeichenParameter.winkel);
 end;
 
-procedure TZeichnerBase.aktionUnd;
+procedure TZeichnerBase.aktionUnd(list: TStringList);
 begin
     Y_Rot(FZeichenParameter.winkel);
 end;
 
-procedure TZeichnerBase.aktionDach;
+procedure TZeichnerBase.aktionDach(list: TStringList);
 begin
     Y_Rot(-FZeichenParameter.winkel);
 end;
 
-procedure TZeichnerBase.aktionFSlash;
+procedure TZeichnerBase.aktionFSlash(list: TStringList);
 begin
     X_Rot(FZeichenParameter.winkel);
 end;
 
-procedure TZeichnerBase.aktionBSlash;
+procedure TZeichnerBase.aktionBSlash(list: TStringList);
 begin
     X_Rot(-FZeichenParameter.winkel);
 end;
 
-procedure TZeichnerBase.aktionPush;
+procedure TZeichnerBase.aktionPush(list: TStringList);
 begin
   glMatrixMode(GL_MODELVIEW_MATRIX);
   glLoadMatrixf(@OMatrix.o);
   glPushMatrix;
 end;
 
-procedure TZeichnerBase.aktionPop;
+procedure TZeichnerBase.aktionPop(list: TStringList);
 begin
   glMatrixMode(GL_MODELVIEW_MATRIX);
   glPopMatrix;

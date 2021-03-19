@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, fgl,
-  uZeichnerbase, uZeichnerGruenesBlatt;
+  uZeichnerbase, uZeichnerGruenesBlatt, uZeichnerFarben;
 
 type TErbteZeichnerBase = class of TZeichnerBase;
 type TVersandTabelleZeichner = TFPGMap<String, TErbteZeichnerBase>;
@@ -40,11 +40,18 @@ begin
     zeichenPara.setzeStartPunkt(0,0,0);
 
     FVersandTabelleZeichner := TVersandTabelleZeichner.Create;
-    FVersandTabelleZeichner.add((TZeichnerBase.Create(zeichenPara)).name,TZeichnerBase);
     FVersandTabelleZeichner.add(
-        (TZeichnerGruenesBlatt.Create(zeichenPara)).name,
-        TZeichnerGruenesBlatt
+      (TZeichnerBase.Create(zeichenPara)).name,
+      TZeichnerBase
+      );
+    FVersandTabelleZeichner.add(
+      (TZeichnerGruenesBlatt.Create(zeichenPara)).name,
+      TZeichnerGruenesBlatt
     );
+    FVersandTabelleZeichner.add(
+      (TZeichnerFarben.Create(zeichenPara)).name,
+      TZeichnerFarben
+    )
 end;
 
 destructor TZeichnerInit.Destroy;

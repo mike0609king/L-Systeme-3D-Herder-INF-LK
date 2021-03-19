@@ -171,7 +171,7 @@ begin
 end;
 
 
-//?destructor hoffentlich richtig
+// ? destructor hoffentlich richtig
 destructor TTurtle.Destroy;
 begin
     FreeAndNil(FVisible);
@@ -268,15 +268,45 @@ end;
 
 // zeichner
 function TTurtle.zeichnen : Boolean;
-VAR i: Cardinal;
+VAR i: Cardinal; paraList : TStringList; 
+    zuZeichnenderBuchstabe: Char; tmp_string: String;
 begin
-    if length(FStringEntwickler.entwickelterString) > FMaximaleStringLaenge then exit(false);
-    init(FZeichner.startPunkt.x,FZeichner.startPunkt.y,FZeichner.startPunkt.z);
-    for i := 1 to length(FStringEntwickler.entwickelterString) do
-        FZeichner.zeichneBuchstabe(FStringEntwickler.entwickelterString[i]);
-    result := true;
+  if length(FStringEntwickler.entwickelterString) > FMaximaleStringLaenge then exit(false);
+  init(FZeichner.startPunkt.x,FZeichner.startPunkt.y,FZeichner.startPunkt.z);
+  i := 1; 
+  while (i <= length(FStringEntwickler.entwickelterString)) do
+  begin
+    paraList := TStringList.Create;
+    zuZeichnenderBuchstabe := FStringEntwickler.entwickelterString[i];
+    if (i <> length(FStringEntwickler.entwickelterString) - 1) and 
+    (FStringEntwickler.entwickelterString[i+1] = '(') then
+    begin
+      inc(i); 
+      while (true) do
+      begin
+        if (FStringEntwickler.entwickelterString[i] = ';') then 
+        begin
+          paraList.add(FGrammatik.variableZuWert[tmp_string]); 
+          tmp_string := ''; inc(i); continue;
+        end
+        else if (FStringEntwickler.entwickelterString[i] = ')') then 
+        begin
+          paraList.add(FGrammatik.variableZuWert[tmp_string]); 
+          tmp_string := ''; break;
+        end
+        else if (FStringEntwickler.entwickelterString[i] = '(') then 
+        begin
+          tmp_string := ''; inc(i); continue;
+        end;
+        tmp_string := tmp_string + FStringEntwickler.entwickelterString[i]; 
+        inc(i);
+      end;
+    end;
+    FZeichner.zeichneBuchstabe(zuZeichnenderBuchstabe,paraList);
+    inc(i);
+  end;
+  result := true;
 end;
-
 
 // speichern
 procedure TTurtle.speichern(datei: String);

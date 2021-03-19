@@ -9,7 +9,7 @@ uses
 
 type TZeichnerGruenesBlatt = class(TZeichnerBase)
     private
-        procedure aktionBlatt;
+        procedure aktionBlatt(list: TStringList);
     public
         constructor Create(zeichenPara: TZeichenParameter); override;
         destructor Destroy; override;
@@ -33,7 +33,7 @@ begin
   ObjInEigenKOSVerschieben(0,l,0)
 end;
 
-procedure TZeichnerGruenesBlatt.aktionBlatt;
+procedure TZeichnerGruenesBlatt.aktionBlatt(list: TStringList);
 var m: Cardinal;
 begin
     m := 50;

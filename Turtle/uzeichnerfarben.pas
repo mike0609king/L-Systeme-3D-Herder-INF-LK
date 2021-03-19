@@ -1,4 +1,4 @@
-unit uColors;
+unit uZeichnerFarben;
 
 {$mode delphi}{$H+}
 
@@ -9,8 +9,9 @@ uses
 
 type TZeichnerFarben = class(TZeichnerBase)
     private
-        procedure aktionBlatt;
+        //procedure aktionBlatt;
         FIdxZuFarbe: array[1..14,0..2] of Real;
+        procedure aktionSchrittMtLinie(list: TStringList);
     public
         constructor Create(zeichenPara: TZeichenParameter); override;
         destructor Destroy; override;
@@ -34,11 +35,16 @@ begin
   ObjInEigenKOSVerschieben(0,l,0)
 end;
 
-procedure TZeichnerBase.aktionSchrittMitLinie;
+procedure TZeichnerFarben.aktionSchrittMtLinie(list: TStringList);
 var m: Cardinal;
+    colorIdx: Cardinal;
 begin
+    // TODO: ueberpruefung von Idx
+    colorIdx := StrToInt(list[0]);
     m := 50; // spaeter parametrisieren
-    schritt(1/m,true,1,1,1); // hier danach die Farben
+    schritt(1/m,true,FIdxZuFarbe[colorIdx][0],
+                     FIdxZuFarbe[colorIdx][1],
+                     FIdxZuFarbe[colorIdx][2]); // hier danach die Farben
 end;
 
 constructor TZeichnerFarben.Create(zeichenPara: TZeichenParameter);
@@ -62,6 +68,7 @@ begin
     FIdxZuFarbe[14,0] := 1; FIdxZuFarbe[14,1] := 1; FIdxZuFarbe[14,2] := 1;
 
     //FVersandTabelle.AddOrSetData('B',aktionBlatt);
+    FVersandTabelle.AddOrSetData('F',aktionSchrittMtLinie);
 end;
 
 destructor TZeichnerFarben.Destroy;

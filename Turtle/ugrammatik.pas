@@ -1,5 +1,4 @@
-unit uGrammatik;
-
+unit uGrammatik; 
 {$mode delphi}{$H+}
 
 interface
@@ -15,17 +14,17 @@ type TRegelProduktionsseite = class
     destructor Destroy; override;
 end;
 
-
 type TRegelProduktionsseitenListe = TFPGList<TRegelProduktionsseite>;
 
 type TRegelDictionary = TFPGMap<String,TRegelProduktionsseitenListe>;
 
-type TMap = TFPGMap<String, String>;
+type TVariableZuWert = TFPGMap<String,String>;
 
 type TGrammatik = class
     private
       FAxiom: String;
     public
+        variableZuWert: TVariableZuWert;
         regeln: TRegelDictionary;
 
         constructor Create;
@@ -70,6 +69,37 @@ begin
     FreeAndNil(regeln);
 end;
 
+procedure TGrammatik.setzeAxiom(axiom:String);
+var parameterCount: Cardinal;
+    insertLetter,axiomOutput: String;
+    letter: Char;
+begin
+  parameterCount := 1;
+  FAxiom := '';
+  axiomOutput:='';
+  variableZuWert:=TVariableZuWert.Create;
+  for letter in axiom do
+  begin
+    if (ord(letter) < 47) or (ord(letter) > 57) then
+    begin
+      if (letter <> ';') and (letter <> ')') then
+      begin
+        FAxiom := FAxiom + letter;
+      end
+      else
+      begin
+        insertLetter:= IntToStr(parameterCount)+'ax';
+        while length(insertLetter)<4 do insertLetter:='0'+insertLetter;
+        variableZuWert.add(insertLetter,axiomOutput);
+        FAxiom := FAxiom + insertLetter+letter;
+        axiomOutput:='';
+        inc(parameterCount);
+      end;
+    end
+    else axiomOutput := axiomOutput + letter;
+  end;
+end;
+
 procedure TGrammatik.addRegel(links: String; rechts: String; zufaelligkeit: Real);
 var tmp_regel: TRegelProduktionsseite;
     data: TRegelProduktionsseitenListe;
@@ -78,12 +108,8 @@ begin
     if links[2] = '(' then
     begin
         tmp_links := links;
-        writeLn(links);
-        writeLn(rechts);
         links := RegelTauschLinks(links);
         rechts := RegelTauschRechts(tmp_links,rechts);
-        writeLn(links);
-        writeLn(rechts);
     end;
     tmp_regel := TRegelProduktionsseite.Create;
     tmp_regel.produktion := rechts;
@@ -96,39 +122,6 @@ begin
     end;
 end;
 
-procedure TGrammatik.setzeAxiom(axiom:String);
-var parameterCount:Integer;
-    insertLetter,axiomOutput,newAxiom:String;
-    map:TMap;
-    letter:Char;
-begin
-    parameterCount:=1;
-    newAxiom:='';
-    axiomOutput:='';
-    map:=TMap.Create;
-    for letter in axiom do
-    begin
-        if (ord(letter)<47) or (ord(letter)>57) then
-        begin
-            if not (letter=';') or (letter=')') then
-            begin
-                newAxiom:=newAxiom+letter;
-            end
-            else
-            begin
-                insertLetter:= IntToStr(parameterCount)+'ax';
-                while length(insertLetter)<5 do insertLetter:='0'+insertLetter;
-                map[insertLetter]:=axiomOutput;
-                newAxiom:=newAxiom+insertLetter+letter;
-
-                axiomOutput:='';
-                parameterCount+=1;
-            end;
-        end
-        else axiomOutput:=axiomOutput+letter;
-    end;
-    FAxiom:=newAxiom;
-end;
 
 function TGrammatik.RegelTauschLinks(links: string) : String;
 var parameterCount,letterAsc:INTEGER;
@@ -172,6 +165,7 @@ begin
     for parameterCount:=1 to 27 do
     begin
         letter := IntToStr(parameterCount) + smlLetter;
+        while length(letter)<4 do letter:='0'+letter;
         rechts := StringReplace(rechts,links[pter],letter,[rfReplaceAll]);
         if links[pter+1]=';' then pter:=pter+2
         else break;

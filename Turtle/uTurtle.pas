@@ -36,6 +36,7 @@ type TTurtle = class
         function gibStartPunkt : TPunkt3D;
         function gibZeichnerName : String;
         function gibEntwickelterString : String;
+        function gibAxiom : String;
     public
         constructor Create(gram: TGrammatik; zeichner: TZeichnerBase); overload;
         constructor Create(gram: TGrammatik; zeichner: TZeichnerBase; stringEntwickler: TStringEntwickler); overload;
@@ -44,7 +45,7 @@ type TTurtle = class
 
         // properties
         //// FGrammatik
-        property axiom: String read FGrammatik.axiom;
+        property axiom: String read gibAxiom;
         property regeln: TRegelDictionary read FGrammatik.regeln;
         //// FZeichner
         property zeichnerName: String read gibZeichnerName; 
@@ -258,6 +259,11 @@ end;
 function TTurtle.gibEntwickelterString : String;
 begin
     result := FStringEntwickler.entwickelterString;
+end;
+
+function TTurtle.gibAxiom : String;
+begin
+    result := FGrammatik.axiom;
 end;
 
 // zeichner

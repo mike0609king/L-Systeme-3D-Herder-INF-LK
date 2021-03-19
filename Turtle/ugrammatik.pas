@@ -5,7 +5,7 @@ unit uGrammatik;
 interface
 
 uses
-  Classes, SysUtils,fgl, fpjson, jsonparser, jsonConf, TCharacter;
+  Classes, SysUtils,fgl, fpjson, jsonparser, jsonConf;
 
 // zu einem record machen (wegen operator error nicht moeglich) !!!!!!
 type TRegelProduktionsseite = class
@@ -20,20 +20,27 @@ type TRegelProduktionsseitenListe = TFPGList<TRegelProduktionsseite>;
 
 type TRegelDictionary = TFPGMap<String,TRegelProduktionsseitenListe>;
 
-type TMap = specialize TFPGMap<String, String>;
+type TMap = TFPGMap<String, String>;
 
 type TGrammatik = class
+    private
+      FAxiom: String;
     public
-        axiom: String;
         regeln: TRegelDictionary;
 
         constructor Create;
         destructor Destroy; override;
+
         procedure addRegel(links: String; rechts: String; zufaelligkeit: Real); overload;
         procedure addRegel(links: String; rechts: String); overload;
+
         function RegelTauschLinks(links: String) : String; overload;
         function RegelTauschRechts(links: String; rechts: String) : String; overload;
+
         procedure setzeAxiom(Axiom:String); overload;
+
+        property axiom: String read FAxiom write setzeAxiom;
+
         function copy : TGrammatik;
 end;
 
@@ -53,13 +60,13 @@ end;
 
 constructor TGrammatik.Create;
 begin
-    axiom := '';
+    FAxiom := '';
     regeln := TRegelDictionary.Create;
 end;
 
 destructor TGrammatik.Destroy;
 begin
-    FreeAndNil(axiom);
+    FreeAndNil(FAxiom);
     FreeAndNil(regeln);
 end;
 
@@ -89,7 +96,7 @@ begin
     end;
 end;
 
-procedure TGrammatik.setzeAxiom(Axiom:String);
+procedure TGrammatik.setzeAxiom(axiom:String);
 var parameterCount:Integer;
     insertLetter,axiomOutput,newAxiom:String;
     map:TMap;
@@ -103,10 +110,10 @@ begin
     begin
         if (ord(letter)<47) or (ord(letter)>57) then
         begin
-            if not letter=';' or letter=')' then
+            if not (letter=';') or (letter=')') then
             begin
                 newAxiom:=newAxiom+letter;
-            end;
+            end
             else
             begin
                 insertLetter:= IntToStr(parameterCount)+'ax';
@@ -117,10 +124,10 @@ begin
                 axiomOutput:='';
                 parameterCount+=1;
             end;
-        end;
+        end
         else axiomOutput:=axiomOutput+letter;
     end;
-    Axiom:=newAxiom;
+    FAxiom:=newAxiom;
 end;
 
 function TGrammatik.RegelTauschLinks(links: string) : String;
@@ -182,7 +189,7 @@ var regelIdx, produktionIdx: Cardinal;
 var gram: TGrammatik;
 begin
     gram := TGrammatik.Create;
-    gram.axiom := axiom;
+    gram.axiom := FAxiom;
     for regelIdx := 0 to regeln.Count - 1 do
     begin
         for produktionIdx := 0 to (regeln.data[regelIdx]).Count - 1 do

@@ -76,7 +76,6 @@ begin
     begin
         o.setzeSichtbarkeit(2,true);  // setzten der Sichtbarkeit der Turtle
     end;
-    
 
     // beides das gleiche (entfernt beide die Turtle an index 2)
     // o.entferneTurtle(turtle);
@@ -87,4 +86,6 @@ begin
     turtle.maximaleStringLaenge := turtle.maximaleStringLaenge*2;
     manager := o.copy;
     o := manager.copy;
+
+    turtle.speichern('h.json');
 end.

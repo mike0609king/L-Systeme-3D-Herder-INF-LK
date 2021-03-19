@@ -22,12 +22,14 @@ type TStringEntwickler = class
           ersetze werden. Demnach steht auch kein sinvoller wert in der Variable ret.}
         function gibEinzusetzendenString(c: String; var ret: String) : Boolean;
 
+        function gibAxiom : String;
+
         { Aufgabe: Die Zufaelligkeitsraeume werden als Cardinal gespeichert. Hierbei wird
           der Fliesskommawert ab dem log_10(maximalerZufallsraum)-2 ten Wert verworfen. Wir nehmen 
           also nicht mehr bei der Zufaelligkeit ruecksicht darauf. }
         function convertiereRealZuCardinal(wert: Real) : Cardinal;
     public
-        property axiom: String read FGrammatik.axiom;
+        property axiom: String read gibAxiom;
         property regeln: TRegelDictionary read FGrammatik.regeln;
         property entwickelterString: String read FEntwickelterString;
 
@@ -66,6 +68,11 @@ begin
     FreeAndNil(FEntwickelterString);
     FreeAndNil(maximalerZufallsraum);
     FreeAndNil(FGrammatik)    //vllt auch FGrammatik :=NIL //?
+end;
+
+function TStringEntwickler.gibAxiom : String;
+begin
+  result := FGrammatik.axiom;
 end;
 
 function TStringEntwickler.convertiereRealZuCardinal(wert: Real) : Cardinal;

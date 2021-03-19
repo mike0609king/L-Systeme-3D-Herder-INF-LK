@@ -6,6 +6,7 @@ interface
 uses
   Classes, SysUtils, fgl, uGrammatik;
 
+type TCardinalList = TFPGList<Cardinal>;
 type TStringEntwickler = class
     private
         FGrammatik: TGrammatik;
@@ -19,7 +20,7 @@ type TStringEntwickler = class
         { Rueckgabe: Gibt zurueck, ob dieser Buchstabe ueberhaupt existiert und dem nach ersetzt
           werden kann. Wenn false zurueckgegeben wurde, so kann dieser string ueberhaupt nicht
           ersetze werden. Demnach steht auch kein sinvoller wert in der Variable ret.}
-        function gibEinzusetzendenString(c: char; var ret: String) : Boolean;
+        function gibEinzusetzendenString(c: String; var ret: String) : Boolean;
 
         { Aufgabe: Die Zufaelligkeitsraeume werden als Cardinal gespeichert. Hierbei wird
           der Fliesskommawert ab dem log_10(maximalerZufallsraum)-2 ten Wert verworfen. Wir nehmen 
@@ -31,7 +32,7 @@ type TStringEntwickler = class
         property entwickelterString: String read FEntwickelterString;
 
         constructor Create(gram: TGrammatik); overload;
-        constructor Create(gram: TGrammatik; entwickelterString: String); overload; // review!!
+        constructor Create(gram: TGrammatik; entwickelterS: String); overload; // review!!
         destructor Destroy; override;
 
         { Aufgabe: Entwickelt den String gemaess der gegebenen Grammatik bis zur
@@ -51,11 +52,11 @@ begin
     maximalerZufallsraum := 100 * 10000; 
 end;
 
-constructor TStringEntwickler.Create(gram: TGrammatik; entwickelterString: String);
+constructor TStringEntwickler.Create(gram: TGrammatik; entwickelterS: String);
 begin
     randomize;
     FGrammatik := gram;
-    FEntwickelterString := entwickelterString;
+    FEntwickelterString := entwickelterS;
     // es werden vier stellen nach dem Komma beruecksichtigt
     maximalerZufallsraum := 100 * 10000; 
 end;
@@ -72,9 +73,9 @@ begin
     result := trunc(wert * (maximalerZufallsraum div 100));
 end;
 
-function TStringEntwickler.gibEinzusetzendenString(c: char; var ret: String) : Boolean;
+function TStringEntwickler.gibEinzusetzendenString(c: String; var ret: String) : Boolean;
 var data: TRegelProduktionsseitenListe;
-    prefix: TFPGList<Cardinal>;
+    prefix: TCardinalList;
     i: Cardinal;
     zufaelligerWert: Cardinal;
     function upper_bound(gesucht: Cardinal) : Cardinal;
@@ -96,7 +97,7 @@ var data: TRegelProduktionsseitenListe;
 begin
     if FGrammatik.regeln.TryGetData(c,data) then
     begin
-        prefix := TFPGList<Cardinal>.Create;
+        prefix := TCardinalList.Create;
         prefix.add(0);
         for i := 1 to data.Count do
         begin
@@ -109,15 +110,82 @@ begin
     result := false;
 end;
 
+// toSmallLetter-Funktion
+function toSmallLetter(letter: Char) : Char;
+var letterAsc: Cardinal;
+begin
+  letterAsc:=Ord(letter);
+  letterAsc:=letterAsc+32;
+  result:=Chr(letterAsc);
+end;
+
 procedure TStringEntwickler.entwickeln(rekursionsTiefe: Cardinal);
     procedure entw(tiefe: Cardinal; s: String);
-    var i: Cardinal;
-        data: String;
+    var i,j: Cardinal;
+        data,tmp_string,links,letters: String;
+        paraList: TStringList;
+        rechteSeiteGefunden: Boolean;
+        smLetter: Char;
     begin
-        for i := 1 to length(s) do
+        i := 1; paraList := TStringList.Create; 
+        while (i <= length(s)) do
         begin
-            if (tiefe <> 0) and (gibEinzusetzendenString(s[i],data)) then entw(tiefe-1, data)
-            else FEntwickelterString += s[i];
+          links := s[i];
+          // parameter Liste richtig initialisieren (links = '<Buchstabe>(' wenn 
+          // length(paraList) > 0)
+          if (i <> length(s) - 1) and (s[i+1] = '(') and (tiefe <> 0) then
+          begin
+            inc(i); 
+            while (true) do
+            begin
+              if (s[i] = ';') then 
+              begin
+                paraList.add(tmp_string); tmp_string := '';
+                inc(i); continue;
+              end
+              else if (s[i] = ')') then 
+              begin
+                paraList.add(tmp_string); tmp_string := '';
+                inc(i); break;
+              end
+              else if (s[i] = '(') then 
+              begin
+                tmp_string := ''; links := links + '(';
+                inc(i); continue;
+              end;
+              tmp_string := tmp_string + s[i]; inc(i);
+            end;
+            inc(i);
+
+            // rekonstruktion der rechten Seite
+            smLetter := toSmallLetter(links[1]);
+            for j := 1 to paraList.Count do
+            begin
+              letters := IntToStr(j)+smLetter;
+              while length(letters)<4 do letters:='0'+letters;
+              links := links + letters;
+              if (j = paraList.Count) then links := links + ')'
+              else links := links + ';';
+            end;
+          end;
+
+          rechteSeiteGefunden := gibEinzusetzendenString(links,data);
+          if (tiefe <> 0) and (rechteSeiteGefunden) and (paraList.Count > 0) then
+          begin
+            // Ersetzung der Variablen
+            smLetter := toSmallLetter(links[1]);
+            for j := 0 to paraList.Count - 1 do
+            begin
+              letters := IntToStr(j+1)+smLetter;
+              while length(letters)<4 do letters:='0'+letters;
+              tmp_string:=paraList[j];
+              data := StringReplace(data,letters,paraList[j],[rfReplaceAll]);
+            end;
+            entw(tiefe-1,data);
+          end
+          else if (tiefe <> 0) and (rechteSeiteGefunden) and (paraList.Count = 0) then entw(tiefe-1,data)
+          else FEntwickelterString += s[i];
+          inc(i);
         end;
     end;
 begin

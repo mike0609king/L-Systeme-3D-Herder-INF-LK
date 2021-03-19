@@ -101,7 +101,7 @@ begin
     for parameterCount:=1 to 27 do
     begin
         letter := IntToStr(parameterCount)+smlLetter;
-        while len(letter)<4 do letter:='0'+letter;
+        while length(letter)<4 do letter:='0'+letter;
         result := result + letter;
         if links[pter+1]=';' then 
         begin

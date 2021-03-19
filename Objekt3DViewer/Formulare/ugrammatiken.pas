@@ -76,7 +76,7 @@ begin
    end;
 end;
 function TuGrammatiken.stringanalyse(s:string):Boolean;  //returns false if doesn't work
-VAR str,rest_string:string;i,l,h,k,g:CARDINAL; c:Char;klammer_auf:Boolean
+VAR str,rest_string:string;i,l,h,k,g,b:CARDINAL; c:Char;klammer_auf,bool:Boolean
 begin
    str:=s.Copy();
    rest_string:=s.copy();
@@ -95,17 +95,31 @@ begin
        end;
        if str[i]=')' then klammer_auf:=False;
      end;
-   while not rest_string[0]==' ' do
+   while not rest_string.pos('(')=0 do
    begin
       k:=rest_string.pos('(')+1;
       g:=rest_string.pos(')')-1;
+      bool:=True;
       for k to g do
         begin
-
+          b:=strtochar(str[k]);
+          h:=ord(b);
+          if bool then
+          begin
+               if not (h>=ord('a') and h<=ord('z') then result:=False;
+               bool:=False;
+          end
+          else
+          begin
+               if h=ord(';') then
+               begin
+                   bool:=False;
+               end
+               else result:=False;
           end;
-
-
-   end;
+        end;
+      //reststring : löschen was in der klammer war
+    end;
    result:=True;
 end;
 procedure TuGrammatiken.Button1Click(Sender: TObject); //Turtle erstellen

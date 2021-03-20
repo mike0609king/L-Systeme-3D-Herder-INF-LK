@@ -38,13 +38,12 @@ procedure TZeichnerFarben.aktionSchrittMtLinie(list: TStringList);
 var m: Cardinal;
     colorIdx: Cardinal;
 begin
-    // TODO: ueberpruefung von Idx
     colorIdx := StrToInt(list[0]);
     m := 50; 
     if (colorIdx > high(FIdxZuFarbe)) then colorIdx := 0;
     schritt(1/m,true,FIdxZuFarbe[colorIdx][0],
                      FIdxZuFarbe[colorIdx][1],
-                     FIdxZuFarbe[colorIdx][2]); // hier danach die Farben
+                     FIdxZuFarbe[colorIdx][2]); 
 end;
 
 constructor TZeichnerFarben.Create(zeichenPara: TZeichenParameter);

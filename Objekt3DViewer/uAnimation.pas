@@ -33,7 +33,7 @@ begin
 
   // So wird die Grammatik erstellt
   gram := TGrammatik.Create;                          // initialisieren der Grammatik-Klass
-  gram.axiom := 'F(1)';                                  // axiom einstellen
+  gram.axiom := 'F(2)';                                  // axiom einstellen
   //gram.addRegel('F','F&[+F&&FB]&&F[-^^/^-FB]F',18);   // 18%ige Chance fuer diese Einsetzung
   //gram.addRegel('F','B',2.01);                        // 2.01%ige Chance fuer diese Einsetzung
   //gram.addRegel('F','F&[+F&&F]&&F[-^^/^-F]F',79.99);  // 79.99%ige Chance fuer diese Einsetzung
@@ -48,7 +48,7 @@ begin
   // zeichenPara.setzeStartPunkt(0,0,0);
   turtle := TTurtle.Create(
     gram, 
-    zeichnerInit.initialisiere('ZeichnerFarben',zeichenPara)
+    zeichnerInit.initialisiere('ZeichnerSchrittlaenge',zeichenPara)
   );
   o.addTurtle(turtle);
   // o.setzeSichtbarkeit(0,false);  // setzten der Sichtbarkeit der Turtle

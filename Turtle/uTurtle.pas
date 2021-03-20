@@ -271,34 +271,34 @@ function TTurtle.zeichnen : Boolean;
 VAR i: Cardinal; paraList : TStringList; 
     zuZeichnenderBuchstabe: Char; tmp_string: String;
 begin
-  if length(FStringEntwickler.entwickelterString) > FMaximaleStringLaenge then exit(false);
+  if length(FStringEntwickler.zuZeichnenderString) > FMaximaleStringLaenge then exit(false);
   init(FZeichner.startPunkt.x,FZeichner.startPunkt.y,FZeichner.startPunkt.z);
   i := 1; 
-  while (i <= length(FStringEntwickler.entwickelterString)) do
+  while (i <= length(FStringEntwickler.zuZeichnenderString)) do
   begin
     paraList := TStringList.Create;
-    zuZeichnenderBuchstabe := FStringEntwickler.entwickelterString[i];
-    if (i <> length(FStringEntwickler.entwickelterString) - 1) and 
-    (FStringEntwickler.entwickelterString[i+1] = '(') then
+    zuZeichnenderBuchstabe := FStringEntwickler.zuZeichnenderString[i];
+    if (i <> length(FStringEntwickler.zuZeichnenderString) - 1) and 
+    (FStringEntwickler.zuZeichnenderString[i+1] = '(') then
     begin
       inc(i); 
       while (true) do
       begin
-        if (FStringEntwickler.entwickelterString[i] = ';') then 
+        if (FStringEntwickler.zuZeichnenderString[i] = ';') then 
         begin
-          paraList.add(FGrammatik.variableZuWert[tmp_string]); 
+          paraList.add(tmp_string); 
           tmp_string := ''; inc(i); continue;
         end
-        else if (FStringEntwickler.entwickelterString[i] = ')') then 
+        else if (FStringEntwickler.zuZeichnenderString[i] = ')') then 
         begin
-          paraList.add(FGrammatik.variableZuWert[tmp_string]); 
+          paraList.add(tmp_string); 
           tmp_string := ''; break;
         end
-        else if (FStringEntwickler.entwickelterString[i] = '(') then 
+        else if (FStringEntwickler.zuZeichnenderString[i] = '(') then 
         begin
           tmp_string := ''; inc(i); continue;
         end;
-        tmp_string := tmp_string + FStringEntwickler.entwickelterString[i]; 
+        tmp_string += FStringEntwickler.zuZeichnenderString[i]; 
         inc(i);
       end;
     end;

@@ -11,6 +11,7 @@ type TStringEntwickler = class
     private
         FGrammatik: TGrammatik;
         FEntwickelterString: String;
+        FZuZeichnenderString: String;
 
         // Dieser Wert MUSS ein vielfaches von 10 sein.
         // Dieser Wert geteilt durch 100 bestimme die Anzahl der Nachkommastellen, die
@@ -21,17 +22,19 @@ type TStringEntwickler = class
           werden kann. Wenn false zurueckgegeben wurde, so kann dieser string ueberhaupt nicht
           ersetze werden. Demnach steht auch kein sinvoller wert in der Variable ret.}
         function gibEinzusetzendenString(c: String; var ret: String) : Boolean;
-
         function gibAxiom : String;
 
         { Aufgabe: Die Zufaelligkeitsraeume werden als Cardinal gespeichert. Hierbei wird
           der Fliesskommawert ab dem log_10(maximalerZufallsraum)-2 ten Wert verworfen. Wir nehmen 
           also nicht mehr bei der Zufaelligkeit ruecksicht darauf. }
         function convertiereRealZuCardinal(wert: Real) : Cardinal;
+        { Aufgabe: }
+        procedure aktualisiereZuZeichnendenString;
     public
         property axiom: String read gibAxiom;
         property regeln: TRegelDictionary read FGrammatik.regeln;
         property entwickelterString: String read FEntwickelterString;
+        property zuZeichnenderString: String read FZuZeichnenderString;
 
         constructor Create(gram: TGrammatik); overload;
         constructor Create(gram: TGrammatik; entwickelterS: String); overload; // review!!
@@ -50,6 +53,7 @@ begin
     randomize;
     FGrammatik := gram;
     FEntwickelterString := '';
+    FZuZeichnenderString := '';
     // es werden vier stellen nach dem Komma beruecksichtigt
     maximalerZufallsraum := 100 * 10000; 
 end;
@@ -59,6 +63,7 @@ begin
     randomize;
     FGrammatik := gram;
     FEntwickelterString := entwickelterS;
+    aktualisiereZuZeichnendenString;
     // es werden vier stellen nach dem Komma beruecksichtigt
     maximalerZufallsraum := 100 * 10000; 
 end;
@@ -115,6 +120,41 @@ begin
         exit(true);
     end;
     result := false;
+end;
+
+procedure TStringEntwickler.aktualisiereZuZeichnendenString;
+var i: Cardinal; tmp_string: String;
+begin
+  i := 1; 
+  while (i <= length(entwickelterString)) do
+  begin
+    FZuZeichnenderString += entwickelterString[i];
+    if (i <> length(entwickelterString) - 1) and 
+    (entwickelterString[i+1] = '(') then
+    begin
+      inc(i); 
+      while (true) do
+      begin
+        if (entwickelterString[i] = ';') then 
+        begin
+          FZuZeichnenderString += (FGrammatik.variableZuWert[tmp_string]) + ';'; 
+          tmp_string := ''; inc(i); continue;
+        end
+        else if (entwickelterString[i] = ')') then 
+        begin
+          FZuZeichnenderString += (FGrammatik.variableZuWert[tmp_string]) + ')'; 
+          tmp_string := ''; break;
+        end
+        else if (entwickelterString[i] = '(') then 
+        begin
+          FZuZeichnenderString += '('; tmp_string := ''; inc(i); continue;
+        end;
+        tmp_string += entwickelterString[i]; 
+        inc(i);
+      end;
+    end;
+    inc(i);
+  end;
 end;
 
 // toSmallLetter-Funktion
@@ -196,6 +236,7 @@ procedure TStringEntwickler.entwickeln(rekursionsTiefe: Cardinal);
 begin
     FEntwickelterString := '';
     entw(rekursionsTiefe,FGrammatik.axiom);
+    aktualisiereZuZeichnendenString;
 end;
 
 function TStringEntwickler.copy : TStringEntwickler;

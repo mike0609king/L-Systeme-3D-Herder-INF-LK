@@ -1,7 +1,7 @@
 object uGrammatiken: TuGrammatiken
-  Left = 1368
+  Left = 1199
   Height = 844
-  Top = 505
+  Top = 506
   Width = 1010
   Caption = 'Grammatiken'
   ClientHeight = 805
@@ -11,7 +11,7 @@ object uGrammatiken: TuGrammatiken
   Menu = MainMenu1
   OnCreate = FormCreate
   ParentDoubleBuffered = False
-  LCLVersion = '2.0.2.0'
+  LCLVersion = '2.0.4.0'
   object Memo1: TMemo
     Left = 32
     Height = 696

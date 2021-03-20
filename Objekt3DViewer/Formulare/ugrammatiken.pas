@@ -88,7 +88,7 @@ Begin
 g:=Memo1.Lines[0];
 if Length(g) > 0 then
 Begin
-n:=0;
+n:=1;
 While n<= Memo1.Lines.Count-1 do
   begin
     p:=pos('>',Memo1.Lines[n]);
@@ -101,9 +101,8 @@ While n<= Memo1.Lines.Count-1 do
       Begin
         zeichnerInit := TZeichnerInit.Create;
         gram:=TGrammatik.Create;
-        n:=0;
-        p:=pos('>',Memo1.Lines[0]);
-        gram.axiom:= copy(Memo1.Lines[0],1,p-2);
+        n:=1;
+        gram.axiom:= Memo1.Lines[0];
         While n<= Memo1.Lines.Count-1 do
           begin
           s:=pos(',',Memo1.Lines[n]);
@@ -296,7 +295,7 @@ begin
     conf.EnumSubKeys(UnicodeString('Grammatik/regeln/'),regelnLinkeSeite);
     for regelnLinkeSeiteIdx := 0 to regelnLinkeSeite.Count - 1 do
         begin
-            i:=0;
+            i:=1;
             tmp_pfad := 'Grammatik/regeln/' + regelnLinkeSeite[regelnLinkeSeiteIdx];
             conf.EnumSubKeys(UnicodeString(tmp_pfad), regelnRechteSeite);
             for regelnRechteSeiteIdx := 0 to regelnRechteSeite.Count - 1 do
@@ -312,6 +311,7 @@ begin
                       UnicodeString(tmp_pfad + '/' + regelnRechteSeite[regelnRechteSeiteIdx] + '/zufaelligkeit'),
                       0.0
                   );
+                  Memo1.Lines[0]:=axiom;
                   Memo1.Lines[i]:=axiom+'->'+produktion+','+FloattoStr(zufaelligkeit);
                   INC(i);
                 end
@@ -322,6 +322,7 @@ begin
                       UnicodeString(tmp_pfad + '/' + regelnRechteSeite[regelnRechteSeiteIdx] + '/zufaelligkeit'),
                       0.0
                   );
+                  Memo1.Lines[0]:=axiom;
                   Memo1.Lines[i]:=axiom+'->'+produktion+','+FloattoStr(zufaelligkeit);
                   INC(i);
                 END;
@@ -349,13 +350,13 @@ procedure TuGrammatiken.MenuItem3Click(Sender: TObject); //Turtle speichern
        begin
        zeichnerInit := TZeichnerInit.Create;
        gram:=TGrammatik.Create;
-       n:=0;
+       n:=1;
        p:=pos('>',Memo1.Lines[0]);
        if not ((Edit3.text = '') or (Edit2.text = '') or (Edit4.text = '')) then
        begin
-       if p<>0 then
+       if p=0 then
        begin
-       gram.axiom:= copy(Memo1.Lines[0],1,p-2);
+       gram.axiom:= Memo1.Lines[0];
        While n<= Memo1.Lines.Count-1 do
        begin
         s:=pos(',',Memo1.Lines[n]);

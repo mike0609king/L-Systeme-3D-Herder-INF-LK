@@ -53,14 +53,26 @@ begin
   o.addTurtle(turtle);
   // o.setzeSichtbarkeit(0,false);  // setzten der Sichtbarkeit der Turtle
 
-  gram := TGrammatik.Create;                          // initialisieren der Grammatik-Klass
-  gram.axiom := 'F(7)';                                  // axiom einstellen
-  gram.addRegel('F(c)','F(c)&[+F(c)&&F(c)F(c)]&&F(c)[-^^/^-F(c)F(c)]F(c)');      // 100%ige Chance fuer diese Einsetzung
+  // gram := TGrammatik.Create;                          // initialisieren der Grammatik-Klass
+  // gram.axiom := 'F(7)';                                  // axiom einstellen
+  // gram.addRegel('F(c)','F(c)&[+F(c)&&F(c)F(c)]&&F(c)[-^^/^-F(c)F(c)]F(c)');      // 100%ige Chance fuer diese Einsetzung
   // zweiter Baum (index 1)
+  // zeichenPara.setzeStartPunkt(2,0,0);
+  // turtle := TTurtle.Create(
+  //  gram, 
+  //  zeichnerInit.initialisiere('ZeichnerFarben',zeichenPara)
+  // );
+  // o.addTurtle(turtle);
+  // o.setzeSichtbarkeit(1,false);  // setzten der Sichtbarkeit der Turtle
+
+  gram := TGrammatik.Create;                          // initialisieren der Grammatik-Klass
+  gram.axiom := 'F(1;2)&[+F(2)&&F(3)F(4)]&&F(5)[-^^/^-F(0)F(7)]F(8)';                                  // axiom einstellen
+  gram.addRegel('F(c)','F(c)&[+F(c)&&F(c)F(c)]&&F(c)[-^^/^-F(c)F(c)]F(c)');      // 100%ige Chance fuer diese Einsetzung
+  gram.addRegel('F(c;l)','F(c;l)&[+F(c;l)&&F(c;l)F(c;l)]&&F(c;l)[-^^/^-F(c;l)F(c;l)]F(c;l)');      // 100%ige Chance fuer diese Einsetzung
   zeichenPara.setzeStartPunkt(2,0,0);
   turtle := TTurtle.Create(
     gram, 
-    zeichnerInit.initialisiere('ZeichnerFarben',zeichenPara)
+    zeichnerInit.initialisiere('ZeichnerFarbenUndSchrittlaenge',zeichenPara)
   );
   o.addTurtle(turtle);
   // o.setzeSichtbarkeit(1,false);  // setzten der Sichtbarkeit der Turtle

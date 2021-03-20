@@ -4,7 +4,7 @@ unit uzeichnerSchrittlaenge;
 interface
 
 uses
-  Classes, SysUtils, uZeichnerBase, fgl;
+  Classes, SysUtils, uZeichnerBase;
 
 type TZeichnerSchrittlaenge = class(TZeichnerBase)
   private

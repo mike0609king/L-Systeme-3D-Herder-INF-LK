@@ -49,6 +49,7 @@ type
   private
     turtlemanager:TTurtlemanager;
     function gib_markierte_nr():CARDINAL;
+
   public
 
   end;
@@ -74,7 +75,53 @@ begin
      if CheckListBox1.Checked[i] then result:=i;
    end;
 end;
-
+function TuGrammatiken.stringanalyse(s:string):Boolean;  //returns false if doesn't work
+VAR str,rest_string:string;i,l,h,k,g,b:CARDINAL; c:Char;klammer_auf,bool:Boolean
+begin
+   str:=s.Copy();
+   rest_string:=s.copy();
+   l:=length(str);
+   c:=strtochar(str[0]);
+   h:=ord(c);
+   //keine kleinen Buchstaben als Axiome außer f
+   if not (h=ord('f') or (h>=ord('A') and h<=ord('Z')) then result:=False;
+   //wohlgeformte klammern   ()
+   for i:=0 to l do
+     begin
+       if str[i]='(' then
+       begin
+         if klammer_auf then result:=False
+         else klammer_auf:=True;
+       end;
+       if str[i]=')' then klammer_auf:=False;
+     end;
+   while not rest_string.pos('(')=0 do
+   begin
+      k:=rest_string.pos('(')+1;
+      g:=rest_string.pos(')')-1;
+      bool:=True;
+      for k to g do
+        begin
+          b:=strtochar(str[k]);
+          h:=ord(b);
+          if bool then
+          begin
+               if not (h>=ord('a') and h<=ord('z') then result:=False;
+               bool:=False;
+          end
+          else
+          begin
+               if h=ord(';') then
+               begin
+                   bool:=False;
+               end
+               else result:=False;
+          end;
+        end;
+      //reststring : löschen was in der klammer war
+    end;
+   result:=True;
+end;
 procedure TuGrammatiken.Button1Click(Sender: TObject); //Turtle erstellen
 var i,n,nr,anzahl:CARDINAL;
     gram:TGrammatik;R,L,NameGrammatik:String;
@@ -111,7 +158,7 @@ While n<= Memo1.Lines.Count-1 do
               p:=pos('>',Memo1.Lines[n]);
               L:=copy(Memo1.Lines[n],1,p-2);//linke Seite des '->'
               R:=copy(Memo1.Lines[n],p+1,p+100);//rechte Seite des '->'
-              gram.addRegel(L,R);//Regel ohne Wahrscheinlichkeit hinzufügen     //später
+              gram.addRegel(L,R);//Regel ohne Wahrscheinlichkeit hinzufügen
               INC(n)
             end
             else

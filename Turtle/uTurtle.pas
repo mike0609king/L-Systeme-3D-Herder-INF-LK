@@ -62,6 +62,10 @@ type TTurtle = class
     // setter-Funktionen (public)
     procedure setzeStartPunkt(const x,y,z: Real);
     procedure setzeZeichnerName(const neuerName: String);
+    procedure aendereParameter(para: TStringList);
+
+    // getter-Fuinktionen (public)
+    function gibParameter : TStringList;
 
     { Aufgabe: Zeichenen des Strings, der in dem Stringentwickler ist. Sollte der String eine bestimmte laenge
       ueberschritten haben, so wird dieser String nicht gezeichnet.
@@ -209,6 +213,12 @@ begin
   FZeichner := zeichnerInit.initialisiere(neuerName, FZeichner.gibZeichenParameter);
 end;
 
+procedure TTurtle.aendereParameter(para: TStringList);
+begin
+  FGrammatik.aendereParameter(para);
+  FStringEntwickler.aendereParameter(para);
+end;
+
 procedure TTurtle.setzeVisible(const vis: Boolean);
 begin
   FVisible := vis;
@@ -263,6 +273,11 @@ end;
 function TTurtle.gibAxiom : String;
 begin
   result := FGrammatik.axiom;
+end;
+
+function TTurtle.gibParameter : TStringList;
+begin
+  result := FGrammatik.gibParameter;
 end;
 
 // zeichner
@@ -337,13 +352,13 @@ begin
       for produktionIdx := 0 to (FGrammatik.regeln.data[regelIdx]).Count - 1 do
       begin
         conf.setValue(
-            UnicodeString(tmp_path + IntToStr(produktionIdx+1) + '/produktion'),
-            UnicodeString(FGrammatik.regeln.data[regelIdx][produktionIdx].produktion)
+          UnicodeString(tmp_path + IntToStr(produktionIdx+1) + '/produktion'),
+          UnicodeString(FGrammatik.regeln.data[regelIdx][produktionIdx].produktion)
         );
 
         conf.setValue(
-            UnicodeString(tmp_path + IntToStr(produktionIdx+1) + '/zufaelligkeit'),
-            FGrammatik.regeln.data[regelIdx][produktionIdx].zufaelligkeit
+          UnicodeString(tmp_path + IntToStr(produktionIdx+1) + '/zufaelligkeit'),
+          FGrammatik.regeln.data[regelIdx][produktionIdx].zufaelligkeit
         );
       end;
     end;

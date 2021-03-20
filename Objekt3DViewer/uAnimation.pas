@@ -13,13 +13,14 @@ procedure ozeichnen;
 implementation
 
 uses uTurtle, uGrammatik, uBeleuchtung, uZeichnerInit, uTurtleManager, uZeichnerBase,
-sysUtils; // testing
+sysUtils,Classes; // testing
 VAR o: TTurtleManager;
     turtle,turtle1: TTurtle;
     gram: TGrammatik;
     zeichenPara: TZeichenParameter;
     zeichnerInit: TZeichnerInit;
     manager: TTurtleManager;
+    para: TStringList;
 
 procedure ozeichnen;
 begin
@@ -74,6 +75,12 @@ begin
     gram, 
     zeichnerInit.initialisiere('ZeichnerFarbenUndSchrittlaenge',zeichenPara)
   );
+  para := TStringList.Create;
+  para.add('14'); para.add('14');
+  para.add('14'); para.add('14');
+  para.add('14'); para.add('14');
+  para.add('14'); para.add('14'); para.add('14');
+  turtle.aendereParameter(para);
   o.addTurtle(turtle);
   // o.setzeSichtbarkeit(1,false);  // setzten der Sichtbarkeit der Turtle
 
@@ -85,8 +92,26 @@ begin
     gram, 
     zeichnerInit.initialisiere('ZeichnerFarben',zeichenPara)
   );
+  para := TStringList.Create;
+  //para.add('14'); para.add('14'); para.add('14'); para.add('14'); 
+  //para.add('14'); para.add('14'); para.add('14'); para.add('14'); 
+  turtle.aendereParameter(para);
   o.addTurtle(turtle);
   // o.setzeSichtbarkeit(1,false);  // setzten der Sichtbarkeit der Turtle
+
+  gram := TGrammatik.Create;                          // initialisieren der Grammatik-Klass
+  gram.axiom := 'F(14)&[+F(14)&&F(14)F(14)]&&F(14)[-^^/^-F(14)F(14)]F(14)';                                  // axiom einstellen
+  gram.addRegel('F(c)','F(c)&[+F(c)&&F(c)F(c)]&&F(c)[-^^/^-F(c)F(c)]F(c)');      // 100%ige Chance fuer diese Einsetzung
+  zeichenPara.setzeStartPunkt(-4,0,0);
+  turtle := TTurtle.Create(
+    gram, 
+    zeichnerInit.initialisiere('ZeichnerFarben',zeichenPara)
+  );
+  o.gibTurtle(2, turtle1);
+  turtle.aendereParameter(turtle1.gibParameter);
+  o.addTurtle(turtle);
+  // o.setzeSichtbarkeit(1,false);  // setzten der Sichtbarkeit der Turtle
+
 
   // dritter Baum (index 2)
   // zeichenPara.setzeStartPunkt(5,0,0);

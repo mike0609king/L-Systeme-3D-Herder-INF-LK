@@ -41,6 +41,8 @@ type TStringEntwickler = class
     constructor Create(gram: TGrammatik; entwickelterS: String); overload; // review!!
     destructor Destroy; override;
 
+    procedure aendereParameter(para: TStringList);
+
     { Aufgabe: Entwickelt den String gemaess der gegebenen Grammatik bis zur
       rekursions Tiefe, die angegeben wurde.}
     procedure entwickeln(rekursionsTiefe: Cardinal);
@@ -75,6 +77,12 @@ begin
   FreeAndNil(maximalerZufallsraum);
   FreeAndNil(FZuZeichnenderString);
   FreeAndNil(FGrammatik)    //vllt auch FGrammatik :=NIL //?
+end;
+
+procedure TStringEntwickler.aendereParameter(para: TStringList);
+begin
+  FGrammatik.aendereParameter(para);
+  aktualisiereZuZeichnendenString;
 end;
 
 function TStringEntwickler.gibAxiom : String;
@@ -127,6 +135,7 @@ end;
 procedure TStringEntwickler.aktualisiereZuZeichnendenString;
 var i: Cardinal; tmp_string: String;
 begin
+  FZuZeichnenderString := '';
   i := 1; 
   while (i <= length(entwickelterString)) do
   begin

@@ -182,11 +182,6 @@ begin
   result := rechts;
 end;
 
-procedure TGrammatik.addRegel(links: String; rechts: String);
-begin
-  addRegel(links,rechts,100);
-end;
-
 procedure TGrammatik.aendereParameter(para: TStringList);
 var paraCnt: Cardinal; varName: String;
 begin
@@ -209,7 +204,6 @@ begin
     while length(varName) < 4 do varName:='0'+varName;
     result.add(variableZuWert[varName]);
   end;
->>>>>>> parameterisiert
 end;
 
 function TGrammatik.copy : TGrammatik;

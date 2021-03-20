@@ -271,7 +271,6 @@
         <Filename Value="..\Turtle\uzeichnerfarbenundschrittlaenge.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit44>
->>>>>>> parameterisiert
     </Units>
   </ProjectOptions>
   <CompilerOptions>

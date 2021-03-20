@@ -25,7 +25,7 @@ VAR o: TTurtleManager;
 procedure ozeichnen;
 begin
    //LichtAn(FALSE);
-   Hauptform.o.zeichnen;
+   o.zeichnen;
 end;
 
 begin
@@ -186,5 +186,4 @@ begin
   // o.setzeSichtbarkeit(3,true);  // setzten der Sichtbarkeit der Turtle
 
   // turtle.speichern('h.json');
->>>>>>> parameterisiert
 end.

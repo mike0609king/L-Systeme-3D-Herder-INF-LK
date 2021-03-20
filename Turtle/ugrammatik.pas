@@ -80,7 +80,7 @@ begin
   variableZuWert:=TVariableZuWert.Create;
   for letter in axiom do
   begin
-    if (ord(letter) < 47) or (ord(letter) > 57) then
+    if (ord(letter) <= 47) or (ord(letter) > 57) then
     begin
       if (letter <> ';') and (letter <> ')') then
       begin

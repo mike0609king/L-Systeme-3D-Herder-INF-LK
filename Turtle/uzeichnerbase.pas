@@ -142,13 +142,6 @@ begin
   ObjUmEigenKOSDrehen(a,0,0,0,0,0,1)
 end;
 
-{
-procedure TZeichnerBase.kehrt;
-begin
-  ObjUmEigenKOSDrehen(180,0,0,0,0,0,1)
-end;
-}
-
 //// feste Aktionen der Versandtabelle
 procedure TZeichnerBase.aktionSchrittMitLinie(list: TStringList);
 var m: Cardinal;

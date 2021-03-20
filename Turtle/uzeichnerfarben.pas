@@ -8,13 +8,12 @@ uses
   Classes, SysUtils, uZeichnerBase, fgl;
 
 type TZeichnerFarben = class(TZeichnerBase)
-    private
-        //procedure aktionBlatt;
-        FIdxZuFarbe: array[1..14,0..2] of Real;
-        procedure aktionSchrittMtLinie(list: TStringList);
-    public
-        constructor Create(zeichenPara: TZeichenParameter); override;
-        destructor Destroy; override;
+  private
+    FIdxZuFarbe: array[1..14,0..2] of Real;
+    procedure aktionSchrittMtLinie(list: TStringList);
+  public
+    constructor Create(zeichenPara: TZeichenParameter); override;
+    destructor Destroy; override;
 end;
 
 implementation
@@ -41,7 +40,8 @@ var m: Cardinal;
 begin
     // TODO: ueberpruefung von Idx
     colorIdx := StrToInt(list[0]);
-    m := 50; // spaeter parametrisieren
+    m := 50; 
+    if (colorIdx > high(FIdxZuFarbe)) then colorIdx := 0;
     schritt(1/m,true,FIdxZuFarbe[colorIdx][0],
                      FIdxZuFarbe[colorIdx][1],
                      FIdxZuFarbe[colorIdx][2]); // hier danach die Farben
@@ -49,26 +49,25 @@ end;
 
 constructor TZeichnerFarben.Create(zeichenPara: TZeichenParameter);
 begin
-    inherited;
-    FName := 'ZeichnerFarben';
+  inherited;
+  FName := 'ZeichnerFarben';
 
-    FIdxZuFarbe[1,0] := 0.7; FIdxZuFarbe[1,1] := 0.4; FIdxZuFarbe[1,2] := 0.1;
-    FIdxZuFarbe[1,0] := 0.5; FIdxZuFarbe[1,1] := 0.5; FIdxZuFarbe[1,2] := 0.1;
-    FIdxZuFarbe[3,0] := 0.5; FIdxZuFarbe[3,1] := 0.7; FIdxZuFarbe[3,2] := 0.3;
-    FIdxZuFarbe[4,0] := 0.6; FIdxZuFarbe[4,1] := 0.1; FIdxZuFarbe[4,2] := 0;
-    FIdxZuFarbe[5,0] := 0.4; FIdxZuFarbe[5,1] := 0.9; FIdxZuFarbe[5,2] := 0.6;
-    FIdxZuFarbe[6,0] := 0.4; FIdxZuFarbe[6,1] := 0.3; FIdxZuFarbe[6,2] := 0.1;
-    FIdxZuFarbe[7,0] := 0.6; FIdxZuFarbe[7,1] := 0.1; FIdxZuFarbe[7,2] := 0.4;
-    FIdxZuFarbe[8,0] := 0.7; FIdxZuFarbe[8,1] := 0; FIdxZuFarbe[8,2] := 0.1;
-    FIdxZuFarbe[9,0] := 0.9; FIdxZuFarbe[9,1] := 0.5; FIdxZuFarbe[9,2] := 0.1;
-    FIdxZuFarbe[10,0] := 0.8; FIdxZuFarbe[10,1] := 1; FIdxZuFarbe[10,2] := 1;
-    FIdxZuFarbe[11,0] := 0.3; FIdxZuFarbe[11,1] := 0.2; FIdxZuFarbe[11,2] := 0.6;
-    FIdxZuFarbe[12,0] := 1; FIdxZuFarbe[12,1] := 0.9; FIdxZuFarbe[12,2] := 0.3;
-    FIdxZuFarbe[13,0] := 1; FIdxZuFarbe[13,1] := 0.8; FIdxZuFarbe[13,2] := 0;
-    FIdxZuFarbe[14,0] := 1; FIdxZuFarbe[14,1] := 1; FIdxZuFarbe[14,2] := 1;
+  FIdxZuFarbe[1,0] := 0.7; FIdxZuFarbe[1,1] := 0.4; FIdxZuFarbe[1,2] := 0.1;
+  FIdxZuFarbe[1,0] := 0.5; FIdxZuFarbe[1,1] := 0.5; FIdxZuFarbe[1,2] := 0.1;
+  FIdxZuFarbe[3,0] := 0.5; FIdxZuFarbe[3,1] := 0.7; FIdxZuFarbe[3,2] := 0.3;
+  FIdxZuFarbe[4,0] := 0.6; FIdxZuFarbe[4,1] := 0.1; FIdxZuFarbe[4,2] := 0;
+  FIdxZuFarbe[5,0] := 0.4; FIdxZuFarbe[5,1] := 0.9; FIdxZuFarbe[5,2] := 0.6;
+  FIdxZuFarbe[6,0] := 0.4; FIdxZuFarbe[6,1] := 0.3; FIdxZuFarbe[6,2] := 0.1;
+  FIdxZuFarbe[7,0] := 0.6; FIdxZuFarbe[7,1] := 0.1; FIdxZuFarbe[7,2] := 0.4;
+  FIdxZuFarbe[8,0] := 0.7; FIdxZuFarbe[8,1] := 0; FIdxZuFarbe[8,2] := 0.1;
+  FIdxZuFarbe[9,0] := 0.9; FIdxZuFarbe[9,1] := 0.5; FIdxZuFarbe[9,2] := 0.1;
+  FIdxZuFarbe[10,0] := 0.8; FIdxZuFarbe[10,1] := 1; FIdxZuFarbe[10,2] := 1;
+  FIdxZuFarbe[11,0] := 0.3; FIdxZuFarbe[11,1] := 0.2; FIdxZuFarbe[11,2] := 0.6;
+  FIdxZuFarbe[12,0] := 1; FIdxZuFarbe[12,1] := 0.9; FIdxZuFarbe[12,2] := 0.3;
+  FIdxZuFarbe[13,0] := 1; FIdxZuFarbe[13,1] := 0.8; FIdxZuFarbe[13,2] := 0;
+  FIdxZuFarbe[14,0] := 1; FIdxZuFarbe[14,1] := 1; FIdxZuFarbe[14,2] := 1;
 
-    //FVersandTabelle.AddOrSetData('B',aktionBlatt);
-    FVersandTabelle.AddOrSetData('F',aktionSchrittMtLinie);
+  FVersandTabelle.AddOrSetData('F',aktionSchrittMtLinie);
 end;
 
 destructor TZeichnerFarben.Destroy;

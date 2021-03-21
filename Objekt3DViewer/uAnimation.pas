@@ -141,8 +141,8 @@ begin
 
   zeichenPara.winkel := 47.5;
   zeichenPara.rekursionsTiefe := 4;
-  gram := TGrammatik.Create;                          // initialisieren der Grammatik-Klass
-  gram.axiom := 'F(1;30)&[+F(2)&&F(3)F(4)]&&F(5)[-^^/^-F(0)F(7)]F(8)';                                  // axiom einstellen
+  gram := TGrammatik.Create;
+  gram.axiom := 'F(1;20)&[+F(2)&&F(3)F(4)]&&F(5)[-^^/^-F(13)F(7)]F(8)';                                  // axiom einstellen
   gram.addRegel('F(c)','F(c)&[+F(c)&&F(c)F(c)]&&F(c)[-^^/^-F(c)F(c)]F(c)');      
   gram.addRegel('F(c;l)','F(c;l)&[+F(c;l)&&F(c;l)F(c;l)]&&F(c;l)[-^^/^-F(c;l)F(c;l)]F(c;l)');      
   plaziereTurtle('ZeichnerFarbenUndSchrittlaenge')

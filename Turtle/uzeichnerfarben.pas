@@ -40,7 +40,9 @@ var m: Cardinal;
 begin
     colorIdx := StrToInt(list[0]);
     m := 50; 
-    if (colorIdx > high(FIdxZuFarbe)) then colorIdx := 0;
+    if (colorIdx = 0) or 
+    (colorIdx > high(FIdxZuFarbe)) 
+    then colorIdx := 14;
     schritt(1/m,true,FIdxZuFarbe[colorIdx][0],
                      FIdxZuFarbe[colorIdx][1],
                      FIdxZuFarbe[colorIdx][2]); 
@@ -52,7 +54,7 @@ begin
   FName := 'ZeichnerFarben';
 
   FIdxZuFarbe[1,0] := 0.7; FIdxZuFarbe[1,1] := 0.4; FIdxZuFarbe[1,2] := 0.1;
-  FIdxZuFarbe[1,0] := 0.5; FIdxZuFarbe[1,1] := 0.5; FIdxZuFarbe[1,2] := 0.1;
+  FIdxZuFarbe[2,0] := 0.5; FIdxZuFarbe[2,1] := 0.5; FIdxZuFarbe[2,2] := 0.1;
   FIdxZuFarbe[3,0] := 0.5; FIdxZuFarbe[3,1] := 0.7; FIdxZuFarbe[3,2] := 0.3;
   FIdxZuFarbe[4,0] := 0.6; FIdxZuFarbe[4,1] := 0.1; FIdxZuFarbe[4,2] := 0;
   FIdxZuFarbe[5,0] := 0.4; FIdxZuFarbe[5,1] := 0.9; FIdxZuFarbe[5,2] := 0.6;

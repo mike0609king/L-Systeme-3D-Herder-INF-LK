@@ -70,4 +70,4 @@ Noch zu ergänzen:
 Folgende features sollen noch hinzugefuegt werden
   - Baum als Datei einlesen und speichern koennen
     - andere Einstellungen wie die Zeichenart, Winkel, rekursions Tiefe sollen auch gespeichert werden
-  - Performence verbessern (-> GPU verwenden) ??
+  - Performance verbessern (-> GPU verwenden) ??

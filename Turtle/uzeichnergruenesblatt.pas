@@ -8,11 +8,11 @@ uses
   Classes, SysUtils, uZeichnerBase;
 
 type TZeichnerGruenesBlatt = class(TZeichnerBase)
-    private
-        procedure aktionBlatt;
-    public
-        constructor Create(zeichenPara: TZeichenParameter); override;
-        destructor Destroy; override;
+  private
+    procedure aktionBlatt(list: TStringList);
+  public
+    constructor Create(zeichenPara: TZeichenParameter); override;
+    destructor Destroy; override;
 end;
 
 implementation
@@ -33,21 +33,20 @@ begin
   ObjInEigenKOSVerschieben(0,l,0)
 end;
 
-procedure TZeichnerGruenesBlatt.aktionBlatt;
+procedure TZeichnerGruenesBlatt.aktionBlatt(list: TStringList);
 var m: Cardinal;
 begin
-    m := 50;
-    Blatt(1/m,true);
+  m := 50;
+  Blatt(1/m,true);
 end;
 
 constructor TZeichnerGruenesBlatt.Create(zeichenPara: TZeichenParameter);
 begin
-    inherited;
-    FName := 'ZeichnerGruenesBlatt';
-    FVersandTabelle.AddOrSetData('B',aktionBlatt);
+  inherited;
+  FName := 'ZeichnerGruenesBlatt';
+  FVersandTabelle.AddOrSetData('B',aktionBlatt);
 end;
 
-//?
 destructor TZeichnerGruenesBlatt.Destroy;
 begin
   FreeAndNil(FName);

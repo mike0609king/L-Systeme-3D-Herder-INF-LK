@@ -1,13 +1,12 @@
-unit uZeichnerFarben;
-
+unit uzeichnerfarbenundschrittlaenge;
 {$mode delphi}{$H+}
 
 interface
 
 uses
-  Classes, SysUtils, uZeichnerBase, fgl;
+  Classes, SysUtils, uZeichnerBase;
 
-type TZeichnerFarben = class(TZeichnerBase)
+type TZeichnerFarbenUndSchrittlaenge = class(TZeichnerBase)
   private
     FIdxZuFarbe: array[1..14,0..2] of Real;
     procedure aktionSchrittMtLinie(list: TStringList);
@@ -34,22 +33,36 @@ begin
   ObjInEigenKOSVerschieben(0,l,0)
 end;
 
-procedure TZeichnerFarben.aktionSchrittMtLinie(list: TStringList);
+procedure TZeichnerFarbenUndSchrittlaenge.aktionSchrittMtLinie(list: TStringList);
 var m: Cardinal;
     colorIdx: Cardinal;
+    procedure aux_SchrittUndFarbeUmsetzen;
+    begin
+      if (colorIdx > high(FIdxZuFarbe)) then colorIdx := 0;
+      schritt(1/m,true,FIdxZuFarbe[colorIdx][0],
+                       FIdxZuFarbe[colorIdx][1],
+                       FIdxZuFarbe[colorIdx][2]); 
+    end;
 begin
-    colorIdx := StrToInt(list[0]);
-    m := 50; 
-    if (colorIdx > high(FIdxZuFarbe)) then colorIdx := 0;
-    schritt(1/m,true,FIdxZuFarbe[colorIdx][0],
-                     FIdxZuFarbe[colorIdx][1],
-                     FIdxZuFarbe[colorIdx][2]); 
+  if (list.Count = 2) then
+  begin
+    colorIdx := StrToInt(list[0]); m := StrToInt(list[1]); 
+  end
+  else if (list.Count = 1) then
+  begin
+    colorIdx := StrToInt(list[0]); m := 50;
+  end
+  else if (list.Count = 0) then 
+  begin
+    colorIdx := 14; m := 50
+  end;
+  aux_SchrittUndFarbeUmsetzen;
 end;
 
-constructor TZeichnerFarben.Create(zeichenPara: TZeichenParameter);
+constructor TZeichnerFarbenUndSchrittlaenge.Create(zeichenPara: TZeichenParameter);
 begin
   inherited;
-  FName := 'ZeichnerFarben';
+  FName := 'ZeichnerFarbenUndSchrittlaenge';
 
   FIdxZuFarbe[1,0] := 0.7; FIdxZuFarbe[1,1] := 0.4; FIdxZuFarbe[1,2] := 0.1;
   FIdxZuFarbe[1,0] := 0.5; FIdxZuFarbe[1,1] := 0.5; FIdxZuFarbe[1,2] := 0.1;
@@ -69,9 +82,10 @@ begin
   FVersandTabelle.AddOrSetData('F',aktionSchrittMtLinie);
 end;
 
-destructor TZeichnerFarben.Destroy;
+destructor TZeichnerFarbenUndSchrittlaenge.Destroy;
 begin
   FreeAndNil(FName);
   inherited;
 end;
 end.
+

@@ -76,13 +76,11 @@ begin
 end;
 
 function TZeichnerInit.gibZeichnerListe : TStringList;
-var stringListe: TStringList;
-    i: Cardinal;
+var i: Cardinal;
 begin
-  stringListe := TStringList.Create;
+  result := TStringList.Create;
   for i := 0 to FVersandTabelleZeichner.Count - 1 do
-      stringListe.add(FVersandTabelleZeichner.keys[i]);
-  result := stringListe;
+      result.add(FVersandTabelleZeichner.keys[i]);
 end;
 
 end.

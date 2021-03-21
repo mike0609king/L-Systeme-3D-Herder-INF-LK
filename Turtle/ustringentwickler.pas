@@ -125,7 +125,7 @@ begin
     begin
         prefix.add(prefix[i-1]+convertiereRealZuCardinal(data[i-1].zufaelligkeit));
     end;
-    zufaelligerWert := random(maximalerZufallsraum);
+    zufaelligerWert := random(maximalerZufallsraum)-1;
     ret := data[upper_bound(zufaelligerWert)].produktion;
     exit(true);
   end;
@@ -243,6 +243,7 @@ procedure TStringEntwickler.entwickeln(rekursionsTiefe: Cardinal);
       else FEntwickelterString += s[i];
       inc(i);
     end;
+    FreeAndNil(paraList);
   end;
 begin
   FEntwickelterString := '';

@@ -287,11 +287,13 @@ function TTurtle.zeichnen : Boolean;
 VAR i: Cardinal; paraList : TStringList; 
     zuZeichnenderBuchstabe: Char; tmp_string: String;
 begin
+  
   if length(FStringEntwickler.zuZeichnenderString) > FMaximaleStringLaenge then exit(false);
   init(FZeichner.startPunkt.x,FZeichner.startPunkt.y,FZeichner.startPunkt.z);
   i := 1; 
   while (i <= length(FStringEntwickler.zuZeichnenderString)) do
   begin
+    FreeAndNil(paraList); // damit es keine leaks gibt
     paraList := TStringList.Create;
     zuZeichnenderBuchstabe := FStringEntwickler.zuZeichnenderString[i];
     if (i <> length(FStringEntwickler.zuZeichnenderString) - 1) and 
@@ -307,8 +309,7 @@ begin
         end
         else if (FStringEntwickler.zuZeichnenderString[i] = ')') then 
         begin
-          paraList.add(tmp_string); 
-          tmp_string := ''; break;
+          paraList.add(tmp_string); tmp_string := ''; break;
         end
         else if (FStringEntwickler.zuZeichnenderString[i] = '(') then 
         begin
@@ -321,6 +322,7 @@ begin
     FZeichner.zeichneBuchstabe(zuZeichnenderBuchstabe,paraList);
     inc(i);
   end;
+  FreeAndNil(paraList);
   result := true;
 end;
 

@@ -76,13 +76,13 @@ begin
    end;
 end;
 function TuGrammatiken.stringanalyse(s:string):Boolean;  //returns false if doesn't work
+//für regeln nicht axiome
 VAR str,rest_string:string; i,l,h,k,g,b:CARDINAL; c:Char;klammer_auf,bool:Boolean;
 begin
    str:=Copy(s,1,length(s));
    rest_string:=Copy(s,1,length(s));
    l:=length(str);
    h:=ord(str[1]);
-   //keine kleinen Buchstaben als Axiome außer f
    if not ((h=ord('f')) or ((h>=ord('A')) and (h<=ord('Z')))) then result:=False;
    //wohlgeformte klammern   ()
    for i:=1 to l do
@@ -139,7 +139,13 @@ Begin
           zeichnerInit := TZeichnerInit.Create;
           gram:=TGrammatik.Create;
           gram.axiom:= Memo1.Lines[0];
+          //axiom überprüfen
             begin
+             if stringanalyse(Memo1.Lines[n]) then
+             begin
+                  SHOWMESSAGE('Deine Eingabe ist falsch! Bitte überprüfe die Regeln der Grammatik!');
+                  break
+             end;
              p:=pos('>',Memo1.Lines[n]);
              if p=0 then
              Begin

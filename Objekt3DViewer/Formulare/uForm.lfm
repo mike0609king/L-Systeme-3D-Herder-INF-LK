@@ -1,13 +1,12 @@
 object Form1: TForm1
-  Left = -11
-  Height = 1675
-  Top = 9
-  Width = 1820
+  Left = 1912
+  Height = 1017
+  Top = -8
+  Width = 1920
   Caption = 'L-Systeme in 3D'
-  ClientHeight = 1636
-  ClientWidth = 1820
+  ClientHeight = 997
+  ClientWidth = 1920
   Color = clBtnFace
-  DesignTimePPI = 192
   Font.Color = clWindowText
   Font.Height = -22
   Font.Name = 'MS Sans Serif'
@@ -16,7 +15,7 @@ object Form1: TForm1
   OnKeyDown = FormKeyDown
   OnKeyUp = FormKeyUp
   OnShow = FormShow
-  LCLVersion = '2.0.4.0'
+  LCLVersion = '2.0.0.4'
   Scaled = False
   object GraphikPanel: TPanel
     Left = 8
@@ -31,7 +30,7 @@ object Form1: TForm1
     TabOrder = 20
   end
   object Label1: TLabel
-    Left = 1658
+    Left = 1758
     Height = 26
     Top = 96
     Width = 54
@@ -44,7 +43,7 @@ object Form1: TForm1
     ParentFont = False
   end
   object Label2: TLabel
-    Left = 1562
+    Left = 1662
     Height = 26
     Top = 142
     Width = 202
@@ -57,7 +56,7 @@ object Form1: TForm1
     ParentFont = False
   end
   object Label3: TLabel
-    Left = 1562
+    Left = 1662
     Height = 26
     Top = 316
     Width = 254
@@ -70,7 +69,7 @@ object Form1: TForm1
     ParentFont = False
   end
   object Label4: TLabel
-    Left = 1562
+    Left = 1662
     Height = 26
     Top = 396
     Width = 232
@@ -83,7 +82,7 @@ object Form1: TForm1
     ParentFont = False
   end
   object Label5: TLabel
-    Left = 1562
+    Left = 1662
     Height = 26
     Top = 476
     Width = 212
@@ -96,7 +95,7 @@ object Form1: TForm1
     ParentFont = False
   end
   object Label6: TLabel
-    Left = 1564
+    Left = 1664
     Height = 26
     Top = 560
     Width = 230
@@ -111,7 +110,7 @@ object Form1: TForm1
   object Label8: TLabel
     Left = 8
     Height = 26
-    Top = 1548
+    Top = 909
     Width = 156
     Anchors = [akLeft, akBottom]
     Caption = 'Geschwindigkeit'
@@ -122,7 +121,7 @@ object Form1: TForm1
     ParentFont = False
   end
   object BtPause: TButton
-    Left = 1592
+    Left = 1692
     Height = 50
     Top = 16
     Width = 162
@@ -136,7 +135,7 @@ object Form1: TForm1
     TabOrder = 0
   end
   object BtZoomP: TButton
-    Left = 1560
+    Left = 1660
     Height = 32
     Top = 96
     Width = 50
@@ -151,7 +150,7 @@ object Form1: TForm1
     TabOrder = 1
   end
   object BtZoomM: TButton
-    Left = 1736
+    Left = 1836
     Height = 32
     Top = 96
     Width = 50
@@ -168,7 +167,7 @@ object Form1: TForm1
     TabOrder = 2
   end
   object BtLinksV: TButton
-    Left = 1560
+    Left = 1660
     Height = 32
     Top = 174
     Width = 82
@@ -183,7 +182,7 @@ object Form1: TForm1
     TabOrder = 3
   end
   object BtRechtsV: TButton
-    Left = 1704
+    Left = 1804
     Height = 32
     Top = 174
     Width = 82
@@ -198,7 +197,7 @@ object Form1: TForm1
     TabOrder = 4
   end
   object BtVorV: TButton
-    Left = 1560
+    Left = 1660
     Height = 32
     Top = 222
     Width = 82
@@ -213,7 +212,7 @@ object Form1: TForm1
     TabOrder = 5
   end
   object BtZurueckV: TButton
-    Left = 1704
+    Left = 1804
     Height = 32
     Top = 222
     Width = 82
@@ -228,7 +227,7 @@ object Form1: TForm1
     TabOrder = 6
   end
   object BtHochV: TButton
-    Left = 1560
+    Left = 1660
     Height = 32
     Top = 268
     Width = 82
@@ -243,7 +242,7 @@ object Form1: TForm1
     TabOrder = 7
   end
   object BtRunterV: TButton
-    Left = 1704
+    Left = 1804
     Height = 32
     Top = 268
     Width = 82
@@ -258,7 +257,7 @@ object Form1: TForm1
     TabOrder = 8
   end
   object BtLinksS: TButton
-    Left = 1560
+    Left = 1660
     Height = 32
     Top = 348
     Width = 82
@@ -273,7 +272,7 @@ object Form1: TForm1
     TabOrder = 9
   end
   object BtRechtsS: TButton
-    Left = 1704
+    Left = 1804
     Height = 32
     Top = 348
     Width = 82
@@ -288,7 +287,7 @@ object Form1: TForm1
     TabOrder = 10
   end
   object BtRunterS: TButton
-    Left = 1560
+    Left = 1660
     Height = 32
     Top = 430
     Width = 82
@@ -303,7 +302,7 @@ object Form1: TForm1
     TabOrder = 11
   end
   object BtHochS: TButton
-    Left = 1704
+    Left = 1804
     Height = 32
     Top = 430
     Width = 82
@@ -318,7 +317,7 @@ object Form1: TForm1
     TabOrder = 12
   end
   object BtLinksK: TButton
-    Left = 1560
+    Left = 1660
     Height = 32
     Top = 510
     Width = 82
@@ -333,7 +332,7 @@ object Form1: TForm1
     TabOrder = 13
   end
   object BtRechtsK: TButton
-    Left = 1704
+    Left = 1804
     Height = 32
     Top = 510
     Width = 82
@@ -348,7 +347,7 @@ object Form1: TForm1
     TabOrder = 14
   end
   object BtLinksKreis: TButton
-    Left = 1560
+    Left = 1660
     Height = 32
     Top = 640
     Width = 82
@@ -365,7 +364,7 @@ object Form1: TForm1
     TabOrder = 15
   end
   object BtRechtsKreis: TButton
-    Left = 1704
+    Left = 1804
     Height = 32
     Top = 640
     Width = 82
@@ -382,7 +381,7 @@ object Form1: TForm1
     TabOrder = 16
   end
   object BtHochKreis: TButton
-    Left = 1624
+    Left = 1724
     Height = 32
     Top = 592
     Width = 82
@@ -399,7 +398,7 @@ object Form1: TForm1
     TabOrder = 17
   end
   object BtRunterKreis: TButton
-    Left = 1624
+    Left = 1724
     Height = 32
     Top = 688
     Width = 82
@@ -418,7 +417,7 @@ object Form1: TForm1
   object TrackBar1: TTrackBar
     Left = 184
     Height = 50
-    Top = 1550
+    Top = 911
     Width = 802
     Max = 51
     Min = 1
@@ -432,9 +431,9 @@ object Form1: TForm1
     TabOrder = 19
   end
   object BtKameraReset: TButton
-    Left = 1562
+    Left = 1664
     Height = 36
-    Top = 738
+    Top = 728
     Width = 226
     Anchors = [akTop, akRight]
     Caption = 'Kamera Reset'
@@ -451,7 +450,7 @@ object Form1: TForm1
     AnchorSideRight.Control = BT_weiter
     Left = 986
     Height = 50
-    Top = 1574
+    Top = 949
     Width = 186
     Anchors = [akLeft]
     Caption = 'Zurücknehmen'
@@ -468,7 +467,7 @@ object Form1: TForm1
     AnchorSideLeft.Side = asrBottom
     Left = 1172
     Height = 50
-    Top = 1574
+    Top = 949
     Width = 150
     Anchors = [akLeft]
     Caption = 'Weiter'
@@ -481,14 +480,15 @@ object Form1: TForm1
     Visible = False
   end
   object ComboBox2: TComboBox
-    AnchorSideTop.Control = BtRunterKreis1
+    AnchorSideTop.Control = BtRunterKreis
     AnchorSideTop.Side = asrBottom
-    Left = 1576
+    Left = 1676
     Height = 34
-    Top = 1058
+    Top = 778
     Width = 200
     Anchors = [akTop, akRight]
     AutoSize = False
+    BorderSpacing.Top = 40
     BorderSpacing.Around = 18
     ItemHeight = 26
     OnChange = ComboBox2Change
@@ -496,9 +496,9 @@ object Form1: TForm1
     Text = 'Fokus setzen'
   end
   object BtHochKreis1: TButton
-    Left = 1624
+    Left = 1724
     Height = 32
-    Top = 904
+    Top = 848
     Width = 82
     Anchors = [akTop, akRight]
     Caption = 'hoch'
@@ -511,9 +511,9 @@ object Form1: TForm1
     TabOrder = 25
   end
   object Label7: TLabel
-    Left = 1550
+    Left = 1664
     Height = 26
-    Top = 848
+    Top = 816
     Width = 240
     Anchors = [akTop, akRight]
     Caption = 'Kamera um Turtle kreisen'
@@ -524,9 +524,9 @@ object Form1: TForm1
     ParentFont = False
   end
   object BtLinksKreis1: TButton
-    Left = 1562
+    Left = 1664
     Height = 32
-    Top = 952
+    Top = 888
     Width = 82
     Anchors = [akTop, akRight]
     Caption = 'links'
@@ -539,9 +539,9 @@ object Form1: TForm1
     TabOrder = 26
   end
   object BtRechtsKreis1: TButton
-    Left = 1704
+    Left = 1804
     Height = 32
-    Top = 952
+    Top = 888
     Width = 82
     Anchors = [akTop, akRight]
     Caption = 'rechts'
@@ -562,11 +562,15 @@ object Form1: TForm1
     TabOrder = 28
   end
   object BtRunterKreis1: TButton
-    Left = 1624
+    AnchorSideTop.Control = BtHochKreis1
+    AnchorSideTop.Side = asrBottom
+    Left = 1728
     Height = 32
-    Top = 1008
+    Top = 927
     Width = 82
     Anchors = [akTop, akRight]
+    BorderSpacing.Top = 47
+    BorderSpacing.Bottom = 28
     Caption = 'runter'
     Font.Color = clWindowText
     Font.Height = -22

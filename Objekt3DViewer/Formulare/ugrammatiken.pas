@@ -49,7 +49,7 @@ type
   private
     turtlemanager:TTurtlemanager;
     function gib_markierte_nr():CARDINAL;
-
+    function stringanalyse(s:string):Boolean;
   public
 
   end;
@@ -76,17 +76,16 @@ begin
    end;
 end;
 function TuGrammatiken.stringanalyse(s:string):Boolean;  //returns false if doesn't work
-VAR str,rest_string:string;i,l,h,k,g,b:CARDINAL; c:Char;klammer_auf,bool:Boolean
+VAR str,rest_string:string; i,l,h,k,g,b:CARDINAL; c:Char;klammer_auf,bool:Boolean;
 begin
-   str:=s.Copy();
-   rest_string:=s.copy();
+   str:=Copy(s,1,length(s));
+   rest_string:=Copy(s,1,length(s));
    l:=length(str);
-   c:=strtochar(str[0]);
-   h:=ord(c);
+   h:=ord(str[1]);
    //keine kleinen Buchstaben als Axiome außer f
-   if not (h=ord('f') or (h>=ord('A') and h<=ord('Z')) then result:=False;
+   if not ((h=ord('f')) or ((h>=ord('A')) and (h<=ord('Z')))) then result:=False;
    //wohlgeformte klammern   ()
-   for i:=0 to l do
+   for i:=1 to l do
      begin
        if str[i]='(' then
        begin
@@ -95,18 +94,16 @@ begin
        end;
        if str[i]=')' then klammer_auf:=False;
      end;
-   while not rest_string.pos('(')=0 do
+   while not pos('(',rest_string)=0 do
    begin
-      k:=rest_string.pos('(')+1;
-      g:=rest_string.pos(')')-1;
+      g:=pos(')',rest_string)-1;
       bool:=True;
-      for k to g do
+      for k:=pos('(',rest_string)+1 to g do
         begin
-          b:=strtochar(str[k]);
-          h:=ord(b);
+          h:=ord(str[k]);
           if bool then
           begin
-               if not (h>=ord('a') and h<=ord('z') then result:=False;
+               if not ((h>=ord('a')) and (h<=ord('z'))) then result:=False;
                bool:=False;
           end
           else
@@ -119,6 +116,7 @@ begin
           end;
         end;
       //reststring : löschen was in der klammer war
+      //wahrscheinlichkeiten??
     end;
    result:=True;
 end;
@@ -135,93 +133,90 @@ Begin
 g:=Memo1.Lines[0];
 if Length(g) > 0 then
 Begin
-n:=1;
-While n<= Memo1.Lines.Count-1 do
-  begin
-    p:=pos('>',Memo1.Lines[n]);
-    if p=0 then
-      Begin
-           SHOWMESSAGE('Deine Eingabe ist falsch! Bitte überprüfe die Grammatik!');
-           break;
-      end
-      else
-      Begin
-        zeichnerInit := TZeichnerInit.Create;
-        gram:=TGrammatik.Create;
-        n:=1;
-        gram.axiom:= Memo1.Lines[0];
-        While n<= Memo1.Lines.Count-1 do
-          begin
-          s:=pos(',',Memo1.Lines[n]);
-          If s=0 then
-            begin
-              p:=pos('>',Memo1.Lines[n]);
-              L:=copy(Memo1.Lines[n],1,p-2);//linke Seite des '->'
-              R:=copy(Memo1.Lines[n],p+1,p+100);//rechte Seite des '->'
-              gram.addRegel(L,R);//Regel ohne Wahrscheinlichkeit hinzufügen
-              INC(n)
-            end
-            else
-            begin
-              p:=pos('>',Memo1.Lines[n]);
-              L:=copy(Memo1.Lines[n],1,p-2);//linke Seite des '->'
-              R:=copy(Memo1.Lines[n],p+1,s-1);//rechte Seite des '->'
-              q:=pos(',',R);
-              If not q=0 then delete(R,q,q+10)
-            else
-            begin
-              W:=strtofloat(copy(Memo1.Lines[n],s+1,s+10));//wahrscheinlichkeit
-              gram.addRegel(L,R,W);//Regel mit Wahrscheinlichkeit hinzufügen
-              INC(n);
-              end;
-            end
-          end;
-        If not (Edit2.text = '') then
+  n:=1;
+  While n<= Memo1.Lines.Count-1 do
         Begin
-         zeichenPara.rekursionsTiefe:= strtoint(Edit2.Text);
-         If not (Edit3.text = '') then
-         Begin
-         If strtofloat(Edit3.Text)<=99999999 then
-         Begin
-         zeichenPara.winkel:=strtofloat(Edit3.Text);
-         NameGrammatik:=Edit4.Text;
-         anzahl:= strtoint(Edit1.Text);
-         if anzahl=0 then
-           Begin
-           SHOWMESSAGE('Deine Anzahl ist 0. Es wird keine Darstellung erstellt.');
-           end
-         else
-         Begin
-           nr:=gib_markierte_nr();
-           turtlemanager:=Hauptform.o.copy();
-           //erstellen der Turtels
-           for i:=1 to anzahl do
-             begin
-               Hauptform.update_startkoords();
-               zeichenPara.setzeStartPunkt(Hauptform.akt_x,Hauptform.akt_y,Hauptform.akt_z);
-               Turtle:=TTurtle.Create(gram,zeichnerInit.initialisiere(zeichnerInit.gibZeichnerListe[nr],zeichenPara));
-               Turtle.name:=NameGrammatik;
-               turtlemanager.addTurtle(Turtle);
+          zeichnerInit := TZeichnerInit.Create;
+          gram:=TGrammatik.Create;
+          gram.axiom:= Memo1.Lines[0];
+            begin
+             p:=pos('>',Memo1.Lines[n]);
+             if p=0 then
+             Begin
+               SHOWMESSAGE('Deine Eingabe ist falsch! Bitte überprüfe die Grammatik!');
+               break;
              end;
-           if turtle.zeichnen() then
-           begin
-             Hauptform.push_neue_instanz(turtlemanager);
-             Hauptform.ordnen();
-             Visible:=False;
-             Hauptform.zeichnen();
-           end
+             begin
+             s:=pos(',',Memo1.Lines[n]);
+             If s=0 then
+              begin
+                p:=pos('>',Memo1.Lines[n]);
+                L:=copy(Memo1.Lines[n],1,p-2);//linke Seite des '->'
+                R:=copy(Memo1.Lines[n],p+1,p+100);//rechte Seite des '->'
+                gram.addRegel(L,R);//Regel ohne Wahrscheinlichkeit hinzufügen
+                INC(n)
+              end
+              else
+              begin
+                p:=pos('>',Memo1.Lines[n]);
+                L:=copy(Memo1.Lines[n],1,p-2);//linke Seite des '->'
+                R:=copy(Memo1.Lines[n],p+1,s-1);//rechte Seite des '->'
+                q:=pos(',',R);
+                If not q=0 then delete(R,q,q+10)
+              else
+              begin
+                W:=strtofloat(copy(Memo1.Lines[n],s+1,s+10));//wahrscheinlichkeit
+                gram.addRegel(L,R,W);//Regel mit Wahrscheinlichkeit hinzufügen
+                INC(n);
+                end;
+              end
+            end;
+          If not (Edit2.text = '') then
+          Begin
+           zeichenPara.rekursionsTiefe:= strtoint(Edit2.Text);
+           If not (Edit3.text = '') then
+           Begin
+           If strtofloat(Edit3.Text)<=99999999 then
+           Begin
+           zeichenPara.winkel:=strtofloat(Edit3.Text);
+           NameGrammatik:=Edit4.Text;
+           anzahl:= strtoint(Edit1.Text);
+           if anzahl=0 then
+             Begin
+             SHOWMESSAGE('Deine Anzahl ist 0. Es wird keine Darstellung erstellt.');
+             end
            else
-           begin
-             SHOWMESSAGE('Der gezeichnete Baum ist zu groß. In den Optionen kann die maximale Stringlänge geändert werden. ');
+           Begin
+             nr:=gib_markierte_nr();
+             turtlemanager:=Hauptform.o.copy();
+             //erstellen der Turtels
+             for i:=1 to anzahl do
+               begin
+                 Hauptform.update_startkoords();
+                 zeichenPara.setzeStartPunkt(Hauptform.akt_x,Hauptform.akt_y,Hauptform.akt_z);
+                 Turtle:=TTurtle.Create(gram,zeichnerInit.initialisiere(zeichnerInit.gibZeichnerListe[nr],zeichenPara));
+                 Turtle.name:=NameGrammatik;
+                 turtlemanager.addTurtle(Turtle);
+               end;
+             if turtle.zeichnen() then
+             begin
+               Hauptform.push_neue_instanz(turtlemanager);
+               Hauptform.ordnen();
+               Visible:=False;
+               Hauptform.zeichnen();
+             end
+             else
+             begin
+               SHOWMESSAGE('Der gezeichnete Baum ist zu groß. In den Optionen kann die maximale Stringlänge geändert werden. ');
+             end;
            end;
+           end
+           else SHOWMESSAGE('Du hast die Maximale Größe des Winkels von 99999999 überschritten!');
+           end;
+           end
+           else SHOWMESSAGE('Eine Rekurstiefe von 0 ist nicht möglich!');
          end;
-         end
-         else SHOWMESSAGE('Du hast die Maximale Größe des Winkels von 99999999 überschritten!');
-         end;
-         end
-         else SHOWMESSAGE('Eine Rekurstiefe von 0 ist nicht möglich!');
-       end;
-  end;
+    end;
 end
 else SHOWMESSAGE('Deine Eingabe ist falsch! Bitte überprüfe die Grammatik!');
 end;

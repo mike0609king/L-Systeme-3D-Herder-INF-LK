@@ -12,25 +12,27 @@ procedure ozeichnen;
 
 implementation
 
-uses uTurtle, uGrammatik, uBeleuchtung, uZeichnerInit, uTurtleManager, uZeichnerBase,
+uses uTurtle, uGrammatik, uBeleuchtung, uZeichnerInit, uTurtleManager, uZeichnerBase,uForm,
 sysUtils,Classes; // testing
+(*
 VAR o: TTurtleManager;
     turtle,turtle1: TTurtle;
     gram: TGrammatik;
     zeichenPara: TZeichenParameter;
     zeichnerInit: TZeichnerInit;
     manager: TTurtleManager;
-    para: TStringList;
+    para: TStringList;*)
 
 procedure ozeichnen;
 begin
    //LichtAn(FALSE);
-   o.zeichnen;
+   Hauptform.o.zeichnen;
 end;
 
 begin
+  (*
     //befindet sich jetzt in uForm.standardturtel
-    (*
+
     o := TTurtleManager.Create;
     zeichnerInit := TZeichnerInit.Create;
 
@@ -86,7 +88,7 @@ begin
     turtle := TTurtle.Create(GetCurrentDir+'\test.json');
     turtle.rekursionsTiefe := 5;
     turtle.setzeStartPunkt(2,0,2);
-    o.addTurtle(turtle);  *)
+    o.addTurtle(turtle);
   o := TTurtleManager.Create;
   zeichnerInit := TZeichnerInit.Create;
 
@@ -185,5 +187,5 @@ begin
   // o.addTurtle(turtle1);
   // o.setzeSichtbarkeit(3,true);  // setzten der Sichtbarkeit der Turtle
 
-  // turtle.speichern('h.json');
+  // turtle.speichern('h.json');   *)
 end.

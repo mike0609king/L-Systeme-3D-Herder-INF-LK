@@ -36,9 +36,9 @@ begin
     gram, 
     zeichnerInit.initialisiere(zeichenArt,zeichenPara)
   );
-  turtle.maximaleStringLaenge := 200000;
+  turtle.maximaleStringLaenge := 300000;
   o.addTurtle(turtle);
-  inc(numTurt)
+  inc(numTurt);
 end;
 
 begin
@@ -113,14 +113,18 @@ begin
   plaziereTurtle('ZeichnerGruenesBlatt');
   }
 
-  {}{
+  // Parametrisierung von Farben - Beispiel (1)
+  {
   zeichenPara.winkel := 47.5;
   zeichenPara.rekursionsTiefe := 3;
   gram := TGrammatik.Create;
   gram.axiom := 'F(1)&[+F(2)&&F(3)F(4)]&&F(5)[-^^/^-F(0)F(7)]F(8)';
   gram.addRegel('F(c)','F(c)&[+F(c)&&F(c)F(c)]&&F(c)[-^^/^-F(c)F(c)]F(c)');
   plaziereTurtle('ZeichnerFarben');
+  }
 
+  // Parametrisierung von Farben - Beispiel (2)
+  {
   zeichenPara.winkel := 47.5;
   zeichenPara.rekursionsTiefe := 3;
   gram := TGrammatik.Create;
@@ -129,8 +133,19 @@ begin
   gram.addRegel('F(c;d)','F(d;c)&[+F(d;c)&&F(c;c)F(d;c)]&&F(c;d)[-^^/^-F(c;d)F(d;c)]F(c;d)',40);
   gram.addRegel('F(c;d)','F(c;d)&[+F(c;d)&&F(c;d)F(d;c)]&&F(c;d)[-^^/^-F(d;c)F(c;d)]F(d;c)',40);
   gram.addRegel('F(c;d)','F(c;d)&[+F(c;d)&&F(c;d)F(c)]&&F(c;d)[-^^/^-F(d;c)F(d)]F(d;c)',20);
-  plaziereTurtle('ZeichnerFarben')
-  }{}
+  plaziereTurtle('ZeichnerFarben');
+  plaziereTurtle('ZeichnerFarben');
+  plaziereTurtle('ZeichnerFarben');
+  plaziereTurtle('ZeichnerFarben');
+  }
+
+  zeichenPara.winkel := 47.5;
+  zeichenPara.rekursionsTiefe := 4;
+  gram := TGrammatik.Create;                          // initialisieren der Grammatik-Klass
+  gram.axiom := 'F(1;30)&[+F(2)&&F(3)F(4)]&&F(5)[-^^/^-F(0)F(7)]F(8)';                                  // axiom einstellen
+  gram.addRegel('F(c)','F(c)&[+F(c)&&F(c)F(c)]&&F(c)[-^^/^-F(c)F(c)]F(c)');      
+  gram.addRegel('F(c;l)','F(c;l)&[+F(c;l)&&F(c;l)F(c;l)]&&F(c;l)[-^^/^-F(c;l)F(c;l)]F(c;l)');      
+  plaziereTurtle('ZeichnerFarbenUndSchrittlaenge')
 
   {
   // gram.axiom := 'F';

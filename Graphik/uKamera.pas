@@ -30,9 +30,11 @@ procedure KameraGrossKreisXRotieren(deltaphi:Real);
 //Richtungsvektor der Drehachse ist x-Achse der Kamera durch Koordinatenursprung
 //des Weltkoordinatensystems
 procedure KameraGrossKreisYRotieren(deltaphi:Real);
+procedure KameraUmTurtleXRotieren(deltaphi:Real);
+procedure KameraUmTurtleYRotieren(deltaphi:Real);
 //
 implementation
-uses uMatrizen,uKamObjektiv;
+uses uMatrizen,uKamObjektiv,uForm;
 
 procedure KameraInit(p:TPanel);
 begin
@@ -49,6 +51,28 @@ procedure KameraInit(p:TPanel;phi,nah,fern:REAL);
 begin
   KameraInit(p);
   KamObjektivInit(phi,nah,fern);
+end;
+procedure KameraUmTurtleXRotieren(deltaphi:Real);
+VAR pw,po,pt:TPunkt;nr:CARDINAL;
+Begin
+   po.x:=1;po.y:=0;po.z:=0;
+   nr:=Hauptform.aktuelle_turtle_nr;
+   pt.x:=Hauptform.o.turtleListe[nr].StartPunkt.x;
+   pt.y:=Hauptform.o.turtleListe[nr].StartPunkt.y;
+   pt.z:=Hauptform.o.turtleListe[nr].StartPunkt.z;
+   UmrechnenKamVektorInWeltVektor(po,pw);
+   KamUmWeltKosDrehen(deltaphi,pt.x,pt.y,pt.z,pw.x,pw.y,pw.z);
+end;
+procedure KameraUmTurtleYRotieren(deltaphi:Real);
+VAR pw,po,pt:TPunkt;nr:CARDINAL;
+Begin
+   po.x:=0;po.y:=1;po.z:=0;
+   nr:=Hauptform.aktuelle_turtle_nr;
+   pt.x:=Hauptform.o.turtleListe[nr].StartPunkt.x;
+   pt.y:=Hauptform.o.turtleListe[nr].StartPunkt.y;
+   pt.z:=Hauptform.o.turtleListe[nr].StartPunkt.z;
+   UmrechnenKamVektorInWeltVektor(po,pw);
+   KamUmWeltKosDrehen(deltaphi,pt.x,pt.y,pt.z,pw.x,pw.y,pw.z);
 end;
 
 procedure Kameradestroy(p:TPanel);
@@ -120,6 +144,7 @@ Begin
    UmrechnenKamVektorInWeltVektor(po,pw);
    KamUmWeltKosDrehen(deltaphi,0,0,0,pw.x,pw.y,pw.z);
 end;
+
 
 end.
 

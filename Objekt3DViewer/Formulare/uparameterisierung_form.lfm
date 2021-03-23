@@ -1,9 +1,25 @@
 object Parameterisierung_Form: TParameterisierung_Form
   Left = 640
-  Height = 480
+  Height = 730
   Top = 219
-  Width = 640
+  Width = 897
   Caption = 'Parameterisierung bearbeiten'
+  ClientHeight = 730
+  ClientWidth = 897
   DesignTimePPI = 192
   LCLVersion = '2.0.2.0'
+  object ValueListEditor1: TValueListEditor
+    Left = 112
+    Height = 584
+    Top = 89
+    Width = 592
+    FixedCols = 0
+    RowCount = 2
+    TabOrder = 0
+    OnEditingDone = ValueListEditor1EditingDone
+    ColWidths = (
+      128
+      460
+    )
+  end
 end

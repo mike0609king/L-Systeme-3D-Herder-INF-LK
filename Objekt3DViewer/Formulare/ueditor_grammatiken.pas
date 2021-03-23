@@ -54,7 +54,7 @@ var
   EditorForm: TForm10;
 
 implementation
-uses uForm,uParameter_Form;
+uses uForm,uParameter_Form,uParameterisierung_Form;
 
 {$R *.lfm}
 
@@ -195,9 +195,19 @@ begin
 end;
 
 procedure TForm10.BT_parameterisierungClick(Sender: TObject);
+VAR nr:CARDINAL;hl:TIntegerList;
 begin
   //Es muss immer genau eine Turtle ausgewählt sein.
   //n muss übergeben werden.
+   hl:=gib_markierte_nr();
+   if hl.Count=1 then
+   begin
+        //überprüfen ob es in der Turtle parameter gibt
+        nr:=hl[0];
+        Parameterisierung_Form.show;
+        Parameterisierung_Form.update_ed(nr);
+   end
+   else Showmessage('Wenn die Parameteriersung bearbeitet werden soll darf nur genau eine Turtle ausgewählt sein');
 end;
 
 procedure TForm10.BT_sichtbarkeitClick(Sender: TObject);

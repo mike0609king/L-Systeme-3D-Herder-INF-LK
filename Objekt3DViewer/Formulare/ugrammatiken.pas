@@ -141,11 +141,11 @@ Begin
           gram.axiom:= Memo1.Lines[0];
           //axiom überprüfen
             begin
-             if stringanalyse(Memo1.Lines[n]) then
+             (*if stringanalyse(Memo1.Lines[n]) then
              begin
                   SHOWMESSAGE('Deine Eingabe ist falsch! Bitte überprüfe die Regeln der Grammatik!');
                   break
-             end;
+             end; *) //funktioniert nicht richtig
              p:=pos('>',Memo1.Lines[n]);
              if p=0 then
              Begin

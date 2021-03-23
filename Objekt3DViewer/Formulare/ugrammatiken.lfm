@@ -1,21 +1,22 @@
 object uGrammatiken: TuGrammatiken
   Left = 992
-  Height = 541
+  Height = 1082
   Top = 387
-  Width = 712
+  Width = 1424
   Caption = 'Grammatiken'
-  ClientHeight = 521
-  ClientWidth = 712
+  ClientHeight = 1043
+  ClientWidth = 1424
+  DesignTimePPI = 192
   DoubleBuffered = False
   Menu = MainMenu1
   OnCreate = FormCreate
   ParentDoubleBuffered = False
-  LCLVersion = '2.0.0.4'
+  LCLVersion = '2.0.2.0'
   object Memo1: TMemo
-    Left = 16
-    Height = 348
-    Top = 32
-    Width = 322
+    Left = 32
+    Height = 696
+    Top = 64
+    Width = 644
     Lines.Strings = (
       ''
     )
@@ -24,10 +25,10 @@ object uGrammatiken: TuGrammatiken
     TabOrder = 0
   end
   object Edit1: TEdit
-    Left = 484
-    Height = 23
-    Top = 32
-    Width = 132
+    Left = 968
+    Height = 40
+    Top = 64
+    Width = 264
     NumbersOnly = True
     OnChange = Edit1Change
     ParentFont = False
@@ -35,129 +36,129 @@ object uGrammatiken: TuGrammatiken
     Text = '1'
   end
   object Anzahl: TLabel
-    Left = 392
-    Height = 15
-    Top = 32
-    Width = 39
+    Left = 784
+    Height = 32
+    Top = 64
+    Width = 77
     Caption = 'Anzahl:'
     ParentColor = False
     ParentFont = False
     OnClick = AnzahlClick
   end
   object Button1: TButton
-    Left = 508
-    Height = 25
-    Top = 355
-    Width = 108
+    Left = 1016
+    Height = 50
+    Top = 710
+    Width = 216
     Caption = 'Einfügen'
     OnClick = Button1Click
     ParentFont = False
     TabOrder = 2
   end
   object Label1: TLabel
-    Left = 392
-    Height = 15
-    Top = 68
-    Width = 83
+    Left = 784
+    Height = 32
+    Top = 136
+    Width = 167
     Caption = 'Rekursionstiefe:'
     ParentColor = False
     ParentFont = False
   end
   object Label2: TLabel
-    Left = 392
-    Height = 15
-    Top = 100
-    Width = 39
+    Left = 784
+    Height = 32
+    Top = 200
+    Width = 78
     Caption = 'Winkel:'
     ParentColor = False
     ParentFont = False
   end
   object Edit2: TEdit
-    Left = 484
-    Height = 23
-    Top = 68
-    Width = 132
+    Left = 968
+    Height = 40
+    Top = 136
+    Width = 264
     NumbersOnly = True
     OnChange = Edit2Change
     ParentFont = False
     TabOrder = 3
   end
   object Edit3: TEdit
-    Left = 484
-    Height = 23
-    Top = 100
-    Width = 132
+    Left = 968
+    Height = 40
+    Top = 200
+    Width = 264
     NumbersOnly = True
     OnChange = Edit3Change
     ParentFont = False
     TabOrder = 4
   end
   object Label3: TLabel
-    Left = 392
-    Height = 15
-    Top = 164
-    Width = 59
+    Left = 784
+    Height = 32
+    Top = 328
+    Width = 118
     Caption = 'Zeichenart:'
     ParentColor = False
     ParentFont = False
   end
   object Label4: TLabel
-    Left = 392
-    Height = 15
-    Top = 132
-    Width = 35
+    Left = 784
+    Height = 32
+    Top = 264
+    Width = 69
     Caption = 'Name:'
     ParentColor = False
     ParentFont = False
   end
   object Edit4: TEdit
-    Left = 484
-    Height = 23
-    Top = 132
-    Width = 132
+    Left = 968
+    Height = 40
+    Top = 264
+    Width = 264
     OnChange = Edit4Change
     ParentFont = False
     TabOrder = 5
   end
   object CheckListBox1: TCheckListBox
-    Left = 484
-    Height = 128
-    Top = 164
-    Width = 132
+    Left = 968
+    Height = 256
+    Top = 328
+    Width = 264
     ItemHeight = 0
     ParentFont = False
     TabOrder = 6
   end
   object Button2: TButton
-    Left = 392
-    Height = 25
-    Top = 355
-    Width = 104
+    Left = 784
+    Height = 50
+    Top = 710
+    Width = 208
     Caption = 'Leeren'
     OnClick = Button2Click
     ParentFont = False
     TabOrder = 7
   end
   object Label5: TLabel
-    Left = 16
-    Height = 15
+    Left = 32
+    Height = 32
     Top = 0
-    Width = 62
+    Width = 121
     Caption = 'Grammatik:'
     ParentColor = False
     ParentFont = False
   end
   object OpenDialog1: TOpenDialog
-    left = 16
-    top = 368
+    left = 32
+    top = 736
   end
   object SaveDialog1: TSaveDialog
-    left = 64
-    top = 368
+    left = 128
+    top = 736
   end
   object MainMenu1: TMainMenu
-    left = 120
-    top = 368
+    left = 240
+    top = 736
     object MenuItem1: TMenuItem
       Caption = 'Datei'
       OnClick = MenuItem1Click

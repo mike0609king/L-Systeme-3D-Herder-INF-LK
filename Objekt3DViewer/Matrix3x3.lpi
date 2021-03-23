@@ -284,6 +284,7 @@
         <Filename Value="Formulare\uparameterisierung_form.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="Parameterisierung_Form"/>
+        <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uParameterisierung_Form"/>
       </Unit46>

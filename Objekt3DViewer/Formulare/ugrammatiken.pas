@@ -77,7 +77,7 @@ begin
 end;
 function TuGrammatiken.stringanalyse(s:string):Boolean;  //returns false if doesn't work
 //für regeln nicht axiome
-VAR str,rest_string:string; i,l,h,k,g,b:CARDINAL; c:Char;klammer_auf,bool:Boolean;
+VAR str,rest_string:string; i,l,h,k,j,g,b:CARDINAL; c:Char;klammer_auf,bool:Boolean;
 begin
    str:=Copy(s,1,length(s));
    rest_string:=Copy(s,1,length(s));
@@ -94,7 +94,10 @@ begin
        end;
        if str[i]=')' then klammer_auf:=False;
      end;
-   while not pos('(',rest_string)=0 do
+   j:=pos('(',str);
+   if j<>0 then
+   begin
+   while pos('(',rest_string)<>0 do
    begin
       g:=pos(')',rest_string)-1;
       bool:=True;
@@ -115,10 +118,12 @@ begin
                else result:=False;
           end;
         end;
-      //reststring : löschen was in der klammer war
-      //wahrscheinlichkeiten??
+      g:=pos(')',rest_string);
+      rest_string:=copy(rest_string,g+1,g+100);
     end;
-   result:=True;
+   result:=false;
+   end
+   else result:=false;
 end;
 procedure TuGrammatiken.Button1Click(Sender: TObject); //Turtle erstellen
 var i,n,nr,anzahl:CARDINAL;
@@ -139,13 +144,12 @@ Begin
           zeichnerInit := TZeichnerInit.Create;
           gram:=TGrammatik.Create;
           gram.axiom:= Memo1.Lines[0];
-          //axiom überprüfen
             begin
-             (*if stringanalyse(Memo1.Lines[n]) then
+             if stringanalyse(Memo1.Lines[n]) then
              begin
                   SHOWMESSAGE('Deine Eingabe ist falsch! Bitte überprüfe die Regeln der Grammatik!');
                   break
-             end; *) //funktioniert nicht richtig
+             end;
              p:=pos('>',Memo1.Lines[n]);
              if p=0 then
              Begin

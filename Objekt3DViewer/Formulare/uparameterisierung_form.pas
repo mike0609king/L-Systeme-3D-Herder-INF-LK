@@ -5,14 +5,18 @@ unit uParameterisierung_Form;
 interface
 
 uses
-  Classes, SysUtils, Forms, Controls, Graphics, Dialogs;
+  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ValEdit;
 
 type
+
+  { TParameterisierung_Form }
+
   TParameterisierung_Form = class(TForm)
+    ValueListEditor1: TValueListEditor;
   private
 
   public
-
+    procedure update(nr:CARDINAL);
   end;
 
 var
@@ -21,6 +25,11 @@ var
 implementation
 
 {$R *.lfm}
+
+procedure TParameterisierung_Form.update(nr:CARDINAL);
+begin
+
+end;
 
 end.
 

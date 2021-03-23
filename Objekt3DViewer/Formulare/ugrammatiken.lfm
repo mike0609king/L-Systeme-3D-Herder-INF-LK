@@ -1,22 +1,22 @@
 object uGrammatiken: TuGrammatiken
-  Left = 992
+  Left = 374
   Height = 1082
   Top = 387
-  Width = 1424
+  Width = 2042
   Caption = 'Grammatiken'
   ClientHeight = 1043
-  ClientWidth = 1424
+  ClientWidth = 2042
   DesignTimePPI = 192
   DoubleBuffered = False
   Menu = MainMenu1
   OnCreate = FormCreate
   ParentDoubleBuffered = False
-  LCLVersion = '2.0.2.0'
+  LCLVersion = '2.0.0.4'
   object Memo1: TMemo
     Left = 32
     Height = 696
     Top = 64
-    Width = 644
+    Width = 872
     Lines.Strings = (
       ''
     )
@@ -25,7 +25,7 @@ object uGrammatiken: TuGrammatiken
     TabOrder = 0
   end
   object Edit1: TEdit
-    Left = 968
+    Left = 1128
     Height = 40
     Top = 64
     Width = 264
@@ -36,7 +36,7 @@ object uGrammatiken: TuGrammatiken
     Text = '1'
   end
   object Anzahl: TLabel
-    Left = 784
+    Left = 1007
     Height = 32
     Top = 64
     Width = 77
@@ -46,7 +46,7 @@ object uGrammatiken: TuGrammatiken
     OnClick = AnzahlClick
   end
   object Button1: TButton
-    Left = 1016
+    Left = 1176
     Height = 50
     Top = 710
     Width = 216
@@ -56,27 +56,27 @@ object uGrammatiken: TuGrammatiken
     TabOrder = 2
   end
   object Label1: TLabel
-    Left = 784
+    Left = 918
     Height = 32
-    Top = 136
+    Top = 128
     Width = 167
     Caption = 'Rekursionstiefe:'
     ParentColor = False
     ParentFont = False
   end
   object Label2: TLabel
-    Left = 784
+    Left = 1006
     Height = 32
-    Top = 200
+    Top = 192
     Width = 78
     Caption = 'Winkel:'
     ParentColor = False
     ParentFont = False
   end
   object Edit2: TEdit
-    Left = 968
+    Left = 1128
     Height = 40
-    Top = 136
+    Top = 128
     Width = 264
     NumbersOnly = True
     OnChange = Edit2Change
@@ -84,9 +84,9 @@ object uGrammatiken: TuGrammatiken
     TabOrder = 3
   end
   object Edit3: TEdit
-    Left = 968
+    Left = 1128
     Height = 40
-    Top = 200
+    Top = 192
     Width = 264
     NumbersOnly = True
     OnChange = Edit3Change
@@ -94,7 +94,7 @@ object uGrammatiken: TuGrammatiken
     TabOrder = 4
   end
   object Label3: TLabel
-    Left = 784
+    Left = 967
     Height = 32
     Top = 328
     Width = 118
@@ -103,25 +103,25 @@ object uGrammatiken: TuGrammatiken
     ParentFont = False
   end
   object Label4: TLabel
-    Left = 784
+    Left = 1016
     Height = 32
-    Top = 264
+    Top = 256
     Width = 69
     Caption = 'Name:'
     ParentColor = False
     ParentFont = False
   end
   object Edit4: TEdit
-    Left = 968
+    Left = 1128
     Height = 40
-    Top = 264
+    Top = 256
     Width = 264
     OnChange = Edit4Change
     ParentFont = False
     TabOrder = 5
   end
   object CheckListBox1: TCheckListBox
-    Left = 968
+    Left = 1128
     Height = 256
     Top = 328
     Width = 264
@@ -130,7 +130,7 @@ object uGrammatiken: TuGrammatiken
     TabOrder = 6
   end
   object Button2: TButton
-    Left = 784
+    Left = 952
     Height = 50
     Top = 710
     Width = 208
@@ -142,7 +142,7 @@ object uGrammatiken: TuGrammatiken
   object Label5: TLabel
     Left = 32
     Height = 32
-    Top = 0
+    Top = 16
     Width = 121
     Caption = 'Grammatik:'
     ParentColor = False

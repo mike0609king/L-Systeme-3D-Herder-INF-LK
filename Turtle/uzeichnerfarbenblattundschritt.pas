@@ -1,4 +1,4 @@
-unit uzeichnerfarbenundschrittlaenge;
+unit uZeichnerFarbenBlattUndSchritt;
 {$mode delphi}{$H+}
 
 interface
@@ -6,10 +6,11 @@ interface
 uses
   Classes, SysUtils, uZeichnerBase;
 
-type TZeichnerFarbenUndSchrittlaenge = class(TZeichnerBase)
+type TZeichnerFarbenBlattUndSchritt = class(TZeichnerBase)
   private
-    FIdxZuFarbe: array[1..14,0..2] of Real;
+    FIdxZuFarbe: array[1..15,0..2] of Real;
     procedure aktionSchrittMtLinie(list: TStringList);
+		procedure aktionBlatt(list: TStringList);
   public
     constructor Create(zeichenPara: TZeichenParameter); override;
     destructor Destroy; override;
@@ -17,6 +18,32 @@ end;
 
 implementation
 uses uMatrizen,dglOpenGL;
+
+procedure Blatt(l:Real;Spur:BOOLEAN;r:Real;g:Real;b:Real);
+begin
+  IF Spur Then
+  begin
+    glMatrixMode(GL_ModelView);
+    UebergangsmatrixObjekt_Kamera_Laden;
+    glColor3f(r,g,b);
+    glLineWidth(10);
+    glBegin(GL_LINES);
+       glVertex3f(0,0,0);glVertex3f(0,l,0);
+    glEnd;
+  end;
+  ObjInEigenKOSVerschieben(0,l,0)
+end;
+
+procedure TZeichnerFarbenBlattUndSchritt.aktionBlatt(list: TStringList);
+var m,colorIdx: Cardinal;
+begin
+  if list.Count = 0 then colorIdx := 15
+  else colorIdx := StrToInt(list[0]);
+  if (colorIdx = 0) or (colorIdx > high(FIdxZuFarbe)) then colorIdx := 14;
+  m := 50; Blatt(1/m,true,FIdxZuFarbe[colorIdx][0],
+                          FIdxZuFarbe[colorIdx][1],
+                          FIdxZuFarbe[colorIdx][2]);
+end;
 
 procedure schritt(l:Real;Spur:BOOLEAN;r:Real;g:Real;b:Real);
 begin
@@ -33,38 +60,31 @@ begin
   ObjInEigenKOSVerschieben(0,l,0)
 end;
 
-procedure TZeichnerFarbenUndSchrittlaenge.aktionSchrittMtLinie(list: TStringList);
-var m: Cardinal;
-    colorIdx: Cardinal;
-    procedure aux_SchrittUndFarbeUmsetzen;
-    begin
-      if (colorIdx = 0) or
-      (colorIdx > high(FIdxZuFarbe)) then 
-      colorIdx := 14;
-      schritt(1/m,true,FIdxZuFarbe[colorIdx][0],
-                       FIdxZuFarbe[colorIdx][1],
-                       FIdxZuFarbe[colorIdx][2]); 
-    end;
-begin
-  if (list.Count = 2) then
+procedure TZeichnerFarbenBlattUndSchritt.aktionSchrittMtLinie(list: TStringList);
+var m,colorIdx: Cardinal;
+  procedure aux_SchrittUndFarbeUmsetzen;
   begin
-    colorIdx := StrToInt(list[0]); m := StrToInt(list[1]); 
-  end
-  else if (list.Count = 1) then
+    if (colorIdx = 0) or (colorIdx > high(FIdxZuFarbe)) then colorIdx := 14;
+    schritt(1/m,true,FIdxZuFarbe[colorIdx][0],
+                     FIdxZuFarbe[colorIdx][1],
+                     FIdxZuFarbe[colorIdx][2]); 
+  end;
+begin
+  if (list.Count >= 1) then
   begin
     colorIdx := StrToInt(list[0]); m := 50;
   end
-  else if (list.Count = 0) then 
+  else 
   begin
-    colorIdx := 14; m := 50
+    colorIdx := 14; m := 50;
   end;
   aux_SchrittUndFarbeUmsetzen;
 end;
 
-constructor TZeichnerFarbenUndSchrittlaenge.Create(zeichenPara: TZeichenParameter);
+constructor TZeichnerFarbenBlattUndSchritt.Create(zeichenPara: TZeichenParameter);
 begin
   inherited;
-  FName := 'ZeichnerFarbenUndSchrittlaenge';
+  FName := 'ZeichnerFarbenBlattUndSchritt';
 
   FIdxZuFarbe[1,0] := 0.7; FIdxZuFarbe[1,1] := 0.4; FIdxZuFarbe[1,2] := 0.1;
   FIdxZuFarbe[2,0] := 0.5; FIdxZuFarbe[2,1] := 0.5; FIdxZuFarbe[2,2] := 0.1;
@@ -80,14 +100,15 @@ begin
   FIdxZuFarbe[12,0] := 1; FIdxZuFarbe[12,1] := 0.9; FIdxZuFarbe[12,2] := 0.3;
   FIdxZuFarbe[13,0] := 1; FIdxZuFarbe[13,1] := 0.8; FIdxZuFarbe[13,2] := 0;
   FIdxZuFarbe[14,0] := 1; FIdxZuFarbe[14,1] := 1; FIdxZuFarbe[14,2] := 1;
+  FIdxZuFarbe[15,0] := 0; FIdxZuFarbe[15,1] := 1; FIdxZuFarbe[15,2] := 0;
 
   FVersandTabelle.AddOrSetData('F',aktionSchrittMtLinie);
+  FVersandTabelle.AddOrSetData('B',aktionBlatt);
 end;
 
-destructor TZeichnerFarbenUndSchrittlaenge.Destroy;
+destructor TZeichnerFarbenBlattUndSchritt.Destroy;
 begin
   FreeAndNil(FName);
   inherited;
 end;
 end.
-

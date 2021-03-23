@@ -62,7 +62,7 @@ begin
   FIdxZuFarbe[7,0] := 0.6; FIdxZuFarbe[7,1] := 0.1; FIdxZuFarbe[7,2] := 0.4;
   FIdxZuFarbe[8,0] := 0.7; FIdxZuFarbe[8,1] := 0; FIdxZuFarbe[8,2] := 0.1;
   FIdxZuFarbe[9,0] := 0.9; FIdxZuFarbe[9,1] := 0.5; FIdxZuFarbe[9,2] := 0.1;
-  FIdxZuFarbe[10,0] := 0.8; FIdxZuFarbe[10,1] := 1; FIdxZuFarbe[10,2] := 1;
+  FIdxZuFarbe[10,0] := 0.8; FIdxZuFarbe[10,1] := 0.1; FIdxZuFarbe[10,2] := 1;
   FIdxZuFarbe[11,0] := 0.3; FIdxZuFarbe[11,1] := 0.2; FIdxZuFarbe[11,2] := 0.6;
   FIdxZuFarbe[12,0] := 1; FIdxZuFarbe[12,1] := 0.9; FIdxZuFarbe[12,2] := 0.3;
   FIdxZuFarbe[13,0] := 1; FIdxZuFarbe[13,1] := 0.8; FIdxZuFarbe[13,2] := 0;

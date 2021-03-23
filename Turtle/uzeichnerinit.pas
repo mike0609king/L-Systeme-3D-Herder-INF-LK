@@ -7,7 +7,8 @@ interface
 uses
   Classes, SysUtils, fgl,
   uZeichnerbase, uZeichnerGruenesBlatt, uZeichnerFarben, 
-  uZeichnerSchrittlaenge,uZeichnerFarbenUndSchrittlaenge;
+  uZeichnerSchrittlaenge,uZeichnerFarbenUndSchrittlaenge,
+  uZeichnerFarbenBlattUndSchritt;
 
 type TErbteZeichnerBase = class of TZeichnerBase;
 type TVersandTabelleZeichner = TFPGMap<String, TErbteZeichnerBase>;
@@ -60,6 +61,10 @@ begin
   FVersandTabelleZeichner.add(
     (TZeichnerFarbenUndSchrittlaenge.Create(zeichenPara)).name,
     TZeichnerFarbenUndSchrittlaenge
+  );
+  FVersandTabelleZeichner.add(
+    (TZeichnerFarbenBlattUndSchritt.Create(zeichenPara)).name,
+    TZeichnerFarbenBlattUndSchritt
   );
 end;
 

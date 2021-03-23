@@ -10,6 +10,7 @@ uses
   ugrammatiken in 'Formulare\ugrammatiken.pas' {uGrammatiken},
   uparameter_Form in  'Formulare\uparameter_Form.pas' {Parameter_Form},
   uoptionen_form in 'Formulare\uoptionen_form .pas' {Optionen_Form},
+  uParameterisierung_Form in 'Formulare\uParameterisierung_Form.pas' {Parameterisierung_Form},
   (*  AMatrix in 'Formulare\AMatrix.pas' {FormAMatrix},
   MMatrix in 'Formulare\MMatrix.pas' {FormMMatrix},
   Rotation in 'Formulare\Rotation.pas' {FormRot},
@@ -38,6 +39,7 @@ begin
   Application.CreateForm(TuGrammatiken, aGrammatiken);
   Application.CreateForm(TParameter_Form, Parameter_Form);
   Application.CreateForm(TTOptionen, Optionen_Form);
+  Application.CreateForm(TParameterisierung_Form,Parameterisierung_Form);
   (*Application.CreateForm(TForm3, FormMMatrix);
   Application.CreateForm(TForm2, FormAMatrix);
   Application.CreateForm(TForm4, FormRot);

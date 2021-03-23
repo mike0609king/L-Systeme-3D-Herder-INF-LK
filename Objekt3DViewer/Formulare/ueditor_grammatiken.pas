@@ -23,6 +23,7 @@ type
     BT_alle_unmarkieren: TButton;
     BT_unsichtbar_machen: TButton;
     BT_kopieren: TButton;
+    BT_parameterisierung: TButton;
     ED_abstand: TEdit;
     Label1: TLabel;
     Label2: TLabel;
@@ -34,6 +35,7 @@ type
     procedure BT_entfernenClick(Sender: TObject);
     procedure BT_FertigClick(Sender: TObject);
     procedure BT_kopierenClick(Sender: TObject);
+    procedure BT_parameterisierungClick(Sender: TObject);
     procedure BT_sichtbarkeitClick(Sender: TObject);
     procedure BT_unsichtbar_machenClick(Sender: TObject);
     procedure BT_alle_unmarkierenClick(Sender: TObject);
@@ -190,6 +192,12 @@ begin
    Hauptform.abstand_aendern(x_abstand);
    BT_updateClick();
    markiere_liste_nr(liste);
+end;
+
+procedure TForm10.BT_parameterisierungClick(Sender: TObject);
+begin
+  //Es muss immer genau eine Turtle ausgewählt sein.
+  //n muss übergeben werden.
 end;
 
 procedure TForm10.BT_sichtbarkeitClick(Sender: TObject);

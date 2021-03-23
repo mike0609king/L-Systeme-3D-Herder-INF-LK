@@ -24,7 +24,7 @@ object Form10: TForm10
     Left = 118
     Height = 50
     Top = 352
-    Width = 320
+    Width = 328
     Caption = 'Parameter bearbeiten'
     OnClick = BT_bearbeitenClick
     ParentFont = False
@@ -44,7 +44,7 @@ object Form10: TForm10
     Left = 118
     Height = 50
     Top = 416
-    Width = 320
+    Width = 330
     Caption = 'Alle markieren'
     OnClick = BT_AlleClick
     ParentFont = False
@@ -53,7 +53,7 @@ object Form10: TForm10
   object BT_Fertig: TButton
     Left = 118
     Height = 50
-    Top = 704
+    Top = 824
     Width = 150
     Caption = 'Fertig'
     OnClick = BT_FertigClick
@@ -64,7 +64,7 @@ object Form10: TForm10
     Left = 118
     Height = 50
     Top = 496
-    Width = 320
+    Width = 330
     Caption = 'Alle markierungen enfernen '
     OnClick = BT_alle_unmarkierenClick
     ParentFont = False
@@ -83,7 +83,7 @@ object Form10: TForm10
   object ED_abstand: TEdit
     Left = 470
     Height = 40
-    Top = 592
+    Top = 712
     Width = 160
     NumbersOnly = True
     OnChange = ED_abstandChange
@@ -93,7 +93,7 @@ object Form10: TForm10
   object UpDown1: TUpDown
     Left = 646
     Height = 62
-    Top = 576
+    Top = 696
     Width = 34
     Min = 0
     OnClick = UpDown1Click
@@ -103,7 +103,7 @@ object Form10: TForm10
   object Label1: TLabel
     Left = 118
     Height = 32
-    Top = 600
+    Top = 720
     Width = 346
     Caption = 'X_Abstand zwischen den Turtels:'
     ParentColor = False
@@ -153,10 +153,10 @@ object Form10: TForm10
     ViewStyle = vsReport
   end
   object BT_kopieren: TButton
-    Left = 944
+    Left = 640
     Height = 50
-    Top = 352
-    Width = 208
+    Top = 584
+    Width = 240
     Caption = 'kopieren'
     OnClick = BT_kopierenClick
     TabOrder = 10
@@ -164,7 +164,7 @@ object Form10: TForm10
   object Label2: TLabel
     Left = 768
     Height = 32
-    Top = 600
+    Top = 720
     Width = 321
     Caption = 'Sichtbare gesamt Strichlänge: '
     ParentColor = False
@@ -172,8 +172,17 @@ object Form10: TForm10
   object Label3: TLabel
     Left = 1112
     Height = 1
-    Top = 600
+    Top = 720
     Width = 1
     ParentColor = False
+  end
+  object BT_parameterisierung: TButton
+    Left = 118
+    Height = 50
+    Top = 584
+    Width = 330
+    Caption = 'parameterisierung bearbeiten'
+    OnClick = BT_parameterisierungClick
+    TabOrder = 11
   end
 end

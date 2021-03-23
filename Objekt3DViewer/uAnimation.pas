@@ -227,6 +227,6 @@ begin
   gram.axiom := 'X(1;10)';
   gram.addRegel('X(c;d)','F(c)+[[-X(c;d)]&&-X(c;d)B(d)]-F(c)[-F(c)//X(c;d)B(d)]+X(c;d)');
   gram.addRegel('F(c)','F(c)F(c)');
-  plaziereTurtle('ZeichnerFarbenBlattUndSchritt');
+  plaziereTurtle('ZeichnerFarbenBlattUndSchritt');      *)
   
 end.

@@ -36,7 +36,7 @@ begin
     gram, 
     zeichnerInit.initialisiere(zeichenArt,zeichenPara)
   );
-  turtle.maximaleStringLaenge := 300000;
+  turtle.maximaleStringLaenge := 500000;
   o.addTurtle(turtle);
   inc(numTurt);
 end;
@@ -162,7 +162,7 @@ begin
   }
 
   // Beispiel 2
-  {
+  
   gram := TGrammatik.Create;
   zeichenPara.winkel := 47.5;
   zeichenPara.rekursionsTiefe := 7;
@@ -170,10 +170,11 @@ begin
   gram.addRegel('X(c;d)','F(c)+[[-X(c;d)]&&-X(c;d)B(d)]-F(c)[-F(c)//X(c;d)B(d)]+X(c;d)');
   gram.addRegel('F(c)','F(c)F(c)');
   plaziereTurtle('ZeichnerFarbenBlattUndSchritt');
-  }
+  
 
   // Beispiel 3
   
+  {
   gram := TGrammatik.Create;
   zeichenPara.winkel := 22.5;
   zeichenPara.rekursionsTiefe := 6;
@@ -181,5 +182,6 @@ begin
   gram.addRegel('X(c;d)','F(c)+[[-X(c;d)]&&-X(c;d)B(d)]-F(c)[-F(c)//X(c;d)B(d)]+X(c;d)');
   gram.addRegel('F(c)','F(c)F(c)');
   plaziereTurtle('ZeichnerFarbenBlattUndSchritt');
+  }
   
 end.

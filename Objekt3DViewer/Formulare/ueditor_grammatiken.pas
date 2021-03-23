@@ -23,8 +23,11 @@ type
     BT_alle_unmarkieren: TButton;
     BT_unsichtbar_machen: TButton;
     BT_kopieren: TButton;
+    BT_parameterisierung: TButton;
     ED_abstand: TEdit;
     Label1: TLabel;
+    Label2: TLabel;
+    Label3: TLabel;
     ListView1: TListView;
     UpDown1: TUpDown;
     procedure BT_AlleClick(Sender: TObject);
@@ -32,6 +35,7 @@ type
     procedure BT_entfernenClick(Sender: TObject);
     procedure BT_FertigClick(Sender: TObject);
     procedure BT_kopierenClick(Sender: TObject);
+    procedure BT_parameterisierungClick(Sender: TObject);
     procedure BT_sichtbarkeitClick(Sender: TObject);
     procedure BT_unsichtbar_machenClick(Sender: TObject);
     procedure BT_alle_unmarkierenClick(Sender: TObject);
@@ -59,7 +63,6 @@ procedure TForm10.FormCreate(Sender: TObject);
 begin
   //CheckListBox1:=TCheckListBox.Create();
 
-
 end;
 procedure TForm10.UpDown1Click(Sender: TObject; Button: TUDBtnType);
 VAR i:REAL;
@@ -78,13 +81,14 @@ begin
 end;
 
 procedure TForm10.BT_updateClick(mode:CARDINAL=0);
-VAR i,anzahl:CARDINAL;str,name,sichtbarkeit,Winkel,Rek_tiefe,Zeichenart:string; turtle:TTurtle; Item1: TListItem; liste:TIntegerList;str_max:string;
+VAR summe:INT64;i,anzahl:CARDINAL;str,name,sichtbarkeit,Winkel,Rek_tiefe,Zeichenart:string; turtle:TTurtle; Item1: TListItem; liste:TIntegerList;str_max:string;
 begin
   if mode=1 then liste:=gib_markierte_nr();
   ListView1.clear;
   anzahl:=(HauptForm.o.turtleListe.Count)-1;
   //abstand
   ED_abstand.Text:=floattostr(Hauptform.abstand_x);
+  summe:=0;
   for i:=0 to anzahl do
       begin
            Item1 := ListView1.Items.Add;
@@ -92,7 +96,12 @@ begin
            turtle:=HauptForm.o.turtleListe[i];
            str:='Turtel'+inttostr(i);
            name:=turtle.name;
-           if turtle.visible then sichtbarkeit:='Sichtbar'
+           str_max:=inttostr(length(turtle.zuZeichnenderString));
+           if turtle.visible then
+             begin
+               sichtbarkeit:='Sichtbar';
+               summe:=summe+strtoint(str_max);
+             end
            else sichtbarkeit:='Unsichtbar';
            Winkel:=floattostr(turtle.winkel);
            Rek_tiefe:=inttostr(turtle.rekursionsTiefe);
@@ -103,10 +112,11 @@ begin
            Item1.SubItems.Add(Winkel);
            Item1.SubItems.Add(Rek_tiefe);
            Item1.SubItems.Add(Zeichenart);
-           str_max:=inttostr(length(turtle.zuZeichnenderString));
            Item1.SubItems.Add(str_max);
            //Aktuelle anzhal von Spalten 5
       end;
+  //for i:=0 to 7 do ListView1.columns[1].Autosize:=True;
+  label3.caption:=inttostr(summe);
   if mode=1 then markiere_liste_nr(liste);
 end;
 
@@ -182,6 +192,12 @@ begin
    Hauptform.abstand_aendern(x_abstand);
    BT_updateClick();
    markiere_liste_nr(liste);
+end;
+
+procedure TForm10.BT_parameterisierungClick(Sender: TObject);
+begin
+  //Es muss immer genau eine Turtle ausgewählt sein.
+  //n muss übergeben werden.
 end;
 
 procedure TForm10.BT_sichtbarkeitClick(Sender: TObject);

@@ -18,6 +18,7 @@ type
     Label1: TLabel;
     procedure BT_fertigClick(Sender: TObject);
     procedure BT_zuruecksetzenClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
   private
 
   public
@@ -129,6 +130,11 @@ end;
 procedure TTOptionen.BT_zuruecksetzenClick(Sender: TObject);
 begin
    update_bt();
+end;
+
+procedure TTOptionen.FormShow(Sender: TObject);
+begin
+  //WindowState := wsFullScreen;
 end;
 
 procedure TTOptionen.update_bt();

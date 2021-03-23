@@ -1,0 +1,9 @@
+object Parameterisierung_Form: TParameterisierung_Form
+  Left = 640
+  Height = 480
+  Top = 219
+  Width = 640
+  Caption = 'Parameterisierung bearbeiten'
+  DesignTimePPI = 192
+  LCLVersion = '2.0.2.0'
+end

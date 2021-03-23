@@ -49,6 +49,7 @@ type
   private
     turtlemanager:TTurtlemanager;
     function gib_markierte_nr():CARDINAL;
+    function stringanalyse(s:string):Boolean;
   public
 
   end;
@@ -74,7 +75,51 @@ begin
      if CheckListBox1.Checked[i] then result:=i;
    end;
 end;
-
+function TuGrammatiken.stringanalyse(s:string):Boolean;  //returns false if doesn't work
+//für regeln nicht axiome
+VAR str,rest_string:string; i,l,h,k,g,b:CARDINAL; c:Char;klammer_auf,bool:Boolean;
+begin
+   str:=Copy(s,1,length(s));
+   rest_string:=Copy(s,1,length(s));
+   l:=length(str);
+   h:=ord(str[1]);
+   if not ((h=ord('f')) or ((h>=ord('A')) and (h<=ord('Z')))) then result:=False;
+   //wohlgeformte klammern   ()
+   for i:=1 to l do
+     begin
+       if str[i]='(' then
+       begin
+         if klammer_auf then result:=False
+         else klammer_auf:=True;
+       end;
+       if str[i]=')' then klammer_auf:=False;
+     end;
+   while not pos('(',rest_string)=0 do
+   begin
+      g:=pos(')',rest_string)-1;
+      bool:=True;
+      for k:=pos('(',rest_string)+1 to g do
+        begin
+          h:=ord(str[k]);
+          if bool then
+          begin
+               if not ((h>=ord('a')) and (h<=ord('z'))) then result:=False;
+               bool:=False;
+          end
+          else
+          begin
+               if h=ord(';') then
+               begin
+                   bool:=False;
+               end
+               else result:=False;
+          end;
+        end;
+      //reststring : löschen was in der klammer war
+      //wahrscheinlichkeiten??
+    end;
+   result:=True;
+end;
 procedure TuGrammatiken.Button1Click(Sender: TObject); //Turtle erstellen
 var i,n,nr,anzahl:CARDINAL;
     gram:TGrammatik;R,L,NameGrammatik:String;
@@ -88,90 +133,96 @@ Begin
 g:=Memo1.Lines[0];
 if Length(g) > 0 then
 Begin
-n:=0;
-While n<= Memo1.Lines.Count-1 do
-  begin
-    p:=pos('>',Memo1.Lines[n]);
-    if p=0 then
-      Begin
-           SHOWMESSAGE('Deine Eingabe ist falsch! Bitte überprüfe die Grammatik!');
-           break;
-      end
-      else
-      Begin
-        zeichnerInit := TZeichnerInit.Create;
-        gram:=TGrammatik.Create;
-        n:=0;
-        p:=pos('>',Memo1.Lines[0]);
-        gram.axiom:= copy(Memo1.Lines[0],1,p-2);
-        While n<= Memo1.Lines.Count-1 do
-          begin
-          s:=pos(',',Memo1.Lines[n]);
-          If s=0 then
-            begin
-              p:=pos('>',Memo1.Lines[n]);
-              L:=copy(Memo1.Lines[n],1,p-2);//linke Seite des '->'
-              R:=copy(Memo1.Lines[n],p+1,p+100);//rechte Seite des '->'
-              //Lc:=L[1]; //StrToChar
-              //gram.addRegel(Lc,R);
-              gram.addRegel(L,R);//Regel ohne Wahrscheinlichkeit hinzufügen     //später
-              INC(n)
-            end
-            else
-            begin
-              p:=pos('>',Memo1.Lines[n]);
-              L:=copy(Memo1.Lines[n],1,p-2);//linke Seite des '->'
-              //Lc:=L[1]; //StrToChar
-              R:=copy(Memo1.Lines[n],p+1,s-1);//rechte Seite des '->'
-              q:=pos(',',R);
-              If not q=0 then delete(R,q,q+10)
-            else
-            begin
-              W:=strtofloat(copy(Memo1.Lines[n],s+1,s+10));//wahrscheinlichkeit
-              //gram.addRegel(Lc,R,W);//Regel mit Wahrscheinlichkeit hinzufügen
-              gram.addRegel(L,R,W);//Regel mit Wahrscheinlichkeit hinzufügen
-              INC(n);
-              end;
-            end
-          end;
-        If not (Edit2.text = '') then
+  n:=1;
+  While n<= Memo1.Lines.Count-1 do
         Begin
-         zeichenPara.rekursionsTiefe:= strtoint(Edit2.Text);
-         If not (Edit3.text = '') then
-         Begin
-         If strtofloat(Edit3.Text)<=99999999 then
-         Begin
-         zeichenPara.winkel:=strtofloat(Edit3.Text);
-         NameGrammatik:=Edit4.Text;
-         anzahl:= strtoint(Edit1.Text);
-         if anzahl=0 then
-           Begin
-           SHOWMESSAGE('Deine Anzahl ist 0. Es wird keine Darstellung erstellt.');
-           end
-         else
-         Begin
-           nr:=gib_markierte_nr();
-           turtlemanager:=Hauptform.o.copy();
-           //erstellen der Turtels
-           for i:=0 to anzahl do
+          zeichnerInit := TZeichnerInit.Create;
+          gram:=TGrammatik.Create;
+          gram.axiom:= Memo1.Lines[0];
+          //axiom überprüfen
+            begin
+             (*if stringanalyse(Memo1.Lines[n]) then
              begin
-             zeichenPara.setzeStartPunkt(Hauptform.akt_x,Hauptform.akt_y,Hauptform.akt_z);
-             Turtle:=TTurtle.Create(gram,zeichnerInit.initialisiere(zeichnerInit.gibZeichnerListe[nr],zeichenPara));
-             Turtle.name:=NameGrammatik;
-             Hauptform.update_startkoords();
-             turtlemanager.addTurtle(Turtle);
+                  SHOWMESSAGE('Deine Eingabe ist falsch! Bitte überprüfe die Regeln der Grammatik!');
+                  break
+             end; *) //funktioniert nicht richtig
+             p:=pos('>',Memo1.Lines[n]);
+             if p=0 then
+             Begin
+               SHOWMESSAGE('Deine Eingabe ist falsch! Bitte überprüfe die Grammatik!');
+               break;
              end;
-           Hauptform.push_neue_instanz(turtlemanager);
-           Visible:=False;
-           Hauptform.zeichnen();
+             begin
+             s:=pos(',',Memo1.Lines[n]);
+             If s=0 then
+              begin
+                p:=pos('>',Memo1.Lines[n]);
+                L:=copy(Memo1.Lines[n],1,p-2);//linke Seite des '->'
+                R:=copy(Memo1.Lines[n],p+1,p+100);//rechte Seite des '->'
+                gram.addRegel(L,R);//Regel ohne Wahrscheinlichkeit hinzufügen
+                INC(n)
+              end
+              else
+              begin
+                p:=pos('>',Memo1.Lines[n]);
+                L:=copy(Memo1.Lines[n],1,p-2);//linke Seite des '->'
+                R:=copy(Memo1.Lines[n],p+1,s-1);//rechte Seite des '->'
+                q:=pos(',',R);
+                If not q=0 then delete(R,q,q+10)
+              else
+              begin
+                W:=strtofloat(copy(Memo1.Lines[n],s+1,s+10));//wahrscheinlichkeit
+                gram.addRegel(L,R,W);//Regel mit Wahrscheinlichkeit hinzufügen
+                INC(n);
+                end;
+              end
+            end;
+          If not (Edit2.text = '') then
+          Begin
+           zeichenPara.rekursionsTiefe:= strtoint(Edit2.Text);
+           If not (Edit3.text = '') then
+           Begin
+           If strtofloat(Edit3.Text)<=99999999 then
+           Begin
+           zeichenPara.winkel:=strtofloat(Edit3.Text);
+           NameGrammatik:=Edit4.Text;
+           anzahl:= strtoint(Edit1.Text);
+           if anzahl=0 then
+             Begin
+             SHOWMESSAGE('Deine Anzahl ist 0. Es wird keine Darstellung erstellt.');
+             end
+           else
+           Begin
+             nr:=gib_markierte_nr();
+             turtlemanager:=Hauptform.o.copy();
+             //erstellen der Turtels
+             for i:=1 to anzahl do
+               begin
+                 Hauptform.update_startkoords();
+                 zeichenPara.setzeStartPunkt(Hauptform.akt_x,Hauptform.akt_y,Hauptform.akt_z);
+                 Turtle:=TTurtle.Create(gram,zeichnerInit.initialisiere(zeichnerInit.gibZeichnerListe[nr],zeichenPara));
+                 Turtle.name:=NameGrammatik;
+                 turtlemanager.addTurtle(Turtle);
+               end;
+             if turtle.zeichnen() then
+             begin
+               Hauptform.push_neue_instanz(turtlemanager);
+               Hauptform.ordnen();
+               Visible:=False;
+               Hauptform.zeichnen();
+             end
+             else
+             begin
+               SHOWMESSAGE('Der gezeichnete Baum ist zu groß. In den Optionen kann die maximale Stringlänge geändert werden. ');
+             end;
+           end;
+           end
+           else SHOWMESSAGE('Du hast die Maximale Größe des Winkels von 99999999 überschritten!');
+           end;
+           end
+           else SHOWMESSAGE('Eine Rekurstiefe von 0 ist nicht möglich!');
          end;
-         end
-         else SHOWMESSAGE('Du hast die Maximale Größe des Winkels von 99999999 überschritten!');
-         end;
-         end
-         else SHOWMESSAGE('Eine Rekurstiefe von 0 ist nicht möglich!');
-       end;
-  end;
+    end;
 end
 else SHOWMESSAGE('Deine Eingabe ist falsch! Bitte überprüfe die Grammatik!');
 end;
@@ -195,8 +246,8 @@ var i : integer;
 //Diese Funktion sorgt dafür, dass immer nur ein objekt gleichzeitig angeklickt sein kann.
 begin
     if (Sender as TCheckListBox).Checked[Index] then begin
-        for I := 0 to CheckListBox1.Count -1 do
-            CheckListBox1.Checked[I] := False;
+        for i := 0 to CheckListBox1.Count -1 do
+            CheckListBox1.Checked[i] := False;
         CheckListBox1.Checked[Index] := True;
     end;
 end;
@@ -292,7 +343,7 @@ begin
     conf.EnumSubKeys(UnicodeString('Grammatik/regeln/'),regelnLinkeSeite);
     for regelnLinkeSeiteIdx := 0 to regelnLinkeSeite.Count - 1 do
         begin
-            i:=0;
+            i:=1;
             tmp_pfad := 'Grammatik/regeln/' + regelnLinkeSeite[regelnLinkeSeiteIdx];
             conf.EnumSubKeys(UnicodeString(tmp_pfad), regelnRechteSeite);
             for regelnRechteSeiteIdx := 0 to regelnRechteSeite.Count - 1 do
@@ -308,6 +359,7 @@ begin
                       UnicodeString(tmp_pfad + '/' + regelnRechteSeite[regelnRechteSeiteIdx] + '/zufaelligkeit'),
                       0.0
                   );
+                  Memo1.Lines[0]:=axiom;
                   Memo1.Lines[i]:=axiom+'->'+produktion+','+FloattoStr(zufaelligkeit);
                   INC(i);
                 end
@@ -318,6 +370,7 @@ begin
                       UnicodeString(tmp_pfad + '/' + regelnRechteSeite[regelnRechteSeiteIdx] + '/zufaelligkeit'),
                       0.0
                   );
+                  Memo1.Lines[0]:=axiom;
                   Memo1.Lines[i]:=axiom+'->'+produktion+','+FloattoStr(zufaelligkeit);
                   INC(i);
                 END;
@@ -345,9 +398,13 @@ procedure TuGrammatiken.MenuItem3Click(Sender: TObject); //Turtle speichern
        begin
        zeichnerInit := TZeichnerInit.Create;
        gram:=TGrammatik.Create;
-       n:=0;
+       n:=1;
        p:=pos('>',Memo1.Lines[0]);
-       gram.axiom:= copy(Memo1.Lines[0],1,p-2);
+       if not ((Edit3.text = '') or (Edit2.text = '') or (Edit4.text = '')) then
+       begin
+       if p=0 then
+       begin
+       gram.axiom:= Memo1.Lines[0];
        While n<= Memo1.Lines.Count-1 do
        begin
         s:=pos(',',Memo1.Lines[n]);
@@ -355,9 +412,7 @@ procedure TuGrammatiken.MenuItem3Click(Sender: TObject); //Turtle speichern
         begin
           p:=pos('>',Memo1.Lines[n]);
           L:=copy(Memo1.Lines[n],1,p-2);//linke Seite des '->'
-          //Lc:=L[1]; //StrToChar
           R:=copy(Memo1.Lines[n],p+1,p+100);//rechte Seite des '->'
-          //gram.addRegel( Lc,R);//Regel ohne Wahrscheinlichkeit hinzufügen
           gram.addRegel(L,R);//Regel ohne Wahrscheinlichkeit hinzufügen
           INC(n)
         end
@@ -365,23 +420,19 @@ procedure TuGrammatiken.MenuItem3Click(Sender: TObject); //Turtle speichern
            begin
             p:=pos('>',Memo1.Lines[n]);
             L:=copy(Memo1.Lines[n],1,p-2);//linke Seite des '->'
-            //Lc:=L[1]; //StrToChar
             R:=copy(Memo1.Lines[n],p+1,s-1);//rechte Seite des '->'
             q:=pos(',',R);
           If not q=0 then
           delete(R,q,q+10)
           else
             W:=strtofloat(copy(Memo1.Lines[n],s+1,s+10));//wahrscheinlichkeit
-            //gram.addRegel(Lc,R,W);//Regel mit Wahrscheinlichkeit hinzufügen
             gram.addRegel(L,R,W);//Regel mit Wahrscheinlichkeit hinzufügen
             INC(n);
         end
       end;
-    //
     zeichenPara.rekursionsTiefe:= strtoint(Edit2.Text);
     zeichenPara.winkel:=strtofloat(Edit3.Text);
     NameGrammatik:=Edit4.Text;
-    anzahl:= strtoint(Edit1.Text)-1;
     nr:=gib_markierte_nr();
          begin
            zeichenPara.setzeStartPunkt(Hauptform.akt_x,Hauptform.akt_y,Hauptform.akt_z);
@@ -390,8 +441,17 @@ procedure TuGrammatiken.MenuItem3Click(Sender: TObject); //Turtle speichern
            turtle.speichern(SaveDialog1.FileName);
          end;
        end
+       else
+       SHOWMESSAGE('Du kannst nichts ohne Grammatik speichern!');
+       end
+       else
+       begin
+       SHOWMESSAGE('Du musst überall Werte eingeben!');
+       end;
+       end
   else
   begin
+
   end;
   end;
 end.

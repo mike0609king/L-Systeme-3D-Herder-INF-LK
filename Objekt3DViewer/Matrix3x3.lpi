@@ -282,10 +282,9 @@
         <UnitName Value="uZeichnerFarbenBlattUndSchritt"/>
       </Unit45>
       <Unit46>
-        <Filename Value="..\Turtle\ufarben.pas"/>
+        <Filename Value="..\Turtle\uFarben.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="uFarben"/>
-      <Unit46>
+      </Unit46>
       <Unit47>
         <Filename Value="Formulare\uparameterisierung_form.pas"/>
         <IsPartOfProject Value="True"/>
@@ -293,7 +292,7 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uParameterisierung_Form"/>
-      <Unit47>
+      </Unit47>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

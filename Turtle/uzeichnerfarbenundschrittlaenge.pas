@@ -4,11 +4,11 @@ unit uzeichnerfarbenundschrittlaenge;
 interface
 
 uses
-  Classes, SysUtils, uZeichnerBase;
+  Classes, SysUtils, uZeichnerBase, uFarben;
 
 type TZeichnerFarbenUndSchrittlaenge = class(TZeichnerBase)
   private
-    FIdxZuFarbe: array[1..14,0..2] of Real;
+    FFarben: TFarben;
     procedure aktionSchrittMtLinie(list: TStringList);
   public
     constructor Create(zeichenPara: TZeichenParameter); override;
@@ -34,16 +34,11 @@ begin
 end;
 
 procedure TZeichnerFarbenUndSchrittlaenge.aktionSchrittMtLinie(list: TStringList);
-var m: Cardinal;
-    colorIdx: Cardinal;
+var m,colorIdx: Cardinal; farbe: TFarbe;
     procedure aux_SchrittUndFarbeUmsetzen;
     begin
-      if (colorIdx = 0) or
-      (colorIdx > high(FIdxZuFarbe)) then 
-      colorIdx := 14;
-      schritt(1/m,true,FIdxZuFarbe[colorIdx][0],
-                       FIdxZuFarbe[colorIdx][1],
-                       FIdxZuFarbe[colorIdx][2]); 
+      farbe := FFarben.gibFarbe(colorIdx);
+      schritt(1/m,true,farbe.r,farbe.g,farbe.b);
     end;
 begin
   if (list.Count = 2) then
@@ -66,20 +61,7 @@ begin
   inherited;
   FName := 'ZeichnerFarbenUndSchrittlaenge';
 
-  FIdxZuFarbe[1,0] := 0.7; FIdxZuFarbe[1,1] := 0.4; FIdxZuFarbe[1,2] := 0.1;
-  FIdxZuFarbe[2,0] := 0.5; FIdxZuFarbe[2,1] := 0.5; FIdxZuFarbe[2,2] := 0.1;
-  FIdxZuFarbe[3,0] := 0.5; FIdxZuFarbe[3,1] := 0.7; FIdxZuFarbe[3,2] := 0.3;
-  FIdxZuFarbe[4,0] := 0.6; FIdxZuFarbe[4,1] := 0.1; FIdxZuFarbe[4,2] := 0;
-  FIdxZuFarbe[5,0] := 0.4; FIdxZuFarbe[5,1] := 0.9; FIdxZuFarbe[5,2] := 0.6;
-  FIdxZuFarbe[6,0] := 0.4; FIdxZuFarbe[6,1] := 0.3; FIdxZuFarbe[6,2] := 0.1;
-  FIdxZuFarbe[7,0] := 0.6; FIdxZuFarbe[7,1] := 0.1; FIdxZuFarbe[7,2] := 0.4;
-  FIdxZuFarbe[8,0] := 0.7; FIdxZuFarbe[8,1] := 0; FIdxZuFarbe[8,2] := 0.1;
-  FIdxZuFarbe[9,0] := 0.9; FIdxZuFarbe[9,1] := 0.5; FIdxZuFarbe[9,2] := 0.1;
-  FIdxZuFarbe[10,0] := 0.8; FIdxZuFarbe[10,1] := 0.1; FIdxZuFarbe[10,2] := 1;
-  FIdxZuFarbe[11,0] := 0.3; FIdxZuFarbe[11,1] := 0.2; FIdxZuFarbe[11,2] := 0.6;
-  FIdxZuFarbe[12,0] := 1; FIdxZuFarbe[12,1] := 0.9; FIdxZuFarbe[12,2] := 0.3;
-  FIdxZuFarbe[13,0] := 1; FIdxZuFarbe[13,1] := 0.8; FIdxZuFarbe[13,2] := 0;
-  FIdxZuFarbe[14,0] := 1; FIdxZuFarbe[14,1] := 1; FIdxZuFarbe[14,2] := 1;
+  FFarben.initColor;
 
   FVersandTabelle.AddOrSetData('F',aktionSchrittMtLinie);
 end;

@@ -6,7 +6,6 @@ interface
 uses
   Classes, SysUtils,fgl, fpjson, jsonparser, jsonConf;
 
-// zu einem record machen (wegen operator error nicht moeglich) !!!!!!
 type TRegelProduktionsseite = class
     produktion: String;
     zufaelligkeit: Real;

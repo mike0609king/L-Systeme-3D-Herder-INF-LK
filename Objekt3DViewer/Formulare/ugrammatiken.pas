@@ -49,7 +49,7 @@ type
   private
     turtlemanager:TTurtlemanager;
     function gib_markierte_nr():CARDINAL;
-    function stringanalyse(s:string):Boolean;
+    function stringanalyse(s:string):BOOLEAN;
   public
 
   end;
@@ -75,7 +75,7 @@ begin
      if CheckListBox1.Checked[i] then result:=i;
    end;
 end;
-function TuGrammatiken.stringanalyse(s:string):Boolean;  //returns false if doesn't work
+function TuGrammatiken.stringanalyse(s:string):BOOLEAN;
 //für regeln nicht axiome
 VAR str,rest_string:string; i,l,h,k,j,g,b:CARDINAL; c:Char;klammer_auf,bool:Boolean;
 begin
@@ -83,47 +83,70 @@ begin
    rest_string:=Copy(s,1,length(s));
    l:=length(str);
    h:=ord(str[1]);
-   if not ((h=ord('f')) or ((h>=ord('A')) and (h<=ord('Z')))) then result:=False;
+   if not ((h=ord('f')) or ((h>=ord('A')) and (h<=ord('Z')))) then
+   begin
+        SHOWMessage('Ein Axiom kann nur ein Großbuchstabe sein! ');
+        exit(False);
+   end;
    //wohlgeformte klammern   ()
+   klammer_auf:=False;
    for i:=1 to l do
      begin
        if str[i]='(' then
        begin
-         if klammer_auf then result:=False
+         if klammer_auf then
+         begin
+              SHOWMessage('Eine Klammer muss geschlossen werden bevor eine neue geöffent werden kann!');
+              exit(False);
+         end
          else klammer_auf:=True;
        end;
        if str[i]=')' then klammer_auf:=False;
      end;
-   j:=pos('(',str);
-   if j<>0 then
-   begin
-   while pos('(',rest_string)<>0 do
-   begin
-      g:=pos(')',rest_string)-1;
-      bool:=True;
-      for k:=pos('(',rest_string)+1 to g do
-        begin
-          h:=ord(str[k]);
-          if bool then
-          begin
-               if not ((h>=ord('a')) and (h<=ord('z'))) then result:=False;
-               bool:=False;
-          end
-          else
-          begin
-               if h=ord(';') then
-               begin
-                   bool:=False;
-               end
-               else result:=False;
+   if not klammer_auf then
+     begin
+     j:=pos('(',str);
+     if j<>0 then
+       begin
+       while pos('(',rest_string)<>0 do
+         begin
+            g:=pos(')',rest_string)-1;
+            bool:=True;
+            for k:=pos('(',rest_string)+1 to g do
+              begin
+                h:=ord(str[k]);
+                if bool then
+                begin
+                     if not ((h>=ord('a')) and (h<=ord('z'))) then
+                     begin
+                          ShowMessage('Parameter müssen kleine Buchstaben sein!');
+                          exit(False)
+                     end;
+                     bool:=False;
+                end
+                else
+                begin
+                     if h=ord(';') then
+                     begin
+                         bool:=False;
+                     end
+                     else
+                     begin
+                          ShowMessage('Parameter müssen mit einem ";" getrennt werden!');
+                          exit(False)
+                     end;
+                end;
+              end;
+            g:=pos(')',rest_string);
+            rest_string:=copy(rest_string,g+1,g+100);
           end;
-        end;
-      g:=pos(')',rest_string);
-      rest_string:=copy(rest_string,g+1,g+100);
-    end;
-   result:=false;
+       end;
    end
-   else result:=false;
+   else
+   begin
+        SHOWMessage('Klammern müssen geschlossen werden!');
+        exit(False);
+   end;
 end;
 procedure TuGrammatiken.Button1Click(Sender: TObject); //Turtle erstellen
 var i,n,nr,anzahl:CARDINAL;
@@ -145,11 +168,7 @@ Begin
           gram:=TGrammatik.Create;
           gram.axiom:= Memo1.Lines[0];
             begin
-             if stringanalyse(Memo1.Lines[n]) then
-             begin
-                  SHOWMESSAGE('Deine Eingabe ist falsch! Bitte überprüfe die Regeln der Grammatik!');
-                  break
-             end;
+             if not stringanalyse(Memo1.Lines[n])then break;
              p:=pos('>',Memo1.Lines[n]);
              if p=0 then
              Begin
@@ -208,7 +227,7 @@ Begin
                  Turtle.name:=NameGrammatik;
                  turtlemanager.addTurtle(Turtle);
                end;
-             if turtle.zeichnen() then
+             if True then
              begin
                Hauptform.push_neue_instanz(turtlemanager);
                Hauptform.ordnen();

@@ -287,7 +287,6 @@ function TTurtle.zeichnen : Boolean;
 VAR i: Cardinal; paraList : TStringList; 
     zuZeichnenderBuchstabe: Char; tmp_string: String;
 begin
-  
   if length(FStringEntwickler.zuZeichnenderString) > FMaximaleStringLaenge then exit(false);
   init(FZeichner.startPunkt.x,FZeichner.startPunkt.y,FZeichner.startPunkt.z);
   i := 1; 

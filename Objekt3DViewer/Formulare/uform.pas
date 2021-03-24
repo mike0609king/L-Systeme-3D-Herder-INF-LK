@@ -559,6 +559,7 @@ begin
     zeichnerInit.initialisiere('ZeichnerFarben',zeichenPara)
   );
   para := TStringList.Create;
+  para := turtle.gibParameter();
   //para.add('14'); para.add('14'); para.add('14'); para.add('14');
   //para.add('14'); para.add('14'); para.add('14'); para.add('14');
   turtle.aendereParameter(para);

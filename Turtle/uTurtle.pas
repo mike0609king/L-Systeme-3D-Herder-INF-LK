@@ -289,6 +289,7 @@ VAR i: Cardinal; paraList : TStringList;
 begin
   if length(FStringEntwickler.zuZeichnenderString) > FMaximaleStringLaenge then exit(false);
   init(FZeichner.startPunkt.x,FZeichner.startPunkt.y,FZeichner.startPunkt.z);
+  paralist:=TStringList.Create;
   i := 1; 
   while (i <= length(FStringEntwickler.zuZeichnenderString)) do
   begin

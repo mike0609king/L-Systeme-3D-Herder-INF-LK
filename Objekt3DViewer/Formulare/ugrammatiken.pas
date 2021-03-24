@@ -227,7 +227,7 @@ Begin
                  Turtle.name:=NameGrammatik;
                  turtlemanager.addTurtle(Turtle);
                end;
-             if True then
+             if turtle.zeichnen then
              begin
                Hauptform.push_neue_instanz(turtlemanager);
                Hauptform.ordnen();

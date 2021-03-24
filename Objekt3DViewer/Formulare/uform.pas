@@ -501,6 +501,7 @@ VAR turtle: TTurtle;
     );
     turtle.maximaleStringLaenge := 500000;
     o.addTurtle(turtle);
+    turtle.zeichnen;
     inc(numTurt);
   end;
 begin
@@ -587,7 +588,7 @@ begin
   }
 
   // Parametrisierung von Farben - Beispiel (2)
-  {
+
   zeichenPara.winkel := 47.5;
   zeichenPara.rekursionsTiefe := 3;
   gram := TGrammatik.Create;
@@ -600,21 +601,21 @@ begin
   plaziereTurtle('ZeichnerFarben');
   plaziereTurtle('ZeichnerFarben');
   plaziereTurtle('ZeichnerFarben');
-  }
+
 
   // Schrittlaenge und Farben
-  {
+
   zeichenPara.winkel := 47.5;
   zeichenPara.rekursionsTiefe := 4;
   gram := TGrammatik.Create;
   gram.axiom := 'F(1;20)&[+F(2)&&F(3)F(4)]&&F(5)[-^^/^-F(13)F(7)]F(8)';
   gram.addRegel('F(c)','F(c)&[+F(c)&&F(c)F(c)]&&F(c)[-^^/^-F(c)F(c)]F(c)');      
   gram.addRegel('F(c;l)','F(c;l)&[+F(c;l)&&F(c;l)F(c;l)]&&F(c;l)[-^^/^-F(c;l)F(c;l)]F(c;l)');      
-  plaziereTurtle('ZeichnerFarbenUndSchrittlaenge')
-  }
+  plaziereTurtle('ZeichnerFarbenUndSchrittlaenge');
+
 
   // Beispiel 1
-  {
+
   gram := TGrammatik.Create;
   zeichenPara.winkel := 22.5;
   zeichenPara.rekursionsTiefe := 3;
@@ -622,10 +623,10 @@ begin
   gram.addRegel('F(c;d)','F(c;d)&[+F(c;d)&&F(c;d)F(c;d)B(d)]&&F(c;d)[-^^/^-F(c;d)F(c;d)B(d)]F(c;d)',25);
   gram.addRegel('F(c;d)','F(c;d)&[+F(c;d)&&F(c;d)F(c;d)]&&F(c;d)[-^^/^-F(c;d)F(c;d)]F(c;d)',75);
   plaziereTurtle('ZeichnerFarbenBlattUndSchritt');
-  }
+
 
   // Beispiel 2
-  {
+
   gram := TGrammatik.Create;
   zeichenPara.winkel := 47.5;
   zeichenPara.rekursionsTiefe := 7;
@@ -633,7 +634,7 @@ begin
   gram.addRegel('X(c;d)','F(c)+[[-X(c;d)]&&-X(c;d)B(d)]-F(c)[-F(c)//X(c;d)B(d)]+X(c;d)');
   gram.addRegel('F(c)','F(c)F(c)');
   plaziereTurtle('ZeichnerFarbenBlattUndSchritt');
-  }
+
 
   // Beispiel 3
   {

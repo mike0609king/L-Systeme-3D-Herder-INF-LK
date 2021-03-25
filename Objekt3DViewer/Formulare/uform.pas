@@ -501,7 +501,6 @@ VAR turtle: TTurtle;
       zeichnerInit.initialisiere(zeichenArt,zeichenPara)
     );
     turtle.maximaleStringLaenge := 500000;
-    turtle.speichern('h.json');
     o.addTurtle(turtle);
     inc(numTurt);
   end;
@@ -513,7 +512,7 @@ begin
   numTurt := 0;
 
   // Standardsymbole im Programm
-  {
+  {}
   gram := TGrammatik.Create;
   zeichenPara.winkel := 47.5;
   zeichenPara.rekursionsTiefe := 4;
@@ -528,7 +527,7 @@ begin
   gram.addRegel('X','F+[[-X]&&-X]-F[-F//X]+X');
   gram.addRegel('F','FF');
   plaziereTurtle('ZeichnerBase');
-  }
+  {}
 
   // Stochastische L-Systeme
   {
@@ -589,7 +588,6 @@ begin
   }
 
   // Parametrisierung von Farben - Beispiel (2)
-
   {
   zeichenPara.winkel := 47.5;
   zeichenPara.rekursionsTiefe := 3;
@@ -637,7 +635,7 @@ begin
   }
 
   // Beispiel 2 (Sakura-Baeume)
-  {}
+  {
   gram := TGrammatik.Create;
   zeichenPara.winkel := 47.5;
   zeichenPara.rekursionsTiefe := 7;
@@ -659,7 +657,7 @@ begin
   zeichenPara.winkel := 120;
   zeichenPara.rekursionsTiefe := 7;
   plaziereTurtle('ZeichnerFarbenBlattUndSchritt');
-  {}
+  }
 
   // Beispiel 2 fuer normale Baeume
   {

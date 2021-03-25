@@ -501,6 +501,7 @@ VAR turtle: TTurtle;
       zeichnerInit.initialisiere(zeichenArt,zeichenPara)
     );
     turtle.maximaleStringLaenge := 500000;
+    turtle.speichern('h.json');
     o.addTurtle(turtle);
     inc(numTurt);
   end;
@@ -546,7 +547,6 @@ begin
   plaziereTurtle('ZeichnerBase');
   plaziereTurtle('ZeichnerBase');
   }
-
   
   // Baum mit gruenen Blaettern
   {
@@ -636,8 +636,8 @@ begin
   plaziereTurtle('ZeichnerFarbenBlattUndSchritt');
   }
 
-  // Beispiel 2
-  { Sakura-Baeume
+  // Beispiel 2 (Sakura-Baeume)
+  {}
   gram := TGrammatik.Create;
   zeichenPara.winkel := 47.5;
   zeichenPara.rekursionsTiefe := 7;
@@ -659,7 +659,7 @@ begin
   zeichenPara.winkel := 120;
   zeichenPara.rekursionsTiefe := 7;
   plaziereTurtle('ZeichnerFarbenBlattUndSchritt');
-  }
+  {}
 
   // Beispiel 2 fuer normale Baeume
   {
@@ -672,7 +672,7 @@ begin
   gram.addRegel('X(c;d;e;f)','F(c)+[[-X(c;d;e;f)]&&-X(c;d;e;f)B(f)]-F(c)[-F(c)//X(c;d;e;f)B(f)]+X(c;d;e;f)',25);
   gram.addRegel('F(c)','F(c)F(c)');
   plaziereTurtle('ZeichnerFarbenBlattUndSchritt');
-
+  
   zeichenPara.winkel := 120;
   zeichenPara.rekursionsTiefe := 7;
   plaziereTurtle('ZeichnerFarbenBlattUndSchritt');

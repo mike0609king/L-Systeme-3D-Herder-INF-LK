@@ -491,6 +491,7 @@ VAR turtle: TTurtle;
     zeichnerInit: TZeichnerInit;
     zeichenPara: TZeichenParameter;
     para: TStringList;
+    tmp_string: String;
     numTurt: Cardinal;
   procedure plaziereTurtle(zeichenArt: String);
   begin
@@ -501,7 +502,6 @@ VAR turtle: TTurtle;
     );
     turtle.maximaleStringLaenge := 500000;
     o.addTurtle(turtle);
-    turtle.zeichnen;
     inc(numTurt);
   end;
 begin
@@ -607,7 +607,6 @@ begin
 
 
   // Schrittlaenge und Farben
-
   {
   zeichenPara.winkel := 47.5;
   zeichenPara.rekursionsTiefe := 4;
@@ -622,6 +621,14 @@ begin
   {
   gram := TGrammatik.Create;
   zeichenPara.winkel := 22.5;
+  zeichenPara.rekursionsTiefe := 6;
+  gram.axiom := 'X(1;10)';
+  gram.addRegel('X(c;d)','F(c)+[[-X(c;d)]&&-X(c;d)B(d)]-F(c)[-F(c)//X(c;d)B(d)]+X(c;d)');
+  gram.addRegel('F(c)','F(c)F(c)');
+  plaziereTurtle('ZeichnerFarbenBlattUndSchritt');
+
+  gram := TGrammatik.Create;
+  zeichenPara.winkel := 22.5;
   zeichenPara.rekursionsTiefe := 3;
   gram.axiom := 'F(1;5)&[+F(1;5)&&F(1;5)F(1;5)B(5)]&&F(1;5)[-^^/^-F(1;5)F(1;5)B(5)]F(1;5)';
   gram.addRegel('F(c;d)','F(c;d)&[+F(c;d)&&F(c;d)F(c;d)B(d)]&&F(c;d)[-^^/^-F(c;d)F(c;d)B(d)]F(c;d)',25);
@@ -630,6 +637,7 @@ begin
   }
 
   // Beispiel 2
+  { Sakura-Baeume
   gram := TGrammatik.Create;
   zeichenPara.winkel := 47.5;
   zeichenPara.rekursionsTiefe := 7;
@@ -638,14 +646,44 @@ begin
   gram.addRegel('F(c)','F(c)F(c)');
   plaziereTurtle('ZeichnerFarbenBlattUndSchritt');
 
-  // Beispiel 3
+  gram := TGrammatik.Create;
+  zeichenPara.winkel := 47.5;
+  zeichenPara.rekursionsTiefe := 7;
+  gram.axiom := 'X(1;22;23;25)';
+  gram.addRegel('X(c;d;e;f)','F(c)+[[-X(c;d;e;f)]&&-X(c;d;e;f)B(d)]-F(c)[-F(c)//X(c;d;e;f)B(d)]+X(c;d;e;f)',25);
+  gram.addRegel('X(c;d;e;f)','F(c)+[[-X(c;d;e;f)]&&-X(c;d;e;f)B(e)]-F(c)[-F(c)//X(c;d;e;f)B(e)]+X(c;d;e;f)',50);
+  gram.addRegel('X(c;d;e;f)','F(c)+[[-X(c;d;e;f)]&&-X(c;d;e;f)B(f)]-F(c)[-F(c)//X(c;d;e;f)B(f)]+X(c;d;e;f)',25);
+  gram.addRegel('F(c)','F(c)F(c)');
+  plaziereTurtle('ZeichnerFarbenBlattUndSchritt');
+
+  zeichenPara.winkel := 120;
+  zeichenPara.rekursionsTiefe := 7;
+  plaziereTurtle('ZeichnerFarbenBlattUndSchritt');
+  }
+
+  // Beispiel 2 fuer normale Baeume
   {
   gram := TGrammatik.Create;
-  zeichenPara.winkel := 22.5;
-  zeichenPara.rekursionsTiefe := 6;
-  gram.axiom := 'X(1;10)';
-  gram.addRegel('X(c;d)','F(c)+[[-X(c;d)]&&-X(c;d)B(d)]-F(c)[-F(c)//X(c;d)B(d)]+X(c;d)');
+  zeichenPara.winkel := 47.5;
+  zeichenPara.rekursionsTiefe := 7;
+  gram.axiom := 'X(1;12;18;19)';
+  gram.addRegel('X(c;d;e;f)','F(c)+[[-X(c;d;e;f)]&&-X(c;d;e;f)B(d)]-F(c)[-F(c)//X(c;d;e;f)B(d)]+X(c;d;e;f)',25);
+  gram.addRegel('X(c;d;e;f)','F(c)+[[-X(c;d;e;f)]&&-X(c;d;e;f)B(e)]-F(c)[-F(c)//X(c;d;e;f)B(e)]+X(c;d;e;f)',50);
+  gram.addRegel('X(c;d;e;f)','F(c)+[[-X(c;d;e;f)]&&-X(c;d;e;f)B(f)]-F(c)[-F(c)//X(c;d;e;f)B(f)]+X(c;d;e;f)',25);
   gram.addRegel('F(c)','F(c)F(c)');
+  plaziereTurtle('ZeichnerFarbenBlattUndSchritt');
+
+  zeichenPara.winkel := 120;
+  zeichenPara.rekursionsTiefe := 7;
+  plaziereTurtle('ZeichnerFarbenBlattUndSchritt');
+
+  zeichenPara.winkel := 47.5;
+  zeichenPara.rekursionsTiefe := 5;
+  gram := TGrammatik.Create;
+  gram.axiom := 'F(1;12;18;19)';
+  gram.addRegel('F(c;d;e;g)','F(c;d;e;g)&[+F(c;d;e;g)&&F(c;d;e;g)B(d)]&&F(c;d;e;g)[-^^/^-F(c;d;e;g)B(d)]F(c;d;e;g)',33);
+  gram.addRegel('F(c;d;e;g)','F(c;d;e;g)&[+F(c;d;e;g)&&F(c;d;e;g)B(e)]&&F(c;d;e;g)[-^^/^-F(c;d;e;g)B(e)]F(c;d;e;g)',33);
+  gram.addRegel('F(c;d;e;g)','F(c;d;e;g)&[+F(c;d;e;g)&&F(c;d;e;g)B(g)]&&F(c;d;e;g)[-^^/^-F(c;d;e;g)B(g)]F(c;d;e;g)',34);
   plaziereTurtle('ZeichnerFarbenBlattUndSchritt');
   }
 end;

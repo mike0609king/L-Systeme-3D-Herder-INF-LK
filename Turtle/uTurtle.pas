@@ -36,6 +36,7 @@ type TTurtle = class
     function gibStartPunkt : TPunkt3D;
     function gibZeichnerName : String;
     function gibEntwickelterString : String;
+    function gibZuZeichnenderString : String;
     function gibAxiom : String;
   public
     constructor Create(gram: TGrammatik; zeichner: TZeichnerBase; maximaleStringLaenge: Int64=100000); overload;
@@ -58,7 +59,8 @@ type TTurtle = class
     property name: String read FName write setzeName;
     property maximaleStringLaenge: Int64 read FMaximaleStringLaenge write setzeMaximaleStringLaenge;
 
-    property zuZeichnenderString: String read gibEntwickelterString;
+    property entwickelterString: String read gibEntwickelterString;
+    property zuZeichnenderString: String read gibZuZeichnenderString;
 
     // setter-Funktionen (public)
     procedure setzeStartPunkt(const x,y,z: Real);
@@ -121,11 +123,10 @@ var conf: TJSONConfig;
 begin
   FGrammatik := TGrammatik.Create;
   conf:= TJSONConfig.Create(nil);
-  regelnRechteSeite := TStringList.Create;
   regelnLinkeSeite := TStringList.Create;
   try
     conf.filename:= datei;
-    FName := AnsiString(conf.getValue('name', ''));
+    //FName := AnsiString(conf.getValue('name', ''));
     FVisible := conf.getValue('visible', true);
     FMaximaleStringLaenge := conf.getValue('Maximale Stringlaenge',0);
 
@@ -150,6 +151,7 @@ begin
     for regelnLinkeSeiteIdx := 0 to regelnLinkeSeite.Count - 1 do
     begin
       tmp_pfad := 'Grammatik/regeln/' + regelnLinkeSeite[regelnLinkeSeiteIdx];
+      regelnRechteSeite := TStringList.Create;
       conf.EnumSubKeys(UnicodeString(tmp_pfad), regelnRechteSeite);
       for regelnRechteSeiteIdx := 0 to regelnRechteSeite.Count - 1 do
       begin
@@ -162,12 +164,15 @@ begin
             0.0
         );
         FGrammatik.addRegel(
-            regelnLinkeSeite[regelnLinkeSeiteIdx][1], // es wird nur ein Buchstabe akzeptiert
+            regelnLinkeSeite[regelnLinkeSeiteIdx],
             tmp_produktion,
-            tmp_zufaelligkeit
+            tmp_zufaelligkeit,
+            true
         );
       end;
+      FreeAndNil(regelnRechteSeite);
     end;
+    FreeAndNil(regelnLinkeSeite);
   finally
     conf.Free;
   end;
@@ -272,6 +277,11 @@ begin
   result := FStringEntwickler.entwickelterString;
 end;
 
+function TTurtle.gibZuZeichnenderString : String;
+begin
+  result := FStringEntwickler.zuZeichnenderString;
+end;
+
 function TTurtle.gibAxiom : String;
 begin
   result := FGrammatik.axiom;
@@ -349,7 +359,7 @@ begin
     conf.setValue('Zeichen Parameter/startPunkt/y', FZeichner.startPunkt.y);
     conf.setValue('Zeichen Parameter/startPunkt/z', FZeichner.startPunkt.z);
     
-    conf.setValue('Grammatik/axiom', UnicodeString(FGrammatik.axiom));
+    conf.setValue('Grammatik/axiom', UnicodeString(FGrammatik.rawAxiom));
     for regelIdx := 0 to FGrammatik.regeln.Count - 1 do
     begin
       tmp_path := 'Grammatik/regeln/' + FGrammatik.regeln.keys[regelIdx] + '/Regel ';

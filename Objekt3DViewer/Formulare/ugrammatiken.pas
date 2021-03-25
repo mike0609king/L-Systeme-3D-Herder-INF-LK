@@ -49,7 +49,9 @@ type
   private
     turtlemanager:TTurtlemanager;
     function gib_markierte_nr():CARDINAL;
-    function stringanalyse(s:string):BOOLEAN;
+    function stringanalyse(s:string):Boolean;
+    function axiomanalyse(s:string):Boolean;
+    function ExtractNumbers(s:string):String;
   public
 
   end;
@@ -148,6 +150,73 @@ begin
         exit(False);
    end;
 end;
+
+function TuGrammatiken.ExtractNumbers(s: string): String;
+var i : Integer;
+begin
+ Result := '';
+ for i := 1 to length(s) do
+  if s[i] in ['0'..'9'] then Result := Result + ';' + s[i]
+end;
+
+function TuGrammatiken.axiomanalyse(s:string):Boolean;  //returns false if axiom is wrong
+VAR axiom,rest_axiom,qs:string; i,l,y,h,z,k,j,g,b:CARDINAL; c:Char;klammer_auf,bool:Boolean; iValue, iCode: Integer;
+begin
+   axiom:=Copy(s,1,length(s));
+   l:=length(axiom);
+   rest_axiom:=Copy(s,1,length(s));
+   h:=ord(axiom[1]);
+   if not ((h=ord('f')) or ((h>=ord('A')) and (h<=ord('Z')))) then
+   begin
+        SHOWMessage('Ein Axiom kann nur ein Großbuchstabe sein! ');
+        exit(False);
+   end;
+   //wohlgeformte klammern ()
+   Klammer_auf:=false;
+   for i:=1 to l do
+     begin
+       if axiom[i]='(' then
+       begin
+         if klammer_auf then exit(false)
+         else klammer_auf:=True;
+       end;
+       if axiom[i]=')' then klammer_auf:=False
+     end;
+   j:=pos('(',axiom);
+   if j<>0 then
+   begin
+   while pos('(',rest_axiom)<>0 do
+   begin
+      g:=pos(')',rest_axiom)-1;
+      bool:=True;
+      for k:=pos('(',rest_axiom)+1 to g do
+        begin
+          h:=ord(axiom[k]);
+          if bool then
+          begin
+          qs:=ExtractNumbers(axiom);
+          val(qs, iValue, iCode);
+          if not iCode = 0 then exit(false)
+          else
+          bool:=False;
+          end
+          else
+          begin
+               if h=ord(';') then
+               begin
+                   bool:=False;
+               end
+               else exit(false);
+          end;
+        end;
+      g:=pos(')',rest_axiom);
+      rest_axiom:=copy(rest_axiom,g+1,g+100);
+    end;
+   exit(true);
+   end
+   else result:=true;
+end;
+
 procedure TuGrammatiken.Button1Click(Sender: TObject); //Turtle erstellen
 var i,n,nr,anzahl:CARDINAL;
     gram:TGrammatik;R,L,NameGrammatik:String;
@@ -168,6 +237,7 @@ Begin
           gram:=TGrammatik.Create;
           gram.axiom:= Memo1.Lines[0];
             begin
+             if not axiomanalyse(Memo1.Lines[n])then break;
              if not stringanalyse(Memo1.Lines[n])then break;
              p:=pos('>',Memo1.Lines[n]);
              if p=0 then

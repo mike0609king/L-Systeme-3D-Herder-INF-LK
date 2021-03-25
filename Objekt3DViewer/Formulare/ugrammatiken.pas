@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, Menus,uturtlemanager,
-  ExtCtrls, CheckLst, uAnimation, fgl, ugrammatik, uTurtle, fpjson, jsonparser, jsonConf;
+  ExtCtrls, CheckLst, uAnimation, fgl, ugrammatik, uTurtle, fpjson,LCLType, jsonparser, jsonConf;
 type
 
   { TuGrammatiken }
@@ -37,9 +37,11 @@ type
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
     procedure CheckGroup1ItemClick(Sender: TObject; Index: integer);
+    procedure CheckListBox1ItemClick(Sender: TObject; Index: integer);
     procedure Edit1Change(Sender: TObject);
     procedure Edit2Change(Sender: TObject);
     procedure Edit3Change(Sender: TObject);
+    procedure Edit3KeyPress(Sender: TObject; var Key: char);
     procedure Edit4Change(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure Memo1Change(Sender: TObject);
@@ -49,8 +51,8 @@ type
   private
     turtlemanager:TTurtlemanager;
     function gib_markierte_nr():CARDINAL;
-    function stringanalyse(s:string):Boolean;
-    function axiomanalyse(s:string):Boolean;
+  {  function stringanalyse(s:string):Boolean;
+    function axiomanalyse(s:string):Boolean;   }
     function ExtractNumbers(s:string):String;
   public
 
@@ -77,6 +79,7 @@ begin
      if CheckListBox1.Checked[i] then result:=i;
    end;
 end;
+{
 function TuGrammatiken.stringanalyse(s:string):BOOLEAN;
 //für regeln nicht axiome
 VAR str,rest_string:string; i,l,h,k,j,g,b:CARDINAL; c:Char;klammer_auf,bool:Boolean;
@@ -119,10 +122,10 @@ begin
                 h:=ord(str[k]);
                 if bool then
                 begin
-                     if not ((h>=ord('a')) and (h<=ord('z'))) then
+                     if (not h>=ord('a')) and (not h<=ord('z')) then
                      begin
                           ShowMessage('Parameter müssen kleine Buchstaben sein!');
-                          exit(False)
+                          exit(False);
                      end;
                      bool:=False;
                 end
@@ -130,7 +133,7 @@ begin
                 begin
                      if h=ord(';') then
                      begin
-                         bool:=False;
+                         bool:=false;
                      end
                      else
                      begin
@@ -150,7 +153,7 @@ begin
         exit(False);
    end;
 end;
-
+    }
 function TuGrammatiken.ExtractNumbers(s: string): String;
 var i : Integer;
 begin
@@ -158,7 +161,7 @@ begin
  for i := 1 to length(s) do
   if s[i] in ['0'..'9'] then Result := Result + ';' + s[i]
 end;
-
+{
 function TuGrammatiken.axiomanalyse(s:string):Boolean;  //returns false if axiom is wrong
 VAR axiom,rest_axiom,qs:string; i,l,y,h,z,k,j,g,b:CARDINAL; c:Char;klammer_auf,bool:Boolean; iValue, iCode: Integer;
 begin
@@ -177,11 +180,17 @@ begin
      begin
        if axiom[i]='(' then
        begin
-         if klammer_auf then exit(false)
+            if klammer_auf then
+            begin
+                 SHOWMessage('Eine Klammer muss geschlossen werden bevor eine neue geöffent werden kann!');
+                 exit(False);
+            end
          else klammer_auf:=True;
        end;
        if axiom[i]=')' then klammer_auf:=False
      end;
+   if not klammer_auf then
+   begin
    j:=pos('(',axiom);
    if j<>0 then
    begin
@@ -193,30 +202,41 @@ begin
         begin
           h:=ord(axiom[k]);
           if bool then
+             begin
+             qs:=ExtractNumbers(axiom);
+             val(qs, iValue, iCode);
+             if not iCode = 0 then
+             begin
+                  ShowMessage('Parameter müssen Zahlen sein!');
+                  exit(False);
+             end;
+             bool:=False;
+             end
+         else
+         begin
+          if h=ord(';') then
           begin
-          qs:=ExtractNumbers(axiom);
-          val(qs, iValue, iCode);
-          if not iCode = 0 then exit(false)
-          else
-          bool:=False;
+              bool:=false;
           end
           else
           begin
-               if h=ord(';') then
-               begin
-                   bool:=False;
-               end
-               else exit(false);
+               ShowMessage('Parameter müssen mit einem ";" getrennt werden!');
+               exit(False)
           end;
-        end;
-      g:=pos(')',rest_axiom);
-      rest_axiom:=copy(rest_axiom,g+1,g+100);
-    end;
-   exit(true);
-   end
-   else result:=true;
+     end;
+   end;
+ g:=pos(')',rest_axiom);
+ rest_axiom:=copy(rest_axiom,g+1,g+100);
 end;
-
+end;
+end
+else
+begin
+SHOWMessage('Klammern müssen geschlossen werden!');
+exit(False);
+end;
+end;
+    }
 procedure TuGrammatiken.Button1Click(Sender: TObject); //Turtle erstellen
 var i,n,nr,anzahl:CARDINAL;
     gram:TGrammatik;R,L,NameGrammatik:String;
@@ -231,14 +251,13 @@ g:=Memo1.Lines[0];
 if Length(g) > 0 then
 Begin
   n:=1;
+  zeichnerInit := TZeichnerInit.Create;
+  gram:=TGrammatik.Create;
+  gram.axiom:= Memo1.Lines[0];
   While n<= Memo1.Lines.Count-1 do
         Begin
-          zeichnerInit := TZeichnerInit.Create;
-          gram:=TGrammatik.Create;
-          gram.axiom:= Memo1.Lines[0];
-            begin
-             if not axiomanalyse(Memo1.Lines[n])then break;
-             if not stringanalyse(Memo1.Lines[n])then break;
+         {    if not axiomanalyse(Memo1.Lines[0])then exit;
+             if not stringanalyse(Memo1.Lines[n])then exit;  }
              p:=pos('>',Memo1.Lines[n]);
              if p=0 then
              Begin
@@ -261,14 +280,14 @@ Begin
                 L:=copy(Memo1.Lines[n],1,p-2);//linke Seite des '->'
                 R:=copy(Memo1.Lines[n],p+1,s-1);//rechte Seite des '->'
                 q:=pos(',',R);
-                If not q=0 then delete(R,q,q+10)
-              else
+                If q<>0 then delete(R,q,10);
               begin
                 W:=strtofloat(copy(Memo1.Lines[n],s+1,s+10));//wahrscheinlichkeit
                 gram.addRegel(L,R,W);//Regel mit Wahrscheinlichkeit hinzufügen
                 INC(n);
                 end;
-              end
+            end;
+            end;
             end;
           If not (Edit2.text = '') then
           Begin
@@ -314,11 +333,9 @@ Begin
            end;
            end
            else SHOWMESSAGE('Eine Rekurstiefe von 0 ist nicht möglich!');
-         end;
+         end
+         else SHOWMESSAGE('Deine Eingabe ist falsch! Bitte überprüfe die Grammatik!');
     end;
-end
-else SHOWMESSAGE('Deine Eingabe ist falsch! Bitte überprüfe die Grammatik!');
-end;
 
 procedure TuGrammatiken.Button2Click(Sender: TObject); //Alles leeren
 var n:CARDINAL;
@@ -345,6 +362,19 @@ begin
     end;
 end;
 
+procedure TuGrammatiken.CheckListBox1ItemClick(Sender: TObject; Index: integer);
+var
+  Counter : integer;
+  MyCheckListBox : TCheckListBox; // you can also use the name of the actual TCheckListBox
+begin
+  MyCheckListBox:=TCheckListBox(Sender);
+  for Counter:= 0 to MyCheckListBox.Items.Count-1 do
+    begin
+      if (Counter<>Index) then
+        MyCheckListBox.Checked[Counter]:= false;
+    end;
+end;
+
 procedure TuGrammatiken.Edit1Change(Sender: TObject);
 begin
 
@@ -358,6 +388,12 @@ end;
 procedure TuGrammatiken.Edit3Change(Sender: TObject);
 begin
 
+end;
+
+procedure TuGrammatiken.Edit3KeyPress(Sender: TObject; var Key: char);
+begin
+    if not (Key in ['0'..'9', DecimalSeparator, Char(VK_BACK), Char(VK_DELETE)])
+    then Key := #0;
 end;
 
 procedure TuGrammatiken.Edit4Change(Sender: TObject);
@@ -406,6 +442,8 @@ var turtle: TTurtle;
     produktion:String;
     axiom:String;
     zufaelligkeit:Real;
+    n:CARDINAL;
+    j : integer;
 begin
   OpenDialog1.Filter:='Json-Dateien (*.json)|*.json';
   if OpenDialog1.Execute then
@@ -421,9 +459,16 @@ begin
     Edit4.Text:=turtle.name;
     Baum:=turtle.zeichnerName;
     conf.filename:= OpenDialog1.FileName;
-    For i:=0 to baumListe.Count - 1 do
+    For n:=0 to Memo1.Lines.Count-1 do
+    Begin
+         Memo1.Lines[n]:='';
+    end;
+    for j := 0 to ComponentCount - 1 do
+        if Components[i] is TEdit then TEdit(Components[j]).Clear;
+        for j := 0 to CheckListBox1.Count -1 do CheckListBox1.Checked[j] := False;
+        For j:=0 to baumListe.Count - 1 do
     begin
-      if Baum=baumListe[i] then CheckListBox1.Checked[i] := true;
+      if Baum=baumListe[j] then CheckListBox1.Checked[j] := true;
     end;
     //Grammiken laden
     axiom := AnsiString(conf.getValue('Grammatik/axiom', ''));

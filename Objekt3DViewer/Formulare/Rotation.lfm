@@ -1,19 +1,19 @@
 object Form4: TForm4
-  Left = 7
+  Left = 317
   Height = 150
-  Top = 473
+  Top = 661
   Width = 361
   Caption = 'Drehung'
   ClientHeight = 150
   ClientWidth = 361
   OnActivate = FormActivate
   OnCreate = FormCreate
-  LCLVersion = '1.0.8.0'
+  LCLVersion = '2.0.0.4'
   object Label22: TLabel
     Left = 0
-    Height = 17
+    Height = 16
     Top = 8
-    Width = 67
+    Width = 66
     Caption = 'Drehwinkel'
     Font.Color = clWindowText
     Font.Height = -13
@@ -23,7 +23,7 @@ object Form4: TForm4
   end
   object EdWinkel: TEdit
     Left = 104
-    Height = 21
+    Height = 23
     Top = 8
     Width = 38
     OnEditingDone = EdWinkelChange
@@ -54,7 +54,7 @@ object Form4: TForm4
     ChildSizing.ShrinkVertical = crsScaleChilds
     ChildSizing.Layout = cclLeftToRightThenTopToBottom
     ChildSizing.ControlsPerLine = 1
-    ClientHeight = 61
+    ClientHeight = 59
     ClientWidth = 154
     ItemIndex = 2
     Items.Strings = (
@@ -80,7 +80,7 @@ object Form4: TForm4
     ChildSizing.ShrinkVertical = crsScaleChilds
     ChildSizing.Layout = cclLeftToRightThenTopToBottom
     ChildSizing.ControlsPerLine = 1
-    ClientHeight = 59
+    ClientHeight = 57
     ClientWidth = 183
     ItemIndex = 0
     Items.Strings = (

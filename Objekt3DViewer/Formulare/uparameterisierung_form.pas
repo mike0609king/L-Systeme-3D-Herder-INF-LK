@@ -13,11 +13,12 @@ type
 
   TParameterisierung_Form = class(TForm)
     BT_Fertig: TButton;
+    BT_aktuallisieren: TButton;
     ValueListEditor1: TValueListEditor;
+    procedure BT_aktuallisierenClick(Sender: TObject);
     procedure BT_FertigClick(Sender: TObject);
-    procedure ValueListEditor1EditingDone(Sender: TObject);
   private
-
+    NR:CARDINAL;
   public
     procedure update_ed(nr:CARDINAL);
   end;
@@ -31,44 +32,53 @@ uses uForm,uTurtle,uTurtlemanager;
 {$R *.lfm}
 
 
-procedure TParameterisierung_Form.ValueListEditor1EditingDone(Sender: TObject);
-VAR stringliste:TStringlist;  i:CARDINAL; manager:TTurtlemanager;
+procedure TParameterisierung_Form.BT_FertigClick(Sender: TObject);
+VAR stringliste:TStringlist;  i:CARDINAL; manager:TTurtlemanager;Turtle:TTurtle; value:String;
 begin
-   //on change push update
-   //überprüfen ob valide
-   (*
    stringliste:=TStringlist.create();
-   for i:=0 to ValueListEditor1.RowCount-1 do
+   for i:=1 to ValueListEditor1.RowCount-1 do
    begin
-        stringliste.Add(ValueListEditor1.Values[inttostr(i)]);
+        value:=ValueListEditor1.Values[inttostr(i)];
+        stringliste.Add(value);
    end;
    manager:=Hauptform.o.copy();
+   manager.gibTurtle(NR,turtle);
+   turtle.aendereParameter(stringliste);
    Hauptform.push_neue_instanz(manager);
-   Hauptform.zeichnen();     *)
+   Hauptform.zeichnen();
+   Visible:=False;
 end;
 
-procedure TParameterisierung_Form.BT_FertigClick(Sender: TObject);
+procedure TParameterisierung_Form.BT_aktuallisierenClick(Sender: TObject);
+VAR stringliste:TStringlist;  i:CARDINAL; manager:TTurtlemanager;Turtle:TTurtle; value:String;
 begin
-   Visible:=False;
+   stringliste:=TStringlist.create();
+   for i:=1 to ValueListEditor1.RowCount-1 do
+   begin
+        value:=ValueListEditor1.Values[inttostr(i)];
+        stringliste.Add(value);
+   end;
+   manager:=Hauptform.o.copy();
+   manager.gibTurtle(NR,turtle);
+   turtle.aendereParameter(stringliste);
+   Hauptform.push_neue_instanz(manager);
+   Hauptform.zeichnen();
 end;
 
 procedure TParameterisierung_Form.update_ed(nr:CARDINAL);
 VAR Turtle:TTurtle;stringliste:TStringlist;i:CARDINAL;value:String;
 begin
-   ValueListEditor1.clear;
-   ValueListEditor1.Row := 0;
-   Hauptform.o.gibTurtle(nr,Turtle);
-   stringliste:=Turtle.gibParameter();
-   Turtle.aendereParameter(stringliste);
-   for i:=0 to stringliste.Count-1 do
-   begin
-     value:=stringliste[i];  //
-     ValueListEditor1.InsertRow(inttostr(i),value,True);
-   end;
-
+  ValueListEditor1.clear;
+  ValueListEditor1.Row := 0;
+  NR:=nr;
+  Hauptform.o.gibTurtle(nr,Turtle);
+  stringliste:=Turtle.gibParameter();
+  for i:=0 to stringliste.Count-1 do
+  begin
+    value:=stringliste[i];
+    ValueListEditor1.InsertRow(inttostr(i+1),value,True);
+  end;
 end;
-
-
 
 end.
 

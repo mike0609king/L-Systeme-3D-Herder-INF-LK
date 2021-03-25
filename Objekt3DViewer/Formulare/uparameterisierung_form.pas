@@ -13,9 +13,10 @@ type
 
   TParameterisierung_Form = class(TForm)
     BT_Fertig: TButton;
+    BT_aktuallisieren: TButton;
     ValueListEditor1: TValueListEditor;
+    procedure BT_aktuallisierenClick(Sender: TObject);
     procedure BT_FertigClick(Sender: TObject);
-    procedure ValueListEditor1EditingDone(Sender: TObject);
   private
     NR:CARDINAL;
   public
@@ -30,22 +31,6 @@ uses uForm,uTurtle,uTurtlemanager;
 
 {$R *.lfm}
 
-
-procedure TParameterisierung_Form.ValueListEditor1EditingDone(Sender: TObject);
-VAR stringliste:TStringlist;  i:CARDINAL; manager:TTurtlemanager;
-begin
-   //on change push update
-   //überprüfen ob valide
-   (*
-   stringliste:=TStringlist.create();
-   for i:=0 to ValueListEditor1.RowCount-1 do
-   begin
-        stringliste.Add(ValueListEditor1.Values[inttostr(i)]);
-   end;
-   manager:=Hauptform.o.copy();
-   Hauptform.push_neue_instanz(manager);
-   Hauptform.zeichnen();     *)
-end;
 
 procedure TParameterisierung_Form.BT_FertigClick(Sender: TObject);
 VAR stringliste:TStringlist;  i:CARDINAL; manager:TTurtlemanager;Turtle:TTurtle; value:String;
@@ -62,6 +47,22 @@ begin
    Hauptform.push_neue_instanz(manager);
    Hauptform.zeichnen();
    Visible:=False;
+end;
+
+procedure TParameterisierung_Form.BT_aktuallisierenClick(Sender: TObject);
+VAR stringliste:TStringlist;  i:CARDINAL; manager:TTurtlemanager;Turtle:TTurtle; value:String;
+begin
+   stringliste:=TStringlist.create();
+   for i:=1 to ValueListEditor1.RowCount-1 do
+   begin
+        value:=ValueListEditor1.Values[inttostr(i)];
+        stringliste.Add(value);
+   end;
+   manager:=Hauptform.o.copy();
+   manager.gibTurtle(NR,turtle);
+   turtle.aendereParameter(stringliste);
+   Hauptform.push_neue_instanz(manager);
+   Hauptform.zeichnen();
 end;
 
 procedure TParameterisierung_Form.update_ed(nr:CARDINAL);

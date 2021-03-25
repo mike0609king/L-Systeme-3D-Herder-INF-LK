@@ -175,7 +175,7 @@ begin
   akt_x:=0;
   akt_y:=0;
   akt_z:=0;
-  maximaleStringLaenge:=100000;
+  maximaleStringLaenge:=500000;
   standardturtel;
   aktuelle_turtle_nr:=0;
   //o:=Tturtlemanager.create();
@@ -601,7 +601,7 @@ begin
   plaziereTurtle('ZeichnerFarben');
   plaziereTurtle('ZeichnerFarben');
   plaziereTurtle('ZeichnerFarben');
-  }
+
 
 
   // Schrittlaenge und Farben

@@ -6,9 +6,8 @@ object Form10: TForm10
   Caption = 'Grammatik_Editor'
   ClientHeight = 941
   ClientWidth = 1514
-  DesignTimePPI = 192
   OnCreate = FormCreate
-  LCLVersion = '2.0.2.0'
+  LCLVersion = '2.0.0.4'
   Scaled = False
   object BT_entfernen: TButton
     Left = 640
@@ -82,7 +81,7 @@ object Form10: TForm10
   end
   object ED_abstand: TEdit
     Left = 470
-    Height = 40
+    Height = 23
     Top = 712
     Width = 160
     NumbersOnly = True
@@ -102,9 +101,9 @@ object Form10: TForm10
   end
   object Label1: TLabel
     Left = 118
-    Height = 32
+    Height = 15
     Top = 720
-    Width = 346
+    Width = 171
     Caption = 'X_Abstand zwischen den Turtels:'
     ParentColor = False
     ParentFont = False
@@ -163,9 +162,9 @@ object Form10: TForm10
   end
   object Label2: TLabel
     Left = 768
-    Height = 32
+    Height = 15
     Top = 720
-    Width = 321
+    Width = 159
     Caption = 'Sichtbare gesamt Strichlänge: '
     ParentColor = False
   end

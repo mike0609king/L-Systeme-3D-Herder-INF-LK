@@ -9,14 +9,13 @@ object Parameterisierung_Form: TParameterisierung_Form
   LCLVersion = '2.0.0.4'
   object ValueListEditor1: TValueListEditor
     Left = 56
-    Height = 292
+    Height = 348
     Top = 44
     Width = 296
     FixedCols = 0
     ParentFont = False
     RowCount = 2
     TabOrder = 0
-    OnEditingDone = ValueListEditor1EditingDone
     ColWidths = (
       64
       228
@@ -25,10 +24,19 @@ object Parameterisierung_Form: TParameterisierung_Form
   object BT_Fertig: TButton
     Left = 56
     Height = 25
-    Top = 352
+    Top = 416
     Width = 75
     Caption = 'Fertig'
     OnClick = BT_FertigClick
     TabOrder = 1
+  end
+  object BT_aktuallisieren: TButton
+    Left = 200
+    Height = 25
+    Top = 416
+    Width = 96
+    Caption = 'Aktualisieren'
+    OnClick = BT_aktuallisierenClick
+    TabOrder = 2
   end
 end

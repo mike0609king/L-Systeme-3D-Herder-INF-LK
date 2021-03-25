@@ -554,14 +554,14 @@ procedure TuGrammatiken.MenuItem3Click(Sender: TObject); //Turtle speichern
           gram.addRegel(L,R);//Regel ohne Wahrscheinlichkeit hinzufügen
           INC(n)
         end
-           else
+        else
            begin
             p:=pos('>',Memo1.Lines[n]);
             L:=copy(Memo1.Lines[n],1,p-2);//linke Seite des '->'
             R:=copy(Memo1.Lines[n],p+1,s-1);//rechte Seite des '->'
             q:=pos(',',R);
-          If q<>0 then R:=copy(R,0,q-1)
-          else
+           If q<>0 then R:=copy(R,0,q-1)
+           else
             W:=strtofloat(copy(Memo1.Lines[n],s+1,s+10));//wahrscheinlichkeit
             gram.addRegel(L,R,W);//Regel mit Wahrscheinlichkeit hinzufügen
             INC(n);
@@ -571,12 +571,10 @@ procedure TuGrammatiken.MenuItem3Click(Sender: TObject); //Turtle speichern
     zeichenPara.winkel:=strtofloat(Edit3.Text);
     NameGrammatik:=Edit4.Text;
     nr:=gib_markierte_nr();
-         begin
-           zeichenPara.setzeStartPunkt(Hauptform.akt_x,Hauptform.akt_y,Hauptform.akt_z);
-           turtle:=TTurtle.Create(gram,zeichnerInit.initialisiere(zeichnerInit.gibZeichnerListe[nr],zeichenPara));
-           turtle.name:=NameGrammatik;
-           turtle.speichern(SaveDialog1.FileName);
-         end;
+    zeichenPara.setzeStartPunkt(Hauptform.akt_x,Hauptform.akt_y,Hauptform.akt_z);
+    turtle:=TTurtle.Create(gram,zeichnerInit.initialisiere(zeichnerInit.gibZeichnerListe[nr],zeichenPara));
+    turtle.name:=NameGrammatik;
+    turtle.speichern(SaveDialog1.FileName);
        end
        else
        SHOWMESSAGE('Du kannst nichts ohne Grammatik speichern!');

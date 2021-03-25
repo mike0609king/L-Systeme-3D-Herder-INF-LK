@@ -36,20 +36,12 @@ type TGrammatik = class
     function RegelTauschLinks(links: String) : String; overload;
     function RegelTauschRechts(links: String; rechts: String) : String; overload;
 
-    procedure setzeAxiom(axiom:String); 
-<<<<<<< HEAD
-    procedure setzeRawAxiom(axiom:String); 
-=======
->>>>>>> parent of 8117840 (weg damit)
+    procedure setzeAxiom(axiom:String);
     procedure weiseAxiomZu(axiom:String); 
     procedure aendereParameter(para: TStringList);
 
     property axiom: String read FAxiom write setzeAxiom;
-<<<<<<< HEAD
-    property rawAxiom: String read FRawAxiom write setzeRawAxiom;
-=======
     property rawAxiom: String read FRawAxiom;
->>>>>>> parent of 8117840 (weg damit)
 
     function gibParameter : TStringList;
 
@@ -115,14 +107,6 @@ begin
   end;
 end;
 
-<<<<<<< HEAD
-procedure TGrammatik.setzeRawAxiom(axiom:String); 
-begin
-  FRawAxiom := axiom;
-end;
-
-=======
->>>>>>> parent of 8117840 (weg damit)
 procedure TGrammatik.weiseAxiomZu(axiom:String);
 begin
   FAxiom := axiom;
@@ -241,11 +225,8 @@ var regelIdx, produktionIdx: Cardinal;
 var gram: TGrammatik;
 begin
   gram := TGrammatik.Create;
+  gram.axiom := FRawAxiom;
   gram.weiseAxiomZu(FAxiom);
-<<<<<<< HEAD
-  gram.rawAxiom := FRawAxiom;
-=======
->>>>>>> parent of 8117840 (weg damit)
   for regelIdx := 0 to regeln.Count - 1 do
   begin
     for produktionIdx := 0 to (regeln.data[regelIdx]).Count - 1 do

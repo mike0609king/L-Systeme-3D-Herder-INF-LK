@@ -546,6 +546,7 @@ begin
   plaziereTurtle('ZeichnerBase');
   plaziereTurtle('ZeichnerBase');
   }
+
   
   // Baum mit gruenen Blaettern
   {
@@ -626,15 +627,13 @@ begin
 
 
   // Beispiel 2
-
   gram := TGrammatik.Create;
   zeichenPara.winkel := 47.5;
   zeichenPara.rekursionsTiefe := 7;
-  gram.axiom := 'X(1;10)';
+  gram.axiom := 'X(1;25)';
   gram.addRegel('X(c;d)','F(c)+[[-X(c;d)]&&-X(c;d)B(d)]-F(c)[-F(c)//X(c;d)B(d)]+X(c;d)');
   gram.addRegel('F(c)','F(c)F(c)');
   plaziereTurtle('ZeichnerFarbenBlattUndSchritt');
-
 
   // Beispiel 3
   {

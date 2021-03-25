@@ -280,7 +280,7 @@ Begin
                 L:=copy(Memo1.Lines[n],1,p-2);//linke Seite des '->'
                 R:=copy(Memo1.Lines[n],p+1,s-1);//rechte Seite des '->'
                 q:=pos(',',R);
-                If q<>0 then delete(R,q,10);
+                If q<>0 then R:=copy(R,0,q-1);
               begin
                 W:=strtofloat(copy(Memo1.Lines[n],s+1,s+10));//wahrscheinlichkeit
                 gram.addRegel(L,R,W);//Regel mit Wahrscheinlichkeit hinzufügen
@@ -560,8 +560,7 @@ procedure TuGrammatiken.MenuItem3Click(Sender: TObject); //Turtle speichern
             L:=copy(Memo1.Lines[n],1,p-2);//linke Seite des '->'
             R:=copy(Memo1.Lines[n],p+1,s-1);//rechte Seite des '->'
             q:=pos(',',R);
-          If not q=0 then
-          delete(R,q,q+10)
+          If q<>0 then R:=copy(R,0,q-1)
           else
             W:=strtofloat(copy(Memo1.Lines[n],s+1,s+10));//wahrscheinlichkeit
             gram.addRegel(L,R,W);//Regel mit Wahrscheinlichkeit hinzufügen

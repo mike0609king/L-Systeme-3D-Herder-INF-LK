@@ -37,11 +37,12 @@ type TGrammatik = class
     function RegelTauschRechts(links: String; rechts: String) : String; overload;
 
     procedure setzeAxiom(axiom:String); 
+    procedure setzeRawAxiom(axiom:String); 
     procedure weiseAxiomZu(axiom:String); 
     procedure aendereParameter(para: TStringList);
 
     property axiom: String read FAxiom write setzeAxiom;
-    property rawAxiom: String read FRawAxiom;
+    property rawAxiom: String read FRawAxiom write setzeRawAxiom;
 
     function gibParameter : TStringList;
 
@@ -105,6 +106,11 @@ begin
     end
     else axiomOutput := axiomOutput + letter;
   end;
+end;
+
+procedure TGrammatik.setzeRawAxiom(axiom:String); 
+begin
+  FRawAxiom := axiom;
 end;
 
 procedure TGrammatik.weiseAxiomZu(axiom:String);
@@ -226,6 +232,7 @@ var gram: TGrammatik;
 begin
   gram := TGrammatik.Create;
   gram.weiseAxiomZu(FAxiom);
+  gram.rawAxiom := FRawAxiom;
   for regelIdx := 0 to regeln.Count - 1 do
   begin
     for produktionIdx := 0 to (regeln.data[regelIdx]).Count - 1 do

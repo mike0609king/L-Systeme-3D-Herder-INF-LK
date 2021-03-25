@@ -590,6 +590,7 @@ begin
 
   // Parametrisierung von Farben - Beispiel (2)
 
+  {
   zeichenPara.winkel := 47.5;
   zeichenPara.rekursionsTiefe := 3;
   gram := TGrammatik.Create;
@@ -602,10 +603,12 @@ begin
   plaziereTurtle('ZeichnerFarben');
   plaziereTurtle('ZeichnerFarben');
   plaziereTurtle('ZeichnerFarben');
+  }
 
 
   // Schrittlaenge und Farben
 
+  {
   zeichenPara.winkel := 47.5;
   zeichenPara.rekursionsTiefe := 4;
   gram := TGrammatik.Create;
@@ -613,10 +616,10 @@ begin
   gram.addRegel('F(c)','F(c)&[+F(c)&&F(c)F(c)]&&F(c)[-^^/^-F(c)F(c)]F(c)');      
   gram.addRegel('F(c;l)','F(c;l)&[+F(c;l)&&F(c;l)F(c;l)]&&F(c;l)[-^^/^-F(c;l)F(c;l)]F(c;l)');      
   plaziereTurtle('ZeichnerFarbenUndSchrittlaenge');
-
+  }
 
   // Beispiel 1
-
+  {
   gram := TGrammatik.Create;
   zeichenPara.winkel := 22.5;
   zeichenPara.rekursionsTiefe := 3;
@@ -624,7 +627,7 @@ begin
   gram.addRegel('F(c;d)','F(c;d)&[+F(c;d)&&F(c;d)F(c;d)B(d)]&&F(c;d)[-^^/^-F(c;d)F(c;d)B(d)]F(c;d)',25);
   gram.addRegel('F(c;d)','F(c;d)&[+F(c;d)&&F(c;d)F(c;d)]&&F(c;d)[-^^/^-F(c;d)F(c;d)]F(c;d)',75);
   plaziereTurtle('ZeichnerFarbenBlattUndSchritt');
-
+  }
 
   // Beispiel 2
   gram := TGrammatik.Create;

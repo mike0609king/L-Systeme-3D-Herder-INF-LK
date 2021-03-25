@@ -21,6 +21,7 @@ type TVariableZuWert = TFPGMap<String,String>;
 
 type TGrammatik = class
   private
+    FRawAxiom: String;
     FAxiom: String;
   public
     variableZuWert: TVariableZuWert;
@@ -29,13 +30,13 @@ type TGrammatik = class
     constructor Create;
     destructor Destroy; override;
 
-    procedure addRegel(links: String; rechts: String; zufaelligkeit: Real); overload;
-    procedure addRegel(links: String; rechts: String); overload;
+    procedure addRegel(links: String; rechts: String; zufaelligkeit: Real; schonGetauscht: Boolean = false); overload;
+    procedure addRegel(links: String; rechts: String; schonGetauscht: Boolean = false); overload;
 
     function RegelTauschLinks(links: String) : String; overload;
     function RegelTauschRechts(links: String; rechts: String) : String; overload;
 
-    procedure setzeAxiom(axiom:String); overload;
+    procedure setzeAxiom(axiom:String); 
     procedure aendereParameter(para: TStringList);
 
     property axiom: String read FAxiom write setzeAxiom;
@@ -79,6 +80,7 @@ var parameterCount: Cardinal;
 begin
   parameterCount := 1;
   FAxiom := '';
+  FRawAxiom := axiom;
   axiomOutput:='';
   variableZuWert:=TVariableZuWert.Create;
   for letter in axiom do
@@ -103,12 +105,16 @@ begin
   end;
 end;
 
-procedure TGrammatik.addRegel(links: String; rechts: String; zufaelligkeit: Real);
+procedure TGrammatik.addRegel(links: String; 
+                              rechts: String; 
+                              zufaelligkeit: Real;
+                              schonGetauscht: Boolean = false
+                              );
 var tmp_regel: TRegelProduktionsseite;
     data: TRegelProduktionsseitenListe;
     tmp_links: String;
 begin
-    if links[2] = '(' then
+    if (links[2] = '(') and (not schonGetauscht) then
     begin
       tmp_links := links;
       links := RegelTauschLinks(links);
@@ -125,9 +131,12 @@ begin
     end;
 end;
 
-procedure TGrammatik.addRegel(links: String; rechts: String);
+procedure TGrammatik.addRegel(links: String; 
+                              rechts: String; 
+                              schonGetauscht: Boolean = false
+                              );
 begin
-    addRegel(links,rechts,100);
+    addRegel(links,rechts,100,schonGetauscht);
 end;
 
 
@@ -159,7 +168,6 @@ begin
     end
   end;
 end;
-
 
 function TGrammatik.RegelTauschRechts(links: String; rechts: String) : String;
 var parameterCount,letterAsc:INTEGER;
@@ -210,7 +218,7 @@ var regelIdx, produktionIdx: Cardinal;
 var gram: TGrammatik;
 begin
   gram := TGrammatik.Create;
-  gram.axiom := FAxiom;
+  gram.axiom := FRawAxiom;
   for regelIdx := 0 to regeln.Count - 1 do
   begin
     for produktionIdx := 0 to (regeln.data[regelIdx]).Count - 1 do
@@ -218,7 +226,8 @@ begin
       gram.addRegel(
             regeln.keys[regelIdx],
             regeln.data[regelIdx][produktionIdx].produktion,
-            regeln.data[regelIdx][produktionIdx].zufaelligkeit
+            regeln.data[regelIdx][produktionIdx].zufaelligkeit,
+            true
           );
     end;
   end;

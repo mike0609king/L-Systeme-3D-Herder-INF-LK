@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, Menus, uTurtlemanager,
-  CheckLst;
+  uTurtle, CheckLst;
 
 type
 
@@ -124,7 +124,7 @@ end;
 
 
 procedure TParameter_Form.ED_Rek_tiefeChange(Sender: TObject);
-VAR rek_tiefe,i:CARDINAL; str:string;bool:boolean;
+VAR rek_tiefe,i:CARDINAL; str:string;bool:boolean; turtle: TTurtle;
 begin
   turtlemanager:=Hauptform.o.copy();
   bool:=False;
@@ -136,7 +136,8 @@ begin
       begin
            if EditorForm.ListView1.Items[i].Checked then
            begin
-             turtlemanager.turtleListe[i].rekursionsTiefe:=rek_tiefe;
+             turtlemanager.gibTurtle(i,turtle);
+             turtle.rekursionsTiefe := rek_tiefe;
              if not turtlemanager.turtleListe[i].zeichnen() then bool:=True;
            end;
       end;

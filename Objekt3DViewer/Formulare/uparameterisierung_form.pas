@@ -17,7 +17,7 @@ type
     procedure BT_FertigClick(Sender: TObject);
     procedure ValueListEditor1EditingDone(Sender: TObject);
   private
-
+    NR:CARDINAL;
   public
     procedure update_ed(nr:CARDINAL);
   end;
@@ -48,7 +48,19 @@ begin
 end;
 
 procedure TParameterisierung_Form.BT_FertigClick(Sender: TObject);
+VAR stringliste:TStringlist;  i:CARDINAL; manager:TTurtlemanager;Turtle:TTurtle; value:String;
 begin
+   stringliste:=TStringlist.create();
+   for i:=1 to ValueListEditor1.RowCount-1 do
+   begin
+        value:=ValueListEditor1.Values[inttostr(i)];
+        stringliste.Add(value);
+   end;
+   manager:=Hauptform.o.copy();
+   manager.gibTurtle(NR,turtle);
+   turtle.aendereParameter(stringliste);
+   Hauptform.push_neue_instanz(manager);
+   Hauptform.zeichnen();
    Visible:=False;
 end;
 
@@ -57,13 +69,13 @@ VAR Turtle:TTurtle;stringliste:TStringlist;i:CARDINAL;value:String;
 begin
    ValueListEditor1.clear;
    ValueListEditor1.Row := 0;
+   NR:=nr;
    Hauptform.o.gibTurtle(nr,Turtle);
    stringliste:=Turtle.gibParameter();
-   Turtle.aendereParameter(stringliste);
    for i:=0 to stringliste.Count-1 do
    begin
      value:=stringliste[i];  //
-     ValueListEditor1.InsertRow(inttostr(i),value,True);
+     ValueListEditor1.InsertRow(inttostr(i+1),value,True);
    end;
 
 end;

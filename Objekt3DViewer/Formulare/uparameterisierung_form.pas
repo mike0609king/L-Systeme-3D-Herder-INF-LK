@@ -67,20 +67,17 @@ end;
 procedure TParameterisierung_Form.update_ed(nr:CARDINAL);
 VAR Turtle:TTurtle;stringliste:TStringlist;i:CARDINAL;value:String;
 begin
-   ValueListEditor1.clear;
-   ValueListEditor1.Row := 0;
-   NR:=nr;
-   Hauptform.o.gibTurtle(nr,Turtle);
-   stringliste:=Turtle.gibParameter();
-   for i:=0 to stringliste.Count-1 do
-   begin
-     value:=stringliste[i];  //
-     ValueListEditor1.InsertRow(inttostr(i+1),value,True);
-   end;
-
+  ValueListEditor1.clear;
+  ValueListEditor1.Row := 0;
+  NR:=nr;
+  Hauptform.o.gibTurtle(nr,Turtle);
+  stringliste:=Turtle.gibParameter();
+  for i:=0 to stringliste.Count-1 do
+  begin
+    value:=stringliste[i];
+    ValueListEditor1.InsertRow(inttostr(i+1),value,True);
+  end;
 end;
-
-
 
 end.
 

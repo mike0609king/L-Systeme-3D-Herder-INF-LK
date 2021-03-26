@@ -578,7 +578,7 @@ begin
   plaziereTurtle('ZeichnerGruenesBlatt', 'Baum mit grünen Blättern');
   //plaziereTurtle('ZeichnerGruenesBlatt');
 
-
+{
   // Parametrisierung von Farben - Beispiel (1)
 
   zeichenPara.winkel := 47.5;

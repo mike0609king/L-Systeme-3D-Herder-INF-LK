@@ -51,8 +51,8 @@ type
   private
     turtlemanager:TTurtlemanager;
     function gib_markierte_nr():CARDINAL;
-  {  function stringanalyse(s:string):Boolean;
-    function axiomanalyse(s:string):Boolean;   }
+    function stringanalyse(s:string):Boolean;
+    function axiomanalyse(s:string):Boolean;
     function ExtractNumbers(s:string):String;
   public
 
@@ -79,7 +79,7 @@ begin
      if CheckListBox1.Checked[i] then result:=i;
    end;
 end;
-{
+
 function TuGrammatiken.stringanalyse(s:string):BOOLEAN;
 //für regeln nicht axiome
 VAR str,rest_string:string; i,l,h,k,j,g,b:CARDINAL; c:Char;klammer_auf,bool:Boolean;
@@ -96,55 +96,55 @@ begin
    //wohlgeformte klammern   ()
    klammer_auf:=False;
    for i:=1 to l do
-     begin
-       if str[i]='(' then
-       begin
-         if klammer_auf then
-         begin
-              SHOWMessage('Eine Klammer muss geschlossen werden bevor eine neue geöffent werden kann!');
-              exit(False);
-         end
-         else klammer_auf:=True;
-       end;
-       if str[i]=')' then klammer_auf:=False;
-     end;
+   begin
+        if str[i]='(' then
+        begin
+             if klammer_auf then
+             begin
+                  SHOWMessage('Eine Klammer muss geschlossen werden bevor eine neue geöffent werden kann!');
+                  exit(False);
+             end
+             else klammer_auf:=True;
+        end;
+        if str[i]=')' then klammer_auf:=False;
+   end;
    if not klammer_auf then
-     begin
-     j:=pos('(',str);
-     if j<>0 then
-       begin
-       while pos('(',rest_string)<>0 do
-         begin
-            g:=pos(')',rest_string)-1;
-            bool:=True;
-            for k:=pos('(',rest_string)+1 to g do
-              begin
-                h:=ord(str[k]);
-                if bool then
-                begin
-                     if (not h>=ord('a')) and (not h<=ord('z')) then
-                     begin
-                          ShowMessage('Parameter müssen kleine Buchstaben sein!');
-                          exit(False);
-                     end;
-                     bool:=False;
-                end
-                else
-                begin
-                     if h=ord(';') then
-                     begin
-                         bool:=false;
-                     end
-                     else
-                     begin
-                          ShowMessage('Parameter müssen mit einem ";" getrennt werden!');
-                          exit(False)
-                     end;
-                end;
-              end;
-            g:=pos(')',rest_string);
-            rest_string:=copy(rest_string,g+1,g+100);
-          end;
+   begin
+        j:=pos('(',str);
+        if j<>0 then
+        begin
+             while pos('(',rest_string)<>0 do
+             begin
+                  g:=pos(')',rest_string)-1;
+                  bool:=True;
+                  for k:=pos('(',rest_string)+1 to g do
+                  begin
+                       h:=ord(str[k]);
+                       if bool then
+                       begin
+                            if (not h>=ord('a')) and (not h<=ord('z')) then
+                            begin
+                                 ShowMessage('Parameter müssen kleine Buchstaben sein!');
+                                 exit(False);
+                            end;
+                            bool:=False;
+                       end
+                       else
+                       begin
+                            if h=ord(';') then
+                            begin
+                            bool:=false;
+                            end
+                            else
+                            begin
+                                 ShowMessage('Parameter müssen mit einem ";" getrennt werden!');
+                                 exit(False)
+                            end;
+                       end;
+                  end;
+                  g:=pos(')',rest_string);
+                  rest_string:=copy(rest_string,g+1,g+100);
+             end;
        end;
    end
    else
@@ -153,7 +153,7 @@ begin
         exit(False);
    end;
 end;
-    }
+
 function TuGrammatiken.ExtractNumbers(s: string): String;
 var i : Integer;
 begin
@@ -161,7 +161,7 @@ begin
  for i := 1 to length(s) do
  if s[i] in ['0'..'9'] then Result := Result + ';' + s[i]
 end;
-{
+
 function TuGrammatiken.axiomanalyse(s:string):Boolean;  //returns false if axiom is wrong
 VAR axiom,rest_axiom,qs:string; i,l,y,h,z,k,j,g,b:CARDINAL; c:Char;klammer_auf,bool:Boolean; iValue, iCode: Integer;
 begin
@@ -177,66 +177,66 @@ begin
    //wohlgeformte klammern ()
    Klammer_auf:=false;
    for i:=1 to l do
-     begin
-       if axiom[i]='(' then
-       begin
-            if klammer_auf then
-            begin
-                 SHOWMessage('Eine Klammer muss geschlossen werden bevor eine neue geöffent werden kann!');
-                 exit(False);
-            end
-         else klammer_auf:=True;
-       end;
-       if axiom[i]=')' then klammer_auf:=False
-     end;
+   begin
+        if axiom[i]='(' then
+        begin
+             if klammer_auf then
+             begin
+                  SHOWMessage('Eine Klammer muss geschlossen werden bevor eine neue geöffent werden kann!');
+                  exit(False);
+             end
+             else klammer_auf:=True;
+        end;
+        if axiom[i]=')' then klammer_auf:=False
+   end;
    if not klammer_auf then
    begin
-   j:=pos('(',axiom);
-   if j<>0 then
-   begin
-   while pos('(',rest_axiom)<>0 do
-   begin
-      g:=pos(')',rest_axiom)-1;
-      bool:=True;
-      for k:=pos('(',rest_axiom)+1 to g do
+        j:=pos('(',axiom);
+        if j<>0 then
         begin
-          h:=ord(axiom[k]);
-          if bool then
+             while pos('(',rest_axiom)<>0 do
              begin
-             qs:=ExtractNumbers(axiom);
-             val(qs, iValue, iCode);
-             if not iCode = 0 then
-             begin
-                  ShowMessage('Parameter müssen Zahlen sein!');
-                  exit(False);
+                  g:=pos(')',rest_axiom)-1;
+                  bool:=True;
+                  for k:=pos('(',rest_axiom)+1 to g do
+                  begin
+                       h:=ord(axiom[k]);
+                       if bool then
+                       begin
+                            qs:=ExtractNumbers(axiom);
+                            val(qs, iValue, iCode);
+                            if not iCode = 0 then
+                            begin
+                                 ShowMessage('Parameter müssen Zahlen sein!');
+                                 exit(False);
+                            end;
+                            bool:=False;
+                       end
+                       else
+                       begin
+                            if h=ord(';') then
+                            begin
+                                 bool:=false;
+                            end
+                            else
+                            begin
+                                 ShowMessage('Parameter müssen mit einem ";" getrennt werden!');
+                                 exit(False)
+                            end;
+                       end;
+                  end;
+                  g:=pos(')',rest_axiom);
+                  rest_axiom:=copy(rest_axiom,g+1,g+100);
              end;
-             bool:=False;
-             end
-         else
-         begin
-          if h=ord(';') then
-          begin
-              bool:=false;
-          end
-          else
-          begin
-               ShowMessage('Parameter müssen mit einem ";" getrennt werden!');
-               exit(False)
-          end;
-     end;
+        end;
+   end
+   else
+   begin
+        SHOWMessage('Klammern müssen geschlossen werden!');
+        exit(False);
    end;
- g:=pos(')',rest_axiom);
- rest_axiom:=copy(rest_axiom,g+1,g+100);
 end;
-end;
-end
-else
-begin
-SHOWMessage('Klammern müssen geschlossen werden!');
-exit(False);
-end;
-end;
-    }
+
 procedure TuGrammatiken.Button1Click(Sender: TObject); //Turtle erstellen
 var i,n,nr,anzahl:CARDINAL;
     gram:TGrammatik;R,L,NameGrammatik:String;
@@ -254,8 +254,8 @@ Begin
   gram.axiom:= Memo1.Lines[0];
   While n<= Memo1.Lines.Count-1 do
   Begin
-      { if not axiomanalyse(Memo1.Lines[0])then exit;
-       if not stringanalyse(Memo1.Lines[n])then exit;  }
+       if not axiomanalyse(Memo1.Lines[0])then exit;
+       if not stringanalyse(Memo1.Lines[n])then exit;
        p:=pos('>',Memo1.Lines[n]);
        if p=0 then
        Begin
@@ -316,10 +316,10 @@ Begin
                       end;
                       if turtle.zeichnen then
                       begin
-                      Hauptform.push_neue_instanz(turtlemanager);
-                      Hauptform.ordnen();
-                      Visible:=False;
-                       Hauptform.zeichnen();
+                           Hauptform.push_neue_instanz(turtlemanager);
+                           Hauptform.ordnen();
+                           Visible:=False;
+                           Hauptform.zeichnen();
                       end
                       else
                       begin
@@ -341,11 +341,9 @@ var n:CARDINAL;
 begin
   For n:=0 to Memo1.Lines.Count-1 do
   Begin
-  Memo1.Lines[n]:='';
+       Memo1.Lines[n]:='';
   end;
-  for i := 0 to ComponentCount - 1 do
-  if Components[i] is TEdit then
-    TEdit(Components[i]).Clear;
+  for i := 0 to ComponentCount - 1 do if Components[i] is TEdit then TEdit(Components[i]).Clear;
   for i := 0 to CheckListBox1.Count -1 do CheckListBox1.Checked[I] := False;
 end;
 
@@ -353,9 +351,10 @@ procedure TuGrammatiken.CheckGroup1ItemClick(Sender: TObject; Index: integer);
 var i : integer;
 //Diese Funktion sorgt dafür, dass immer nur ein objekt gleichzeitig angeklickt sein kann.
 begin
-    if (Sender as TCheckListBox).Checked[Index] then begin
+    if (Sender as TCheckListBox).Checked[Index] then
+    begin
         for i := 0 to CheckListBox1.Count -1 do
-            CheckListBox1.Checked[i] := False;
+        CheckListBox1.Checked[i] := False;
         CheckListBox1.Checked[Index] := True;
     end;
 end;
@@ -368,8 +367,8 @@ begin
   MyCheckListBox:=TCheckListBox(Sender);
   for Counter:= 0 to MyCheckListBox.Items.Count-1 do
     begin
-      if (Counter<>Index) then
-        MyCheckListBox.Checked[Counter]:= false;
+         if (Counter<>Index) then
+         MyCheckListBox.Checked[Counter]:= false;
     end;
 end;
 
@@ -461,10 +460,9 @@ begin
     Begin
          Memo1.Lines[n]:='';
     end;
-    for j := 0 to ComponentCount - 1 do
-        if Components[i] is TEdit then TEdit(Components[j]).Clear;
-        for j := 0 to CheckListBox1.Count -1 do CheckListBox1.Checked[j] := False;
-        For j:=0 to baumListe.Count - 1 do
+    for j:=0 to ComponentCount - 1 do if Components[i] is TEdit then TEdit(Components[j]).Clear;
+    for j:=0 to CheckListBox1.Count -1 do CheckListBox1.Checked[j] := False;
+    For j:=0 to baumListe.Count - 1 do
     begin
       if Baum=baumListe[j] then CheckListBox1.Checked[j] := true;
     end;
@@ -472,47 +470,41 @@ begin
     axiom := AnsiString(conf.getValue('Grammatik/axiom', ''));
     If axiom = '' then
     Begin
-    SHOWMESSAGE('Deine Datei ist nicht geeignet!')
+         SHOWMESSAGE('Deine Datei ist nicht geeignet!')
     end
     else
     Begin
-    conf.EnumSubKeys(UnicodeString('Grammatik/regeln/'),regelnLinkeSeite);
-    for regelnLinkeSeiteIdx := 0 to regelnLinkeSeite.Count - 1 do
-        begin
+         conf.EnumSubKeys(UnicodeString('Grammatik/regeln/'),regelnLinkeSeite);
+         for regelnLinkeSeiteIdx := 0 to regelnLinkeSeite.Count - 1 do
+         begin
             i:=1;
             tmp_pfad := 'Grammatik/regeln/' + regelnLinkeSeite[regelnLinkeSeiteIdx];
             conf.EnumSubKeys(UnicodeString(tmp_pfad), regelnRechteSeite);
             for regelnRechteSeiteIdx := 0 to regelnRechteSeite.Count - 1 do
             begin
                 produktion := AnsiString(conf.getValue(
-                    UnicodeString(tmp_pfad + '/' + regelnRechteSeite[regelnRechteSeiteIdx] + '/produktion'),
-                    ''
-                ));
+                UnicodeString(tmp_pfad + '/' + regelnRechteSeite[regelnRechteSeiteIdx] + '/produktion'),''));
                 q:=pos(',',produktion);
                 If q=0 then
                 BEGIN
-                  zufaelligkeit := conf.getValue(
-                      UnicodeString(tmp_pfad + '/' + regelnRechteSeite[regelnRechteSeiteIdx] + '/zufaelligkeit'),
-                      0.0
-                  );
-                  Memo1.Lines[0]:=axiom;
-                  Memo1.Lines[i]:=axiom+'->'+produktion+','+FloattoStr(zufaelligkeit);
-                  INC(i);
+                     zufaelligkeit := conf.getValue(
+                     UnicodeString(tmp_pfad + '/' + regelnRechteSeite[regelnRechteSeiteIdx] + '/zufaelligkeit'),0.0);
+                     Memo1.Lines[0]:=axiom;
+                     Memo1.Lines[i]:=axiom+'->'+produktion+','+FloattoStr(zufaelligkeit);
+                     INC(i);
                 end
                 else
                 Begin
                      delete(produktion,q,q+10);
                      zufaelligkeit := conf.getValue(
-                     UnicodeString(tmp_pfad + '/' + regelnRechteSeite[regelnRechteSeiteIdx] + '/zufaelligkeit'),
-                      0.0
-                  );
+                     UnicodeString(tmp_pfad + '/' + regelnRechteSeite[regelnRechteSeiteIdx] + '/zufaelligkeit'),0.0);
                      Memo1.Lines[0]:=axiom;
                      Memo1.Lines[i]:=axiom+'->'+produktion+','+FloattoStr(zufaelligkeit);
                      INC(i);
                 END;
-          end;
+            end;
          end;
-      end;
+    end;
     conf.Free;
   end
   else
@@ -563,20 +555,20 @@ procedure TuGrammatiken.MenuItem3Click(Sender: TObject); //Turtle speichern
                                 INC(n);
                            end
                       end;
-                          zeichenPara.rekursionsTiefe:= strtoint(Edit2.Text);
-                          zeichenPara.winkel:=strtofloat(Edit3.Text);
-                          NameGrammatik:=Edit4.Text;
-                          nr:=gib_markierte_nr();
-                          zeichenPara.setzeStartPunkt(Hauptform.akt_x,Hauptform.akt_y,Hauptform.akt_z);
-                          turtle:=TTurtle.Create(gram,zeichnerInit.initialisiere(zeichnerInit.gibZeichnerListe[nr],zeichenPara));
-                          turtle.name:=NameGrammatik;
-                          turtle.speichern(SaveDialog1.FileName);
+                      zeichenPara.rekursionsTiefe:= strtoint(Edit2.Text);
+                      zeichenPara.winkel:=strtofloat(Edit3.Text);
+                      NameGrammatik:=Edit4.Text;
+                      nr:=gib_markierte_nr();
+                      zeichenPara.setzeStartPunkt(Hauptform.akt_x,Hauptform.akt_y,Hauptform.akt_z);
+                      turtle:=TTurtle.Create(gram,zeichnerInit.initialisiere(zeichnerInit.gibZeichnerListe[nr],zeichenPara));
+                      turtle.name:=NameGrammatik;
+                      turtle.speichern(SaveDialog1.FileName);
                  end
                  else SHOWMESSAGE('Du kannst nichts ohne Grammatik speichern!');
             end
             else
             begin
-            SHOWMESSAGE('Du musst überall Werte eingeben!');
+                 SHOWMESSAGE('Du musst überall Werte eingeben!');
             end;
       end
       else

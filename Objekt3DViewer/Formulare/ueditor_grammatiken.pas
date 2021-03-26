@@ -4,8 +4,7 @@ unit uEditor_Grammatiken;
 interface
 
 uses
-  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, StdCtrls,uTurtlemanager,
-  CheckLst, ComCtrls, Menus,uTurtle,fgl;
+  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, StdCtrls,uTurtlemanager, ComCtrls, Menus,uTurtle,fgl;
 
 type
   TIntegerList = TFPGList<Integer>;

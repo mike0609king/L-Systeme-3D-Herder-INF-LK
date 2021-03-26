@@ -5,9 +5,9 @@ unit uForm;
 interface
 
 uses
-  Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs,ExtCtrls, StdCtrls, ComCtrls, Menus, LMessages, Spin,uTurtleManager,
-  uGrammatik, uBeleuchtung, uZeichnerBase, uZeichnerGruenesBlatt,uEditor_Grammatiken, LCLType, uscaledpi; {uGrammatiken}
+  SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs,ExtCtrls, StdCtrls, ComCtrls, Menus, uTurtleManager,
+  uGrammatik, uZeichnerBase, uEditor_Grammatiken, LCLType; {uGrammatiken}
 type
 
   { TForm1 }

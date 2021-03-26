@@ -4,8 +4,8 @@ object uGrammatiken: TuGrammatiken
   Top = 290
   Width = 2740
   Caption = 'Grammatiken'
-  ClientHeight = 0
-  ClientWidth = 0
+  ClientHeight = 1021
+  ClientWidth = 2740
   DesignTimePPI = 192
   DoubleBuffered = False
   Menu = MainMenu1

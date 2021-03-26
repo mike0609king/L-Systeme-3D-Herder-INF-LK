@@ -12,7 +12,7 @@ procedure ozeichnen;
 
 implementation
 
-uses uTurtle, uGrammatik, uBeleuchtung, uZeichnerInit, uTurtleManager, uZeichnerBase,uForm,
+uses uTurtle, uGrammatik, uZeichnerInit, uTurtleManager, uZeichnerBase,uForm,
 sysUtils,Classes; // testing
 
 VAR o: TTurtleManager;

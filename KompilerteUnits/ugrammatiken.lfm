@@ -1,11 +1,11 @@
 object uGrammatiken: TuGrammatiken
-  Left = 277
+  Left = 59
   Height = 1060
-  Top = 251
-  Width = 2862
+  Top = 290
+  Width = 2740
   Caption = 'Grammatiken'
-  ClientHeight = 1060
-  ClientWidth = 2862
+  ClientHeight = 1021
+  ClientWidth = 2740
   DesignTimePPI = 192
   DoubleBuffered = False
   Menu = MainMenu1

@@ -7,17 +7,21 @@ uses
   Classes, SysUtils, fgl, uGrammatik;
 
 type TCardinalList = TFPGList<Cardinal>;
+
 type TStringEntwickler = class
   private
     FGrammatik: TGrammatik;
+    { Dieser Speichert den entwickelten String. Wenn es Parameter gibt, so enthaelt dieser
+      Platzhalter fuer die tatsaechlichen Zahlen die als Parameter reingegeben werden. }
     FEntwickelterString: String;
+    { Das ist der tatsaechlichen gezeichneter String. }
     FZuZeichnenderString: String;
+    { Dieser Wert MUSS ein vielfaches von 10 sein.
+      Dieser Wert (geteilt durch 100) bestimmt die Anzahl der Nachkommastellen, die
+      beim zufaelligen bestimmen des Strings beruecksichtigt werden. }
+    FMaximalerZufallsraum: Cardinal; 
 
-    // Dieser Wert MUSS ein vielfaches von 10 sein.
-    // Dieser Wert geteilt durch 100 bestimme die Anzahl der Nachkommastellen, die
-    // beim zufaelligen bestimmen des Strings beruecksichtigt werden
-    maximalerZufallsraum: Cardinal; 
-
+    // getter-Funktionen fuer properties
     { Rueckgabe: Gibt zurueck, ob dieser Buchstabe ueberhaupt existiert und dem nach ersetzt
       werden kann. Wenn false zurueckgegeben wurde, so kann dieser string ueberhaupt nicht
       ersetze werden. Demnach steht auch kein sinvoller wert in der Variable ret.}
@@ -25,11 +29,11 @@ type TStringEntwickler = class
     function gibAxiom : String;
 
     { Aufgabe: Die Zufaelligkeitsraeume werden als Cardinal gespeichert. Hierbei wird
-      der Fliesskommawert ab dem log_10(maximalerZufallsraum)-2 ten Wert verworfen. Wir nehmen 
+      der Fliesskommawert ab dem log_10(FMaximalerZufallsraum)-2 ten Wert verworfen. Wir nehmen 
       also nicht mehr bei der Zufaelligkeit ruecksicht darauf. }
     function convertiereRealZuCardinal(wert: Real) : Cardinal;
     { Aufgabe: Zu zeichnender String wird auf den Stand von entwickelterString mit Einsetzung 
-      von Werten gebracht. Dieser String besitzt wie Werte, mit welchen gezeichnet werden soll}
+      von Werten gebracht. Dieser String besitzt wie Werte, mit welchen gezeichnet werden soll. }
     procedure aktualisiereZuZeichnendenString;
   public
     property axiom: String read gibAxiom;
@@ -39,8 +43,12 @@ type TStringEntwickler = class
 
     constructor Create(gram: TGrammatik); overload;
     constructor Create(gram: TGrammatik; entwickelterS: String); overload; // review!!
+
     destructor Destroy; override;
 
+    { Aufgabe: Hier wird eine Liste von Parametern reingegeben. Damit kann man die Zahlenwerte
+      der Parameter aendern. Wenn man im Axiom insgesamt anz_Ax Zahlenwerte aufgelistet hat, so MUSS
+      die Laenge der Liste auch anz_Ax sein. }
     procedure aendereParameter(para: TStringList);
 
     { Aufgabe: Entwickelt den String gemaess der gegebenen Grammatik bis zur
@@ -58,7 +66,7 @@ begin
   FEntwickelterString := '';
   FZuZeichnenderString := '';
   // es werden vier stellen nach dem Komma beruecksichtigt
-  maximalerZufallsraum := 100 * 10000; 
+  FMaximalerZufallsraum := 100 * 10000; 
 end;
 
 constructor TStringEntwickler.Create(gram: TGrammatik; entwickelterS: String);
@@ -68,31 +76,15 @@ begin
   FEntwickelterString := entwickelterS;
   aktualisiereZuZeichnendenString;
   // es werden vier stellen nach dem Komma beruecksichtigt
-  maximalerZufallsraum := 100 * 10000; 
+  FMaximalerZufallsraum := 100 * 10000; 
 end;
 
 destructor TStringEntwickler.Destroy;
 begin
+  FreeAndNil(FGrammatik);
   FreeAndNil(FEntwickelterString);
-  FreeAndNil(maximalerZufallsraum);
   FreeAndNil(FZuZeichnenderString);
-  FreeAndNil(FGrammatik)    //vllt auch FGrammatik :=NIL //?
-end;
-
-procedure TStringEntwickler.aendereParameter(para: TStringList);
-begin
-  FGrammatik.aendereParameter(para);
-  aktualisiereZuZeichnendenString;
-end;
-
-function TStringEntwickler.gibAxiom : String;
-begin
-  result := FGrammatik.axiom;
-end;
-
-function TStringEntwickler.convertiereRealZuCardinal(wert: Real) : Cardinal;
-begin
-  result := trunc(wert * (maximalerZufallsraum div 100));
+  FreeAndNil(FMaximalerZufallsraum);
 end;
 
 function TStringEntwickler.gibEinzusetzendenString(c: String; var ret: String) : Boolean;
@@ -125,11 +117,21 @@ begin
     begin
         prefix.add(prefix[i-1]+convertiereRealZuCardinal(data[i-1].zufaelligkeit));
     end;
-    zufaelligerWert := random(maximalerZufallsraum)-1;
+    zufaelligerWert := random(FMaximalerZufallsraum)-1;
     ret := data[upper_bound(zufaelligerWert)].produktion;
     exit(true);
   end;
   result := false;
+end;
+
+function TStringEntwickler.gibAxiom : String;
+begin
+  result := FGrammatik.axiom;
+end;
+
+function TStringEntwickler.convertiereRealZuCardinal(wert: Real) : Cardinal;
+begin
+  result := trunc(wert * (FMaximalerZufallsraum div 100));
 end;
 
 procedure TStringEntwickler.aktualisiereZuZeichnendenString;
@@ -168,16 +170,22 @@ begin
   end;
 end;
 
-// toSmallLetter-Funktion
-function toSmallLetter(letter: Char) : Char;
-var letterAsc: Cardinal;
+procedure TStringEntwickler.aendereParameter(para: TStringList);
 begin
-  letterAsc:=Ord(letter);
-  letterAsc:=letterAsc+32;
-  result:=Chr(letterAsc);
+  FGrammatik.aendereParameter(para);
+  aktualisiereZuZeichnendenString;
 end;
 
+
 procedure TStringEntwickler.entwickeln(rekursionsTiefe: Cardinal);
+  function toSmallLetter(letter: Char) : Char;
+  var letterAsc: Cardinal;
+  begin
+    letterAsc:=Ord(letter);
+    letterAsc:=letterAsc+32;
+    result:=Chr(letterAsc);
+  end;
+
   procedure entw(tiefe: Cardinal; s: String);
   var i,j: Cardinal;
       data,tmp_string,links,letters: String;

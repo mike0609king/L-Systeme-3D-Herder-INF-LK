@@ -76,13 +76,13 @@ VAR i:CARDINAL;
 begin
    for i:=0 to CheckListBox1.Count -1 do
    begin
-     if CheckListBox1.Checked[i] then result:=i;
+        if CheckListBox1.Checked[i] then result:=i;
    end;
 end;
 
 function TuGrammatiken.stringanalyse(s:string):BOOLEAN;
 //für regeln nicht axiome
-VAR str,rest_string:string; i,l,h,k,j,g,b:CARDINAL; c:Char;klammer_auf,bool:Boolean;
+VAR str,rest_string:string; i,l,h,k,j,g:CARDINAL;klammer_auf,bool:Boolean;
 begin
    str:=Copy(s,1,length(s));
    rest_string:=Copy(s,1,length(s));
@@ -131,21 +131,26 @@ begin
                        end
                        else
                        begin
-                            if h=ord(';') then
+                            if (h=ord(';')) then
                             begin
-                            bool:=false;
+                                 bool:=true;
                             end
                             else
                             begin
-                                 ShowMessage('Parameter müssen mit einem ";" getrennt werden!');
-                                 exit(False)
+                                 if (not h>=ord('a')) and (not h<=ord('z')) then
+                                 begin
+                                      ShowMessage('Parameter müssen mit einem ";" getrennt werden!');
+                                      exit(False)
+                                 end
+                                 else bool:=false;
                             end;
                        end;
                   end;
                   g:=pos(')',rest_string);
                   rest_string:=copy(rest_string,g+1,g+100);
+                  g:=pos(')',rest_string);
              end;
-       end;
+        end;
    end
    else
    begin
@@ -163,7 +168,7 @@ begin
 end;
 
 function TuGrammatiken.axiomanalyse(s:string):Boolean;  //returns false if axiom is wrong
-VAR axiom,rest_axiom,qs:string; i,l,y,h,z,k,j,g,b:CARDINAL; c:Char;klammer_auf,bool:Boolean; iValue, iCode: Integer;
+VAR axiom,rest_axiom,qs:string; i,l,h,k,j,g:CARDINAL; klammer_auf,bool:Boolean; iValue, iCode: Integer;
 begin
    axiom:=Copy(s,1,length(s));
    l:=length(axiom);
@@ -203,7 +208,7 @@ begin
                        h:=ord(axiom[k]);
                        if bool then
                        begin
-                            qs:=ExtractNumbers(axiom);
+                            qs:=ExtractNumbers(rest_axiom);
                             val(qs, iValue, iCode);
                             if not iCode = 0 then
                             begin
@@ -214,19 +219,26 @@ begin
                        end
                        else
                        begin
-                            if h=ord(';') then
+                            if (h=ord(';')) then
                             begin
-                                 bool:=false;
+                                 bool:=true;
                             end
                             else
                             begin
-                                 ShowMessage('Parameter müssen mit einem ";" getrennt werden!');
-                                 exit(False)
+                                 qs:=ExtractNumbers(axiom);
+                                 val(qs, iValue, iCode);
+                                 if not iCode = 0 then
+                                 begin
+                                      ShowMessage('Parameter müssen mit einem ";" getrennt werden!');
+                                      exit(False)
+                                 end
+                                 else bool:=false;
                             end;
                        end;
                   end;
                   g:=pos(')',rest_axiom);
                   rest_axiom:=copy(rest_axiom,g+1,g+100);
+                  g:=pos(')',rest_axiom);
              end;
         end;
    end
@@ -474,10 +486,11 @@ begin
     end
     else
     Begin
+         i:=1;
+         Memo1.Lines[0]:=axiom;
          conf.EnumSubKeys(UnicodeString('Grammatik/regeln/'),regelnLinkeSeite);
          for regelnLinkeSeiteIdx := 0 to regelnLinkeSeite.Count - 1 do
          begin
-            i:=1;
             tmp_pfad := 'Grammatik/regeln/' + regelnLinkeSeite[regelnLinkeSeiteIdx];
             conf.EnumSubKeys(UnicodeString(tmp_pfad), regelnRechteSeite);
             for regelnRechteSeiteIdx := 0 to regelnRechteSeite.Count - 1 do
@@ -489,17 +502,15 @@ begin
                 BEGIN
                      zufaelligkeit := conf.getValue(
                      UnicodeString(tmp_pfad + '/' + regelnRechteSeite[regelnRechteSeiteIdx] + '/zufaelligkeit'),0.0);
-                     Memo1.Lines[0]:=axiom;
-                     Memo1.Lines[i]:=axiom+'->'+produktion+','+FloattoStr(zufaelligkeit);
+                     Memo1.Lines[i]:=regelnLinkeSeite[regelnLinkeSeiteIdx]+'->'+produktion+','+FloattoStr(zufaelligkeit);
                      INC(i);
                 end
                 else
                 Begin
-                     delete(produktion,q,q+10);
+                     produktion:=copy(produktion,1,q-1);
                      zufaelligkeit := conf.getValue(
                      UnicodeString(tmp_pfad + '/' + regelnRechteSeite[regelnRechteSeiteIdx] + '/zufaelligkeit'),0.0);
-                     Memo1.Lines[0]:=axiom;
-                     Memo1.Lines[i]:=axiom+'->'+produktion+','+FloattoStr(zufaelligkeit);
+                     Memo1.Lines[i]:=regelnRechteSeite[regelnRechteSeiteIdx]+'->'+produktion+','+FloattoStr(zufaelligkeit);
                      INC(i);
                 END;
             end;

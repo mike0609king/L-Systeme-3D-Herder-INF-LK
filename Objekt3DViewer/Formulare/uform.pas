@@ -501,6 +501,7 @@ VAR turtle: TTurtle;
       zeichnerInit.initialisiere(zeichenArt,zeichenPara)
     );
     turtle.maximaleStringLaenge := 500000;
+    //turtle.speichern('test.json');
     o.addTurtle(turtle);
     inc(numTurt);
   end;
@@ -579,18 +580,18 @@ begin
   plaziereTurtle('ZeichnerGruenesBlatt', 'Baum mit grünen Blättern');
   //plaziereTurtle('ZeichnerGruenesBlatt');
   }
-
   
+  {
   // Parametrisierung von Farben - Beispiel (1)
-  
   zeichenPara.winkel := 47.5;
   zeichenPara.rekursionsTiefe := 3;
   gram := TGrammatik.Create;
   gram.axiom := 'F(1)&[+F(2)&&F(3)F(4)]&&F(5)[-^^/^-F(0)F(7)]F(8)';
   gram.addRegel('F(c)','F(c)&[+F(c)&&F(c)F(c)]&&F(c)[-^^/^-F(c)F(c)]F(c)');
   plaziereTurtle('ZeichnerFarben');
+  }
 
-  {
+  
   // Parametrisierung von Farben - Beispiel (2)
 
   zeichenPara.winkel := 47.5;
@@ -601,12 +602,13 @@ begin
   gram.addRegel('F(c;d)','F(d;c)&[+F(d;c)&&F(c;c)F(d;c)]&&F(c;d)[-^^/^-F(c;d)F(d;c)]F(c;d)',40);
   gram.addRegel('F(c;d)','F(c;d)&[+F(c;d)&&F(c;d)F(d;c)]&&F(c;d)[-^^/^-F(d;c)F(c;d)]F(d;c)',40);
   gram.addRegel('F(c;d)','F(c;d)&[+F(c;d)&&F(c;d)F(c)]&&F(c;d)[-^^/^-F(d;c)F(d)]F(d;c)',20);
-  plaziereTurtle('ZeichnerFarben','Parametrisierung von Farben');
+  plaziereTurtle('ZeichnerFarben');
   //plaziereTurtle('ZeichnerFarben');
   //plaziereTurtle('ZeichnerFarben');
   //plaziereTurtle('ZeichnerFarben');
 
 
+  {
   // Schrittlaenge und Farben
 
   zeichenPara.winkel := 47.5;

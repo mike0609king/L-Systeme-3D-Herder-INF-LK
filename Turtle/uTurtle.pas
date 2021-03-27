@@ -47,7 +47,7 @@ type TTurtle = class
     // properties
     //// FGrammatik
     property axiom: String read gibAxiom;
-    property regeln: TRegelDictionary read FGrammatik.regeln;
+    property regeln: TRegelDictionary read FGrammatik.rawRegeln;
     //// FZeichner
     property zeichnerName: String read gibZeichnerName; 
     property winkel: Real read gibWinkel write setzeWinkel;
@@ -163,15 +163,14 @@ begin
         FGrammatik.addRegel(
             regelnLinkeSeite[regelnLinkeSeiteIdx],
             tmp_produktion,
-            tmp_zufaelligkeit,
-            true
+            tmp_zufaelligkeit
         );
       end;
       FreeAndNil(regelnRechteSeite);
     end;
     FreeAndNil(regelnLinkeSeite);
   finally
-    FreeAndNil(conf);
+    conf.Free;
   end;
   FStringEntwickler := TStringEntwickler.Create(FGrammatik);
   zeichnerinit := TZeichnerInit.Create;
@@ -357,19 +356,19 @@ begin
     conf.setValue('Zeichen Parameter/startPunkt/z', FZeichner.startPunkt.z);
     
     conf.setValue('Grammatik/axiom', UnicodeString(FGrammatik.axiom));
-    for regelIdx := 0 to FGrammatik.regeln.Count - 1 do
+    for regelIdx := 0 to FGrammatik.rawRegeln.Count - 1 do
     begin
-      tmp_path := 'Grammatik/regeln/' + FGrammatik.regeln.keys[regelIdx] + '/Regel ';
-      for produktionIdx := 0 to (FGrammatik.regeln.data[regelIdx]).Count - 1 do
+      tmp_path := 'Grammatik/regeln/' + FGrammatik.rawRegeln.keys[regelIdx] + '/Regel ';
+      for produktionIdx := 0 to (FGrammatik.rawRegeln.data[regelIdx]).Count - 1 do
       begin
         conf.setValue(
           UnicodeString(tmp_path + IntToStr(produktionIdx+1) + '/produktion'),
-          UnicodeString(FGrammatik.regeln.data[regelIdx][produktionIdx].produktion)
+          UnicodeString(FGrammatik.rawRegeln.data[regelIdx][produktionIdx].produktion)
         );
 
         conf.setValue(
           UnicodeString(tmp_path + IntToStr(produktionIdx+1) + '/zufaelligkeit'),
-          FGrammatik.regeln.data[regelIdx][produktionIdx].zufaelligkeit
+          FGrammatik.rawRegeln.data[regelIdx][produktionIdx].zufaelligkeit
         );
       end;
     end;

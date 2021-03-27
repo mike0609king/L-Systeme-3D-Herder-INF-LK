@@ -29,13 +29,13 @@ type TGrammatik = class
   public
     variableZuWert: TVariableZuWert;
     regeln: TRegelDictionary;
-    // rawRegeln: TRegelDictionary;
+    rawRegeln: TRegelDictionary;
 
     constructor Create;
     destructor Destroy; override;
 
-    procedure addRegel(links: String; rechts: String; zufaelligkeit: Real; schonGetauscht: Boolean = false); overload;
-    procedure addRegel(links: String; rechts: String; schonGetauscht: Boolean = false); overload;
+    procedure addRegel(links: String; rechts: String; zufaelligkeit: Real); overload;
+    procedure addRegel(links: String; rechts: String); overload;
 
     function RegelTauschLinks(links: String) : String; overload;
     function RegelTauschRechts(links: String; rechts: String) : String; overload;
@@ -69,6 +69,7 @@ begin
   FAxiom := '';
   FRawAxiom := '';
   regeln := TRegelDictionary.Create;
+  rawRegeln := TRegelDictionary.Create;
 end;
 
 destructor TGrammatik.Destroy;
@@ -77,6 +78,7 @@ begin
   FreeAndNil(FAxiom);
   FreeAndNil(FRawAxiom);
   FreeAndNil(regeln);
+  FreeAndNil(rawRegeln);
 end;
 
 procedure TGrammatik.setzeAxiom(axiom:String);
@@ -111,38 +113,36 @@ begin
   end;
 end;
 
-procedure TGrammatik.addRegel(links: String; 
-                              rechts: String; 
-                              zufaelligkeit: Real;
-                              schonGetauscht: Boolean = false
-                              );
-var tmp_regel: TRegelProduktionsseite;
-    data: TRegelProduktionsseitenListe;
-    tmp_links: String;
+procedure TGrammatik.addRegel(links: String; rechts: String; zufaelligkeit: Real);
+var tmp_links: String;
+    procedure zuRegelHinzufuegen(var regelDict: TRegelDictionary);
+    var tmp_regel: TRegelProduktionsseite;
+        data: TRegelProduktionsseitenListe;
+    begin
+      tmp_regel := TRegelProduktionsseite.Create;
+      tmp_regel.produktion := rechts;
+      tmp_regel.zufaelligkeit := zufaelligkeit;
+      if regelDict.TryGetData(links,data) then regelDict[links].add(tmp_regel)
+      else
+      begin
+          regelDict[links] := TRegelProduktionsseitenListe.Create;
+          regelDict[links].add(tmp_regel);
+      end;
+    end;
 begin
-    if (links[2] = '(') and (not schonGetauscht) then
-    begin
-      tmp_links := links;
-      links := RegelTauschLinks(links);
-      rechts := RegelTauschRechts(tmp_links,rechts);
-    end;
-    tmp_regel := TRegelProduktionsseite.Create;
-    tmp_regel.produktion := rechts;
-    tmp_regel.zufaelligkeit := zufaelligkeit;
-    if regeln.TryGetData(links,data) then regeln[links].add(tmp_regel)
-    else
-    begin
-        regeln[links] := TRegelProduktionsseitenListe.Create;
-        regeln[links].add(tmp_regel);
-    end;
+  zuRegelHinzufuegen(rawRegeln);
+  if (links[2] = '(') then
+  begin
+    tmp_links := links;
+    links := RegelTauschLinks(links);
+    rechts := RegelTauschRechts(tmp_links,rechts);
+  end;
+  zuRegelHinzufuegen(regeln);
 end;
 
-procedure TGrammatik.addRegel(links: String; 
-                              rechts: String; 
-                              schonGetauscht: Boolean = false
-                              );
+procedure TGrammatik.addRegel(links: String; rechts: String);
 begin
-    addRegel(links,rechts,100,schonGetauscht);
+    addRegel(links,rechts,100);
 end;
 
 
@@ -228,15 +228,14 @@ var gram: TGrammatik;
 begin
   gram := TGrammatik.Create;
   gram.axiom := FRawAxiom;
-  for regelIdx := 0 to regeln.Count - 1 do
+  for regelIdx := 0 to rawRegeln.Count - 1 do
   begin
-    for produktionIdx := 0 to (regeln.data[regelIdx]).Count - 1 do
+    for produktionIdx := 0 to (rawRegeln.data[regelIdx]).Count - 1 do
     begin
       gram.addRegel(
-            regeln.keys[regelIdx],
-            regeln.data[regelIdx][produktionIdx].produktion,
-            regeln.data[regelIdx][produktionIdx].zufaelligkeit,
-            true
+            rawRegeln.keys[regelIdx],
+            rawRegeln.data[regelIdx][produktionIdx].produktion,
+            rawRegeln.data[regelIdx][produktionIdx].zufaelligkeit
           );
     end;
   end;

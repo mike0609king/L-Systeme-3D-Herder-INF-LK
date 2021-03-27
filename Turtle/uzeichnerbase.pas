@@ -20,7 +20,9 @@ type TZeichenParameter = record
 end;
 
 type TProc = procedure(list: TStringList) of object;
+
 type TVersandTabelle = TFPGMap<char, TProc>;
+
 type TZeichnerBase = class
   protected
     FName: String;
@@ -44,13 +46,8 @@ type TZeichnerBase = class
     procedure setzeRekursionsTiefe(const tiefe: Cardinal);
   public
     constructor Create(zeichenPara: TZeichenParameter); virtual;
+
     destructor Destroy; override;
-
-    procedure zeichneBuchstabe(c: char; list: TStringList); virtual;
-    function copy : TZeichnerBase;
-
-    procedure setzeStartPunkt(x,y,z: Real);
-    function gibZeichenParameter : TZeichenParameter;
 
     // properties
     //// FZeichenParameter
@@ -58,10 +55,24 @@ type TZeichnerBase = class
     property rekursionsTiefe: Cardinal read FZeichenParameter.rekursionsTiefe write setzeRekursionsTiefe;
     property startPunkt: TPunkt3D read FZeichenParameter.startPunkt;
     property name: String read FName;
+
+    // setter-Funktionen (public)
+    procedure setzeStartPunkt(x,y,z: Real);
+
+    // getter-Funktionen (public)
+    function gibZeichenParameter : TZeichenParameter;
+
+    procedure zeichneBuchstabe(c: char; list: TStringList); virtual;
+    function copy : TZeichnerBase;
 end;
 
 implementation
 uses uMatrizen,dglOpenGL,uZeichnerInit;
+
+
+//////////////////////////////////////////////////////////
+// TZeichenParameter
+//////////////////////////////////////////////////////////
 
 procedure TZeichenParameter.setzeStartPunkt(x,y,z: Real);
 begin
@@ -78,6 +89,10 @@ begin
   zeichenPara.setzeStartPunkt(startPunkt.x, startPunkt.y, startPunkt.z);
   result := zeichenPara;
 end;
+
+//////////////////////////////////////////////////////////
+// TZeichnerBase
+//////////////////////////////////////////////////////////
 
 procedure TZeichnerBase.setzeWinkel(const phi: Real);
 begin
@@ -104,8 +119,6 @@ var tmp: TProc;
 begin
   if FVersandTabelle.tryGetData(c,tmp) then tmp(list);
 end;
-
-
 
 //////////////////////////////////////////////////////////
 // Bewegung der Turtle
@@ -146,15 +159,13 @@ end;
 procedure TZeichnerBase.aktionSchrittMitLinie(list: TStringList);
 var m: Cardinal;
 begin
-  m := 50; // spaeter parametrisieren
-  schritt(1/m,true);
+  m := 50; schritt(1/m,true);
 end;
 
 procedure TZeichnerBase.aktionSchrittOhneLinie(list: TStringList);
 var m: Cardinal;
 begin
-  m := 50; // spaeter parametrisieren
-  schritt(1/m,false);
+  m := 50; schritt(1/m,false);
 end;
 
 procedure TZeichnerBase.aktionPlus(list: TStringList);

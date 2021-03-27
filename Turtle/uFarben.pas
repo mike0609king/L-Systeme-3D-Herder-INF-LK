@@ -14,7 +14,10 @@ type TFarben = record
   private
     FIdxZuFarbe: array[1..25] of TFarbe;
   public
+    { Aufgabe: Weist die Farben richtig zu. }
     procedure initColor;
+
+    // getter-Funktionen (public)
     function gibFarbe(idx: Cardinal) : TFarbe;
 end;
 

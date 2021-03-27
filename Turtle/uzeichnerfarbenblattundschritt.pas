@@ -81,7 +81,6 @@ constructor TZeichnerFarbenBlattUndSchritt.Create(zeichenPara: TZeichenParameter
 begin
   inherited;
   FName := 'ZeichnerFarbenBlattUndSchritt';
-
   farben.initColor;
 
   FVersandTabelle.AddOrSetData('F',aktionSchrittMtLinie);

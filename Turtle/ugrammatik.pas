@@ -23,6 +23,9 @@ type TGrammatik = class
   private
     FRawAxiom: String;
     FAxiom: String;
+
+    // setter-Funktionen fuer properties
+    procedure setzeAxiom(axiom:String);
   public
     variableZuWert: TVariableZuWert;
     regeln: TRegelDictionary;
@@ -36,7 +39,6 @@ type TGrammatik = class
     function RegelTauschLinks(links: String) : String; overload;
     function RegelTauschRechts(links: String; rechts: String) : String; overload;
 
-    procedure setzeAxiom(axiom:String);
     procedure weiseAxiomZu(axiom:String); 
     procedure aendereParameter(para: TStringList);
 

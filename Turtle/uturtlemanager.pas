@@ -22,6 +22,10 @@ type TTurtleManager = class
 
     destructor Destroy; override;
 
+    // property
+    property turtleListe: TTurtleListe read FTurtleListe;
+
+    { Aufgabe: Fuegt eine Turtle hinzu. }
     procedure addTurtle(turtle: TTurtle);
     { Aufgabe: Entfernt eine Turtle, die den gleichen Wert, wie die uebergebene Instanz hat.
       Rueckgabe: Gibt an, ob die Turtle endfernt wurde bzw. ob der Index.}
@@ -34,16 +38,13 @@ type TTurtleManager = class
     procedure zeichnen;
     function copy : TTurtleManager;
 
-    // setter-Funktion
+    // setter-Funktion (public)
     { Rueckgabe: Gibt an, ob die Sichtbarkeit gesetzt wurde bzw. ob der Index
       gueltig war. }
     function setzeSichtbarkeit(idx: Cardinal; visibility: Boolean) : Boolean;
 
-    // getter-Funktionen
+    // getter-Funktionen (public)
     function gibTurtle(idx: Cardinal; var turt: TTurtle) : Boolean;
-
-    // property
-    property turtleListe: TTurtleListe read FTurtleListe;
 end;
    
 implementation
@@ -90,18 +91,6 @@ begin
   if result then result := entferneTurtle(FTurtleListe[idx]); 
 end;
 
-function TTurtleManager.setzeSichtbarkeit(idx: Cardinal; visibility: Boolean) : Boolean;
-begin
-  result := ueberpruefeGueltigkeitVomIndex(idx);
-  if result then FTurtleListe[idx].visible := visibility;
-end;
-
-function TTurtleManager.gibTurtle(idx: Cardinal; var turt: TTurtle) : Boolean;
-begin
-  result := ueberpruefeGueltigkeitVomIndex(idx);
-  if result then turt := FTurtleListe[idx];
-end;
-
 procedure TTurtleManager.zeichnen;
 var i: Cardinal;
 begin
@@ -124,6 +113,18 @@ begin
     gibTurtle(i,turtle);
     result.addTurtle(turtle.copy);
   end;
+end;
+
+function TTurtleManager.setzeSichtbarkeit(idx: Cardinal; visibility: Boolean) : Boolean;
+begin
+  result := ueberpruefeGueltigkeitVomIndex(idx);
+  if result then FTurtleListe[idx].visible := visibility;
+end;
+
+function TTurtleManager.gibTurtle(idx: Cardinal; var turt: TTurtle) : Boolean;
+begin
+  result := ueberpruefeGueltigkeitVomIndex(idx);
+  if result then turt := FTurtleListe[idx];
 end;
 end.
 

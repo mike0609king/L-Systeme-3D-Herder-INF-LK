@@ -4,8 +4,7 @@ program Matrix3x3;
 
 uses
   Forms, Interfaces,
-  //UNeu in 'Formulare\UNeu.pas' {HauptForm},
-  uForm in 'Formulare\uFrom.pas' {HauptForm},
+  uform in 'Formulare\uform.pas' {Hauptform},
   uEditor_Grammatiken in 'Formulare\uEditor_Grammatiken.pas' {EditorForm},
   ugrammatiken in 'Formulare\ugrammatiken.pas' {uGrammatiken},
   uparameter_Form in  'Formulare\uparameter_Form.pas' {Parameter_Form},

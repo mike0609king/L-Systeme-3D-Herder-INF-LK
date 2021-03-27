@@ -11,18 +11,22 @@ uses
   uZeichnerFarbenBlattUndSchritt;
 
 type TErbteZeichnerBase = class of TZeichnerBase;
+
 type TVersandTabelleZeichner = TFPGMap<String, TErbteZeichnerBase>;
-{ Aufgabe: Diese Klasse soll den Konstruktor einer Zeichen-Klasse aufrufen, wobei
-  die Konstruktoren den Strings zugeordnet sind. }
+
+{ Aufgabe: Diese Klasse soll den Konstruktor einer Zeichen-Klasse 
+  aufrufen, wobei die Konstruktoren den Strings zugeordnet sind. }
 type TZeichnerInit = class
   private
     FVersandTabelleZeichner: TVersandTabelleZeichner;
   public
     constructor Create;
-    { Aufgabe: Die 'zeichnerArt' spezifiziert den Namen der Zeichenart, welche genutzt wird. 
-      Diese Funktion gibt dann die Instanz von dieser Zeichenart zurueck.}
+
     destructor Destroy; override;
 
+    { Aufgabe: Die 'zeichnerArt' spezifiziert den Namen der Zeichenart, 
+      welche genutzt wird. Diese Funktion gibt dann die Instanz von 
+      dieser Zeichenart zurueck. }
     function initialisiere(zeichnerArt: String; zeichenPara: TZeichenParameter) : TZeichnerBase;
 
     { Aufgabe: Gibt eine Liste von Zeichenartnamen zurueck. Diese koennen dann als 
@@ -84,8 +88,7 @@ function TZeichnerInit.gibZeichnerListe : TStringList;
 var i: Cardinal;
 begin
   result := TStringList.Create;
-  for i := 0 to FVersandTabelleZeichner.Count - 1 do
-      result.add(FVersandTabelleZeichner.keys[i]);
+  for i := 0 to FVersandTabelleZeichner.Count - 1 do result.add(FVersandTabelleZeichner.keys[i]);
 end;
 
 end.

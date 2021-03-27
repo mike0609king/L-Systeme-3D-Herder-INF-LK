@@ -6,10 +6,7 @@ interface
 
 uses
   Classes, SysUtils, fgl, uGrammatik, uStringEntwickler, uZeichnerBase, 
-  fpjson, jsonparser, jsonConf,
-  uZeichnerInit;
-
-type TObjekte = (kw,gw,p,kq,gq,d);
+  fpjson, jsonparser, jsonConf, uZeichnerInit;
 
 // Die Entitaet, die sich auf dem Bildschirm herumbewegt,
 // um den L-Baum zu zeichnen
@@ -23,14 +20,14 @@ type TTurtle = class
     FVisible: Boolean;
     FMaximaleStringLaenge: Int64;
 
-    // setter-Funktionen
+    // setter-Funktionen fuer die properties
     procedure setzeWinkel(const phi: Real);
     procedure setzeRekursionsTiefe(const tiefe: Cardinal);
     procedure setzeVisible(const vis: Boolean);
     procedure setzeName(const name: String);
     procedure setzeMaximaleStringLaenge(const mxStringLaenge: Int64);
 
-    // getter-Funktionen (die normale read Routine funktioniert hier nicht)
+    // getter-Funktionen fuer die properties
     function gibRekursionsTiefe : Cardinal;
     function gibWinkel : Real;
     function gibStartPunkt : TPunkt3D;
@@ -42,7 +39,9 @@ type TTurtle = class
     constructor Create(gram: TGrammatik; zeichner: TZeichnerBase; maximaleStringLaenge: Int64=100000); overload;
     constructor Create(gram: TGrammatik; zeichner: TZeichnerBase; stringEntwickler: TStringEntwickler; 
                        maximaleStringLaenge: Int64=100000); overload;
+    { Aufgabe: Liest eine Turtle aus einer json-Datei aus. }
     constructor Create(datei: String); overload;
+
     destructor Destroy; override;
 
     // properties
@@ -67,19 +66,18 @@ type TTurtle = class
     procedure setzeZeichnerName(const neuerName: String);
     procedure aendereParameter(para: TStringList);
 
-    // getter-Fuinktionen (public)
+    // getter-Funktionen (public)
     function gibParameter : TStringList;
 
-    { Aufgabe: Zeichenen des Strings, der in dem Stringentwickler ist. Sollte der String eine bestimmte laenge
-      ueberschritten haben, so wird dieser String nicht gezeichnet.
-      Rueckgabe: Wenn der String gezeichet wurde, so wird wahr zurueckgegeben. Wenn der String nicht gezeichnet
-      wurde, so wird falsch zurueckgegeben. }
+    { Aufgabe: Zeichenen des Strings, der in dem Stringentwickler ist. Sollte der String eine 
+      bestimmte Laenge ueberschritten haben, so wird dieser String nicht gezeichnet.
+      Rueckgabe: Wenn der String gezeichet wurde, so wird wahr zurueckgegeben. Wenn der 
+      String nicht gezeichnet wurde, so wird falsch zurueckgegeben. }
     function zeichnen : Boolean;
+    { Aufgabe: Speichert die Turtle mit seinen Eigenschaften in einer json-Datei }
     procedure speichern(datei: String);
     function copy : TTurtle; 
 end;
-
-VAR objekt: TObjekte;
 
 implementation
 
@@ -93,7 +91,7 @@ begin
   FZeichner := zeichner;
   FStringEntwickler := TStringEntwickler.Create(gram);
   FStringEntwickler.entwickeln(FZeichner.rekursionsTiefe);
-  FMaximaleStringLaenge := 100000;
+  FMaximaleStringLaenge := maximaleStringLaenge;
   FName := '';
   FVisible := true;
 end;
@@ -106,20 +104,19 @@ begin
   FGrammatik := gram;
   FZeichner := zeichner;
   FStringEntwickler := stringEntwickler;
-  FMaximaleStringLaenge := 100000;
+  FMaximaleStringLaenge := maximaleStringLaenge;
   FName := '';
   FVisible := true;
 end;
 
 constructor TTurtle.Create(datei: String);
 var conf: TJSONConfig;
-    tmp_pfad, tmp_produktion: String;
+    tmp_pfad, tmp_produktion, zeichenArt: String;
     tmp_zufaelligkeit: Real;
     regelnLinkeSeite, regelnRechteSeite: TStringList;
     regelnLinkeSeiteIdx, regelnRechteSeiteIdx: Cardinal;
     zeichenPara: TZeichenParameter;
     zeichnerInit: TZeichnerInit;
-    zeichenArt: String;
 begin
   FGrammatik := TGrammatik.Create;
   conf:= TJSONConfig.Create(nil);
@@ -174,7 +171,7 @@ begin
     end;
     FreeAndNil(regelnLinkeSeite);
   finally
-    conf.Free;
+    FreeAndNil(conf);
   end;
   FStringEntwickler := TStringEntwickler.Create(FGrammatik);
   zeichnerinit := TZeichnerInit.Create;
@@ -184,12 +181,12 @@ end;
 
 destructor TTurtle.Destroy;
 begin
-  FreeAndNil(FVisible);
-  FreeAndNil(FMaximaleStringLaenge);
-  FreeAndNil(FName);
   FreeAndNil(FGrammatik);
   FreeAndNil(FZeichner);
   FreeAndNil(FStringEntwickler);
+  FreeAndNil(FName);
+  FreeAndNil(FVisible);
+  FreeAndNil(FMaximaleStringLaenge);
   inherited;
 end;
 
@@ -391,7 +388,7 @@ begin
   zeichner := FZeichner.copy;
   entwickler := FStringEntwickler.copy;
   turtle := TTurtle.Create(gram,zeichner,entwickler);
-  turtle.name := FName;
+  turtle.name := system.copy(FName,1,length(FName));
   turtle.visible := FVisible;
   turtle.maximaleStringLaenge := FMaximaleStringLaenge;
   result := turtle;

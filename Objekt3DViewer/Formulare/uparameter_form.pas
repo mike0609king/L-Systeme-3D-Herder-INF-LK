@@ -152,7 +152,6 @@ begin
         Hauptform.zeichnen();
         EditorForm.BT_updateClick(1);
       end;
-
     end;
 end;
 end.

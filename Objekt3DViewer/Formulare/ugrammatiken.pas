@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, Menus,uturtlemanager,
-  ExtCtrls, CheckLst, uAnimation, fgl, ugrammatik, uTurtle, fpjson,LCLType, jsonparser, jsonConf;
+  ExtCtrls, CheckLst, uAnimation,ugrammatik, uTurtle,fpjson,LCLType, cStack, jsonparser, jsonConf;
 type
 
   { TuGrammatiken }
@@ -83,10 +83,12 @@ end;
 function TuGrammatiken.stringanalyse(s:string):BOOLEAN;
 //für regeln nicht axiome
 VAR str,rest_string:string; i,l,h,k,j,g:CARDINAL;klammer_auf,bool:Boolean;
+MyStack: TMyStack;
 begin
    str:=Copy(s,1,length(s));
    rest_string:=Copy(s,1,length(s));
    l:=length(str);
+   MyStack:=TMyStack.create(l);
    h:=ord(str[1]);
    if not ((h=ord('f')) or ((h>=ord('A')) and (h<=ord('Z')))) then
    begin
@@ -108,53 +110,75 @@ begin
         end;
         if str[i]=')' then klammer_auf:=False;
    end;
-   if not klammer_auf then
+   //wohlgeformte eckige klammern []
+   for i:=1 to l do
    begin
-        j:=pos('(',str);
-        if j<>0 then
+        if str[i]='[' then
         begin
-             while pos('(',rest_string)<>0 do
+             MyStack.Push(1);
+        end;
+        if str[i]=']' then
+        begin
+             MyStack.Pop();
+        end;
+   end;
+   if MyStack.IsEmpty() then
+   begin
+        MyStack.Free;
+        if not klammer_auf then
+        begin
+             j:=pos('(',str);
+             if j<>0 then
              begin
-                  g:=pos(')',rest_string)-1;
-                  bool:=True;
-                  for k:=pos('(',rest_string)+1 to g do
+                  while pos('(',rest_string)<>0 do
                   begin
-                       h:=ord(str[k]);
-                       if bool then
+                       g:=pos(')',rest_string)-1;
+                       bool:=True;
+                       for k:=pos('(',rest_string)+1 to g do
                        begin
-                            if (not h>=ord('a')) and (not h<=ord('z')) then
-                            begin
-                                 ShowMessage('Parameter müssen kleine Buchstaben sein!');
-                                 exit(False);
-                            end;
-                            bool:=False;
-                       end
-                       else
-                       begin
-                            if (h=ord(';')) then
-                            begin
-                                 bool:=true;
-                            end
-                            else
+                            h:=ord(str[k]);
+                            if bool then
                             begin
                                  if (not h>=ord('a')) and (not h<=ord('z')) then
                                  begin
-                                      ShowMessage('Parameter müssen mit einem ";" getrennt werden!');
-                                      exit(False)
+                                      ShowMessage('Parameter müssen kleine Buchstaben sein!');
+                                      exit(False);
+                                 end;
+                                 bool:=False;
+                            end
+                            else
+                            begin
+                                 if (h=ord(';')) then
+                                 begin
+                                      bool:=true;
                                  end
-                                 else bool:=false;
+                                 else
+                                 begin
+                                      if (not h>=ord('a')) and (not h<=ord('z')) then
+                                      begin
+                                           ShowMessage('Parameter müssen mit einem ";" getrennt werden!');
+                                           exit(False)
+                                      end
+                                      else bool:=false;
+                                 end;
                             end;
                        end;
+                       g:=pos(')',rest_string);
+                       rest_string:=copy(rest_string,g+1,g+100);
+                       g:=pos(')',rest_string);
                   end;
-                  g:=pos(')',rest_string);
-                  rest_string:=copy(rest_string,g+1,g+100);
-                  g:=pos(')',rest_string);
              end;
+        end
+        else
+        begin
+             SHOWMessage('Klammern müssen geschlossen werden!');
+             exit(False);
         end;
    end
    else
    begin
-        SHOWMessage('Klammern müssen geschlossen werden!');
+        SHOWMessage('Eckige Klammern müssen geschlossen werden!');
+        MyStack.Free;
         exit(False);
    end;
 end;
@@ -353,7 +377,7 @@ var n:CARDINAL;
 begin
   For n:=0 to Memo1.Lines.Count-1 do
   Begin
-       Memo1.Lines[n]:='';
+       Memo1.Clear;
   end;
   for i := 0 to ComponentCount - 1 do if Components[i] is TEdit then TEdit(Components[i]).Clear;
   for i := 0 to CheckListBox1.Count -1 do CheckListBox1.Checked[I] := False;
@@ -452,6 +476,7 @@ var turtle: TTurtle;
     axiom:String;
     zufaelligkeit:Real;
     n:CARDINAL;
+    klammerauf:Integer;
     j : integer;
 begin
   OpenDialog1.Filter:='Json-Dateien (*.json)|*.json';
@@ -470,7 +495,7 @@ begin
     conf.filename:= OpenDialog1.FileName;
     For n:=0 to Memo1.Lines.Count-1 do
     Begin
-         Memo1.Lines[n]:='';
+         Memo1.Clear;
     end;
     for j:=0 to ComponentCount - 1 do if Components[i] is TEdit then TEdit(Components[j]).Clear;
     for j:=0 to CheckListBox1.Count -1 do CheckListBox1.Checked[j] := False;
@@ -493,27 +518,58 @@ begin
          begin
             tmp_pfad := 'Grammatik/regeln/' + regelnLinkeSeite[regelnLinkeSeiteIdx];
             conf.EnumSubKeys(UnicodeString(tmp_pfad), regelnRechteSeite);
-            for regelnRechteSeiteIdx := 0 to regelnRechteSeite.Count - 1 do
+
+            regelnRechteSeiteIdx := 0;
+            produktion := AnsiString(conf.getValue(
+            UnicodeString(tmp_pfad + '/' + regelnRechteSeite[regelnRechteSeiteIdx] + '/produktion'),''));
+            klammerauf:=pos('(',produktion);
+
+            if klammerauf<>0 then
             begin
-                produktion := AnsiString(conf.getValue(
-                UnicodeString(tmp_pfad + '/' + regelnRechteSeite[regelnRechteSeiteIdx] + '/produktion'),''));
-                q:=pos(',',produktion);
-                If q=0 then
-                BEGIN
-                     zufaelligkeit := conf.getValue(
-                     UnicodeString(tmp_pfad + '/' + regelnRechteSeite[regelnRechteSeiteIdx] + '/zufaelligkeit'),0.0);
-                     Memo1.Lines[i]:=regelnLinkeSeite[regelnLinkeSeiteIdx]+'->'+produktion+','+FloattoStr(zufaelligkeit);
-                     INC(i);
-                end
-                else
-                Begin
-                     produktion:=copy(produktion,1,q-1);
-                     zufaelligkeit := conf.getValue(
-                     UnicodeString(tmp_pfad + '/' + regelnRechteSeite[regelnRechteSeiteIdx] + '/zufaelligkeit'),0.0);
-                     Memo1.Lines[i]:=regelnRechteSeite[regelnRechteSeiteIdx]+'->'+produktion+','+FloattoStr(zufaelligkeit);
-                     INC(i);
-                END;
-            end;
+                 for regelnRechteSeiteIdx := 1 to regelnRechteSeite.Count-1 do
+                 begin
+                      produktion := AnsiString(conf.getValue(
+                      UnicodeString(tmp_pfad + '/' + regelnRechteSeite[regelnRechteSeiteIdx] + '/produktion'),''));
+                      q:=pos(',',produktion);
+                      If q=0 then
+                      Begin
+                           zufaelligkeit := conf.getValue(
+                           UnicodeString(tmp_pfad + '/' + regelnRechteSeite[regelnRechteSeiteIdx] + '/zufaelligkeit'),0.0);
+                           Memo1.Lines[i]:=regelnLinkeSeite[regelnLinkeSeiteIdx]+'->'+produktion+','+FloattoStr(zufaelligkeit);
+                           INC(i);
+                      end
+                      else
+                      Begin
+                           produktion:=copy(produktion,1,q-1);
+                           zufaelligkeit := conf.getValue(
+                           UnicodeString(tmp_pfad + '/' + regelnRechteSeite[regelnRechteSeiteIdx] + '/zufaelligkeit'),0.0);
+                           Memo1.Lines[i]:=regelnRechteSeite[regelnRechteSeiteIdx]+'->'+produktion+','+FloattoStr(zufaelligkeit);
+                           INC(i);
+                      end;
+                end;
+            end
+            else
+            for regelnRechteSeiteIdx := 0 to regelnRechteSeite.Count-1 do
+                 begin
+                      produktion := AnsiString(conf.getValue(
+                      UnicodeString(tmp_pfad + '/' + regelnRechteSeite[regelnRechteSeiteIdx] + '/produktion'),''));
+                      q:=pos(',',produktion);
+                      If q=0 then
+                      Begin
+                           zufaelligkeit := conf.getValue(
+                           UnicodeString(tmp_pfad + '/' + regelnRechteSeite[regelnRechteSeiteIdx] + '/zufaelligkeit'),0.0);
+                           Memo1.Lines[i]:=regelnLinkeSeite[regelnLinkeSeiteIdx]+'->'+produktion+','+FloattoStr(zufaelligkeit);
+                           INC(i);
+                      end
+                      else
+                      Begin
+                           produktion:=copy(produktion,1,q-1);
+                           zufaelligkeit := conf.getValue(
+                           UnicodeString(tmp_pfad + '/' + regelnRechteSeite[regelnRechteSeiteIdx] + '/zufaelligkeit'),0.0);
+                           Memo1.Lines[i]:=regelnRechteSeite[regelnRechteSeiteIdx]+'->'+produktion+','+FloattoStr(zufaelligkeit);
+                           INC(i);
+                      end;
+                end;
          end;
     end;
     conf.Free;

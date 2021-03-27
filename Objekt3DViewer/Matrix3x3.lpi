@@ -43,7 +43,7 @@
         <PackageName Value="LCL"/>
       </Item2>
     </RequiredPackages>
-    <Units Count="48">
+    <Units Count="49">
       <Unit0>
         <Filename Value="Matrix3x3.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -293,6 +293,11 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uParameterisierung_Form"/>
       </Unit47>
+      <Unit48>
+        <Filename Value="..\Terme\cstack.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="cStack"/>
+      </Unit48>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

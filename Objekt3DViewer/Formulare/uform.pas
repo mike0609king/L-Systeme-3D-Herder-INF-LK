@@ -493,7 +493,7 @@ VAR turtle: TTurtle;
     para: TStringList;
     tmp_string: String;
     numTurt: Cardinal;
-  procedure plaziereTurtle(zeichenArt,name: String);
+  procedure plaziereTurtle(zeichenArt: String);
   begin
     zeichenPara.setzeStartPunkt(-4+(numTurt*2.4),0,0);
     turtle := TTurtle.Create(
@@ -501,7 +501,6 @@ VAR turtle: TTurtle;
       zeichnerInit.initialisiere(zeichenArt,zeichenPara)
     );
     turtle.maximaleStringLaenge := 500000;
-    turtle.name:=name;
     o.addTurtle(turtle);
     inc(numTurt);
   end;
@@ -513,15 +512,16 @@ begin
   numTurt := 0;
 
   // Standardsymbole im Programm
-
-
+  {
   gram := TGrammatik.Create;
   zeichenPara.winkel := 47.5;
   zeichenPara.rekursionsTiefe := 4;
   gram.axiom := 'F';
   gram.addRegel('F','F&[+F&&FF]&&F[-^^/^-FF]F');
   plaziereTurtle('ZeichnerBase','Standard Turtle');
+  }
 
+  {
   gram := TGrammatik.Create;
   zeichenPara.winkel := 22.5;
   zeichenPara.rekursionsTiefe := 6;
@@ -529,10 +529,10 @@ begin
   gram.addRegel('X','F+[[-X]&&-X]-F[-F//X]+X');
   gram.addRegel('F','FF');
   plaziereTurtle('ZeichnerBase','Standard Turtle');
-
+  }
 
   // Stochastische L-Systeme
-
+  {
   gram := TGrammatik.Create;
   zeichenPara.winkel := 22.5;
   zeichenPara.rekursionsTiefe := 6;
@@ -547,20 +547,21 @@ begin
   //plaziereTurtle('ZeichnerBase');
   //plaziereTurtle('ZeichnerBase');
   //plaziereTurtle('ZeichnerBase');
+  }
 
 
   // Baum mit gruenen Blaettern
-
+  {
   zeichenPara.winkel := 47.5;
   zeichenPara.rekursionsTiefe := 5;
   gram := TGrammatik.Create;
   gram.axiom := 'F';
   gram.addRegel('F','F&[+F&&FB]&&F[-^^/^-FB]F');
   plaziereTurtle('ZeichnerGruenesBlatt','Baum mit grünen Blättern');
-
+  }
 
   // Noch einer!
-
+  {
   zeichenPara.winkel := 47.5;
   zeichenPara.rekursionsTiefe := 5;
   gram := TGrammatik.Create;
@@ -577,18 +578,19 @@ begin
   gram.addRegel('F','F&[+F&&F]&&F[-^^/^-F]F',79.99);
   plaziereTurtle('ZeichnerGruenesBlatt', 'Baum mit grünen Blättern');
   //plaziereTurtle('ZeichnerGruenesBlatt');
+  }
 
-{
+  
   // Parametrisierung von Farben - Beispiel (1)
-
+  
   zeichenPara.winkel := 47.5;
   zeichenPara.rekursionsTiefe := 3;
   gram := TGrammatik.Create;
   gram.axiom := 'F(1)&[+F(2)&&F(3)F(4)]&&F(5)[-^^/^-F(0)F(7)]F(8)';
   gram.addRegel('F(c)','F(c)&[+F(c)&&F(c)F(c)]&&F(c)[-^^/^-F(c)F(c)]F(c)');
-  plaziereTurtle('ZeichnerFarben','Parametrisierung von Farben');
+  plaziereTurtle('ZeichnerFarben');
 
-
+  {
   // Parametrisierung von Farben - Beispiel (2)
 
   zeichenPara.winkel := 47.5;

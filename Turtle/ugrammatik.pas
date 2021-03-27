@@ -29,6 +29,7 @@ type TGrammatik = class
   public
     variableZuWert: TVariableZuWert;
     regeln: TRegelDictionary;
+    // rawRegeln: TRegelDictionary;
 
     constructor Create;
     destructor Destroy; override;
@@ -39,11 +40,10 @@ type TGrammatik = class
     function RegelTauschLinks(links: String) : String; overload;
     function RegelTauschRechts(links: String; rechts: String) : String; overload;
 
-    procedure weiseAxiomZu(axiom:String); 
     procedure aendereParameter(para: TStringList);
 
-    property axiom: String read FAxiom write setzeAxiom;
-    property rawAxiom: String read FRawAxiom;
+    property axiom: String read FRawAxiom write setzeAxiom;
+    property ersetztesAxiom: String read FAxiom;
 
     function gibParameter : TStringList;
 
@@ -67,6 +67,7 @@ end;
 constructor TGrammatik.Create;
 begin
   FAxiom := '';
+  FRawAxiom := '';
   regeln := TRegelDictionary.Create;
 end;
 
@@ -74,6 +75,7 @@ destructor TGrammatik.Destroy;
 begin
   FreeAndNil(variableZuWert);
   FreeAndNil(FAxiom);
+  FreeAndNil(FRawAxiom);
   FreeAndNil(regeln);
 end;
 
@@ -107,11 +109,6 @@ begin
     end
     else axiomOutput := axiomOutput + letter;
   end;
-end;
-
-procedure TGrammatik.weiseAxiomZu(axiom:String);
-begin
-  FAxiom := axiom;
 end;
 
 procedure TGrammatik.addRegel(links: String; 
@@ -201,12 +198,15 @@ end;
 procedure TGrammatik.aendereParameter(para: TStringList);
 var paraCnt: Cardinal; varName: String;
 begin
+  FRawAxiom := FAxiom;
   if para.Count <> variableZuWert.Count then exit;
   for paraCnt := 1 to para.Count do
   begin
     varName := IntToStr(paraCnt)+'ax';
     while length(varName) < 4 do varName:='0'+varName;
+
     variableZuWert.AddOrSetData(varName,para[paraCnt - 1]);
+    FRawAxiom := StringReplace(FRawAxiom,varName,para[paraCnt - 1],[rfReplaceAll]);
   end;
 end;
 
@@ -228,7 +228,6 @@ var gram: TGrammatik;
 begin
   gram := TGrammatik.Create;
   gram.axiom := FRawAxiom;
-  gram.weiseAxiomZu(FAxiom);
   for regelIdx := 0 to regeln.Count - 1 do
   begin
     for produktionIdx := 0 to (regeln.data[regelIdx]).Count - 1 do

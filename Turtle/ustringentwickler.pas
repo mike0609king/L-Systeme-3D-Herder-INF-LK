@@ -176,7 +176,6 @@ begin
   aktualisiereZuZeichnendenString;
 end;
 
-
 procedure TStringEntwickler.entwickeln(rekursionsTiefe: Cardinal);
   function toSmallLetter(letter: Char) : Char;
   var letterAsc: Cardinal;
@@ -255,7 +254,7 @@ procedure TStringEntwickler.entwickeln(rekursionsTiefe: Cardinal);
   end;
 begin
   FEntwickelterString := '';
-  entw(rekursionsTiefe,FGrammatik.axiom);
+  entw(rekursionsTiefe,FGrammatik.ersetztesAxiom);
   aktualisiereZuZeichnendenString;
 end;
 

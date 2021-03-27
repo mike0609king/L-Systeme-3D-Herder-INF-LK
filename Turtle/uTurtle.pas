@@ -356,7 +356,7 @@ begin
     conf.setValue('Zeichen Parameter/startPunkt/y', FZeichner.startPunkt.y);
     conf.setValue('Zeichen Parameter/startPunkt/z', FZeichner.startPunkt.z);
     
-    conf.setValue('Grammatik/axiom', UnicodeString(FGrammatik.rawAxiom));
+    conf.setValue('Grammatik/axiom', UnicodeString(FGrammatik.axiom));
     for regelIdx := 0 to FGrammatik.regeln.Count - 1 do
     begin
       tmp_path := 'Grammatik/regeln/' + FGrammatik.regeln.keys[regelIdx] + '/Regel ';

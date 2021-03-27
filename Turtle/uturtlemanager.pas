@@ -87,7 +87,6 @@ end;
 function TTurtleManager.entferneTurtleAn(idx: Cardinal) : Boolean;
 begin
   result := ueberpruefeGueltigkeitVomIndex(idx);
-  // result muesste nicht zugewiesen werden, aber falls noch etwas geaendert wird...
   if result then result := entferneTurtle(FTurtleListe[idx]); 
 end;
 

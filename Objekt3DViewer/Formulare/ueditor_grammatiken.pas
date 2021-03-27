@@ -203,10 +203,14 @@ begin
    begin
         //überprüfen ob es in der Turtle parameter gibt
         nr:=hl[0];
-        Parameterisierung_Form.show;
-        Parameterisierung_Form.update_ed(nr);
+        if not Hauptform.o.turtleliste[nr].gibParameter.Count=0 then
+        begin
+          Parameterisierung_Form.show;
+          Parameterisierung_Form.update_ed(nr);
+        end
+        else Showmessage('Die ausgewählte Grammatik unterstützt keine Parameterisierung!');
    end
-   else Showmessage('Wenn die Parameteriersung bearbeitet werden soll darf nur genau eine Turtle ausgewählt sein');
+   else Showmessage('Wenn die Parameterisierung bearbeitet werden soll darf nur genau eine Turtle ausgewählt sein!');
 end;
 
 procedure TForm10.BT_sichtbarkeitClick(Sender: TObject);

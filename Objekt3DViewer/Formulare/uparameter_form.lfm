@@ -1,85 +1,84 @@
 object Parameter_Form: TParameter_Form
   Left = 1053
-  Height = 736
+  Height = 368
   Top = 388
-  Width = 905
+  Width = 452
   Caption = 'Parameter bearbeiten'
-  ClientHeight = 736
-  ClientWidth = 905
-  DesignTimePPI = 192
+  ClientHeight = 368
+  ClientWidth = 452
   OnCreate = FormCreate
-  LCLVersion = '2.0.2.0'
+  LCLVersion = '2.0.0.4'
   object Label1: TLabel
-    Left = 125
-    Height = 32
-    Top = 81
-    Width = 85
+    Left = 62
+    Height = 15
+    Top = 40
+    Width = 42
     Caption = 'Winkel: '
     ParentColor = False
     ParentFont = False
   end
   object Label2: TLabel
-    Left = 125
-    Height = 32
-    Top = 176
-    Width = 167
+    Left = 62
+    Height = 15
+    Top = 88
+    Width = 83
     Caption = 'Rekursionstiefe:'
     ParentColor = False
     ParentFont = False
   end
   object BT_Bestaetigen: TButton
-    Left = 395
-    Height = 70
-    Top = 514
-    Width = 211
+    Left = 198
+    Height = 35
+    Top = 257
+    Width = 106
     Caption = 'Bestätigen'
     OnClick = BT_BestaetigenClick
     ParentFont = False
     TabOrder = 0
   end
   object ED_Winkel: TEdit
-    Left = 372
-    Height = 40
-    Top = 64
-    Width = 284
+    Left = 186
+    Height = 23
+    Top = 32
+    Width = 142
     NumbersOnly = True
     OnChange = ED_WinkelChange
     ParentFont = False
     TabOrder = 1
   end
   object ED_Rek_tiefe: TEdit
-    Left = 372
-    Height = 40
-    Top = 154
-    Width = 284
+    Left = 186
+    Height = 23
+    Top = 77
+    Width = 142
     OnChange = ED_Rek_tiefeChange
     ParentFont = False
     TabOrder = 2
   end
   object CheckListBox1: TCheckListBox
-    Left = 375
-    Height = 225
-    Top = 266
-    Width = 281
+    Left = 188
+    Height = 112
+    Top = 133
+    Width = 140
     ItemHeight = 0
     OnItemClick = CheckListBox1ItemClick
     ParentFont = False
     TabOrder = 3
   end
   object Label3: TLabel
-    Left = 125
-    Height = 32
-    Top = 283
-    Width = 118
+    Left = 62
+    Height = 15
+    Top = 142
+    Width = 59
     Caption = 'Zeichenart:'
     ParentColor = False
     ParentFont = False
   end
   object BT_reset: TButton
-    Left = 80
-    Height = 70
-    Top = 514
-    Width = 211
+    Left = 40
+    Height = 35
+    Top = 257
+    Width = 106
     Caption = 'BT_reset'
     OnClick = BT_resetClick
     ParentFont = False

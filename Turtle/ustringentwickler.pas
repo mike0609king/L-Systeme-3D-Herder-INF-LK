@@ -36,15 +36,15 @@ type TStringEntwickler = class
       von Werten gebracht. Dieser String besitzt wie Werte, mit welchen gezeichnet werden soll. }
     procedure aktualisiereZuZeichnendenString;
   public
-    property axiom: String read gibAxiom;
-    property regeln: TRegelDictionary read FGrammatik.regeln;
-    property entwickelterString: String read FEntwickelterString;
-    property zuZeichnenderString: String read FZuZeichnenderString;
-
     constructor Create(gram: TGrammatik); overload;
     constructor Create(gram: TGrammatik; entwickelterS: String); overload; // review!!
 
     destructor Destroy; override;
+
+    property axiom: String read gibAxiom;
+    property regeln: TRegelDictionary read FGrammatik.regeln;
+    property entwickelterString: String read FEntwickelterString;
+    property zuZeichnenderString: String read FZuZeichnenderString;
 
     { Aufgabe: Hier wird eine Liste von Parametern reingegeben. Damit kann man die Zahlenwerte
       der Parameter aendern. Wenn man im Axiom insgesamt anz_Ax Zahlenwerte aufgelistet hat, so MUSS
@@ -103,9 +103,9 @@ var data: TRegelProduktionsseitenListe;
       if prefix[m] < gesucht then a := m+1
       else b := m-1;
     end;
-    // wir koennen uns sicher sein, dass der Index von b gueltig ist, 
-    // da wir nur Werte suchen werden, die nicht groesser, als der groesste
-    // Wert ist
+    { Wir koennen uns sicher sein, dass der Index von b gueltig ist, 
+      da wir nur Werte suchen werden, die nicht groesser, als der groesste
+      Wert ist. }
     result := b;
   end;
 begin

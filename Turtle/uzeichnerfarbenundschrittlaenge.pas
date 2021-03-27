@@ -9,9 +9,11 @@ uses
 type TZeichnerFarbenUndSchrittlaenge = class(TZeichnerBase)
   private
     FFarben: TFarben;
+
     procedure aktionSchrittMtLinie(list: TStringList);
   public
     constructor Create(zeichenPara: TZeichenParameter); override;
+
     destructor Destroy; override;
 end;
 
@@ -60,7 +62,6 @@ constructor TZeichnerFarbenUndSchrittlaenge.Create(zeichenPara: TZeichenParamete
 begin
   inherited;
   FName := 'ZeichnerFarbenUndSchrittlaenge';
-
   FFarben.initColor;
 
   FVersandTabelle.AddOrSetData('F',aktionSchrittMtLinie);

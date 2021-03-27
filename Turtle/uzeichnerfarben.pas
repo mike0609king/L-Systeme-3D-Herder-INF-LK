@@ -10,9 +10,11 @@ uses
 type TZeichnerFarben = class(TZeichnerBase)
   private
     FFarben: TFarben;
+
     procedure aktionSchrittMtLinie(list: TStringList);
   public
     constructor Create(zeichenPara: TZeichenParameter); override;
+
     destructor Destroy; override;
 end;
 
@@ -35,7 +37,7 @@ begin
 end;
 
 procedure TZeichnerFarben.aktionSchrittMtLinie(list: TStringList);
-var m: Cardinal; colorIdx: Cardinal; farbe: TFarbe;
+var m,colorIdx: Cardinal; farbe: TFarbe;
 begin
     colorIdx := StrToInt(list[0]); m := 50; 
     farbe := FFarben.gibFarbe(colorIdx);
@@ -46,7 +48,6 @@ constructor TZeichnerFarben.Create(zeichenPara: TZeichenParameter);
 begin
   inherited;
   FName := 'ZeichnerFarben';
-
   FFarben.initColor;
 
   FVersandTabelle.AddOrSetData('F',aktionSchrittMtLinie);

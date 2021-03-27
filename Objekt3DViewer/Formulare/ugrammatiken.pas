@@ -53,7 +53,8 @@ type
     function gib_markierte_nr():CARDINAL;
     function stringanalyse(s:string):Boolean;
     function axiomanalyse(s:string):Boolean;
-    function ExtractNumbers(s:string):String;
+    function ExtractFromKlammer(s:string):String;
+    function ExtractNumbers(s : String):String;
   public
 
   end;
@@ -80,15 +81,60 @@ begin
    end;
 end;
 
+function TuGrammatiken.ExtractFromKlammer(s: string): String;
+var i,n : Integer; Ka,Kz:Cardinal; stringrest,gesamtklammer,aktuell:string;
+begin
+     Result := '';
+     stringrest:=s;
+     gesamtklammer:='';
+     for i:=1 to length(stringrest) do
+     begin
+          Ka:=pos('(',stringrest);
+          Kz:=pos(')',stringrest);
+          if ((Ka<>0) and (Kz<>0)) then
+          begin
+               for n:=Ka+1 to Kz-1 do
+               begin
+                    aktuell:=stringrest[n];
+                    gesamtklammer:=aktuell + gesamtklammer;
+               end;
+          end;
+          stringrest:=copy(stringrest,kz+1,length(stringrest));
+     end;
+     for i:=1 to length(gesamtklammer) do
+     begin
+          if gesamtklammer[i]=';' then gesamtklammer[i]:='0';
+     end;
+     result:=gesamtklammer;
+end;
+
+function TuGrammatiken.ExtractNumbers(s : String) : String;
+var i : Integer;
+begin
+ Result := '';
+ for i := 1 to length(s) do
+  if s[i] in ['0'..'9'] then Result := Result + s[i]
+end;
+
 function TuGrammatiken.stringanalyse(s:string):BOOLEAN;
 //für regeln nicht axiome
-VAR str,rest_string:string; i,l,h,k,j,g:CARDINAL;klammer_auf,bool:Boolean;
+VAR str,rest_string,qs:string; i,n,l,h,k,j,g:CARDINAL;klammer_auf,bool:Boolean;
 MyStack: TMyStack;
 begin
    str:=Copy(s,1,length(s));
    rest_string:=Copy(s,1,length(s));
    l:=length(str);
    MyStack:=TMyStack.create(l);
+
+   if pos('(',rest_string)<>0 then
+   begin
+        qs:=ExtractNumbers(rest_string);
+        for n := 1 to length(qs) do if qs[n] in ['0'..'9'] then
+        begin
+             ShowMessage('Parameter müssen Buchstaben sein!');
+             exit(False)
+        end;
+   end;
    h:=ord(str[1]);
    if not ((h=ord('f')) or ((h>=ord('A')) and (h<=ord('Z')))) then
    begin
@@ -119,6 +165,11 @@ begin
         end;
         if str[i]=']' then
         begin
+             if MyStack.IsEmpty() then
+             begin
+                  SHOWMessage('Eine Klammer muss geschlossen werden bevor eine neue geöffent werden kann!');
+                  exit(False);
+             end;
              MyStack.Pop();
         end;
    end;
@@ -183,16 +234,9 @@ begin
    end;
 end;
 
-function TuGrammatiken.ExtractNumbers(s: string): String;
-var i : Integer;
-begin
- Result := '';
- for i := 1 to length(s) do
- if s[i] in ['0'..'9'] then Result := Result + ';' + s[i]
-end;
 
 function TuGrammatiken.axiomanalyse(s:string):Boolean;  //returns false if axiom is wrong
-VAR axiom,rest_axiom,qs:string; i,l,h,k,j,g:CARDINAL; klammer_auf,bool:Boolean; iValue, iCode: Integer;
+VAR axiom,rest_axiom,qs:string; i,l,h,k,j,g:CARDINAL; klammer_auf,bool:Boolean;
 begin
    axiom:=Copy(s,1,length(s));
    l:=length(axiom);
@@ -232,14 +276,13 @@ begin
                        h:=ord(axiom[k]);
                        if bool then
                        begin
-                            qs:=ExtractNumbers(rest_axiom);
-                            val(qs, iValue, iCode);
-                            if not iCode = 0 then
+                            qs:=ExtractFromKlammer(rest_axiom);
+                            for i := 1 to length(qs) do if qs[i] in ['0'..'9'] then bool:=False
+                            else
                             begin
                                  ShowMessage('Parameter müssen Zahlen sein!');
                                  exit(False);
                             end;
-                            bool:=False;
                        end
                        else
                        begin
@@ -249,14 +292,13 @@ begin
                             end
                             else
                             begin
-                                 qs:=ExtractNumbers(axiom);
-                                 val(qs, iValue, iCode);
-                                 if not iCode = 0 then
+                                 qs:=ExtractFromKlammer(rest_axiom);
+                                 for i := 1 to length(qs) do if qs[i] in ['0'..'9'] then bool:=false
+                                 else
                                  begin
                                       ShowMessage('Parameter müssen mit einem ";" getrennt werden!');
                                       exit(False)
-                                 end
-                                 else bool:=false;
+                                 end;
                             end;
                        end;
                   end;
@@ -274,10 +316,11 @@ begin
 end;
 
 procedure TuGrammatiken.Button1Click(Sender: TObject); //Turtle erstellen
-var i,n,nr,anzahl:CARDINAL;
-    gram:TGrammatik;R,L,NameGrammatik:String;
-    W:REAL;
+var i,n,m,nr,anzahl:CARDINAL;
+    gram:TGrammatik;R,L,Lvor,NameGrammatik:String;
+    W,Wvor,Gesamt:REAL;
     g:String;
+    checked:bool;
     Turtle:TTurtle;zeichenPara: TZeichenParameter;
     p,s,q: Integer; zeichnerInit:TzeichnerInit;
 Begin
@@ -310,6 +353,50 @@ Begin
             end
             else
             begin
+                 m:=1;
+                 Gesamt:=0;
+                 p:=pos('>',Memo1.Lines[m]);
+                 L:=copy(Memo1.Lines[m],1,p-2);
+                 p:=pos('>',Memo1.Lines[m+1]);
+                 Lvor:=copy(Memo1.Lines[m+1],1,p-2);
+                 if (L=Lvor) then
+                 begin
+                      s:=pos(',',Memo1.Lines[m]);
+                      W:=strtofloat(copy(Memo1.Lines[m],s+1,s+10));
+                      s:=pos(',',Memo1.Lines[m+1]);
+                      Wvor:=strtofloat(copy(Memo1.Lines[m+1],s+1,s+10));
+                      Gesamt:=Gesamt+W+Wvor;
+                 for m:=2 to Memo1.Lines.Count-1 do
+                 begin
+                      p:=pos('>',Memo1.Lines[m]);
+                      L:=copy(Memo1.Lines[m],1,p-2);
+                      p:=pos('>',Memo1.Lines[m+1]);
+                      Lvor:=copy(Memo1.Lines[m+1],1,p-2);
+                      if (L=Lvor) then
+                      begin
+                           s:=pos(',',Memo1.Lines[m+1]);
+                           Wvor:=strtofloat(copy(Memo1.Lines[m+1],s+1,s+10));
+                           Gesamt:=Gesamt+Wvor;
+                      end;
+                      begin
+                           if L<>Lvor then
+                           begin
+                                W:=strtofloat(copy(Memo1.Lines[m],s+1,s+10));
+                                if W>=100 then
+                                begin
+                                     SHOWMESSAGE('Deine Wahrscheinlichkeit überschreitet 100%!');
+                                     exit;
+                                end;
+                           end;
+                      end;
+                 end;
+                 if (Gesamt > 100) or (Gesamt < 100) then
+                    begin
+                         SHOWMESSAGE('Deine Wahrscheinlichkeit ist nicht 100%!');
+                         exit;
+                    end;
+
+                 s:=pos(',',Memo1.Lines[n]);
                  p:=pos('>',Memo1.Lines[n]);
                  L:=copy(Memo1.Lines[n],1,p-2);//linke Seite des '->'
                  R:=copy(Memo1.Lines[n],p+1,s-1);//rechte Seite des '->'
@@ -321,7 +408,17 @@ Begin
                       INC(n);
                  end;
             end;
+            end;
         end;
+  end;
+  For i:=0 to CheckListBox1.Count -1 do
+  begin
+       if CheckListBox1.Checked[i]=True then checked:=true;
+  end;
+  if not checked=true then
+  begin
+       SHOWMESSAGE('Du musst eine Zeichenart makieren!');
+       exit;
   end;
   If not (Edit2.text = '') then
   Begin

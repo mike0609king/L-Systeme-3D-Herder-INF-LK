@@ -63,19 +63,23 @@ procedure TParameter_Form.CheckListBox1ItemClick(Sender: TObject; Index: integer
 var
 I,h : integer;
 begin
-    if (Sender as TCheckListBox).Checked[Index] then begin
+    if (Sender as TCheckListBox).Checked[Index] then
+    begin
         turtlemanager:=Hauptform.o.copy();
         for I := 0 to CheckListBox1.Count -1 do
             CheckListBox1.Checked[I] := False;
         CheckListBox1.Checked[Index] := True;
-        //zeichenart der markierten turtels ändern
-        for h:=0 to EditorForm.ListView1.Items.Count-1 do
+        if not (EditorForm.ListView1.Items.Count=0) then
         begin
-             if EditorForm.ListView1.Items[h].Checked then turtlemanager.turtleListe[h].setzeZeichnerName(baumListe[Index])
+          //zeichenart der markierten turtels ändern
+          for h:=0 to EditorForm.ListView1.Items.Count-1 do
+          begin
+               if EditorForm.ListView1.Items[h].Checked then turtlemanager.turtleListe[h].setzeZeichnerName(baumListe[Index])
+          end;
+          Hauptform.push_neue_instanz(turtlemanager);
+          EditorForm.BT_updateClick(1);
+          Hauptform.zeichnen();
         end;
-        Hauptform.push_neue_instanz(turtlemanager);
-        EditorForm.BT_updateClick(1);
-        Hauptform.zeichnen();
     end;
 end;
 //exceptions handeling

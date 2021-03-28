@@ -224,7 +224,7 @@ begin
    begin
         //überprüfen ob es in der Turtle parameter gibt
         nr:=hl[0];
-        if not Hauptform.o.turtleliste[nr].gibParameter.Count=0 then
+        if not (Hauptform.o.turtleliste[nr].gibParameter.Count=0) then
         begin
           Parameterisierung_Form.show;
           Parameterisierung_Form.update_ed(nr);

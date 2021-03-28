@@ -1,73 +1,17 @@
 # L-Systeme in 3D
 
-## Zum belesen
-Bevor man L-Systeme implementiert sollte man sich zuerst einmal belesen. Hierzu ist dieses 
-[Dokument](https://www.yumpu.com/de/document/read/18849596/l-systeme-und-andere-kunstliche-pflanzen) sehr zu empfehlen.
+## Installation
+### OS-Version
+Das Programm wird auf einem 64-bit System funktionieren. Bei einem 32-bit
+System könnte es schwieriger werden, da in diesem Programm ein Int64 benutzt wird.
+### Compilieren
+Der Code für das Projekt ist im src Ordener. In [src/Objekt3DViewer](src/Objekt3DViewer) ist die Datei, die lpr-Datei, 
+welche man mit Lazarus öffnen kann. Dann muss nur nochmal kompiliert werden.
 
-## Frontend
-Das Frontend ist nach dem Ausführen und ausprobieren des Programms relativ selbst erklärend.
+## Information zur Nutzung
+In dem [doc](doc/)-Ordner befinden sich einige zusätzlichen Informationen zum Projekt.
 
-## Backend
-Hier werden die wesentlichen Strukturen des Backend beschrieben.
-
-### Grammatik-Struktur (TGrammatik)
-Diese Klasse speichert unsere Definition der Grammatik, welche folgendermassen aufgebaut ist:
-
-    record: Grammatik
-      axiom: String;
-      regeln: TFPGMap<Char,String>;
-
-Noch zu ergänzen:
-  - wenn man Zufälligkeiten reinbringen will, muss man den Datentyp des Wertes umdefinieren
-    - eine Liste aus Wahrscheinlichkeit und Produktion wäre denkbar
-
-### Turtle-Struktur (TTurtle)
-Die Turtle-Klasse ist dafür verantwortlich das L-System überhaupt zu Zeichnen. Diese wird mit einer Grammatik 
-und mehreren "Zeichen Parametern" initialisiert. Die Grammatik ist während der Lebenszeit der Turtle nicht 
-veränderbar, die "Zeichen Parameter" jedoch schon. Grober Aufbau der Zeichen Parameter:
-
-    record: ZeichenParameter
-      winkel: Real;
-      Rekursions-Tiefe: (unsigned) Cardinal;
-      startPunkt: TPunk3D;
-      Zeichenart: TZeichenart; // wird erst spaeter eingefuegt
-
-Die Turtle-Klasse sieht für grob folgendermassen aus:
-
-    class: Turtle
-      Feld: Grammatik (read only);
-      Feld: ZeichenParameter (read und write (mit getter Funktionen));
-      Feld: StringEntwickler (zustaendig fuer das erstellen der strings);
-      constructor: Create;
-        Parameter 1: Grammatik;
-        Parameter 2: Zeichenparameter;
-      procedure: zeichnen;
-
-Noch zu ergänzen:
-  - verschiedene "Zeichenstile" möglich machen (verschiedene Farben...)
-
-### Entwickeln der Strings (TStringEntwickler)
-Das Entwickeln der Strings wird von dem "StringEndwickler" gehandhabt. Diese wird mit einer Grammatik initialisiert, 
-welche während der Laufzeit der initialisierten Instanz nicht geändert werden kann. Beim Entwickeln des Strings kann man 
-als Parameter die Rekursionstiefe angeben:
-
-    class: StringEntwickler
-      Feld: Grammatik (read only);
-      Feld: String (Entwickelter String);
-      constructor: Create;
-        Parameter 1: Grammatik;
-      procedure: entwickeln;
-        Parameter 1: Cardinal (rekursionsTiefe);
-
-Noch zu ergänzen:
-  - Zufälligkeit
-    - Überlegung: Bewältigen mit dem bilden der Präfixsummen von Wahrscheinlichkeitswerten. Diese werden dann mit binärer Suche Abgefragt.
-  - (vllt) Optimierungen
-    - der Algorithmus kann mit dynamischer Programmierung optimiert werden
-    - Überlegung: Unter Verwendung von Bit-Magie und dynamischer Programmierung könnte eventuell sogar eine logarithmische Laufzeit erzielt werden. (Ist eine Ueberlegung wert)
-    
-# Zu Ergänzen
-Folgende features sollen noch hinzugefuegt werden
-  - Baum als Datei einlesen und speichern koennen
-    - andere Einstellungen wie die Zeichenart, Winkel, rekursions Tiefe sollen auch gespeichert werden
-  - Performance verbessern (-> GPU verwenden) ??
+## Zur Vollständigkeit des Projekts
+In der Form wurden viel Exception-Handling implementiert, jedoch könnten einige Sachen nicht
+berücksichtigt worden sein. Demnach ist es möglich, dass bestimmte Eingaben trotzdem zu einem 
+Programmabsturz führen. Wenn dies der Fall ist, einfach kurz bei "Issues" melden.

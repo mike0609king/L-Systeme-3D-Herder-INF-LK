@@ -581,7 +581,7 @@ begin
   //plaziereTurtle('ZeichnerGruenesBlatt');
   }
   
-  {
+
   // Parametrisierung von Farben - Beispiel (1)
   zeichenPara.winkel := 47.5;
   zeichenPara.rekursionsTiefe := 3;
@@ -589,7 +589,7 @@ begin
   gram.axiom := 'F(1)&[+F(2)&&F(3)F(4)]&&F(5)[-^^/^-F(0)F(7)]F(8)';
   gram.addRegel('F(c)','F(c)&[+F(c)&&F(c)F(c)]&&F(c)[-^^/^-F(c)F(c)]F(c)');
   plaziereTurtle('ZeichnerFarben');
-  }
+
 
   
   // Parametrisierung von Farben - Beispiel (2)

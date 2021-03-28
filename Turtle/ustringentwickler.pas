@@ -225,7 +225,7 @@ procedure TStringEntwickler.entwickeln(rekursionsTiefe: Cardinal);
         for j := 1 to paraList.Count do
         begin
           letters := IntToStr(j) + smLetter;
-          while length(letters) < 4 do letters:='0'+letters;
+          while length(letters) < TGrammatik.tokenLaenge do letters:='0'+letters;
           links := links + letters;
           if (j = paraList.Count) then links := links + ')'
           else links := links + ';';
@@ -240,7 +240,7 @@ procedure TStringEntwickler.entwickeln(rekursionsTiefe: Cardinal);
         for j := 0 to paraList.Count - 1 do
         begin
           letters := IntToStr(j+1) + smLetter;
-          while length(letters)<4 do letters:='0'+letters;
+          while length(letters) < TGrammatik.tokenLaenge do letters:='0'+letters;
           tmp_string:=paraList[j];
           data := StringReplace(data,letters,paraList[j],[rfReplaceAll]);
         end;

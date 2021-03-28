@@ -123,7 +123,7 @@ begin
   regelnLinkeSeite := TStringList.Create;
   try
     conf.filename:= datei;
-    //FName := AnsiString(conf.getValue('name', ''));
+    FName := AnsiString(conf.getValue('name', ''));
     FVisible := conf.getValue('visible', true);
     FMaximaleStringLaenge := conf.getValue('Maximale Stringlaenge',0);
 

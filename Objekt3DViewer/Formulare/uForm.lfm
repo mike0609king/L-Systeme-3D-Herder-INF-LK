@@ -4,8 +4,8 @@ object Form1: TForm1
   Top = 50
   Width = 1920
   Caption = 'L-Systeme in 3D'
-  ClientHeight = 0
-  ClientWidth = 0
+  ClientHeight = 997
+  ClientWidth = 1920
   Color = clBtnFace
   Font.Color = clWindowText
   Font.Height = -22

@@ -320,7 +320,7 @@ end;
 procedure TuGrammatiken.Button1Click(Sender: TObject); //Turtle erstellen
 var i,n,m,nr,anzahl:CARDINAL;
     gram:TGrammatik;R,L,Lvor,NameGrammatik:String;
-    W,Wvor,Gesamt:REAL;
+    W,Wvor,Gesamt,FirstGesamt:REAL;
     g:String;
     checked:bool;
     getestet:bool;
@@ -334,6 +334,7 @@ Begin
   gram:=TGrammatik.Create;
   gram.axiom:= Memo1.Lines[0];
   getestet:=false;
+  FirstGesamt:=0;
   While n<= Memo1.Lines.Count-1 do
   Begin
        if not axiomanalyse(Memo1.Lines[0])then exit;
@@ -381,6 +382,17 @@ Begin
                                 s:=pos(',',Memo1.Lines[m+1]);
                                 Wvor:=strtofloat(copy(Memo1.Lines[m+1],s+1,s+10));
                                 Gesamt:=Gesamt+Wvor;
+                           end
+                           else
+                           if ((Lvor='"') or (Lvor=' "')) then
+                           begin
+                                s:=pos(',',Memo1.Lines[m+1]);
+                                W:=strtofloat(copy(Memo1.Lines[m+1],s+1,s+10));
+                                if ((W>100) or (W<100)) then
+                                begin
+                                     SHOWMESSAGE('Deine Wahrscheinlichkeit ist nicht 100%!');
+                                     exit;
+                                end;
                            end;
                       end;
                  end
@@ -388,31 +400,49 @@ Begin
                  begin
                       if L<>Lvor then
                       begin
-                           s:=pos(',',Memo1.Lines[m+1]);
+                           Gesamt:=0;
+                           s:=pos(',',Memo1.Lines[m]);
                            W:=strtofloat(copy(Memo1.Lines[m],s+1,s+10));
                            if ((W>100) or (W<100)) then
                            begin
                                 SHOWMESSAGE('Deine Wahrscheinlichkeit ist nicht 100%!');
                                 exit;
                            end;
-                           Gesamt:=100;
-                           for m:=2 to Memo1.Lines.Count-1 do
+                           FirstGesamt:=100;
+                           m:=n+1;
+                           s:=pos(',',Memo1.Lines[m]);
+                           W:=strtofloat(copy(Memo1.Lines[m],s+1,s+10));
+                           s:=pos(',',Memo1.Lines[m+1]);
+                           Wvor:=strtofloat(copy(Memo1.Lines[m+1],s+1,s+10));
+                           If (W=Wvor) then Gesamt:=Gesamt+W+Wvor;
+                           for m:=m+1 to Memo1.Lines.Count-1 do
                            begin
-                                Gesamt:=0;
                                 p:=pos('>',Memo1.Lines[m]);
                                 L:=copy(Memo1.Lines[m],1,p-2);
                                 p:=pos('>',Memo1.Lines[m+1]);
                                 Lvor:=copy(Memo1.Lines[m+1],1,p-2);
-                           end;
-                           if (L=Lvor) then
-                           begin
-                                s:=pos(',',Memo1.Lines[m+1]);
-                                Wvor:=strtofloat(copy(Memo1.Lines[m+1],s+1,s+10));
-                                Gesamt:=Gesamt+Wvor;
+                                if (L=Lvor) then
+                                begin
+                                     s:=pos(',',Memo1.Lines[m+1]);
+                                     Wvor:=strtofloat(copy(Memo1.Lines[m+1],s+1,s+10));
+                                     Gesamt:=Gesamt+Wvor;
+                                end
+                                else
+                                if ((Lvor='"') or (Lvor=' "')) then
+                                begin
+                                     s:=pos(',',Memo1.Lines[m+1]);
+                                     W:=strtofloat(copy(Memo1.Lines[m+1],s+1,s+10));
+                                     if ((W>100) or (W<100)) then
+                                     begin
+                                          SHOWMESSAGE('Deine Wahrscheinlichkeit ist nicht 100%!');
+                                          exit;
+                                     end;
+                                end;
                            end;
                       end;
                  end;
-                 if ((Gesamt<100) or (Gesamt>100)) then
+                 FirstGesamt:=Gesamt;
+                 if (Gesamt<>100) then
                  begin
                       SHOWMESSAGE('Deine Wahrscheinlichkeit ist nicht 100%!');
                       exit;

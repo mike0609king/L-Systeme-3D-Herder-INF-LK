@@ -317,7 +317,7 @@ begin
    end;
 end;
 
-procedure TuGrammatiken.Button1Click(Sender: TObject); //Turtle erstellen
+procedure TuGrammatiken.Button1Click(Sender: TObject); //Turtle Hinzufügen
 var i,n,m,nr,anzahl:CARDINAL;
     gram:TGrammatik;R,L,Lvor,NameGrammatik:String;
     W,Wvor,Gesamt,FirstGesamt:REAL;
@@ -509,7 +509,7 @@ Begin
                       begin
                            Hauptform.update_startkoords();
                            zeichenPara.setzeStartPunkt(Hauptform.akt_x,Hauptform.akt_y,Hauptform.akt_z);
-                           Turtle:=TTurtle.Create(gram,zeichnerInit.initialisiere(zeichnerInit.gibZeichnerListe[nr],zeichenPara));
+                           Turtle:=TTurtle.Create(gram,zeichnerInit.initialisiere(zeichnerInit.gibZeichnerListe[nr],zeichenPara),Hauptform.maximaleStringLaenge);
                            Turtle.name:=NameGrammatik;
                            turtlemanager.addTurtle(Turtle);
                       end;

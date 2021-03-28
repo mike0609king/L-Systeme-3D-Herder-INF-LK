@@ -613,41 +613,9 @@ begin
          conf.EnumSubKeys(UnicodeString('Grammatik/regeln/'),regelnLinkeSeite);
          for regelnLinkeSeiteIdx := 0 to regelnLinkeSeite.Count - 1 do
          begin
+            regelnRechteSeite:=TStringList.create;
             tmp_pfad := 'Grammatik/regeln/' + regelnLinkeSeite[regelnLinkeSeiteIdx];
             conf.EnumSubKeys(UnicodeString(tmp_pfad), regelnRechteSeite);
-
-            regelnRechteSeiteIdx := 0;
-            produktion := AnsiString(conf.getValue(
-            UnicodeString(tmp_pfad + '/' + regelnRechteSeite[regelnRechteSeiteIdx] + '/produktion'),''));
-            klammerauf:=pos('(',produktion);
-
-            if klammerauf<>0 then
-            begin
-                 for regelnRechteSeiteIdx := 1 to regelnRechteSeite.Count-1 do
-                 begin
-                      produktion := AnsiString(conf.getValue(
-                      UnicodeString(tmp_pfad + '/' + regelnRechteSeite[regelnRechteSeiteIdx] + '/produktion'),''));
-                      q:=pos(',',produktion);
-                      If q=0 then
-                      Begin
-                           zufaelligkeit := conf.getValue(
-                           UnicodeString(tmp_pfad + '/' + regelnRechteSeite[regelnRechteSeiteIdx] + '/zufaelligkeit'),0.0);
-                           Memo1.Lines[1]:=regelnLinkeSeite[0]+'->'+produktion+','+FloattoStr(zufaelligkeit);
-                           Memo1.Lines[i+1]:=regelnLinkeSeite[regelnLinkeSeiteIdx]+'->'+produktion+','+FloattoStr(zufaelligkeit);
-                           INC(i);
-                      end
-                      else
-                      Begin
-                           produktion:=copy(produktion,1,q-1);
-                           zufaelligkeit := conf.getValue(
-                           UnicodeString(tmp_pfad + '/' + regelnRechteSeite[regelnRechteSeiteIdx] + '/zufaelligkeit'),0.0);
-                           Memo1.Lines[1]:=regelnRechteSeite[0]+'->'+produktion+','+FloattoStr(zufaelligkeit);
-                           Memo1.Lines[i+1]:=regelnRechteSeite[regelnRechteSeiteIdx]+'->'+produktion+','+FloattoStr(zufaelligkeit);
-                           INC(i);
-                      end;
-                end;
-            end
-            else
             for regelnRechteSeiteIdx := 0 to regelnRechteSeite.Count-1 do
                  begin
                       produktion := AnsiString(conf.getValue(
@@ -669,6 +637,7 @@ begin
                            INC(i);
                       end;
                 end;
+                freeAndNil(regelnRechteSeite);
          end;
     end;
     conf.Free;

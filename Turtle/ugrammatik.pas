@@ -199,6 +199,23 @@ function TGrammatik.RegelTauschRechts(links: String; rechts: String) : String;
 var parameterCount,letterAsc:INTEGER;
     pter:CARDINAL;
     toReplace,letter,smlLetter:string;
+    { Grund: Wenn man genau den kleinen Buchstaben als Variable hat, so
+      koennten bei der Ersetzung fehler auftreten, da der Platzhalter
+      ebenfalls diesen Buchstaben enthalten. 
+      Aufgabe: Ersetzung des kleinen Buchstaben mit aktuellem Platzhalter, 
+      ohne "falsch" zu ersetzen. }
+    function ersetzeSmlLetter : String;
+    var i: Cardinal; tmp_string: String; letzterBuchstabe: Char;
+    begin
+      result := ''; letzterBuchstabe := ')';
+      for i := 1 to length(rechts) do
+      begin
+        if ((letzterBuchstabe = '(') or (letzterBuchstabe = ';'))
+        and (rechts[i] = smlLetter) then result += letter
+        else result += rechts[i];
+        letzterBuchstabe := rechts[i];
+      end;
+    end;
 begin
   pter:=3;
   letterAsc:=Ord(links[1]);
@@ -208,7 +225,8 @@ begin
   begin
     letter := IntToStr(parameterCount) + smlLetter;
     while length(letter) < tokenLaenge do letter:='0'+letter;
-    rechts := StringReplace(rechts,links[pter],letter,[rfReplaceAll]);
+    if links[pter] = smlLetter then rechts := ersetzeSmlLetter
+    else rechts := StringReplace(rechts,links[pter],letter,[rfReplaceAll]);
     if links[pter+1]=';' then pter:=pter+2
     else break;
   end;

@@ -337,12 +337,15 @@ procedure TForm1.update_combobox();
 VAR i,anzahl:CARDINAL; name:string;
 BEGIN
   ComboBox2.Items.Clear;
-  anzahl:=(HauptForm.o.turtleListe.Count)-1;
-  for i:=0 to anzahl do
-      begin
-         name:='Turtle'+inttostr(i);
-         ComboBox2.Items.Add(name);
-      end;
+  anzahl:=HauptForm.o.turtleListe.Count;
+  if not (anzahl=0) then
+  begin
+    for i:=0 to anzahl-1 do
+        begin
+           name:='Turtle'+inttostr(i);
+           ComboBox2.Items.Add(name);
+        end;
+    end;
 end;
 
 procedure TForm1.ComboBox2Change(Sender: TObject);
@@ -501,7 +504,6 @@ VAR turtle: TTurtle;
       zeichnerInit.initialisiere(zeichenArt,zeichenPara)
     );
     turtle.maximaleStringLaenge := 500000;
-    //turtle.speichern('test.json');
     o.addTurtle(turtle);
     inc(numTurt);
   end;
@@ -519,8 +521,8 @@ begin
   zeichenPara.rekursionsTiefe := 4;
   gram.axiom := 'F';
   gram.addRegel('F','F&[+F&&FF]&&F[-^^/^-FF]F');
-  plaziereTurtle('ZeichnerBase','Standard Turtle');
-  }
+  plaziereTurtle('ZeichnerBase');
+   }
 
   {
   gram := TGrammatik.Create;
@@ -580,7 +582,7 @@ begin
   plaziereTurtle('ZeichnerGruenesBlatt', 'Baum mit grünen Blättern');
   //plaziereTurtle('ZeichnerGruenesBlatt');
   }
-  
+  {
 
   // Parametrisierung von Farben - Beispiel (1)
   zeichenPara.winkel := 47.5;
@@ -589,24 +591,24 @@ begin
   gram.axiom := 'F(1)&[+F(2)&&F(3)F(4)]&&F(5)[-^^/^-F(0)F(7)]F(8)';
   gram.addRegel('F(c)','F(c)&[+F(c)&&F(c)F(c)]&&F(c)[-^^/^-F(c)F(c)]F(c)');
   plaziereTurtle('ZeichnerFarben');
-
+   }
 
   
   // Parametrisierung von Farben - Beispiel (2)
-
+  {
   zeichenPara.winkel := 47.5;
   zeichenPara.rekursionsTiefe := 3;
   gram := TGrammatik.Create;
   gram.axiom := 'F(1;2)&[+F(2;13)&&F(3;10)F(4;7)]&&F(5;9)[-^^/^-F(0;3)F(7;13)]F(8;1)';
   gram.addRegel('F(c)','F(c)&[+F(c)&&F(c)F(c)]&&F(c)[-^^/^-F(c)F(c)]F(c)');
-  gram.addRegel('F(c;d)','F(d;c)&[+F(d;c)&&F(c;c)F(d;c)]&&F(c;d)[-^^/^-F(c;d)F(d;c)]F(c;d)',40);
-  gram.addRegel('F(c;d)','F(c;d)&[+F(c;d)&&F(c;d)F(d;c)]&&F(c;d)[-^^/^-F(d;c)F(c;d)]F(d;c)',40);
-  gram.addRegel('F(c;d)','F(c;d)&[+F(c;d)&&F(c;d)F(c)]&&F(c;d)[-^^/^-F(d;c)F(d)]F(d;c)',20);
+  gram.addRegel('F(c;f)','F(f;c)&[+F(f;c)&&F(c;c)F(f;c)]&&F(c;f)[-^^/^-F(c;f)F(f;c)]F(c;f)',40);
+  gram.addRegel('F(c;f)','F(c;f)&[+F(c;f)&&F(c;f)F(f;c)]&&F(c;f)[-^^/^-F(f;c)F(c;f)]F(f;c)',40);
+  gram.addRegel('F(c;f)','F(c;f)&[+F(c;f)&&F(c;f)F(c)]&&F(c;f)[-^^/^-F(f;c)F(f)]F(f;c)',20);
   plaziereTurtle('ZeichnerFarben');
   //plaziereTurtle('ZeichnerFarben');
   //plaziereTurtle('ZeichnerFarben');
   //plaziereTurtle('ZeichnerFarben');
-
+   }
 
   {
   // Schrittlaenge und Farben

@@ -1,15 +1,14 @@
 object TOptionen: TTOptionen
-  Left = 1980
+  Left = 855
   Height = 598
-  Top = 68
+  Top = 193
   Width = 832
   Caption = 'Optionen'
   ClientHeight = 598
   ClientWidth = 832
-  DesignTimePPI = 192
   OnShow = FormShow
   Position = poScreenCenter
-  LCLVersion = '2.0.2.0'
+  LCLVersion = '2.0.0.4'
   Scaled = False
   object BT_fertig: TButton
     Left = 528
@@ -23,7 +22,7 @@ object TOptionen: TTOptionen
   end
   object ED_stringlaenge: TEdit
     Left = 432
-    Height = 40
+    Height = 23
     Top = 162
     Width = 160
     ParentFont = False
@@ -31,9 +30,9 @@ object TOptionen: TTOptionen
   end
   object Label1: TLabel
     Left = 48
-    Height = 32
+    Height = 15
     Top = 178
-    Width = 348
+    Width = 172
     Caption = 'Maximale Stringlänge pro Turtle:'
     ParentColor = False
     ParentFont = False

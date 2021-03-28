@@ -337,12 +337,15 @@ procedure TForm1.update_combobox();
 VAR i,anzahl:CARDINAL; name:string;
 BEGIN
   ComboBox2.Items.Clear;
-  anzahl:=(HauptForm.o.turtleListe.Count)-1;
-  for i:=0 to anzahl do
-      begin
-         name:='Turtle'+inttostr(i);
-         ComboBox2.Items.Add(name);
-      end;
+  anzahl:=(HauptForm.o.turtleListe.Count);
+  if not (anzahl=0) then
+  begin
+    for i:=0 to anzahl-1 do
+        begin
+           name:='Turtle'+inttostr(i);
+           ComboBox2.Items.Add(name);
+        end;
+  end;
 end;
 
 procedure TForm1.ComboBox2Change(Sender: TObject);

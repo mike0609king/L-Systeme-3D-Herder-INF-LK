@@ -504,7 +504,6 @@ VAR turtle: TTurtle;
       zeichnerInit.initialisiere(zeichenArt,zeichenPara)
     );
     turtle.maximaleStringLaenge := 500000;
-    //turtle.speichern('test.json');
     o.addTurtle(turtle);
     inc(numTurt);
   end;
@@ -602,9 +601,9 @@ begin
   gram := TGrammatik.Create;
   gram.axiom := 'F(1;2)&[+F(2;13)&&F(3;10)F(4;7)]&&F(5;9)[-^^/^-F(0;3)F(7;13)]F(8;1)';
   gram.addRegel('F(c)','F(c)&[+F(c)&&F(c)F(c)]&&F(c)[-^^/^-F(c)F(c)]F(c)');
-  gram.addRegel('F(c;d)','F(d;c)&[+F(d;c)&&F(c;c)F(d;c)]&&F(c;d)[-^^/^-F(c;d)F(d;c)]F(c;d)',40);
-  gram.addRegel('F(c;d)','F(c;d)&[+F(c;d)&&F(c;d)F(d;c)]&&F(c;d)[-^^/^-F(d;c)F(c;d)]F(d;c)',40);
-  gram.addRegel('F(c;d)','F(c;d)&[+F(c;d)&&F(c;d)F(c)]&&F(c;d)[-^^/^-F(d;c)F(d)]F(d;c)',20);
+  gram.addRegel('F(c;f)','F(f;c)&[+F(f;c)&&F(c;c)F(f;c)]&&F(c;f)[-^^/^-F(c;f)F(f;c)]F(c;f)',40);
+  gram.addRegel('F(c;f)','F(c;f)&[+F(c;f)&&F(c;f)F(f;c)]&&F(c;f)[-^^/^-F(f;c)F(c;f)]F(f;c)',40);
+  gram.addRegel('F(c;f)','F(c;f)&[+F(c;f)&&F(c;f)F(c)]&&F(c;f)[-^^/^-F(f;c)F(f)]F(f;c)',20);
   plaziereTurtle('ZeichnerFarben');
   //plaziereTurtle('ZeichnerFarben');
   //plaziereTurtle('ZeichnerFarben');

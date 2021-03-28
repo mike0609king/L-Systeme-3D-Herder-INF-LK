@@ -82,12 +82,12 @@ end;
 procedure TForm10.BT_updateClick(mode:CARDINAL=0);
 VAR summe:INT64;i,anzahl:CARDINAL;str,name,sichtbarkeit,Winkel,Rek_tiefe,Zeichenart:string; turtle:TTurtle; Item1: TListItem; liste:TIntegerList;str_max:string;
 begin
+  if mode=1 then liste:=gib_markierte_nr();
   ListView1.clear;
   ED_abstand.Text:=floattostr(Hauptform.abstand_x);
   anzahl:=(HauptForm.o.turtleListe.Count);
   if not (anzahl=0) then
   begin
-    if mode=1 then liste:=gib_markierte_nr();
     //abstand
     summe:=0;
     for i:=0 to anzahl-1 do

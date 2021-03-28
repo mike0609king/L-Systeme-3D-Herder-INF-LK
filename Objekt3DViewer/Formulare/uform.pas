@@ -337,15 +337,12 @@ procedure TForm1.update_combobox();
 VAR i,anzahl:CARDINAL; name:string;
 BEGIN
   ComboBox2.Items.Clear;
-  anzahl:=HauptForm.o.turtleListe.Count;
-  if not (anzahl=0) then
-  begin
-    for i:=0 to anzahl-1 do
-        begin
-           name:='Turtle'+inttostr(i);
-           ComboBox2.Items.Add(name);
-        end;
-    end;
+  anzahl:=(HauptForm.o.turtleListe.Count)-1;
+  for i:=0 to anzahl do
+      begin
+         name:='Turtle'+inttostr(i);
+         ComboBox2.Items.Add(name);
+      end;
 end;
 
 procedure TForm1.ComboBox2Change(Sender: TObject);
@@ -496,7 +493,7 @@ VAR turtle: TTurtle;
     para: TStringList;
     tmp_string: String;
     numTurt: Cardinal;
-  procedure plaziereTurtle(zeichenArt: String);
+  procedure plaziereTurtle(zeichenArt: String; datei: String);
   begin
     zeichenPara.setzeStartPunkt(-4+(numTurt*2.4),0,0);
     turtle := TTurtle.Create(
@@ -504,35 +501,33 @@ VAR turtle: TTurtle;
       zeichnerInit.initialisiere(zeichenArt,zeichenPara)
     );
     turtle.maximaleStringLaenge := 500000;
+    //turtle.speichern(datei + '.json');
     o.addTurtle(turtle);
     inc(numTurt);
   end;
 begin
-   //befindet sich jetzt in uForm.standardturtel
+  //befindet sich jetzt in uForm.standardturtel
   o := TTurtleManager.Create;
   zeichnerInit := TZeichnerInit.Create;
 
   numTurt := 0;
 
-  // Standardsymbole im Programm
 
+  // Standardsymbole im Programm
   gram := TGrammatik.Create;
   zeichenPara.winkel := 47.5;
   zeichenPara.rekursionsTiefe := 4;
   gram.axiom := 'F';
   gram.addRegel('F','F&[+F&&FF]&&F[-^^/^-FF]F');
-  plaziereTurtle('ZeichnerBase');
-
-
-  {
+  plaziereTurtle('ZeichnerBase','Standardsymbole - Beispiel(1)');
+  
   gram := TGrammatik.Create;
   zeichenPara.winkel := 22.5;
   zeichenPara.rekursionsTiefe := 6;
   gram.axiom := 'X';
   gram.addRegel('X','F+[[-X]&&-X]-F[-F//X]+X');
   gram.addRegel('F','FF');
-  plaziereTurtle('ZeichnerBase','Standard Turtle');
-  }
+  plaziereTurtle('ZeichnerBase','Standardsymbole - Beispiel(2)');
 
   // Stochastische L-Systeme
   {
@@ -550,18 +545,17 @@ begin
   //plaziereTurtle('ZeichnerBase');
   //plaziereTurtle('ZeichnerBase');
   //plaziereTurtle('ZeichnerBase');
-  }
 
 
   // Baum mit gruenen Blaettern
-  {
   zeichenPara.winkel := 47.5;
   zeichenPara.rekursionsTiefe := 5;
   gram := TGrammatik.Create;
   gram.axiom := 'F';
   gram.addRegel('F','F&[+F&&FB]&&F[-^^/^-FB]F');
-  plaziereTurtle('ZeichnerGruenesBlatt','Baum mit grünen Blättern');
+  plaziereTurtle('ZeichnerGruenesBlatt','Baum mit gruenen Blaettern');
   }
+  
 
   // Noch einer!
   {
@@ -570,28 +564,27 @@ begin
   gram := TGrammatik.Create;
   gram.axiom := 'F';
   gram.addRegel('F','F&[+F&&FB]&&F[-^^/^-FB]F');
-  plaziereTurtle('ZeichnerGruenesBlatt','Baum mit grünen Blättern');
+  // plaziereTurtle('ZeichnerGruenesBlatt','Baum mit gruenen Blaettern - noch einer');
 
   inc(numTurt);
 
   gram := TGrammatik.Create;
   gram.axiom := 'F';
-  gram.addRegel('F','F&[+F&&FB]&&F[-^^/^-FB]F',18);
-  gram.addRegel('F','B',2.01);
-  gram.addRegel('F','F&[+F&&F]&&F[-^^/^-F]F',79.99);
-  plaziereTurtle('ZeichnerGruenesBlatt', 'Baum mit grünen Blättern');
-  //plaziereTurtle('ZeichnerGruenesBlatt');
+  gram.addRegel('F','F&[+F&&FB]&&F[-^^/^-FB]F',28.2);
+  gram.addRegel('F','F&[+F&&F]&&F[-^^/^-F]F',71.8);
+  plaziereTurtle('ZeichnerGruenesBlatt','Baum mit gruenen Blaettern - noch einer');
   }
   
-
   // Parametrisierung von Farben - Beispiel (1)
+  {
   zeichenPara.winkel := 47.5;
   zeichenPara.rekursionsTiefe := 3;
   gram := TGrammatik.Create;
   gram.axiom := 'F(1)&[+F(2)&&F(3)F(4)]&&F(5)[-^^/^-F(0)F(7)]F(8)';
   gram.addRegel('F(c)','F(c)&[+F(c)&&F(c)F(c)]&&F(c)[-^^/^-F(c)F(c)]F(c)');
-  plaziereTurtle('ZeichnerFarben');
-
+  plaziereTurtle('ZeichnerFarben', 'Parametrisierung von Farben - Beispiel(1)');
+  }
+  
   // Parametrisierung von Farben - Beispiel (2)
   {
   zeichenPara.winkel := 47.5;
@@ -599,50 +592,27 @@ begin
   gram := TGrammatik.Create;
   gram.axiom := 'F(1;2)&[+F(2;13)&&F(3;10)F(4;7)]&&F(5;9)[-^^/^-F(0;3)F(7;13)]F(8;1)';
   gram.addRegel('F(c)','F(c)&[+F(c)&&F(c)F(c)]&&F(c)[-^^/^-F(c)F(c)]F(c)');
-  gram.addRegel('F(c;f)','F(f;c)&[+F(f;c)&&F(c;c)F(f;c)]&&F(c;f)[-^^/^-F(c;f)F(f;c)]F(c;f)',40);
-  gram.addRegel('F(c;f)','F(c;f)&[+F(c;f)&&F(c;f)F(f;c)]&&F(c;f)[-^^/^-F(f;c)F(c;f)]F(f;c)',40);
-  gram.addRegel('F(c;f)','F(c;f)&[+F(c;f)&&F(c;f)F(c)]&&F(c;f)[-^^/^-F(f;c)F(f)]F(f;c)',20);
-  plaziereTurtle('ZeichnerFarben');
+  gram.addRegel('F(c;d)','F(d;c)&[+F(d;c)&&F(c;c)F(d;c)]&&F(c;d)[-^^/^-F(c;d)F(d;c)]F(c;d)',40);
+  gram.addRegel('F(c;d)','F(c;d)&[+F(c;d)&&F(c;d)F(d;c)]&&F(c;d)[-^^/^-F(d;c)F(c;d)]F(d;c)',40);
+  gram.addRegel('F(c;d)','F(c;d)&[+F(c;d)&&F(c;d)F(c)]&&F(c;d)[-^^/^-F(d;c)F(d)]F(d;c)',20);
+  plaziereTurtle('ZeichnerFarben', 'Parametrisierung von Farben - Beispiel(2)');
   //plaziereTurtle('ZeichnerFarben');
   //plaziereTurtle('ZeichnerFarben');
   //plaziereTurtle('ZeichnerFarben');
-   }
+  }
 
-  {
   // Schrittlaenge und Farben
-
+  {
   zeichenPara.winkel := 47.5;
   zeichenPara.rekursionsTiefe := 4;
   gram := TGrammatik.Create;
   gram.axiom := 'F(1;20)&[+F(2)&&F(3)F(4)]&&F(5)[-^^/^-F(13)F(7)]F(8)';
   gram.addRegel('F(c)','F(c)&[+F(c)&&F(c)F(c)]&&F(c)[-^^/^-F(c)F(c)]F(c)');
   gram.addRegel('F(c;l)','F(c;l)&[+F(c;l)&&F(c;l)F(c;l)]&&F(c;l)[-^^/^-F(c;l)F(c;l)]F(c;l)');
-  plaziereTurtle('ZeichnerFarbenUndSchrittlaenge','Parametrisierung von Farben und Schrittlänge');
-
+  plaziereTurtle('ZeichnerFarbenUndSchrittlaenge','Schrittlaenge und Farben');
+  }
 
   // Beispiel 1
-
-  gram := TGrammatik.Create;
-  zeichenPara.winkel := 22.5;
-  zeichenPara.rekursionsTiefe := 3;
-  gram.axiom := 'F(1;5)&[+F(1;5)&&F(1;5)F(1;5)B(5)]&&F(1;5)[-^^/^-F(1;5)F(1;5)B(5)]F(1;5)';
-  gram.addRegel('F(c;d)','F(c;d)&[+F(c;d)&&F(c;d)F(c;d)B(d)]&&F(c;d)[-^^/^-F(c;d)F(c;d)B(d)]F(c;d)',25);
-  gram.addRegel('F(c;d)','F(c;d)&[+F(c;d)&&F(c;d)F(c;d)]&&F(c;d)[-^^/^-F(c;d)F(c;d)]F(c;d)',75);
-  plaziereTurtle('ZeichnerFarbenBlattUndSchritt','Parametrisierung von Farben und Schrittlänge');
-
-
-  // Beispiel 2
-
-  gram := TGrammatik.Create;
-  zeichenPara.winkel := 47.5;
-  zeichenPara.rekursionsTiefe := 7;
-  gram.axiom := 'X(1;10)';
-  gram.addRegel('X(c;d)','F(c)+[[-X(c;d)]&&-X(c;d)B(d)]-F(c)[-F(c)//X(c;d)B(d)]+X(c;d)');
-  gram.addRegel('F(c)','F(c)F(c)');
-  plaziereTurtle('ZeichnerFarbenBlattUndSchritt','Parametrisierung von Farben und Schrittlänge');
-
-
-  // Beispiel 3
   {
   gram := TGrammatik.Create;
   zeichenPara.winkel := 22.5;
@@ -650,7 +620,66 @@ begin
   gram.axiom := 'X(1;10)';
   gram.addRegel('X(c;d)','F(c)+[[-X(c;d)]&&-X(c;d)B(d)]-F(c)[-F(c)//X(c;d)B(d)]+X(c;d)');
   gram.addRegel('F(c)','F(c)F(c)');
+  plaziereTurtle('ZeichnerFarbenBlattUndSchritt', 'Baum mit Farbigen Blaettern - Beispiel(1)' );
+
+  gram := TGrammatik.Create;
+  zeichenPara.winkel := 22.5;
+  zeichenPara.rekursionsTiefe := 3;
+  gram.axiom := 'F(1;5)&[+F(1;5)&&F(1;5)F(1;5)B(5)]&&F(1;5)[-^^/^-F(1;5)F(1;5)B(5)]F(1;5)';
+  gram.addRegel('F(c;d)','F(c;d)&[+F(c;d)&&F(c;d)F(c;d)B(d)]&&F(c;d)[-^^/^-F(c;d)F(c;d)B(d)]F(c;d)',25);
+  gram.addRegel('F(c;d)','F(c;d)&[+F(c;d)&&F(c;d)F(c;d)]&&F(c;d)[-^^/^-F(c;d)F(c;d)]F(c;d)',75);
+  plaziereTurtle('ZeichnerFarbenBlattUndSchritt', 'Baum mit Farbigen Blaettern - Beispiel(2)');
+  }
+
+  // Beispiel 2 (Sakura-Baeume)
+  {
+  gram := TGrammatik.Create;
+  zeichenPara.winkel := 47.5;
+  zeichenPara.rekursionsTiefe := 7;
+  gram.axiom := 'X(1;25)';
+  gram.addRegel('X(c;d)','F(c)+[[-X(c;d)]&&-X(c;d)B(d)]-F(c)[-F(c)//X(c;d)B(d)]+X(c;d)');
+  gram.addRegel('F(c)','F(c)F(c)');
   plaziereTurtle('ZeichnerFarbenBlattUndSchritt');
+
+  gram := TGrammatik.Create;
+  zeichenPara.winkel := 47.5;
+  zeichenPara.rekursionsTiefe := 7;
+  gram.axiom := 'X(1;22;23;25)';
+  gram.addRegel('X(c;d;e;f)','F(c)+[[-X(c;d;e;f)]&&-X(c;d;e;f)B(d)]-F(c)[-F(c)//X(c;d;e;f)B(d)]+X(c;d;e;f)',25);
+  gram.addRegel('X(c;d;e;f)','F(c)+[[-X(c;d;e;f)]&&-X(c;d;e;f)B(e)]-F(c)[-F(c)//X(c;d;e;f)B(e)]+X(c;d;e;f)',50);
+  gram.addRegel('X(c;d;e;f)','F(c)+[[-X(c;d;e;f)]&&-X(c;d;e;f)B(f)]-F(c)[-F(c)//X(c;d;e;f)B(f)]+X(c;d;e;f)',25);
+  gram.addRegel('F(c)','F(c)F(c)');
+  plaziereTurtle('ZeichnerFarbenBlattUndSchritt', 'Kirschbluetenbaum - Beispiel(1)');
+
+  zeichenPara.winkel := 120;
+  zeichenPara.rekursionsTiefe := 7;
+  plaziereTurtle('ZeichnerFarbenBlattUndSchritt', 'Kirschbluetenbaum - Beispiel(2)');
+  }
+
+  // Beispiel 2 fuer normale Baeume
+  {
+  gram := TGrammatik.Create;
+  zeichenPara.winkel := 47.5;
+  zeichenPara.rekursionsTiefe := 7;
+  gram.axiom := 'X(1;12;18;19)';
+  gram.addRegel('X(c;d;e;f)','F(c)+[[-X(c;d;e;f)]&&-X(c;d;e;f)B(d)]-F(c)[-F(c)//X(c;d;e;f)B(d)]+X(c;d;e;f)',25);
+  gram.addRegel('X(c;d;e;f)','F(c)+[[-X(c;d;e;f)]&&-X(c;d;e;f)B(e)]-F(c)[-F(c)//X(c;d;e;f)B(e)]+X(c;d;e;f)',50);
+  gram.addRegel('X(c;d;e;f)','F(c)+[[-X(c;d;e;f)]&&-X(c;d;e;f)B(f)]-F(c)[-F(c)//X(c;d;e;f)B(f)]+X(c;d;e;f)',25);
+  gram.addRegel('F(c)','F(c)F(c)');
+  plaziereTurtle('ZeichnerFarbenBlattUndSchritt', 'Baum im Herbst - Beispiel(1)');
+  
+  zeichenPara.winkel := 120;
+  zeichenPara.rekursionsTiefe := 7;
+  plaziereTurtle('ZeichnerFarbenBlattUndSchritt', 'Baum im Herbst - Beispiel(2)');
+
+  zeichenPara.winkel := 47.5;
+  zeichenPara.rekursionsTiefe := 5;
+  gram := TGrammatik.Create;
+  gram.axiom := 'F(1;12;18;19)';
+  gram.addRegel('F(c;d;e;g)','F(c;d;e;g)&[+F(c;d;e;g)&&F(c;d;e;g)B(d)]&&F(c;d;e;g)[-^^/^-F(c;d;e;g)B(d)]F(c;d;e;g)',33);
+  gram.addRegel('F(c;d;e;g)','F(c;d;e;g)&[+F(c;d;e;g)&&F(c;d;e;g)B(e)]&&F(c;d;e;g)[-^^/^-F(c;d;e;g)B(e)]F(c;d;e;g)',33);
+  gram.addRegel('F(c;d;e;g)','F(c;d;e;g)&[+F(c;d;e;g)&&F(c;d;e;g)B(g)]&&F(c;d;e;g)[-^^/^-F(c;d;e;g)B(g)]F(c;d;e;g)',34);
+  plaziereTurtle('ZeichnerFarbenBlattUndSchritt', 'Baum im Herbst - Beispiel(3)');
   }
 end;
 

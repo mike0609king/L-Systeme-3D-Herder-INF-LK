@@ -103,7 +103,7 @@ begin
      end;
      for i:=1 to length(gesamtklammer) do
      begin
-          if gesamtklammer[i]=';' then gesamtklammer[i]:='0';
+          if gesamtklammer[i]=';' then gesamtklammer[i]:=';';
      end;
      result:=gesamtklammer;
 end;
@@ -118,11 +118,12 @@ end;
 
 function TuGrammatiken.stringanalyse(s:string):BOOLEAN;
 //für regeln nicht axiome
-VAR str,rest_string,qs:string; i,n,l,h,k,j,g:CARDINAL;klammer_auf,bool:Boolean;
+VAR str,rest_string,qs:string; i,n,l,h,k,j,komma,g:CARDINAL;klammer_auf,bool:Boolean;
 MyStack: TMyStack;
 begin
    str:=Copy(s,1,length(s));
-   rest_string:=Copy(s,1,length(s));
+   komma:=pos(',',str);
+   rest_string:=Copy(s,1,komma-1);
    l:=length(str);
    MyStack:=TMyStack.create(l);
 
@@ -135,6 +136,7 @@ begin
              exit(False)
         end;
    end;
+   rest_string:=Copy(s,1,length(s));
    h:=ord(str[1]);
    if not ((h=ord('f')) or ((h>=ord('A')) and (h<=ord('Z')))) then
    begin
@@ -277,7 +279,7 @@ begin
                        if bool then
                        begin
                             qs:=ExtractFromKlammer(rest_axiom);
-                            for i := 1 to length(qs) do if qs[i] in ['0'..'9'] then bool:=False
+                            for i := 1 to length(qs) do if ((qs[i] in ['0'..'9']) or (qs[i]= ';'))  then bool:=False
                             else
                             begin
                                  ShowMessage('Parameter müssen Zahlen sein!');
@@ -293,7 +295,7 @@ begin
                             else
                             begin
                                  qs:=ExtractFromKlammer(rest_axiom);
-                                 for i := 1 to length(qs) do if qs[i] in ['0'..'9'] then bool:=false
+                                 for i := 1 to length(qs) do if ((qs[i] in ['0'..'9']) or (qs[i]= ';'))  then bool:=false
                                  else
                                  begin
                                       ShowMessage('Parameter müssen mit einem ";" getrennt werden!');
@@ -321,9 +323,9 @@ var i,n,m,nr,anzahl:CARDINAL;
     W,Wvor,Gesamt:REAL;
     g:String;
     checked:bool;
+    getestet:bool;
     Turtle:TTurtle;zeichenPara: TZeichenParameter;
-    p,s,q: Integer; zeichnerInit:TzeichnerInit;
-Begin
+    p,s,q: Integer; zeichnerInit:TzeichnerInit;Begin
 g:=Memo1.Lines[0];
 if Length(g) > 0 then
 Begin
@@ -331,6 +333,7 @@ Begin
   zeichnerInit := TZeichnerInit.Create;
   gram:=TGrammatik.Create;
   gram.axiom:= Memo1.Lines[0];
+  getestet:=false;
   While n<= Memo1.Lines.Count-1 do
   Begin
        if not axiomanalyse(Memo1.Lines[0])then exit;
@@ -352,8 +355,9 @@ Begin
                  INC(n)
             end
             else
+            if getestet=false then
             begin
-                 m:=1;
+                 m:=n;
                  Gesamt:=0;
                  p:=pos('>',Memo1.Lines[m]);
                  L:=copy(Memo1.Lines[m],1,p-2);
@@ -366,36 +370,68 @@ Begin
                       s:=pos(',',Memo1.Lines[m+1]);
                       Wvor:=strtofloat(copy(Memo1.Lines[m+1],s+1,s+10));
                       Gesamt:=Gesamt+W+Wvor;
-                 for m:=2 to Memo1.Lines.Count-1 do
+                      for m:=n+1 to Memo1.Lines.Count-1 do
+                      begin
+                           p:=pos('>',Memo1.Lines[m]);
+                           L:=copy(Memo1.Lines[m],1,p-2);
+                           p:=pos('>',Memo1.Lines[m+1]);
+                           Lvor:=copy(Memo1.Lines[m+1],1,p-2);
+                           if (L=Lvor) then
+                           begin
+                                s:=pos(',',Memo1.Lines[m+1]);
+                                Wvor:=strtofloat(copy(Memo1.Lines[m+1],s+1,s+10));
+                                Gesamt:=Gesamt+Wvor;
+                           end;
+                      end;
+                 end
+                 else
                  begin
-                      p:=pos('>',Memo1.Lines[m]);
-                      L:=copy(Memo1.Lines[m],1,p-2);
-                      p:=pos('>',Memo1.Lines[m+1]);
-                      Lvor:=copy(Memo1.Lines[m+1],1,p-2);
-                      if (L=Lvor) then
+                      if L<>Lvor then
                       begin
                            s:=pos(',',Memo1.Lines[m+1]);
-                           Wvor:=strtofloat(copy(Memo1.Lines[m+1],s+1,s+10));
-                           Gesamt:=Gesamt+Wvor;
-                      end;
-                      begin
-                           if L<>Lvor then
+                           W:=strtofloat(copy(Memo1.Lines[m],s+1,s+10));
+                           if ((W>100) or (W<100)) then
                            begin
-                                W:=strtofloat(copy(Memo1.Lines[m],s+1,s+10));
-                                if W>=100 then
-                                begin
-                                     SHOWMESSAGE('Deine Wahrscheinlichkeit überschreitet 100%!');
-                                     exit;
-                                end;
+                                SHOWMESSAGE('Deine Wahrscheinlichkeit ist nicht 100%!');
+                                exit;
+                           end;
+                           Gesamt:=100;
+                           for m:=2 to Memo1.Lines.Count-1 do
+                           begin
+                                Gesamt:=0;
+                                p:=pos('>',Memo1.Lines[m]);
+                                L:=copy(Memo1.Lines[m],1,p-2);
+                                p:=pos('>',Memo1.Lines[m+1]);
+                                Lvor:=copy(Memo1.Lines[m+1],1,p-2);
+                           end;
+                           if (L=Lvor) then
+                           begin
+                                s:=pos(',',Memo1.Lines[m+1]);
+                                Wvor:=strtofloat(copy(Memo1.Lines[m+1],s+1,s+10));
+                                Gesamt:=Gesamt+Wvor;
                            end;
                       end;
                  end;
-                 if (Gesamt > 100) or (Gesamt < 100) then
-                    begin
-                         SHOWMESSAGE('Deine Wahrscheinlichkeit ist nicht 100%!');
-                         exit;
-                    end;
-
+                 if ((Gesamt<100) or (Gesamt>100)) then
+                 begin
+                      SHOWMESSAGE('Deine Wahrscheinlichkeit ist nicht 100%!');
+                      exit;
+                 end;
+                 getestet:=true;
+                 s:=pos(',',Memo1.Lines[n]);
+                 p:=pos('>',Memo1.Lines[n]);
+                 L:=copy(Memo1.Lines[n],1,p-2);//linke Seite des '->'
+                 R:=copy(Memo1.Lines[n],p+1,s-1);//rechte Seite des '->'
+                 q:=pos(',',R);
+                 If q<>0 then R:=copy(R,0,q-1);
+                 begin
+                      W:=strtofloat(copy(Memo1.Lines[n],s+1,s+10));//wahrscheinlichkeit
+                      gram.addRegel(L,R,W);//Regel mit Wahrscheinlichkeit hinzufügen
+                      INC(n);
+                 end;
+            end
+            else
+            begin
                  s:=pos(',',Memo1.Lines[n]);
                  p:=pos('>',Memo1.Lines[n]);
                  L:=copy(Memo1.Lines[n],1,p-2);//linke Seite des '->'
@@ -408,8 +444,7 @@ Begin
                       INC(n);
                  end;
             end;
-            end;
-        end;
+       end;
   end;
   For i:=0 to CheckListBox1.Count -1 do
   begin
@@ -625,16 +660,32 @@ begin
                       Begin
                            zufaelligkeit := conf.getValue(
                            UnicodeString(tmp_pfad + '/' + regelnRechteSeite[regelnRechteSeiteIdx] + '/zufaelligkeit'),0.0);
-                           Memo1.Lines[i]:=regelnLinkeSeite[regelnLinkeSeiteIdx]+'->'+produktion+','+FloattoStr(zufaelligkeit);
-                           INC(i);
+                           if zufaelligkeit=100 then
+                           begin
+                                Memo1.Lines[i]:=regelnLinkeSeite[regelnLinkeSeiteIdx]+'->'+produktion;
+                                INC(i);
+                           end
+                           else
+                           begin
+                                Memo1.Lines[i]:=regelnLinkeSeite[regelnLinkeSeiteIdx]+'->'+produktion+','+FloattoStr(zufaelligkeit);
+                                INC(i);
+                           end;
                       end
                       else
                       Begin
                            produktion:=copy(produktion,1,q-1);
                            zufaelligkeit := conf.getValue(
                            UnicodeString(tmp_pfad + '/' + regelnRechteSeite[regelnRechteSeiteIdx] + '/zufaelligkeit'),0.0);
-                           Memo1.Lines[i]:=regelnRechteSeite[regelnRechteSeiteIdx]+'->'+produktion+','+FloattoStr(zufaelligkeit);
-                           INC(i);
+                           if zufaelligkeit=100 then
+                           begin
+                                Memo1.Lines[i]:=regelnLinkeSeite[regelnLinkeSeiteIdx]+'->'+produktion;
+                                INC(i);
+                           end
+                           else
+                           begin
+                                Memo1.Lines[i]:=regelnLinkeSeite[regelnLinkeSeiteIdx]+'->'+produktion+','+FloattoStr(zufaelligkeit);
+                                INC(i);
+                           end;
                       end;
                 end;
                 freeAndNil(regelnRechteSeite);

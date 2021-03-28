@@ -411,6 +411,8 @@ Begin
                            end;
                            m:=n+1;
                            s:=pos(',',Memo1.Lines[m]);
+                           if (not s=0) then
+                           begin
                            W:=strtofloat(copy(Memo1.Lines[m],s+1,s+10));
                            s:=pos(',',Memo1.Lines[m+1]);
                            if (not s=0) and (not (W=100)) then
@@ -441,6 +443,10 @@ Begin
                                           end;
                                      end;
                                 end;
+                           end
+                           else
+                           begin
+                           end;
                            end
                            else
                            begin

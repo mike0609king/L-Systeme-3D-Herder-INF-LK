@@ -95,10 +95,13 @@ var i: Cardinal;
 begin
   glMatrixMode(GL_ModelView);
   glClearColor(0,0,0,0);
-  for i := 0 to FTurtleListe.Count-1 do
+  if not (FTurtleListe.Count=0) then
   begin
-    if not FTurtleListe[i].visible then continue;
-    FTurtleListe[i].zeichnen;
+    for i := 0 to FTurtleListe.Count-1 do
+    begin
+      if not FTurtleListe[i].visible then continue;
+      FTurtleListe[i].zeichnen;
+    end;
   end;
 end;
 
@@ -107,10 +110,13 @@ var i: Cardinal;
     turtle: TTurtle;
 begin
   result := TTurtleManager.Create;
-  for i := 0 to FTurtleListe.Count-1 do
+  if not (FTurtleListe.Count=0) then
   begin
-    gibTurtle(i,turtle);
-    result.addTurtle(turtle.copy);
+    for i := 0 to FTurtleListe.Count-1 do
+    begin
+      gibTurtle(i,turtle);
+      result.addTurtle(turtle.copy);
+    end;
   end;
 end;
 

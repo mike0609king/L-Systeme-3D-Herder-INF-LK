@@ -516,14 +516,14 @@ begin
   numTurt := 0;
 
   // Standardsymbole im Programm
-
+  {
   gram := TGrammatik.Create;
   zeichenPara.winkel := 47.5;
   zeichenPara.rekursionsTiefe := 4;
   gram.axiom := 'F';
   gram.addRegel('F','F&[+F&&FF]&&F[-^^/^-FF]F');
   plaziereTurtle('ZeichnerBase','Standardsymbole - Beispiel(1)');
-
+  }
   {
   gram := TGrammatik.Create;
   zeichenPara.winkel := 22.5;

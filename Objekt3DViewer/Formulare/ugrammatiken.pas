@@ -632,7 +632,8 @@ begin
                       Begin
                            zufaelligkeit := conf.getValue(
                            UnicodeString(tmp_pfad + '/' + regelnRechteSeite[regelnRechteSeiteIdx] + '/zufaelligkeit'),0.0);
-                           Memo1.Lines[i]:=regelnLinkeSeite[regelnLinkeSeiteIdx]+'->'+produktion+','+FloattoStr(zufaelligkeit);
+                           Memo1.Lines[1]:=regelnLinkeSeite[0]+'->'+produktion+','+FloattoStr(zufaelligkeit);
+                           Memo1.Lines[i+1]:=regelnLinkeSeite[regelnLinkeSeiteIdx]+'->'+produktion+','+FloattoStr(zufaelligkeit);
                            INC(i);
                       end
                       else
@@ -640,7 +641,8 @@ begin
                            produktion:=copy(produktion,1,q-1);
                            zufaelligkeit := conf.getValue(
                            UnicodeString(tmp_pfad + '/' + regelnRechteSeite[regelnRechteSeiteIdx] + '/zufaelligkeit'),0.0);
-                           Memo1.Lines[i]:=regelnRechteSeite[regelnRechteSeiteIdx]+'->'+produktion+','+FloattoStr(zufaelligkeit);
+                           Memo1.Lines[1]:=regelnRechteSeite[0]+'->'+produktion+','+FloattoStr(zufaelligkeit);
+                           Memo1.Lines[i+1]:=regelnRechteSeite[regelnRechteSeiteIdx]+'->'+produktion+','+FloattoStr(zufaelligkeit);
                            INC(i);
                       end;
                 end;

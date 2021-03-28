@@ -14,4 +14,6 @@ In dem [doc](doc/)-Ordner befinden sich einige zusätzlichen Informationen zum P
 ## Zur Vollständigkeit des Projekts
 In der Form wurden viel Exception-Handling implementiert, jedoch könnten einige Sachen nicht
 berücksichtigt worden sein. Demnach ist es möglich, dass bestimmte Eingaben trotzdem zu einem 
-Programmabsturz führen. Wenn dies der Fall ist, einfach kurz bei "Issues" melden.
+Programmabsturz führen. Wenn dies der Fall ist, einfach kurz bei "Issues" melden. Sachen, die nicht 
+mehr implementiert werden konnten oder auf die man achten sollte, wenn man das Programm nutzt, sind 
+also in "Issues" einlesbar und werden irgendwann noch gefixt.

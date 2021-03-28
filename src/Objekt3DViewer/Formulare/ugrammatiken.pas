@@ -336,6 +336,7 @@ Begin
   gram:=TGrammatik.Create;
   gram.axiom:= Memo1.Lines[0];
   getestet:=false;
+  richtig:=false;
   FirstGesamt:=0;
   While n<= Memo1.Lines.Count-1 do
   Begin
@@ -453,12 +454,12 @@ Begin
                            end;
                       end;
                  end;
-                 for k:=1 to 100 do
+                 for k:=1 to 20 do
                  if (Gesamt=k*100) then
                  begin
                       richtig:=true;  //testen ob die endwahrscheinlichkeit richtig ist
                  end;
-                 if richtig=false then
+                 if (not richtig) then
                  begin
                       SHOWMESSAGE('Deine Wahrscheinlichkeit ist nicht 100%!');
                       exit;

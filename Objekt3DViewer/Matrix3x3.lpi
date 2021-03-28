@@ -43,7 +43,7 @@
         <PackageName Value="LCL"/>
       </Item2>
     </RequiredPackages>
-    <Units Count="26">
+    <Units Count="25">
       <Unit0>
         <Filename Value="Matrix3x3.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -168,18 +168,13 @@
         <UnitName Value="uParameterisierung_Form"/>
       </Unit23>
       <Unit24>
-        <Filename Value="..\Terme\cstack.pas"/>
-        <IsPartOfProject Value="True"/>
-        <UnitName Value="cStack"/>
-      </Unit24>
-      <Unit25>
         <Filename Value="Formulare\uform.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="Form1"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uForm"/>
-      </Unit25>
+      </Unit24>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -190,7 +185,7 @@
     </Target>
     <SearchPaths>
       <IncludeFiles Value="..\Graphik;..\ADTs;$(ProjOutDir);..\Turtle"/>
-      <OtherUnitFiles Value="..\Graphik;..\Terme;Formulare;..\Turtle"/>
+      <OtherUnitFiles Value="..\Graphik;Formulare;..\Turtle"/>
       <UnitOutputDirectory Value="..\KompilerteUnits"/>
     </SearchPaths>
     <Parsing>

@@ -49,7 +49,6 @@ begin
   ED_Rek_tiefeChange(self);
   Hauptform.zeichnen();
   Visible:=False;
-
 end;
 
 procedure TParameter_Form.BT_resetClick(Sender: TObject);
@@ -82,7 +81,7 @@ end;
 //exceptions handeling
 //werte überprüfen
 procedure TParameter_Form.ED_WinkelChange(Sender: TObject);
-VAR winkel:REAL;i:CARDINAL; str:string;
+VAR winkel:REAL;i,anzahl:CARDINAL; str:string;
 begin
   str:=ED_Winkel.Text;
   if not (str='') then
@@ -96,13 +95,18 @@ begin
     end
     else
     begin
-      for i:=0 to EditorForm.ListView1.Items.Count-1 do
-      begin
-           if EditorForm.ListView1.Items[i].Checked then turtlemanager.turtleListe[i].winkel:=winkel;
-      end;
-      Hauptform.push_neue_instanz(turtlemanager);
-      Hauptform.zeichnen();
-      EditorForm.BT_updateClick(1);
+      anzahl:=EditorForm.ListView1.Items.Count;
+      if not (anzahl=0) then
+        begin
+          turtlemanager:=Hauptform.o.copy();
+          for i:=0 to anzahl-1 do
+          begin
+               if EditorForm.ListView1.Items[i].Checked then turtlemanager.turtleListe[i].winkel:=winkel;
+          end;
+          Hauptform.push_neue_instanz(turtlemanager);
+          Hauptform.zeichnen();
+          EditorForm.BT_updateClick(1);
+        end;
     end;
   end;
 end;
@@ -124,33 +128,37 @@ end;
 
 
 procedure TParameter_Form.ED_Rek_tiefeChange(Sender: TObject);
-VAR rek_tiefe,i:CARDINAL; str:string;bool:boolean; turtle: TTurtle;
+VAR rek_tiefe,i,anzahl:CARDINAL; str:string;bool:boolean; turtle: TTurtle;
 begin
-  turtlemanager:=Hauptform.o.copy();
   bool:=False;
   str:=ED_Rek_tiefe.Text;
   if not (str='') then
     begin
       rek_tiefe:=strtoint(ED_Rek_tiefe.text);
-      for i:=0 to EditorForm.ListView1.Items.Count-1 do
+      anzahl:=EditorForm.ListView1.Items.Count;
+      if not (anzahl=0) then
       begin
-           if EditorForm.ListView1.Items[i].Checked then
-           begin
-             turtlemanager.gibTurtle(i,turtle);
-             turtle.rekursionsTiefe := rek_tiefe;
-             if not turtlemanager.turtleListe[i].zeichnen() then bool:=True;
-           end;
-      end;
-      if bool then
-      begin
-         Showmessage('Eine oder mehrere Turtles überschreiten bei dieser Rekursiontiefe die maximale Stringlänge. Diese kann im Optionenfeld geändert werden.');
-         ED_Rek_tiefe.Text:='';
-      end
-      else
-      begin
-        Hauptform.push_neue_instanz(turtlemanager);
-        Hauptform.zeichnen();
-        EditorForm.BT_updateClick(1);
+        turtlemanager:=Hauptform.o.copy();
+        for i:=0 to anzahl-1 do
+        begin
+             if EditorForm.ListView1.Items[i].Checked then
+             begin
+               turtlemanager.gibTurtle(i,turtle);
+               turtle.rekursionsTiefe := rek_tiefe;
+               if not turtlemanager.turtleListe[i].zeichnen() then bool:=True;
+             end;
+        end;
+        if bool then
+        begin
+           Showmessage('Eine oder mehrere Turtles überschreiten bei dieser Rekursiontiefe die maximale Stringlänge. Diese kann im Optionenfeld geändert werden.');
+           ED_Rek_tiefe.Text:='';
+        end
+        else
+        begin
+          Hauptform.push_neue_instanz(turtlemanager);
+          Hauptform.zeichnen();
+          EditorForm.BT_updateClick(1);
+        end;
       end;
     end;
 end;

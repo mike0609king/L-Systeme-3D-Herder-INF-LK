@@ -21,31 +21,51 @@ type TVariableZuWert = TFPGMap<String,String>;
 
 type TGrammatik = class
   private
+    { Aufgabe: Speichert das Axiom mit den Zahlenwerten als Einsetzung. }
     FRawAxiom: String;
+    { Aufgabe: Speichert das Axiom mit Platzhaltervariablen. }
     FAxiom: String;
 
     // setter-Funktionen fuer properties
     procedure setzeAxiom(axiom:String);
   public
+    { Aufgabe: Speichert den Wert einer Platzhaltervariable. }
     variableZuWert: TVariableZuWert;
-    regeln: TRegelDictionary;
+    { Aufgaben: Speichert die Regel genau so, wie die eingegeben 
+      wurde ohne diese weiter zu verarbeiten. }
     rawRegeln: TRegelDictionary;
+    { Aufgabe: Speichert die Regeln, wobei diese durch alternative
+      Variablen ersetzt wurden. Diese Varieblen machen Ersetzugen 
+      einfacher. }
+    regeln: TRegelDictionary;
 
     constructor Create;
     destructor Destroy; override;
 
-    procedure addRegel(links: String; rechts: String; zufaelligkeit: Real); overload;
-    procedure addRegel(links: String; rechts: String); overload;
-
-    function RegelTauschLinks(links: String) : String; overload;
-    function RegelTauschRechts(links: String; rechts: String) : String; overload;
-
-    procedure aendereParameter(para: TStringList);
-
     property axiom: String read FRawAxiom write setzeAxiom;
     property ersetztesAxiom: String read FAxiom;
 
+    { -- Bezieht sich auf Funktionen in diesem Block --
+      Aufgabe: Fuegt Regeln zur Grammatik hinzu. Einsetzung der 
+      Platzhalter in "regeln".
+    }
+    procedure addRegel(links: String; rechts: String; zufaelligkeit: Real); overload;
+    procedure addRegel(links: String; rechts: String); overload;
+    function RegelTauschLinks(links: String) : String;
+    function RegelTauschRechts(links: String; rechts: String) : String;
+
+    procedure aendereParameter(para: TStringList);
+
+    // getter-Funktion (public)
     function gibParameter : TStringList;
+
+    { Aufgabe: Dies wird als statische Variable genutzt. Mit der 
+      Funktion (im Gegensatz zur Variable) wird sichergestellt, 
+      dass sie auch wirklich readonly ist.
+      -> innerhalb, wie auch ausserhalb der Funktion 
+      Die tokenLaenge ist die Laenge der ersetzten Variablennamen 
+      in FAxiom. }
+    class function tokenLaenge : Cardinal; static;
 
     function copy : TGrammatik;
 end;
@@ -102,7 +122,7 @@ begin
       else
       begin
         insertLetter:= IntToStr(parameterCount)+'ax';
-        while length(insertLetter) < 4 do insertLetter:='0'+insertLetter;
+        while length(insertLetter) < tokenLaenge do insertLetter:='0'+insertLetter;
         variableZuWert.add(insertLetter,axiomOutput);
         FAxiom := FAxiom + insertLetter+letter;
         axiomOutput:='';
@@ -160,7 +180,7 @@ begin
   for parameterCount:=1 to 27 do
   begin
     letter := IntToStr(parameterCount)+smlLetter;
-    while length(letter)<4 do letter:='0'+letter;
+    while length(letter) < tokenLaenge do letter:='0'+letter;
     result := result + letter;
     if links[pter+1]=';' then
     begin
@@ -187,7 +207,7 @@ begin
   for parameterCount:=1 to 27 do
   begin
     letter := IntToStr(parameterCount) + smlLetter;
-    while length(letter)<4 do letter:='0'+letter;
+    while length(letter) < tokenLaenge do letter:='0'+letter;
     rechts := StringReplace(rechts,links[pter],letter,[rfReplaceAll]);
     if links[pter+1]=';' then pter:=pter+2
     else break;
@@ -203,7 +223,7 @@ begin
   for paraCnt := 1 to para.Count do
   begin
     varName := IntToStr(paraCnt)+'ax';
-    while length(varName) < 4 do varName:='0'+varName;
+    while length(varName) < tokenLaenge do varName:='0'+varName;
 
     variableZuWert.AddOrSetData(varName,para[paraCnt - 1]);
     FRawAxiom := StringReplace(FRawAxiom,varName,para[paraCnt - 1],[rfReplaceAll]);
@@ -217,9 +237,14 @@ begin
   for paraCnt := 1 to variableZuWert.Count do
   begin
     varName := IntToStr(paraCnt)+'ax';
-    while length(varName) < 4 do varName:='0'+varName;
+    while length(varName) < tokenLaenge do varName:='0'+varName;
     result.add(variableZuWert[varName]);
   end;
+end;
+
+class function TGrammatik.tokenLaenge : Cardinal;
+begin
+  result := 4;
 end;
 
 function TGrammatik.copy : TGrammatik;

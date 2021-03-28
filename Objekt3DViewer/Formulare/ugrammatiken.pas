@@ -325,7 +325,8 @@ var i,n,m,nr,anzahl:CARDINAL;
     checked:bool;
     getestet:bool;
     Turtle:TTurtle;zeichenPara: TZeichenParameter;
-    p,s,q: Integer; zeichnerInit:TzeichnerInit;Begin
+    p,s,q: Integer; zeichnerInit:TzeichnerInit;
+Begin
 g:=Memo1.Lines[0];
 if Length(g) > 0 then
 Begin
@@ -730,12 +731,13 @@ end;
 
 procedure TuGrammatiken.MenuItem3Click(Sender: TObject); //Turtle speichern
   var turtle: TTurtle;
-      n,nr:CARDINAL;
-      gram:TGrammatik;R,L,NameGrammatik:String;
-      W:REAL;
+      n,nr,m:CARDINAL;
+      gram:TGrammatik;R,L,Lvor,NameGrammatik:String;
+      W,Wvor,Gesamt,FirstGesamt:REAL;
       zeichenPara: TZeichenParameter;
-      p,s,q: Integer; zeichnerInit:TzeichnerInit;
-  begin
+      p,s,q: Integer;
+      zeichnerInit:TzeichnerInit;
+      begin
        SaveDialog1.Filter:='Json-Dateien (*.json)|*.json';
        If SaveDialog1.Execute then
        begin
@@ -745,6 +747,95 @@ procedure TuGrammatiken.MenuItem3Click(Sender: TObject); //Turtle speichern
             p:=pos('>',Memo1.Lines[0]);
             if not ((Edit3.text = '') or (Edit2.text = '') or (Edit4.text = '')) then
             begin
+                 m:=n;
+                 Gesamt:=0;
+                 p:=pos('>',Memo1.Lines[m]);
+                 L:=copy(Memo1.Lines[m],1,p-2);
+                 p:=pos('>',Memo1.Lines[m+1]);
+                 Lvor:=copy(Memo1.Lines[m+1],1,p-2);
+                 if (L=Lvor) then
+                 begin
+                      s:=pos(',',Memo1.Lines[m]);
+                      W:=strtofloat(copy(Memo1.Lines[m],s+1,s+10));
+                      s:=pos(',',Memo1.Lines[m+1]);
+                      Wvor:=strtofloat(copy(Memo1.Lines[m+1],s+1,s+10));
+                      Gesamt:=Gesamt+W+Wvor;
+                      for m:=n+1 to Memo1.Lines.Count-1 do
+                      begin
+                           p:=pos('>',Memo1.Lines[m]);
+                           L:=copy(Memo1.Lines[m],1,p-2);
+                           p:=pos('>',Memo1.Lines[m+1]);
+                           Lvor:=copy(Memo1.Lines[m+1],1,p-2);
+                           if (L=Lvor) then
+                           begin
+                                s:=pos(',',Memo1.Lines[m+1]);
+                                Wvor:=strtofloat(copy(Memo1.Lines[m+1],s+1,s+10));
+                                Gesamt:=Gesamt+Wvor;
+                           end
+                           else
+                           if ((Lvor='"') or (Lvor=' "')) then
+                           begin
+                                s:=pos(',',Memo1.Lines[m+1]);
+                                W:=strtofloat(copy(Memo1.Lines[m+1],s+1,s+10));
+                                if ((W>100) or (W<100)) then
+                                begin
+                                     SHOWMESSAGE('Deine Wahrscheinlichkeit ist nicht 100%!');
+                                     exit;
+                                end;
+                           end;
+                      end;
+                 end
+                 else
+                 begin
+                      if L<>Lvor then
+                      begin
+                           Gesamt:=0;
+                           s:=pos(',',Memo1.Lines[m]);
+                           W:=strtofloat(copy(Memo1.Lines[m],s+1,s+10));
+                           if ((W>100) or (W<100)) then
+                           begin
+                                SHOWMESSAGE('Deine Wahrscheinlichkeit ist nicht 100%!');
+                                exit;
+                           end;
+                           FirstGesamt:=100;
+                           m:=n+1;
+                           s:=pos(',',Memo1.Lines[m]);
+                           W:=strtofloat(copy(Memo1.Lines[m],s+1,s+10));
+                           s:=pos(',',Memo1.Lines[m+1]);
+                           Wvor:=strtofloat(copy(Memo1.Lines[m+1],s+1,s+10));
+                           If (W=Wvor) then Gesamt:=Gesamt+W+Wvor;
+                           for m:=m+1 to Memo1.Lines.Count-1 do
+                           begin
+                                p:=pos('>',Memo1.Lines[m]);
+                                L:=copy(Memo1.Lines[m],1,p-2);
+                                p:=pos('>',Memo1.Lines[m+1]);
+                                Lvor:=copy(Memo1.Lines[m+1],1,p-2);
+                                if (L=Lvor) then
+                                begin
+                                     s:=pos(',',Memo1.Lines[m+1]);
+                                     Wvor:=strtofloat(copy(Memo1.Lines[m+1],s+1,s+10));
+                                     Gesamt:=Gesamt+Wvor;
+                                end
+                                else
+                                if ((Lvor='"') or (Lvor=' "')) then
+                                begin
+                                     s:=pos(',',Memo1.Lines[m+1]);
+                                     W:=strtofloat(copy(Memo1.Lines[m+1],s+1,s+10));
+                                     if ((W>100) or (W<100)) then
+                                     begin
+                                          SHOWMESSAGE('Deine Wahrscheinlichkeit ist nicht 100%!');
+                                          exit;
+                                     end;
+                                end;
+                           end;
+                      end;
+                 end;
+                 FirstGesamt:=Gesamt;
+                 if (Gesamt<>100) then
+                 begin
+                      SHOWMESSAGE('Deine Wahrscheinlichkeit ist nicht 100%!');
+                      exit;
+                 end;
                  if p=0 then
                  begin
                       gram.axiom:= Memo1.Lines[0];

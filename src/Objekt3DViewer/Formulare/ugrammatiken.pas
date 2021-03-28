@@ -387,6 +387,13 @@ Begin
                                 Gesamt:=Gesamt+Wvor;
                            end
                            else
+                           if ((L<>Lvor) and (Gesamt=100)) then
+                           begin
+                                s:=pos(',',Memo1.Lines[m+2]);
+                                if s=0 then break;
+                                Wvor:=strtofloat(copy(Memo1.Lines[m+2],s+1,s+10));
+                                Gesamt:=Gesamt+Wvor;
+                           end;
                            if ((Lvor='"') or (Lvor=' "')) then
                            begin
                                 s:=pos(',',Memo1.Lines[m+1]);
@@ -433,6 +440,13 @@ Begin
                                           Gesamt:=Gesamt+Wvor;
                                      end
                                      else
+                                     if ((L<>Lvor) and (Gesamt=100)) then
+                                     begin
+                                          s:=pos(',',Memo1.Lines[m+2]);
+                                          if s=0 then break;
+                                          Wvor:=strtofloat(copy(Memo1.Lines[m+2],s+1,s+10));
+                                          Gesamt:=Gesamt+Wvor;
+                                     end;
                                      if ((Lvor='"') or (Lvor=' "')) then
                                      begin
                                           s:=pos(',',Memo1.Lines[m+1]);

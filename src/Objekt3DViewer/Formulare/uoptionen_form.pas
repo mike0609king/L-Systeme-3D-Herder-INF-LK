@@ -57,11 +57,14 @@ begin
     begin
        Hauptform.maximaleStringLaenge:=maximaleStringLaenge;
        //alle maximalenStringLaengen anpassen
+       if not (turtlemanager.turtleListe.Count=0) then
+       begin
        for i:=0 to turtlemanager.turtleListe.Count-1 do
          begin
            turtlemanager.turtleListe[i].maximaleStringLaenge:=maximaleStringLaenge;
            turtlemanager.turtleListe[i].zeichnen();
          end;
+       end;
        Hauptform.push_neue_instanz(turtlemanager);
     end;
     Visible:=False;

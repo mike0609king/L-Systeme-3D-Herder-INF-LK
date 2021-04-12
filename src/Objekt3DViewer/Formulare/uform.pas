@@ -304,11 +304,10 @@ begin
 
   nr:=liste_w.Count-1;//letzte nr
   liste_z.add(o.copy());
-  hlob:=TTurtleManager.Create;
   hlob:=liste_w[nr];
   liste_w.Delete(nr);
   o:=hlob;
-  maximaleStringLaenge:=o.turtleListe[0].maximaleStringLaenge;
+  if not (o.turtleListe.Count=0) then maximaleStringLaenge:=o.turtleListe[0].maximaleStringLaenge;
   update_sichtbarkeit_bt();
 end;
 procedure TForm1.update_sichtbarkeit_bt();
@@ -325,11 +324,10 @@ begin
   //nimmt letzte änderung am object o zurück. Maximal 20 mal.
   nr:=liste_z.Count-1;//letzte nr
   liste_w.add(o.copy());
-  hlob:=TTurtleManager.Create;
   hlob:=liste_z[nr];
   liste_z.Delete(nr);
   o:=hlob;
-  maximaleStringLaenge:=o.turtleListe[0].maximaleStringLaenge;
+  if not (o.turtleListe.Count=0) then maximaleStringLaenge:=o.turtleListe[0].maximaleStringLaenge;
   update_sichtbarkeit_bt();
 end;
 

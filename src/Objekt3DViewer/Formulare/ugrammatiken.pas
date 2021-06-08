@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, Menus,uturtlemanager,
-  ExtCtrls, CheckLst, uAnimation,ugrammatik, uTurtle,fpjson,LCLType, cStack, jsonparser, jsonConf;
+  ExtCtrls, CheckLst, uAnimation,ugrammatik, uTurtle,fpjson,LCLType,jsonparser, jsonConf, uStack;
 type
 
   { TuGrammatiken }
@@ -34,6 +34,25 @@ type
     OpenDialog1: TOpenDialog;
     SaveDialog1: TSaveDialog;
     procedure AnzahlClick(Sender: TObject);
+    { Aufgabe:
+      - Axiom pruefen:
+        - Syntax: <Grossbuchstabe>(a;...)
+          -> Getrennt mit jeweil Semikolons
+        - Ein Axiom kann nur ein Grossbuchstabe sein!
+        - Wohlgeformte Klammern '()' (diese duerfen nicht verschachtelt sein) und '[]'
+        - Parameter muessen Zahlen sein
+        - Parameter muessen mit einem ';' getrennt werden
+      - Regeln pruefen:
+        - Parameter muessen Kleinbuchstaben sein!
+        - Ein Axiom kann nur ein Grossbuchstabe sein!
+        - Wohlgeformte Klammern '()' (diese duerfen nicht verschachtelt sein) und '[]'
+        - Parameter muessen mit einem ';' getrennt werden
+        - Ein Grossbuchstabe muss die Zufaelligkeit von insgesamt 100% besitzen
+      - Hinzufuegen der Regeln (-> Annahme: Vorliegenden Regeln wurden bereits geprueft und sind richtig):
+        - Regeln werden eingelesen
+        - Turtle wird zum Manager hinzugefuegt
+      -> Funktionen werden nur auf Hilfsmethoden ausgelagert, weil diese nirgendwo anders benoetigt werden
+    } 
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
     procedure CheckGroup1ItemClick(Sender: TObject; Index: integer);
@@ -51,10 +70,6 @@ type
   private
     turtlemanager:TTurtlemanager;
     function gib_markierte_nr():CARDINAL;
-    function stringanalyse(s:string):Boolean;
-    function axiomanalyse(s:string):Boolean;
-    function ExtractFromKlammer(s:string):String;
-    function ExtractNumbers(s : String):String;
   public
 
   end;
@@ -81,487 +96,167 @@ begin
    end;
 end;
 
-function TuGrammatiken.ExtractFromKlammer(s: string): String;
-var i,n : Integer; Ka,Kz:Cardinal; stringrest,gesamtklammer,aktuell:string;
+function isDigit(c: Char) : Boolean;
 begin
-     Result := '';
-     stringrest:=s;
-     gesamtklammer:='';
-     for i:=1 to length(stringrest) do
-     begin
-          Ka:=pos('(',stringrest);
-          Kz:=pos(')',stringrest);
-          if ((Ka<>0) and (Kz<>0)) then
-          begin
-               for n:=Ka+1 to Kz-1 do
-               begin
-                    aktuell:=stringrest[n];
-                    gesamtklammer:=aktuell + gesamtklammer;
-               end;
-          end;
-          stringrest:=copy(stringrest,kz+1,length(stringrest));
-     end;
-     for i:=1 to length(gesamtklammer) do
-     begin
-          if gesamtklammer[i]=';' then gesamtklammer[i]:=';';
-     end;
-     result:=gesamtklammer;
+  // umwandlung in ascii-nummer sollte nicht noetig sein
+  result := (c in ['0'..'9']);
 end;
 
-function TuGrammatiken.ExtractNumbers(s : String) : String;
-var i : Integer;
+function isUpper(c: Char) : Boolean;
 begin
- Result := '';
- for i := 1 to length(s) do
-  if s[i] in ['0'..'9'] then Result := Result + s[i]
+  // umwandlung in ascii-nummer sollte nicht noetig sein
+  result := (c in ['A'..'Z'])
 end;
 
-function TuGrammatiken.stringanalyse(s:string):BOOLEAN;
-//für regeln nicht axiome
-VAR str,rest_string,qs:string; i,n,l,h,k,j,komma,g:CARDINAL;klammer_auf,bool:Boolean;
-MyStack: TMyStack;
+function isLower(c: Char) : Boolean;
 begin
-   str:=Copy(s,1,length(s));
-   komma:=pos(',',str);
-   rest_string:=Copy(s,1,komma-1);
-   l:=length(str);
-   MyStack:=TMyStack.create(l);
+  // umwandlung in ascii-nummer sollte nicht noetig sein
+  result := (c in ['a'..'z'])
+end;
 
-   if pos('(',rest_string)<>0 then
-   begin
-        qs:=ExtractNumbers(rest_string);
-        for n := 1 to length(qs) do if qs[n] in ['0'..'9'] then
+{ Aufgabe:
+  - Es muss gelten:
+    1. Syntax: <Grossbuchstabe>(<zahl1>;...)
+      -> Getrennt mit jeweils Semikolons
+    2. Keine Kleinbuchstaben duerfen im Axiom sein, diese werden naemlich weder als Regel noch Befehle Akzeptiert
+      -> dies sind die Variablennamen
+    - Andere Vordefinierten Symbole werden nicht ueberprueft
+    3. Wohlgeformte Klammern '()' (diese duerfen nicht verschachtelt sein)
+    4. Wohlgeformte eckige Klammern '[]'
+    5. Parameter muessen Zahlen sein
+    6. Parameter muessen mit einem ';' getrennt werden
+      -> Semikolons koennen nur in runden Klammern stehen
+    7. Zahlen duerfen nicht ausserhalb von den runden Klammern stehen
+  Rueckgabewert: Wenn das Axiom richtig ist, so wird True zurueckgegeben und false 
+  andernfalls.
+}
+
+function pruefeAxiom(axiom: String) : Boolean;
+var stack: TStack;
+    axiomIdx: Cardinal;
+    { Eingabe: Der Pointer/Index (des Axiom-Strings) auf der Klammer (also axiom[idx] = '(' -> true)) 
+      wird als Uebergeben.
+      Aufgabe: Prueft die Eingabe in der Klammer.
+      Rueckgabewert: Wenn die Eingabe in der Klammer Korrekt ist, so wird der Index des
+      Axiom-Strings direkt auf der letzten Klammer zurueckgegeben. Andernfalls, wird die 
+      position nicht mehr als wichtig erachtet und es wird der Token 0 also Rueckgabe zurueckgegeben. }
+    function pruefInKlammern(idx: Cardinal) : Cardinal;
+    begin
+      // ueberspringen vom Klammer auf
+      inc(idx);
+      // der letzte Buchstabe wird weggelassen, da dieser ein ')' sein muss,
+      // wenn alles richtig ist 
+      while idx < length(axiom) do 
+      begin
+        if axiom[idx] = '(' then
         begin
-             ShowMessage('Parameter müssen Buchstaben sein!');
-             exit(False)
-        end;
-   end;
-   rest_string:=Copy(s,1,length(s));
-   h:=ord(str[1]);
-   if not ((h=ord('f')) or ((h>=ord('A')) and (h<=ord('Z')))) then
-   begin
-        SHOWMessage('Ein Axiom kann nur ein Großbuchstabe sein! ');
-        exit(False);
-   end;
-   //wohlgeformte klammern   ()
-   klammer_auf:=False;
-   for i:=1 to l do
-   begin
-        if str[i]='(' then
-        begin
-             if klammer_auf then
-             begin
-                  SHOWMessage('Eine Klammer muss geschlossen werden bevor eine neue geöffent werden kann!');
-                  exit(False);
-             end
-             else klammer_auf:=True;
-        end;
-        if str[i]=')' then klammer_auf:=False;
-   end;
-   //wohlgeformte eckige klammern []
-   for i:=1 to l do
-   begin
-        if str[i]='[' then
-        begin
-             MyStack.Push(1);
-        end;
-        if str[i]=']' then
-        begin
-             if MyStack.IsEmpty() then
-             begin
-                  SHOWMessage('Eine Klammer muss geschlossen werden bevor eine neue geöffent werden kann!');
-                  exit(False);
-             end;
-             MyStack.Pop();
-        end;
-   end;
-   if MyStack.IsEmpty() then
-   begin
-        MyStack.Free;
-        if not klammer_auf then
-        begin
-             j:=pos('(',str);
-             if j<>0 then
-             begin
-                  while pos('(',rest_string)<>0 do
-                  begin
-                       g:=pos(')',rest_string)-1;
-                       bool:=True;
-                       for k:=pos('(',rest_string)+1 to g do
-                       begin
-                            h:=ord(str[k]);
-                            if bool then
-                            begin
-                                 if (not h>=ord('a')) and (not h<=ord('z')) then
-                                 begin
-                                      ShowMessage('Parameter müssen kleine Buchstaben sein!');
-                                      exit(False);
-                                 end;
-                                 bool:=False;
-                            end
-                            else
-                            begin
-                                 if (h=ord(';')) then
-                                 begin
-                                      bool:=true;
-                                 end
-                                 else
-                                 begin
-                                      if (not h>=ord('a')) and (not h<=ord('z')) then
-                                      begin
-                                           ShowMessage('Parameter müssen mit einem ";" getrennt werden!');
-                                           exit(False)
-                                      end
-                                      else bool:=false;
-                                 end;
-                            end;
-                       end;
-                       g:=pos(')',rest_string);
-                       rest_string:=copy(rest_string,g+1,g+100);
-                       g:=pos(')',rest_string);
-                  end;
-             end;
+          showMessage('Klammern duerfen nicht verschachtelt werden! Fehler an Position ' + IntToStr(idx) + ' im Axiom.');
+          exit(0);
         end
-        else
+        else if axiom[idx] = ')' then break
+        // Regel 6
+        else if axiom[idx] = ';' then
         begin
-             SHOWMessage('Klammern müssen geschlossen werden!');
-             exit(False);
+          if ((not isDigit(axiom[idx-1])) or (not isDigit(axiom[idx+1]))) then
+          begin
+            showMessage('Das Semikolon innerhalb einer Klammer ist nicht richtig plaziert worden! An Position ' + IntToStr(idx) + '.');
+            exit(0);
+          end;
+        end
+        else if not isDigit(axiom[idx]) then
+        begin
+          showMessage('"' + axiom[idx] + '" gefunden, aber eine Zahl erwartet! An Position  ' + IntToStr(idx) + '.');
+          exit(0);
         end;
-   end
-   else
-   begin
-        SHOWMessage('Eckige Klammern müssen geschlossen werden!');
-        MyStack.Free;
-        exit(False);
-   end;
-end;
-
-
-function TuGrammatiken.axiomanalyse(s:string):Boolean;  //returns false if axiom is wrong
-VAR axiom,rest_axiom,qs:string; i,l,h,k,j,g:CARDINAL; klammer_auf,bool:Boolean;
+        inc(idx);
+      end;
+      if axiom[idx] = ')' then exit(idx);
+      showMessage('Vermutlich wurde eine runde Klammer im Axiom vergessen.');
+      result := 0;
+    end;
 begin
-   axiom:=Copy(s,1,length(s));
-   l:=length(axiom);
-   rest_axiom:=Copy(s,1,length(s));
-   h:=ord(axiom[1]);
-   if not ((h=ord('f')) or ((h>=ord('A')) and (h<=ord('Z')))) then
-   begin
-        SHOWMessage('Ein Axiom kann nur ein Großbuchstabe sein! ');
-        exit(False);
-   end;
-   //wohlgeformte klammern ()
-   Klammer_auf:=false;
-   for i:=1 to l do
-   begin
-        if axiom[i]='(' then
-        begin
-             if klammer_auf then
-             begin
-                  SHOWMessage('Eine Klammer muss geschlossen werden bevor eine neue geöffent werden kann!');
-                  exit(False);
-             end
-             else klammer_auf:=True;
-        end;
-        if axiom[i]=')' then klammer_auf:=False
-   end;
-   if not klammer_auf then
-   begin
-        j:=pos('(',axiom);
-        if j<>0 then
-        begin
-             while pos('(',rest_axiom)<>0 do
-             begin
-                  g:=pos(')',rest_axiom)-1;
-                  bool:=True;
-                  for k:=pos('(',rest_axiom)+1 to g do
-                  begin
-                       h:=ord(axiom[k]);
-                       if bool then
-                       begin
-                            qs:=ExtractFromKlammer(rest_axiom);
-                            for i := 1 to length(qs) do if ((qs[i] in ['0'..'9']) or (qs[i]= ';'))  then bool:=False
-                            else
-                            begin
-                                 ShowMessage('Parameter müssen Zahlen sein!');
-                                 exit(False);
-                            end;
-                       end
-                       else
-                       begin
-                            if (h=ord(';')) then
-                            begin
-                                 bool:=true;
-                            end
-                            else
-                            begin
-                                 qs:=ExtractFromKlammer(rest_axiom);
-                                 for i := 1 to length(qs) do if ((qs[i] in ['0'..'9']) or (qs[i]= ';'))  then bool:=false
-                                 else
-                                 begin
-                                      ShowMessage('Parameter müssen mit einem ";" getrennt werden!');
-                                      exit(False)
-                                 end;
-                            end;
-                       end;
-                  end;
-                  g:=pos(')',rest_axiom);
-                  rest_axiom:=copy(rest_axiom,g+1,g+100);
-                  g:=pos(')',rest_axiom);
-             end;
-        end;
-   end
-   else
-   begin
-        SHOWMessage('Klammern müssen geschlossen werden!');
-        exit(False);
-   end;
+  stack := TStack.Create;
+  axiomIdx := 1;
+  while axiomIdx <= length(axiom) do
+  begin
+    // Regel 4
+    if axiom[axiomIdx] = '[' then stack.push('[')
+    else if axiom[axiomIdx] = ']' then 
+    begin
+      if (stack.empty) or (stack.pop <> '[') then
+      begin
+        showMessage('Kann die zugehoerige eckige Klammer im Axiom nicht nicht finden. An Position ' + IntToStr(axiomIdx) + '.'); 
+        exit(false);
+      end;
+    end
+    // Regel 1
+    else if isUpper(axiom[axiomIdx]) then 
+    begin
+      // Es duerfen nur runde Klammern nach dem grossen Buchstaben folgen
+      if (axiomIdx+1 <= length(axiom)) and (axiom[axiomIdx+1] = '(') then
+      begin
+        axiomIdx := pruefInKlammern(axiomIdx);
+        if axiomIdx = 0 then exit(false);
+      end
+    end
+    // Regel 3
+    else if (axiom[axiomIdx] = '(') or (axiom[axiomIdx] = ')') then 
+    begin
+      showMessage('Einige runden Klammern sind im Axiom fehl am Platz. Die sollten nur hinter den Grossbuchstaben als Parameter stehen. Eine davon ist in der Position ' +IntToStr(axiomIdx) + '.');
+      exit(false);
+    end
+    // Regel 2
+    else if isLower(axiom[axiomIdx]) then 
+    begin 
+      showMessage('Es sind keine Kleinbuchstaben im Axiom erlaubt. Diese sind fuer Variabelnamen in der Regel reserviert! Guck dir Position ' + intToStr(axiomIdx) + ' an.');
+      exit(false);
+    end
+    // Regel 7
+    else if isDigit(axiom[axiomIdx]) then 
+    begin
+      showMessage('Im Axiom sind Zahlen ausserhalb der runden Klammern! In der Position ' + intToStr(axiomIdx) + '.');
+      exit(false);
+    end;
+    inc(axiomIdx)
+  end;
+  if not stack.empty then
+  begin
+    showMessage('Schliesse Klammern, die im Axiom geoeffnet wurden!');
+    exit(false)
+  end;
+  result := true;
+end;
+{
+- Hinzufuegen der Regeln (-> Annahme: Vorliegenden Regeln wurden bereits geprueft und sind richtig):
+  - Regeln werden eingelesen
+  - Turtle wird zum Manager hinzugefuegt
+}
+
+{ 
+- Regeln pruefen:
+  - Parameter muessen Kleinbuchstaben sein!
+  - Ein Axiom kann nur ein Grossbuchstabe sein!
+    -> dannach koennen die Parameter in '(...)' angegeben werden, wenn es welche gibt
+      -> diese duerften nicht verschachtelt sein
+  - Wohlgeformte Klammern '[]'
+  - Parameter muessen mit einem ';' getrennt werden
+  - Ein Grossbuchstabe muss die Zufaelligkeit von insgesamt 100% besitzen
+}
+function pruefeRegel(regel: String; regelZeile: Cardinal);
+begin
+  result := true;
 end;
 
-procedure TuGrammatiken.Button1Click(Sender: TObject); //Turtle Hinzufügen
-var i,n,m,k,nr,anzahl:CARDINAL;
-    gram:TGrammatik;R,L,Lvor,NameGrammatik:String;
-    W,Wvor,Gesamt,FirstGesamt:REAL;
-    g:String;
-    checked:bool;
-    getestet,richtig:bool;
-    Turtle:TTurtle;zeichenPara: TZeichenParameter;
-    p,s,q: Integer; zeichnerInit:TzeichnerInit;
-Begin
-g:=Memo1.Lines[0];
-if Length(g) > 0 then
-Begin
-  n:=1;
-  k:=0;
-  zeichnerInit := TZeichnerInit.Create;
-  gram:=TGrammatik.Create;
-  gram.axiom:= Memo1.Lines[0];
-  getestet:=false;
-  richtig:=false;
-  FirstGesamt:=0;
-  While n<= Memo1.Lines.Count-1 do
-  Begin
-       if not axiomanalyse(Memo1.Lines[0])then exit;
-       if not stringanalyse(Memo1.Lines[n])then exit;
-       p:=pos('>',Memo1.Lines[n]);
-       if p=0 then
-       Begin
-            SHOWMESSAGE('Deine Eingabe ist falsch! Bitte überprüfe die Grammatik!');
-            break;
-       end;
-       begin
-            s:=pos(',',Memo1.Lines[n]);
-            If s=0 then
-            begin
-                 p:=pos('>',Memo1.Lines[n]);
-                 L:=copy(Memo1.Lines[n],1,p-2);//linke Seite des '->'
-                 R:=copy(Memo1.Lines[n],p+1,p+100);//rechte Seite des '->'
-                 gram.addRegel(L,R);//Regel ohne Wahrscheinlichkeit hinzufügen
-                 INC(n)
-            end
-            else
-            if getestet=false then  //wahrscheinlichkeits test
-            begin
-                 m:=n;
-                 Gesamt:=0;
-                 p:=pos('>',Memo1.Lines[m]);
-                 L:=copy(Memo1.Lines[m],1,p-2);
-                 p:=pos('>',Memo1.Lines[m+1]);
-                 Lvor:=copy(Memo1.Lines[m+1],1,p-2);
-                 if (L=Lvor) then
-                 begin
-                      s:=pos(',',Memo1.Lines[m]);
-                      W:=strtofloat(copy(Memo1.Lines[m],s+1,s+10));
-                      s:=pos(',',Memo1.Lines[m+1]);
-                      Wvor:=strtofloat(copy(Memo1.Lines[m+1],s+1,s+10));
-                      Gesamt:=Gesamt+W;
-                      for m:=n to Memo1.Lines.Count-1 do
-                      begin
-                           p:=pos('>',Memo1.Lines[m]);
-                           L:=copy(Memo1.Lines[m],1,p-2);
-                           p:=pos('>',Memo1.Lines[m+1]);
-                           Lvor:=copy(Memo1.Lines[m+1],1,p-2);
-                           if (L=Lvor) then
-                           begin
-                                s:=pos(',',Memo1.Lines[m+1]);
-                                Wvor:=strtofloat(copy(Memo1.Lines[m+1],s+1,s+10));
-                                Gesamt:=Gesamt+Wvor;
-                           end
-                           else
-                           if ((L<>Lvor) and (Gesamt=100)) then
-                           begin
-                                s:=pos(',',Memo1.Lines[m+2]);
-                                if s=0 then break;
-                                Wvor:=strtofloat(copy(Memo1.Lines[m+2],s+1,s+10));
-                                Gesamt:=Gesamt+Wvor;
-                           end;
-                           if ((Lvor='"') or (Lvor=' "')) then
-                           begin
-                                s:=pos(',',Memo1.Lines[m+1]);
-                                W:=strtofloat(copy(Memo1.Lines[m+1],s+1,s+10));
-                                if ((W>100) or (W<100)) then
-                                begin
-                                     SHOWMESSAGE('Deine Wahrscheinlichkeit ist nicht 100%!');
-                                     exit;
-                                end;
-                           end;
-                      end;
-                 end
-                 else
-                 begin
-                      if L<>Lvor then
-                      begin
-                           s:=pos(',',Memo1.Lines[m]);
-                           W:=strtofloat(copy(Memo1.Lines[m],s+1,s+10));
-                           if ((W>100) or (W<100)) then
-                           begin
-                                SHOWMESSAGE('Deine Wahrscheinlichkeit ist nicht 100%!');
-                                exit;
-                           end;
-                           m:=n+1;
-                           s:=pos(',',Memo1.Lines[m]);
-                           if (not s=0) then
-                           begin
-                           W:=strtofloat(copy(Memo1.Lines[m],s+1,s+10));
-                           s:=pos(',',Memo1.Lines[m+1]);
-                           if (not s=0) and (not (W=100)) then
-                           begin
-                                Wvor:=strtofloat(copy(Memo1.Lines[m+1],s+1,s+10));
-                                If (W=Wvor) then Gesamt:=Gesamt+W;
-                                for m:=n to Memo1.Lines.Count-1 do
-                                begin
-                                     p:=pos('>',Memo1.Lines[m]);
-                                     L:=copy(Memo1.Lines[m],1,p-2);
-                                     p:=pos('>',Memo1.Lines[m+1]);
-                                     Lvor:=copy(Memo1.Lines[m+1],1,p-2);
-                                     if (L=Lvor) then
-                                     begin
-                                          s:=pos(',',Memo1.Lines[m+1]);
-                                          Wvor:=strtofloat(copy(Memo1.Lines[m+1],s+1,s+10));
-                                          Gesamt:=Gesamt+Wvor;
-                                     end
-                                     else
-                                     if ((L<>Lvor) and (Gesamt=100)) then
-                                     begin
-                                          s:=pos(',',Memo1.Lines[m+2]);
-                                          if s=0 then break;
-                                          Wvor:=strtofloat(copy(Memo1.Lines[m+2],s+1,s+10));
-                                          Gesamt:=Gesamt+Wvor;
-                                     end;
-                                     if ((Lvor='"') or (Lvor=' "')) then
-                                     begin
-                                          s:=pos(',',Memo1.Lines[m+1]);
-                                          W:=strtofloat(copy(Memo1.Lines[m+1],s+1,s+10));
-                                          if ((W>100) or (W<100)) then
-                                          begin
-                                               SHOWMESSAGE('Deine Wahrscheinlichkeit ist nicht 100%!');
-                                               exit;
-                                          end;
-                                     end;
-                                end;
-                           end
-                           else
-                           begin
-                           end;
-                           end
-                           else
-                           begin
-                           end;
-                      end;
-                 end;
-                 for k:=1 to 20 do
-                 if (Gesamt=k*100) then
-                 begin
-                      richtig:=true;  //testen ob die endwahrscheinlichkeit richtig ist
-                 end;
-                 if (not richtig) then
-                 begin
-                      SHOWMESSAGE('Deine Wahrscheinlichkeit ist nicht 100%!');
-                      exit;
-                 end;
-                 getestet:=true;
-                 s:=pos(',',Memo1.Lines[n]);
-                 p:=pos('>',Memo1.Lines[n]);
-                 L:=copy(Memo1.Lines[n],1,p-2);//linke Seite des '->'
-                 R:=copy(Memo1.Lines[n],p+1,s-1);//rechte Seite des '->'
-                 q:=pos(',',R);
-                 If q<>0 then R:=copy(R,0,q-1);
-                 begin
-                      W:=strtofloat(copy(Memo1.Lines[n],s+1,s+10));//wahrscheinlichkeit
-                      gram.addRegel(L,R,W);//Regel mit Wahrscheinlichkeit hinzufügen
-                      INC(n);
-                 end;
-            end
-            else
-            begin
-                 s:=pos(',',Memo1.Lines[n]);
-                 p:=pos('>',Memo1.Lines[n]);
-                 L:=copy(Memo1.Lines[n],1,p-2);//linke Seite des '->'
-                 R:=copy(Memo1.Lines[n],p+1,s-1);//rechte Seite des '->'
-                 q:=pos(',',R);
-                 If q<>0 then R:=copy(R,0,q-1);
-                 begin
-                      W:=strtofloat(copy(Memo1.Lines[n],s+1,s+10));//wahrscheinlichkeit
-                      gram.addRegel(L,R,W);//Regel mit Wahrscheinlichkeit hinzufügen
-                      INC(n);
-                 end;
-            end;
-       end;
-  end;
-  For i:=0 to CheckListBox1.Count -1 do
-  begin
-       if CheckListBox1.Checked[i]=True then checked:=true;
-  end;
-  if not checked=true then
-  begin
-       SHOWMESSAGE('Du musst eine Zeichenart makieren!');
-       exit;
-  end;
-  If not (Edit2.text = '') then
-  Begin
-       zeichenPara.rekursionsTiefe:= strtoint(Edit2.Text);
-       If not (Edit3.text = '') then
-       Begin
-            If strtofloat(Edit3.Text)<=99999999 then
-            Begin
-                 zeichenPara.winkel:=strtofloat(Edit3.Text);
-                 NameGrammatik:=Edit4.Text;
-                 anzahl:= strtoint(Edit1.Text);
-                 if anzahl=0 then
-                 Begin
-                      SHOWMESSAGE('Deine Anzahl ist 0. Es wird keine Darstellung erstellt.');
-                 end
-                 else
-                 Begin
-                      nr:=gib_markierte_nr();
-                      turtlemanager:=Hauptform.o.copy();
-                      //erstellen der Turtels
-                      for i:=1 to anzahl do
-                      begin
-                           Hauptform.update_startkoords();
-                           zeichenPara.setzeStartPunkt(Hauptform.akt_x,Hauptform.akt_y,Hauptform.akt_z);
-                           Turtle:=TTurtle.Create(gram,zeichnerInit.initialisiere(zeichnerInit.gibZeichnerListe[nr],zeichenPara),Hauptform.maximaleStringLaenge);
-                           Turtle.name:=NameGrammatik;
-                           turtlemanager.addTurtle(Turtle);
-                      end;
-                      if turtle.zeichnen then
-                      begin
-                           Hauptform.push_neue_instanz(turtlemanager);
-                           Hauptform.ordnen();
-                           Visible:=False;
-                           Hauptform.zeichnen();
-                      end
-                      else
-                      begin
-                           SHOWMESSAGE('Der gezeichnete Baum ist zu groß. In den Optionen kann die maximale Stringlänge geändert werden. ');
-                      end;
-                   end;
-           end
-           else SHOWMESSAGE('Du hast die Maximale Größe des Winkels von 99999999 überschritten!');
-       end;
-  end
-  else SHOWMESSAGE('Eine Rekurstiefe von 0 ist nicht möglich!');
-end
-else SHOWMESSAGE('Deine Eingabe ist falsch! Bitte überprüfe die Grammatik!');
+procedure TuGrammatiken.Button1Click(Sender: TObject); 
+var zeichnerInit: TZeichnerInit;
+    gram: TGrammatik;
+    zeichenPara: TZeichenParameter;
+    Turtle: TTurtle;
+begin
+  if not pruefeAxiom(Memo1.lines[0]) then exit;
+  // if not pruefeRegel(...) then exit;
+  // Einfuegen von dem Axiom
+  showMessage('Eingefuegt')
 end;
 
 procedure TuGrammatiken.Button2Click(Sender: TObject); //Alles leeren
@@ -633,10 +328,9 @@ begin
   //zeichenarten laden
   zeichnerInit := TZeichnerInit.Create;
   baumListe := zeichnerInit.gibZeichnerListe;
-  // durch die Liste iterieren
   for i := 0 to baumListe.Count - 1 do
   begin
-         // baumListe[i] in ComboBox packen
+       // baumListe[i] in ComboBox packen
        CheckListBox1.AddItem(baumListe[i],NIL);
   end;
   for i := 0 to CheckListBox1.Count-1 do CheckListBox1.Checked[i] := False;

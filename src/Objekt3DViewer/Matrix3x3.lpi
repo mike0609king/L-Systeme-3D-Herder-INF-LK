@@ -43,7 +43,7 @@
         <PackageName Value="LCL"/>
       </Item2>
     </RequiredPackages>
-    <Units Count="26">
+    <Units Count="27">
       <Unit0>
         <Filename Value="Matrix3x3.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -179,6 +179,11 @@
         <Filename Value="..\Terme\cstack.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit25>
+      <Unit26>
+        <Filename Value="..\Daten Strukturen\ustack.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uStack"/>
+      </Unit26>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -189,7 +194,7 @@
     </Target>
     <SearchPaths>
       <IncludeFiles Value="..\Graphik;..\ADTs;$(ProjOutDir);..\Turtle"/>
-      <OtherUnitFiles Value="..\Graphik;Formulare;..\Turtle;..\Terme"/>
+      <OtherUnitFiles Value="..\Graphik;Formulare;..\Turtle;..\Terme;..\Daten Strukturen"/>
       <UnitOutputDirectory Value="..\KompilerteUnits"/>
     </SearchPaths>
     <Parsing>

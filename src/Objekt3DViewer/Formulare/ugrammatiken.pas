@@ -6,7 +6,9 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, Menus,uturtlemanager,
-  ExtCtrls, CheckLst, uAnimation,ugrammatik, uTurtle,fpjson,LCLType,jsonparser, jsonConf, uStack;
+  ExtCtrls, CheckLst, uAnimation,ugrammatik, uTurtle,fpjson,LCLType,jsonparser, jsonConf, uStack, fgl;
+
+type TMapStringToReal = TFPGMap<String,Real>;
 type
 
   { TuGrammatiken }
@@ -70,6 +72,45 @@ type
   private
     turtlemanager:TTurtlemanager;
     function gib_markierte_nr():CARDINAL;
+    { Aufgabe:
+      - Es muss gelten:
+        1. Syntax: <Grossbuchstabe>(<zahl1>;...)
+          -> Getrennt mit jeweils Semikolons
+        2. Keine Kleinbuchstaben duerfen im Axiom sein, diese werden naemlich weder als Regel noch Befehle Akzeptiert
+          -> dies sind die Variablennamen
+        - Andere Vordefinierten Symbole werden nicht ueberprueft
+        3. Wohlgeformte Klammern '()' (diese duerfen nicht verschachtelt sein)
+        4. Wohlgeformte eckige Klammern '[]'
+        5. Parameter muessen Zahlen sein
+        6. Parameter muessen mit einem ';' getrennt werden
+          -> Semikolons koennen nur in runden Klammern stehen
+        7. Zahlen duerfen nicht ausserhalb von den runden Klammern stehen
+      Rueckgabewert: Wenn das Axiom richtig ist, so wird True zurueckgegeben und false 
+      andernfalls.
+    }
+    function pruefeAxiom(axiom: String) : Boolean;
+    { 
+    - Regeln pruefen:
+      - Syntax: <Grossbuchstabe>[(<Kleinbuchstabe1>[,<Kleinbuchstabe2>,...])]-><Regel>;<Zufaelligkeit>
+      - Parameter muessen Kleinbuchstaben sein!
+      - Ein Axiom kann nur ein Grossbuchstabe sein!
+        -> dannach koennen die Parameter in '(...)' angegeben werden, wenn es welche gibt
+          -> diese duerften nicht verschachtelt sein
+      - Wohlgeformte Klammern '[]'
+      - Parameter muessen mit einem ';' getrennt werden
+      - Ein Grossbuchstabe muss die Zufaelligkeit von insgesamt 100% besitzen
+    }
+    function pruefeRegel : Boolean;
+    { Aufgabe: Hilfsfunktion von pruefeAxiom und pruefeRegel, da der Syntax des 
+      Axioms und der linken Seite mit ausnahme des Inhaltes in der Klammer identisch ist.
+      Parameter: 
+        1: Der String, welcher zu analysieren ist. Dies ist entweder das Axiom oder
+        die linke Seite der Regel (ohne Zufaelligkeit)
+        2: Zeile der Regel, falls es eine ist
+        3: Wenn die AnfangsPosition 0 ist, so ist der zuPruefende String ein Axiom.
+        Andernfalls ist es eine Regel
+    }
+    function pruefeErsetzungsSyntax(zuPruefen: String; regelZeile: Cardinal; anfangsPosition: Cardinal) : Boolean;
   public
 
   end;
@@ -81,21 +122,7 @@ implementation
 uses uForm,uZeichnerBase,uZeichnerInit;
 {$R *.lfm}
 
-{ TuGrammatiken }
-
-procedure TuGrammatiken.AnzahlClick(Sender: TObject);
-begin
-
-end;
-function TuGrammatiken.gib_markierte_nr():CARDINAL;
-VAR i:CARDINAL;
-begin
-   for i:=0 to CheckListBox1.Count -1 do
-   begin
-        if CheckListBox1.Checked[i] then result:=i;
-   end;
-end;
-
+{ Hilfsfunktion }
 function isDigit(c: Char) : Boolean;
 begin
   // umwandlung in ascii-nummer sollte nicht noetig sein
@@ -114,136 +141,301 @@ begin
   result := (c in ['a'..'z'])
 end;
 
-{ Aufgabe:
-  - Es muss gelten:
-    1. Syntax: <Grossbuchstabe>(<zahl1>;...)
-      -> Getrennt mit jeweils Semikolons
-    2. Keine Kleinbuchstaben duerfen im Axiom sein, diese werden naemlich weder als Regel noch Befehle Akzeptiert
-      -> dies sind die Variablennamen
-    - Andere Vordefinierten Symbole werden nicht ueberprueft
-    3. Wohlgeformte Klammern '()' (diese duerfen nicht verschachtelt sein)
-    4. Wohlgeformte eckige Klammern '[]'
-    5. Parameter muessen Zahlen sein
-    6. Parameter muessen mit einem ';' getrennt werden
-      -> Semikolons koennen nur in runden Klammern stehen
-    7. Zahlen duerfen nicht ausserhalb von den runden Klammern stehen
-  Rueckgabewert: Wenn das Axiom richtig ist, so wird True zurueckgegeben und false 
-  andernfalls.
-}
-
-function pruefeAxiom(axiom: String) : Boolean;
-var stack: TStack;
-    axiomIdx: Cardinal;
-    { Eingabe: Der Pointer/Index (des Axiom-Strings) auf der Klammer (also axiom[idx] = '(' -> true)) 
-      wird als Uebergeben.
-      Aufgabe: Prueft die Eingabe in der Klammer.
-      Rueckgabewert: Wenn die Eingabe in der Klammer Korrekt ist, so wird der Index des
-      Axiom-Strings direkt auf der letzten Klammer zurueckgegeben. Andernfalls, wird die 
-      position nicht mehr als wichtig erachtet und es wird der Token 0 also Rueckgabe zurueckgegeben. }
-    function pruefInKlammern(idx: Cardinal) : Cardinal;
-    begin
-      // ueberspringen vom Klammer auf
-      inc(idx);
-      // der letzte Buchstabe wird weggelassen, da dieser ein ')' sein muss,
-      // wenn alles richtig ist 
-      while idx < length(axiom) do 
-      begin
-        if axiom[idx] = '(' then
-        begin
-          showMessage('Klammern duerfen nicht verschachtelt werden! Fehler an Position ' + IntToStr(idx) + ' im Axiom.');
-          exit(0);
-        end
-        else if axiom[idx] = ')' then break
-        // Regel 6
-        else if axiom[idx] = ';' then
-        begin
-          if ((not isDigit(axiom[idx-1])) or (not isDigit(axiom[idx+1]))) then
-          begin
-            showMessage('Das Semikolon innerhalb einer Klammer ist nicht richtig plaziert worden! An Position ' + IntToStr(idx) + '.');
-            exit(0);
-          end;
-        end
-        else if not isDigit(axiom[idx]) then
-        begin
-          showMessage('"' + axiom[idx] + '" gefunden, aber eine Zahl erwartet! An Position  ' + IntToStr(idx) + '.');
-          exit(0);
-        end;
-        inc(idx);
-      end;
-      if axiom[idx] = ')' then exit(idx);
-      showMessage('Vermutlich wurde eine runde Klammer im Axiom vergessen.');
-      result := 0;
-    end;
+{ true - funktioniert}
+function versucheStringToReal(s: String) : Boolean;
+var c: Char;
+    dot: Boolean;
 begin
-  stack := TStack.Create;
-  axiomIdx := 1;
-  while axiomIdx <= length(axiom) do
+  dot := false;
+  for c in s do
   begin
-    // Regel 4
-    if axiom[axiomIdx] = '[' then stack.push('[')
-    else if axiom[axiomIdx] = ']' then 
+    if c = '.' then
+    begin
+      if dot then exit(false)
+      else dot := true;
+    end
+    else if not isDigit(c) then exit(false);
+  end;
+  result := true;
+end;
+
+{ TuGrammatiken }
+
+procedure TuGrammatiken.AnzahlClick(Sender: TObject);
+begin
+
+end;
+function TuGrammatiken.gib_markierte_nr():CARDINAL;
+VAR i:CARDINAL;
+begin
+   for i:=0 to CheckListBox1.Count -1 do
+   begin
+        if CheckListBox1.Checked[i] then result:=i;
+   end;
+end;
+
+
+{ Eingabe: Der Pointer/Index (des Axiom-Strings) auf der Klammer (also axiom[idx] = '(' -> true)) 
+  wird als Uebergeben.
+  Aufgabe: Prueft die Eingabe in der Klammer.
+  Rueckgabewert: Wenn die Eingabe in der Klammer Korrekt ist, so wird der Index des
+  Axiom-Strings direkt auf der letzten Klammer zurueckgegeben. Andernfalls, wird die 
+  position nicht mehr als wichtig erachtet und es wird der Token 0 also Rueckgabe zurueckgegeben. }
+function pruefInKlammernAxiom(zuPruefen: String ;idx: Cardinal) : Cardinal;
+begin
+  // ueberspringen vom Klammer auf
+  inc(idx);
+  // der letzte Buchstabe wird weggelassen, da dieser ein ')' sein muss,
+  // wenn alles richtig ist 
+  while idx < length(zuPruefen) do 
+  begin
+    if zuPruefen[idx] = '(' then
+    begin
+      showMessage('Zeile 1 | Position' + IntToStr(idx) + ': Klammern duerfen nicht verschachtelt werden!');
+      exit(0);
+    end
+    else if zuPruefen[idx] = ')' then break
+    // Regel 6
+    else if zuPruefen[idx] = ';' then
+    begin
+      if ((not isDigit(zuPruefen[idx-1])) or (not isDigit(zuPruefen[idx+1]))) then
+      begin
+        showMessage('Zeile 1 | Position' + IntToStr(idx) + ': Das Semikolon innerhalb einer Klammer ist nicht richtig plaziert worden!');
+        exit(0);
+      end;
+    end
+    else if not isDigit(zuPruefen[idx]) then
+    begin
+      showMessage('Zeile 1 | Position' + IntToStr(idx) + ': "' + zuPruefen[idx] + '" gefunden, aber eine Zahl erwartet!');
+      exit(0);
+    end;
+    inc(idx);
+  end;
+  if zuPruefen[idx] = ')' then exit(idx);
+  showMessage('Zeile 1 | Position ' + IntToStr(idx) + ': Runde Klammer gesucht, aber "' + zuPruefen[idx] + '" gefunden.');
+  result := 0;
+end;
+
+{ Eingabe: Der Pointer/Index (des Axiom-Strings) auf der Klammer (also axiom[idx] = '(' -> true)) 
+  wird als Uebergeben.
+  Aufgabe: Prueft die Eingabe in der Klammer.
+  Rueckgabewert: Wenn die Eingabe in der Klammer Korrekt ist, so wird der Index des
+  Axiom-Strings direkt auf der letzten Klammer zurueckgegeben. Andernfalls, wird die 
+  position nicht mehr als wichtig erachtet und es wird der Token 0 also Rueckgabe zurueckgegeben. }
+function pruefInKlammernRegel(zuPruefen: String; regelZeile: Cardinal; idx: Cardinal) : Cardinal;
+begin
+  // ueberspringen vom Klammer auf
+  inc(idx);
+  // der letzte Buchstabe wird weggelassen, da dieser ein ')' sein muss,
+  // wenn alles richtig ist 
+  while idx < length(zuPruefen) do 
+  begin
+    if zuPruefen[idx] = '(' then
+    begin
+      showMessage('Zeile ' + intToStr(regelZeile+1) + ' | Position ' + IntToStr(idx) + ': Klammern duerfen nicht verschachtelt werden!');
+      exit(0);
+    end
+    else if zuPruefen[idx] = ')' then break
+    else if zuPruefen[idx] = ';' then
+    begin
+      if ((not isLower(zuPruefen[idx-1])) or (not isLower(zuPruefen[idx+1]))) then
+      begin
+        showMessage('Zeile ' + intToStr(regelZeile+1) + ' | Position ' + IntToStr(idx) + ': Das Semikolon innerhalb einer Klammer ist nicht richtig plaziert worden!');
+        exit(0);
+      end;
+    end
+    else if not isLower(zuPruefen[idx]) then
+    begin
+      showMessage('Zeile ' + intToStr(regelZeile+1) + ' | Position ' + IntToStr(idx) + ': "' + zuPruefen[idx] + '" gefunden, aber einen kleinen Buchstaben erwartet!');
+      exit(0);
+    end
+    else if (isLower(zuPruefen[idx])) and (
+        (not (
+            // Trennzeichen von Links
+            (zuPruefen[idx-1] = '(') or (zuPruefen[idx-1] = ';')
+            ))
+        or 
+        (not (
+            // Trennzeichen von Rechts
+            (zuPruefen[idx+1] = ')') or (zuPruefen[idx+1] = ';')
+          ))
+      ) then
+    begin
+      showMessage('Zeile ' + intToStr(regelZeile+1) + '| Position' + IntToStr(idx) + ': Variablen muessen die Laenge 1 haben und von Semikolons getrennt werden.');
+      exit(0);
+    end;
+    inc(idx);
+  end;
+  if zuPruefen[idx] = ')' then exit(idx);
+  showMessage('Zeile ' + intToStr(regelZeile+1) + '| Position' + IntToStr(idx) + 'Es wurde eine Klammer erwartet, jedoch keine gefunden.');
+  result := 0;
+end;
+
+function TuGrammatiken.pruefeErsetzungsSyntax(zuPruefen: String; regelZeile: Cardinal; anfangsPosition: Cardinal) : Boolean;
+var stack: TStack;
+    idx: Cardinal;
+    isAxiom: Boolean;
+begin
+  if anfangsPosition = 0 then isAxiom := true
+  else isAxiom := false;
+  stack := TStack.Create;
+  idx := 1;
+
+  if length(zuPruefen) = 0 then
+  begin
+    if isAxiom then showMessage('Das Axiom darf nicht leer sein!')
+    else showMessage('Zeile ' + intToStr(regelZeile+1) + ': Regel ist leer.');
+    exit(false);
+  end;
+  while idx <= length(zuPruefen) do
+  begin
+    if zuPruefen[idx] = '[' then stack.push('[')
+    else if zuPruefen[idx] = ']' then 
     begin
       if (stack.empty) or (stack.pop <> '[') then
       begin
-        showMessage('Kann die zugehoerige eckige Klammer im Axiom nicht nicht finden. An Position ' + IntToStr(axiomIdx) + '.'); 
+        showMessage('Zeile ' + intToStr(regelZeile+1) + ' | Position '+ intToStr(idx+anfangsPosition) + ': Kann die zugehoerige eckige Klammer nicht finden.');
         exit(false);
       end;
     end
-    // Regel 1
-    else if isUpper(axiom[axiomIdx]) then 
+    else if isUpper(zuPruefen[idx]) then 
     begin
       // Es duerfen nur runde Klammern nach dem grossen Buchstaben folgen
-      if (axiomIdx+1 <= length(axiom)) and (axiom[axiomIdx+1] = '(') then
+      if (idx+1 <= length(zuPruefen)) and (zuPruefen[idx+1] = '(') then
       begin
-        axiomIdx := pruefInKlammern(axiomIdx);
-        if axiomIdx = 0 then exit(false);
+        inc(idx);
+        if isAxiom then idx := pruefInKlammernAxiom(zuPruefen,idx)
+        else idx := pruefInKlammernRegel(zuPruefen,regelZeile,idx);
+        if idx = 0 then exit(false);
       end
     end
-    // Regel 3
-    else if (axiom[axiomIdx] = '(') or (axiom[axiomIdx] = ')') then 
+    else if (zuPruefen[idx] = '(') or (zuPruefen[idx] = ')') then 
     begin
-      showMessage('Einige runden Klammern sind im Axiom fehl am Platz. Die sollten nur hinter den Grossbuchstaben als Parameter stehen. Eine davon ist in der Position ' +IntToStr(axiomIdx) + '.');
+      showMessage('Zeile ' + intToStr(regelZeile+1) + ' | Position '+ intToStr(idx+anfangsPosition) + ': Einige runden Klammern sind fehl am Platz. Die sollten nur hinter den Grossbuchstaben als Parameter stehen.');
       exit(false);
     end
-    // Regel 2
-    else if isLower(axiom[axiomIdx]) then 
+    else if isLower(zuPruefen[idx]) then 
     begin 
-      showMessage('Es sind keine Kleinbuchstaben im Axiom erlaubt. Diese sind fuer Variabelnamen in der Regel reserviert! Guck dir Position ' + intToStr(axiomIdx) + ' an.');
+      showMessage('Zeile ' + intToStr(regelZeile+1) + ' | Position '+ intToStr(idx+anfangsPosition) + ': Es sind keine Kleinbuchstaben ausserhalb von runden Klammern erlaubt. Diese sind fuer Variabelnamen in der Regel reserviert!');
       exit(false);
     end
-    // Regel 7
-    else if isDigit(axiom[axiomIdx]) then 
+    else if isDigit(zuPruefen[idx]) then 
     begin
-      showMessage('Im Axiom sind Zahlen ausserhalb der runden Klammern! In der Position ' + intToStr(axiomIdx) + '.');
+      showMessage('Zeile ' + intToStr(regelZeile+1) + ' | Position '+ intToStr(idx+anfangsPosition) + ': Zahlen sind ausserhalb runder Klammern nicht erlaubt!');
       exit(false);
     end;
-    inc(axiomIdx)
+    inc(idx)
   end;
   if not stack.empty then
   begin
-    showMessage('Schliesse Klammern, die im Axiom geoeffnet wurden!');
+    showMessage('Schliesse Klammern, die geoeffnet wurden!');
     exit(false)
   end;
   result := true;
 end;
-{
-- Hinzufuegen der Regeln (-> Annahme: Vorliegenden Regeln wurden bereits geprueft und sind richtig):
-  - Regeln werden eingelesen
-  - Turtle wird zum Manager hinzugefuegt
-}
 
-{ 
-- Regeln pruefen:
-  - Parameter muessen Kleinbuchstaben sein!
-  - Ein Axiom kann nur ein Grossbuchstabe sein!
-    -> dannach koennen die Parameter in '(...)' angegeben werden, wenn es welche gibt
-      -> diese duerften nicht verschachtelt sein
-  - Wohlgeformte Klammern '[]'
-  - Parameter muessen mit einem ';' getrennt werden
-  - Ein Grossbuchstabe muss die Zufaelligkeit von insgesamt 100% besitzen
-}
-function pruefeRegel(regel: String; regelZeile: Cardinal);
+function TuGrammatiken.pruefeAxiom(axiom: String) : Boolean;
 begin
+  result := pruefeErsetzungsSyntax(axiom,0,0);
+end;
+
+function TuGrammatiken.pruefeRegel : Boolean;
+var map: TMapStringToReal;
+    regelZeile,dataIdx: Cardinal;
+    tmp_rechts,tmp_links: String;
+    tmp_zufaelligkeit,data: Real;
+  function aux_pruefeRegel() : Boolean;
+  var curRegelIdx,kommaPos,kommaCnt,kommaIdx: Cardinal;
+  function istIdxInGrenzen(idx :Cardinal) : Boolean;
+  begin
+    result := (length(Memo1.lines[regelZeile]) >= idx);
+  end;
+  begin
+    // puefen der linken Seite
+    curRegelIdx := 2;
+    // Die kleinst moegliche Zeichenkette: 'F->X'
+    if length(Memo1.lines[regelZeile]) < 4 then 
+    begin
+      showMessage('Zeile ' + intToStr(regelZeile+1) + ': Das Format ist falsch!');
+      exit(false);
+    end
+    else if not isUpper(Memo1.lines[regelZeile][1]) then
+    begin
+      showMessage('Zeile ' + intToStr(regelZeile+1) + ': Die Regel muss immer mit einem Grossbuchstaben beginnen.');
+      exit(false);
+    end;
+    if Memo1.lines[regelZeile][curRegelIdx] = '(' then
+    begin
+      curRegelIdx := pruefInKlammernRegel(Memo1.lines[regelZeile],regelZeile,curRegelIdx);
+      if curRegelIdx = 0 then exit(false);
+      // ueberspringen von der Schliessenden Klammer
+      inc(curRegelIdx);
+    end;
+    tmp_links := copy(Memo1.lines[regelZeile],1,curRegelIdx-1);
+
+    if (not istIdxInGrenzen(curRegelIdx+1)) or (Memo1.lines[regelZeile][curRegelIdx] <> '-') or (Memo1.lines[regelZeile][curRegelIdx+1] <> '>') then
+    begin
+      showMessage('Zeile ' + intToStr(regelZeile+1) + ' | Position' + IntToStr(curRegelIdx) + ': Ein "-" gefolgt von ">" erwartet, aber nicht gefunden!');
+      exit(false);
+    end;
+    curRegelIdx := curRegelIdx + 2;
+
+    // Komma feststellen und pruefen der rechnten Seite
+    kommaPos := 0; kommaCnt := 0;
+    for kommaIdx := curRegelIdx to length(Memo1.lines[regelZeile]) do
+    begin
+      if Memo1.lines[regelZeile][kommaIdx] = ',' then
+      begin
+        kommaPos := kommaIdx;
+        inc(KommaCnt);
+      end;
+    end;
+    if kommaCnt > 1 then
+    begin
+      showMessage('Zeile ' + intToStr(regelZeile+1) + ': Du kannst nicht mehr als ein Komma ein einer Regel haben.');
+      exit(false);
+    end;
+    if kommaCnt = 0 then tmp_rechts := copy(Memo1.lines[regelZeile],curRegelIdx,length(Memo1.lines[regelZeile]))
+    else tmp_rechts := copy(Memo1.lines[regelZeile],curRegelIdx,kommaPos-curRegelIdx);
+    if not pruefeErsetzungsSyntax(tmp_rechts,regelZeile,curRegelIdx) then exit(false);
+
+    // Zufaelligkeit angeben
+    if kommaCnt = 0 then tmp_zufaelligkeit := 100 else if kommaPos = length(Memo1.lines[regelZeile]) then
+    begin
+      showMessage('Zeile ' + intToStr(regelZeile+1) + ': Es muss etwas nach dem Komma folgen.');
+      exit(false);
+    end
+    else
+    begin
+      if versucheStringToReal(copy(Memo1.lines[regelZeile],kommaPos+1,length(Memo1.lines[regelZeile])-kommaPos+3)) then // 1 sollte eigentlich ausreichen
+      begin
+        tmp_zufaelligkeit := strToFloat(copy(Memo1.lines[regelZeile],kommaPos+1,length(Memo1.lines[regelZeile])-kommaPos+3))
+      end
+      else
+      begin
+        showMessage('Zeile ' + intToStr(regelZeile+1) + ': Die Zufaelligkeit ist nicht richtig formatiert.');
+        exit(false);
+      end;
+    end;
+    
+    if not map.TryGetData(tmp_links,data) then map[tmp_links] := 0;
+    map[tmp_links] := data + tmp_zufaelligkeit;
+
+    result := true;
+  end;
+begin
+  map := TMapStringToReal.Create;
+  for regelZeile := 1 to Memo1.lines.count-1 do if not aux_pruefeRegel then exit(false);
+
+  // pruefe map
+  for dataIdx := 0 to map.Count - 1 do
+  begin
+    if map.data[dataIdx] <> 100 then
+    begin
+      showMessage('Die Zufaelligkeiten des Eintrages "' + map.keys[dataIdx] + '" ergeben in der Summe nicht 100.');
+      exit(false);
+    end;
+  end;
   result := true;
 end;
 
@@ -251,12 +443,90 @@ procedure TuGrammatiken.Button1Click(Sender: TObject);
 var zeichnerInit: TZeichnerInit;
     gram: TGrammatik;
     zeichenPara: TZeichenParameter;
-    Turtle: TTurtle;
+    turtle: TTurtle;
+    anzahl, nr, i: Cardinal;
+    checked: Boolean;
+    NameGrammatik: String;
+    zeilenIdx,regelIdx: Cardinal;
+    tmp_links, tmp_rechts: String;
+    tmp_zufaelligkeit: Real;
 begin
+  // pruefen der Zeilen -> die Turtle wird beim einlesen erstellt
   if not pruefeAxiom(Memo1.lines[0]) then exit;
-  // if not pruefeRegel(...) then exit;
-  // Einfuegen von dem Axiom
-  showMessage('Eingefuegt')
+  if not pruefeRegel then exit;
+  
+  gram.axiom := Memo1.lines[0];
+  for zeilenIdx := 1 to Memo1.lines.Count - 1 do
+  begin 
+    regelIdx := 1; tmp_links := ''; tmp_rechts := ''; tmp_zufaelligkeit := 0;
+    // links
+    while Memo1.lines[zeilenIdx][regelIdx] <> '-' do 
+    begin
+      tmp_links := tmp_links + Memo1.lines[zeilenIdx][regelIdx];
+      inc(regelIdx)
+    end;
+    regelIdx := regelIdx + 2;
+
+    // rechts
+    while (length(Memo1.lines[zeilenIdx]) >= regelIdx) and (Memo1.lines[zeilenIdx][regelIdx] <> ',') do 
+    begin
+      tmp_rechts := tmp_rechts + Memo1.lines[zeilenIdx][regelIdx];
+      inc(regelIdx)
+    end;
+
+    // zufaelligkeit
+    if (length(Memo1.lines[zeilenIdx]) < regelIdx) then tmp_zufaelligkeit := 100
+    else tmp_zufaelligkeit := strToFloat(copy(Memo1.lines[zeilenIdx],regelIdx+1,length(Memo1.lines[zeilenIdx])-regelIdx+3));
+
+    gram.addRegel(tmp_links,tmp_rechts,tmp_zufaelligkeit)
+  end;
+  
+  for i:=0 to CheckListBox1.Count -1 do
+  begin
+       if CheckListBox1.Checked[i] then checked:=true;
+  end;
+  if not checked=true then
+  begin
+       SHOWMESSAGE('Du musst eine Zeichenart makieren!');
+       exit;
+  end;
+
+  If not (Edit2.text = '') then zeichenPara.rekursionsTiefe:= strtoint(Edit2.Text)
+  else SHOWMESSAGE('Eine Rekurstiefe von 0 ist nicht möglich!');
+
+  If not (Edit3.text = '') then
+  Begin
+    If strtofloat(Edit3.Text)<=360 then
+    Begin
+      zeichenPara.winkel:=strtofloat(Edit3.Text);
+      NameGrammatik:=Edit4.Text;
+      anzahl:= strtoint(Edit1.Text);
+      if anzahl=0 then SHOWMESSAGE('Deine Anzahl ist 0. Es wird keine Darstellung erstellt.')
+      else
+      begin
+        nr:=gib_markierte_nr();
+        turtlemanager:=Hauptform.o.copy();
+        //erstellen der Turtels
+        for i:=1 to anzahl do
+        begin
+          Hauptform.update_startkoords();
+          zeichenPara.setzeStartPunkt(Hauptform.akt_x,Hauptform.akt_y,Hauptform.akt_z);
+          Turtle:=TTurtle.Create(gram,zeichnerInit.initialisiere(zeichnerInit.gibZeichnerListe[nr],zeichenPara),Hauptform.maximaleStringLaenge);
+          Turtle.name:=NameGrammatik;
+          turtlemanager.addTurtle(Turtle);
+        end;
+        if turtle.zeichnen then
+        begin
+          Hauptform.push_neue_instanz(turtlemanager);
+          Hauptform.ordnen();
+          Visible:=False;
+          Hauptform.zeichnen();
+        end
+        else SHOWMESSAGE('Der gezeichnete Baum ist zu groß. In den Optionen kann die maximale Stringlänge geändert werden. ');
+      end;
+    end
+    else SHOWMESSAGE('Du hast die Maximale Größe des Winkels von 360 überschritten!');
+  end;
 end;
 
 procedure TuGrammatiken.Button2Click(Sender: TObject); //Alles leeren

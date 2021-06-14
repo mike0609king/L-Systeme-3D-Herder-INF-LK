@@ -481,7 +481,7 @@ begin
     gram.addRegel(tmp_links,tmp_rechts,tmp_zufaelligkeit)
   end;
   
-  for i:=0 to CheckListBox1.Count -1 do
+  for i:=0 to CheckListBox1.Count - 1 do
   begin
        if CheckListBox1.Checked[i] then checked:=true;
   end;

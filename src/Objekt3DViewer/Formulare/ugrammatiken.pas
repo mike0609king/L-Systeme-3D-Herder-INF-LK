@@ -9,6 +9,7 @@ uses
   ExtCtrls, CheckLst, uAnimation,ugrammatik, uTurtle,fpjson,LCLType,jsonparser, jsonConf, uStack, fgl;
 
 type TMapStringToReal = TFPGMap<String,Real>;
+type TMapStringToCardinal = TFPGMap<String,Cardinal>;
 type
 
   { TuGrammatiken }
@@ -185,13 +186,18 @@ function pruefInKlammernAxiom(zuPruefen: String ;idx: Cardinal) : Cardinal;
 begin
   // ueberspringen vom Klammer auf
   inc(idx);
+  if zuPruefen[idx] = ')' then
+  begin
+    showMessage('Zeile 1 | Position ' + IntToStr(idx) + ': Leere Klammern sind nicht erlaubt.');
+    exit(0);
+  end;
   // der letzte Buchstabe wird weggelassen, da dieser ein ')' sein muss,
   // wenn alles richtig ist 
   while idx < length(zuPruefen) do 
   begin
     if zuPruefen[idx] = '(' then
     begin
-      showMessage('Zeile 1 | Position' + IntToStr(idx) + ': Klammern duerfen nicht verschachtelt werden!');
+      showMessage('Zeile 1 | Position ' + IntToStr(idx) + ': Klammern duerfen nicht verschachtelt werden!');
       exit(0);
     end
     else if zuPruefen[idx] = ')' then break
@@ -200,13 +206,13 @@ begin
     begin
       if ((not isDigit(zuPruefen[idx-1])) or (not isDigit(zuPruefen[idx+1]))) then
       begin
-        showMessage('Zeile 1 | Position' + IntToStr(idx) + ': Das Semikolon innerhalb einer Klammer ist nicht richtig plaziert worden!');
+        showMessage('Zeile 1 | Position ' + IntToStr(idx) + ': Das Semikolon innerhalb einer Klammer ist nicht richtig plaziert worden!');
         exit(0);
       end;
     end
     else if not isDigit(zuPruefen[idx]) then
     begin
-      showMessage('Zeile 1 | Position' + IntToStr(idx) + ': "' + zuPruefen[idx] + '" gefunden, aber eine Zahl erwartet!');
+      showMessage('Zeile 1 | Position ' + IntToStr(idx) + ': "' + zuPruefen[idx] + '" gefunden, aber eine Zahl erwartet!');
       exit(0);
     end;
     inc(idx);
@@ -226,6 +232,11 @@ function pruefInKlammernRegel(zuPruefen: String; regelZeile: Cardinal; idx: Card
 begin
   // ueberspringen vom Klammer auf
   inc(idx);
+  if zuPruefen[idx] = ')' then
+  begin
+    showMessage('Zeile ' + intToSTr(regelZeile+1) + ' | Position ' + IntToStr(idx) + ': Leere Klammern sind nicht erlaubt.');
+    exit(0);
+  end;
   // der letzte Buchstabe wird weggelassen, da dieser ein ')' sein muss,
   // wenn alles richtig ist 
   while idx < length(zuPruefen) do 
@@ -246,7 +257,7 @@ begin
     end
     else if not isLower(zuPruefen[idx]) then
     begin
-      showMessage('Zeile ' + intToStr(regelZeile+1) + ' | Position ' + IntToStr(idx) + ': "' + zuPruefen[idx] + '" gefunden, aber einen kleinen Buchstaben erwartet!');
+      showMessage('Zeile ' + intToStr(regelZeile+1) + ' s| Position ' + IntToStr(idx) + ': "' + zuPruefen[idx] + '" gefunden, aber einen kleinen Buchstaben erwartet!');
       exit(0);
     end
     else if (isLower(zuPruefen[idx])) and (
@@ -454,7 +465,9 @@ begin
   // pruefen der Zeilen -> die Turtle wird beim einlesen erstellt
   if not pruefeAxiom(Memo1.lines[0]) then exit;
   if not pruefeRegel then exit;
-  
+
+  zeichnerInit := TZeichnerInit.Create;
+  gram := TGrammatik.Create;
   gram.axiom := Memo1.lines[0];
   for zeilenIdx := 1 to Memo1.lines.Count - 1 do
   begin 
@@ -515,14 +528,20 @@ begin
           Turtle.name:=NameGrammatik;
           turtlemanager.addTurtle(Turtle);
         end;
-        if turtle.zeichnen then
+        try
+          if turtle.zeichnen then
+          begin
+            Hauptform.push_neue_instanz(turtlemanager);
+            Hauptform.ordnen();
+            Visible:=False;
+            Hauptform.zeichnen();
+          end
+          else SHOWMESSAGE('Der gezeichnete Baum ist zu groß. In den Optionen kann die maximale Stringlänge geändert werden. ');
+        except
         begin
-          Hauptform.push_neue_instanz(turtlemanager);
-          Hauptform.ordnen();
-          Visible:=False;
-          Hauptform.zeichnen();
-        end
-        else SHOWMESSAGE('Der gezeichnete Baum ist zu groß. In den Optionen kann die maximale Stringlänge geändert werden. ');
+          showMessage('Unidentifizierbarer Fehler bei der Zeichnung der Grammatik');
+        end;
+        end;
       end;
     end
     else SHOWMESSAGE('Du hast die Maximale Größe des Winkels von 360 überschritten!');
